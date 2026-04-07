@@ -10,6 +10,12 @@ import iconKinopoisk from "figma:asset/b39f941bc25c3069b2f4719e19fdc535f4a56625.
 import iconBooks from "figma:asset/94e2bb438930a86c21d001934a49869c8425f73a.png";
 import iconMarket from "figma:asset/873668dc7d9e7bd9c16444667bc68a762e2b3499.png";
 import iconSplit from "figma:asset/1f449fc2f45163f28ee9045765bf74d1029f8916.png";
+import iconTaxi from "../../assets/taxi.png";
+import iconPay from "../../assets/pay.png";
+import iconScooters from "../../assets/scooters.png";
+import iconFood from "../../assets/food.png";
+import iconAfisha from "../../assets/afisha.png";
+import iconTravel from "../../assets/travel.png";
 
 const serviceIconMap: Record<string, string> = {
   music: iconBooks,
@@ -17,6 +23,12 @@ const serviceIconMap: Record<string, string> = {
   books: iconMusic,
   market: iconMarket,
   split: iconSplit,
+  taxi: iconTaxi,
+  pay: iconPay,
+  scooters: iconScooters,
+  food: iconFood,
+  afisha: iconAfisha,
+  travel: iconTravel,
 };
 
 export const ServiceDetail = () => {

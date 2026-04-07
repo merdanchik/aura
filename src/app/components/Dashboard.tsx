@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAura } from '../context/AuraContext';
 import { AuraRings, AuraRingsMini } from './AuraRings';
 import { useNavigate } from 'react-router';
-import { ChevronRight, Zap } from 'lucide-react';
-import { motion } from 'motion/react';
+import { ChevronRight, ChevronDown } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 
 // Service icons
 import iconMusic from "figma:asset/52729efb5574f608701f92848e1b348745677960.png";
@@ -11,7 +11,12 @@ import iconKinopoisk from "figma:asset/b39f941bc25c3069b2f4719e19fdc535f4a56625.
 import iconBooks from "figma:asset/94e2bb438930a86c21d001934a49869c8425f73a.png";
 import iconMarket from "figma:asset/873668dc7d9e7bd9c16444667bc68a762e2b3499.png";
 import iconSplit from "figma:asset/1f449fc2f45163f28ee9045765bf74d1029f8916.png";
-
+import iconTaxi from "../../assets/taxi.png";
+import iconPay from "../../assets/pay.png";
+import iconScooters from "../../assets/scooters.png";
+import iconFood from "../../assets/food.png";
+import iconAfisha from "../../assets/afisha.png";
+import iconTravel from "../../assets/travel.png";
 
 const serviceIconMap: Record<string, string> = {
   music: iconBooks,
@@ -19,12 +24,21 @@ const serviceIconMap: Record<string, string> = {
   books: iconMusic,
   market: iconMarket,
   split: iconSplit,
+  taxi: iconTaxi,
+  pay: iconPay,
+  scooters: iconScooters,
+  food: iconFood,
+  afisha: iconAfisha,
+  travel: iconTravel,
 };
+
+const PRIMARY_SERVICES = ['music', 'kinopoisk', 'books', 'market', 'split'];
 
 export const Dashboard = () => {
   const { services, globalTrustScore, globalKnowledgeScore, overallScore, theme, triggerEvent } = useAura();
   const navigate = useNavigate();
   const isTrustCritical = globalTrustScore < 50;
+  const [servicesExpanded, setServicesExpanded] = useState(false);
 
   const trustDotGradient = globalTrustScore < 40
     ? 'linear-gradient(135deg, #FF3B30, #FF6961)'
@@ -92,42 +106,61 @@ export const Dashboard = () => {
           Сервисы
         </p>
         <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#1C1C1E' }}>
-          {Object.values(services).map((service, idx, arr) => {
-            const isLast = idx === arr.length - 1;
-            const k = service.knowledgeScore;
-            const t = service.trustScore ?? 0;
-            const sTrust = service.trustScore ?? globalTrustScore;
-            const combined = service.trustScore !== null ? (k + t) / 2 : k;
+          {Object.values(services)
+            .filter(s => servicesExpanded || PRIMARY_SERVICES.includes(s.id))
+            .map((service, idx, arr) => {
+              const isLast = idx === arr.length - 1 && servicesExpanded;
+              const k = service.knowledgeScore;
+              const t = service.trustScore ?? 0;
+              const sTrust = service.trustScore ?? globalTrustScore;
+              const combined = service.trustScore !== null ? (k + t) / 2 : k;
 
-            let label = 'новая';
-            let labelColor = '#636366';
-            if (combined >= 70) { label = 'глубокая'; labelColor = '#BF5AF2'; }
-            else if (combined >= 45) { label = 'близкая'; labelColor = '#30D158'; }
-            else if (combined >= 25) { label = 'знакомая'; labelColor = '#FF9500'; }
-            else if (service.trustScore !== null && t < 30) { label = 'сложная'; labelColor = '#FF3B30'; }
+              let label = 'новая';
+              let labelColor = '#636366';
+              if (combined >= 70) { label = 'глубокая'; labelColor = '#BF5AF2'; }
+              else if (combined >= 45) { label = 'близкая'; labelColor = '#30D158'; }
+              else if (combined >= 25) { label = 'знакомая'; labelColor = '#FF9500'; }
+              else if (service.trustScore !== null && t < 30) { label = 'сложная'; labelColor = '#FF3B30'; }
 
-            return (
-              <button
-                key={service.id}
-                onClick={() => navigate(`/service/${service.id}`)}
-                className="w-full flex items-center gap-3 px-4 py-3.5 active:bg-white/[0.05] transition-colors text-left"
-              >
-                <img
-                  src={serviceIconMap[service.id]}
-                  alt={service.name}
-                  className="w-11 h-11 rounded-[12px] object-cover flex-shrink-0"
-                />
-                <div className={`flex-1 min-w-0 flex items-center gap-3 ${!isLast ? 'border-b border-white/[0.08] pb-3.5 -mb-3.5' : ''}`}>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[17px] text-white truncate" style={{ fontWeight: 500 }}>{service.name}</p>
-                    <p className="text-[13px] mt-0.5" style={{ color: labelColor, fontWeight: 500 }}>{label}</p>
+              return (
+                <motion.button
+                  key={service.id}
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.25 }}
+                  onClick={() => navigate(`/service/${service.id}`)}
+                  className="w-full flex items-center gap-3 px-4 py-3.5 active:bg-white/[0.05] transition-colors text-left"
+                >
+                  <img
+                    src={serviceIconMap[service.id]}
+                    alt={service.name}
+                    className="w-11 h-11 rounded-[12px] object-cover flex-shrink-0"
+                  />
+                  <div className={`flex-1 min-w-0 flex items-center gap-3 ${!isLast ? 'border-b border-white/[0.08] pb-3.5 -mb-3.5' : ''}`}>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[17px] text-white truncate" style={{ fontWeight: 500 }}>{service.name}</p>
+                      <p className="text-[13px] mt-0.5" style={{ color: labelColor, fontWeight: 500 }}>{label}</p>
+                    </div>
+                    <AuraRingsMini knowledge={k} trust={sTrust} size={38} className="flex-shrink-0" />
+                    <ChevronRight className="w-4 h-4 text-[#48484A] flex-shrink-0" />
                   </div>
-                  <AuraRingsMini knowledge={k} trust={sTrust} size={38} className="flex-shrink-0" />
-                  <ChevronRight className="w-4 h-4 text-[#48484A] flex-shrink-0" />
-                </div>
-              </button>
-            );
-          })}
+                </motion.button>
+              );
+            })}
+
+          {/* Expand button */}
+          <button
+            onClick={() => setServicesExpanded(v => !v)}
+            className="w-full flex items-center justify-center gap-1.5 py-3.5 border-t border-white/[0.08] active:bg-white/[0.05] transition-colors"
+          >
+            <span className="text-[15px] text-[#98989D]" style={{ fontWeight: 500 }}>
+              {servicesExpanded ? 'Скрыть' : 'Ещё сервисы'}
+            </span>
+            <motion.div animate={{ rotate: servicesExpanded ? 180 : 0 }} transition={{ duration: 0.25 }}>
+              <ChevronDown className="w-4 h-4 text-[#48484A]" />
+            </motion.div>
+          </button>
         </div>
       </motion.div>
 

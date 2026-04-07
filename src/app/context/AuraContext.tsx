@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useMemo, ReactNode } from 'react';
 
-export type ServiceId = 'music' | 'kinopoisk' | 'books' | 'market' | 'split';
+export type ServiceId = 'music' | 'kinopoisk' | 'books' | 'market' | 'split' | 'taxi' | 'pay' | 'scooters' | 'food' | 'afisha' | 'travel';
 
 export interface Action {
   id: string;
@@ -192,7 +192,97 @@ const initialServices: Record<ServiceId, ServiceData> = {
       { id: 's5', title: 'Подключите автоплатёж', description: 'Никаких просрочек', trustBoost: 15, completed: false, type: 'trust' },
       { id: 's6', title: 'Заполните финансовый профиль', description: 'Увеличим лимит', knowledgeBoost: 20, trustBoost: 15, completed: false, type: 'trust' },
     ]
-  }
+  },
+  taxi: {
+    id: 'taxi',
+    name: 'Яндекс Такси',
+    color: '#FFCC00',
+    knowledgeScore: 5,
+    trustScore: 10,
+    actions: [
+      { id: 'tx1', title: 'Подтвердите личность', description: 'Повысит рейтинг пассажира', trustBoost: 20, completed: false, type: 'trust' },
+      { id: 'tx2', title: 'Подключите автооплату', description: 'Без задержек после поездки', trustBoost: 15, completed: false, type: 'trust' },
+      { id: 'tx3', title: 'Оцените последнюю поездку', description: 'Помогает водителям и алгоритму', knowledgeBoost: 15, completed: false, type: 'knowledge' },
+      { id: 'tx4', title: 'Добавьте домашний и рабочий адрес', description: 'Для быстрого заказа', knowledgeBoost: 20, completed: false, type: 'knowledge' },
+      { id: 'tx5', title: 'Выберите класс авто по умолчанию', description: 'Персонализируем предложения', knowledgeBoost: 15, completed: false, type: 'knowledge' },
+      { id: 'tx6', title: 'Не отменяйте заказы', description: 'Рейтинг пассажира растёт', trustBoost: 20, completed: false, type: 'trust' },
+    ]
+  },
+  pay: {
+    id: 'pay',
+    name: 'Яндекс Пэй',
+    color: '#8C3FED',
+    knowledgeScore: 5,
+    trustScore: 5,
+    actions: [
+      { id: 'py1', title: 'Привяжите карту', description: 'Необходимо для оплат', trustBoost: 20, completed: false, type: 'trust' },
+      { id: 'py2', title: 'Подтвердите личность', description: 'Повысит лимит платежей', trustBoost: 20, completed: false, type: 'trust' },
+      { id: 'py3', title: 'Включите Face ID для оплаты', description: 'Безопасно и быстро', trustBoost: 15, completed: false, type: 'trust' },
+      { id: 'py4', title: 'Совершите первый платёж', description: 'Начните формировать историю', knowledgeBoost: 15, trustBoost: 15, completed: false, type: 'trust' },
+      { id: 'py5', title: 'Подключите автоплатёж за подписки', description: 'Без просрочек и прерываний', trustBoost: 15, completed: false, type: 'trust' },
+      { id: 'py6', title: 'Укажите предпочтительный способ оплаты', description: 'Персонализируем интерфейс', knowledgeBoost: 20, completed: false, type: 'knowledge' },
+    ]
+  },
+  scooters: {
+    id: 'scooters',
+    name: 'Самокаты',
+    color: '#00BCD4',
+    knowledgeScore: 5,
+    trustScore: 5,
+    actions: [
+      { id: 'sc1', title: 'Пройдите тест по ПДД для самокатов', description: 'Подтверждает безопасную езду', trustBoost: 25, completed: false, type: 'trust' },
+      { id: 'sc2', title: 'Верните самокат в зону парковки', description: 'Сохраняет рейтинг пользователя', trustBoost: 20, completed: false, type: 'trust' },
+      { id: 'sc3', title: 'Сфотографируйте парковку после аренды', description: 'Повышает доверие к вам', trustBoost: 15, completed: false, type: 'trust' },
+      { id: 'sc4', title: 'Подтвердите возраст', description: 'Обязательно для аренды', trustBoost: 20, completed: false, type: 'trust' },
+      { id: 'sc5', title: 'Укажите любимые маршруты', description: 'Подскажем ближайшие самокаты', knowledgeBoost: 20, completed: false, type: 'knowledge' },
+      { id: 'sc6', title: 'Подключите автооплату', description: 'Удобнее завершать поездки', trustBoost: 15, completed: false, type: 'trust' },
+    ]
+  },
+  food: {
+    id: 'food',
+    name: 'Яндекс Еда',
+    color: '#F7591E',
+    knowledgeScore: 5,
+    trustScore: null,
+    actions: [
+      { id: 'fd1', title: 'Отметьте любимые кухни', description: 'Лучшие рестораны для вас', knowledgeBoost: 20, completed: false, type: 'knowledge' },
+      { id: 'fd2', title: 'Укажите диетические предпочтения', description: 'Вегетарианское, без глютена и т.д.', knowledgeBoost: 20, completed: false, type: 'knowledge' },
+      { id: 'fd3', title: 'Оцените 5 блюд', description: 'Точнее подбираем меню', knowledgeBoost: 15, completed: false, type: 'knowledge' },
+      { id: 'fd4', title: 'Добавьте адрес доставки', description: 'Для быстрого оформления', knowledgeBoost: 15, completed: false, type: 'knowledge' },
+      { id: 'fd5', title: 'Оставьте отзыв о ресторане', description: 'Улучшим рекомендации', knowledgeBoost: 15, completed: false, type: 'knowledge' },
+      { id: 'fd6', title: 'Добавьте ресторан в избранное', description: 'Быстрый доступ к любимым', knowledgeBoost: 10, completed: false, type: 'knowledge' },
+    ]
+  },
+  afisha: {
+    id: 'afisha',
+    name: 'Яндекс Афиша',
+    color: '#E91E63',
+    knowledgeScore: 5,
+    trustScore: null,
+    actions: [
+      { id: 'af1', title: 'Выберите интересные категории', description: 'Концерты, театры, выставки', knowledgeBoost: 20, completed: false, type: 'knowledge' },
+      { id: 'af2', title: 'Добавьте мероприятие в избранное', description: 'Напомним за день', knowledgeBoost: 15, completed: false, type: 'knowledge' },
+      { id: 'af3', title: 'Оцените посещённое мероприятие', description: 'Подберём похожие', knowledgeBoost: 15, completed: false, type: 'knowledge' },
+      { id: 'af4', title: 'Укажите любимых исполнителей', description: 'Оповестим о концертах', knowledgeBoost: 20, completed: false, type: 'knowledge' },
+      { id: 'af5', title: 'Подпишитесь на афишу города', description: 'Лучшее каждую неделю', knowledgeBoost: 15, completed: false, type: 'knowledge' },
+      { id: 'af6', title: 'Укажите любимые площадки', description: 'Для точных подборок рядом', knowledgeBoost: 10, completed: false, type: 'knowledge' },
+    ]
+  },
+  travel: {
+    id: 'travel',
+    name: 'Яндекс Путешествия',
+    color: '#2196F3',
+    knowledgeScore: 5,
+    trustScore: null,
+    actions: [
+      { id: 'tr1', title: 'Добавьте паспортные данные', description: 'Для быстрого бронирования', knowledgeBoost: 20, completed: false, type: 'knowledge' },
+      { id: 'tr2', title: 'Укажите предпочтения перелётов', description: 'Место у окна или прохода', knowledgeBoost: 15, completed: false, type: 'knowledge' },
+      { id: 'tr3', title: 'Оцените отель после поездки', description: 'Подберём лучшее в следующий раз', knowledgeBoost: 15, completed: false, type: 'knowledge' },
+      { id: 'tr4', title: 'Добавьте программу лояльности авиакомпании', description: 'Копите мили', knowledgeBoost: 20, completed: false, type: 'knowledge' },
+      { id: 'tr5', title: 'Укажите предпочтения питания', description: 'Халяль, вегетарианское и т.д.', knowledgeBoost: 10, completed: false, type: 'knowledge' },
+      { id: 'tr6', title: 'Задайте бюджет путешествий', description: 'Персонализируем подборки', knowledgeBoost: 15, completed: false, type: 'knowledge' },
+    ]
+  },
 };
 
 const AuraContext = createContext<AuraContextType | undefined>(undefined);
@@ -205,8 +295,8 @@ export const AuraProvider = ({ children }: { children: ReactNode }) => {
     ? trustServices.reduce((acc, s) => acc + (s.trustScore || 0), 0) / trustServices.length
     : 0;
 
-  const globalKnowledgeScore = Object.values(services)
-    .reduce((acc, s) => acc + s.knowledgeScore, 0) / 5;
+  const allServices = Object.values(services);
+  const globalKnowledgeScore = allServices.reduce((acc, s) => acc + s.knowledgeScore, 0) / allServices.length;
 
   const overallScore = (globalKnowledgeScore + globalTrustScore) / 2;
 

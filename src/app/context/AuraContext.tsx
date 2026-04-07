@@ -180,7 +180,7 @@ const initialServices: Record<ServiceId, ServiceData> = {
   },
   split: {
     id: 'split',
-    name: 'Сплит (Фин. сервисы)',
+    name: 'Сплит',
     color: '#00C853',
     knowledgeScore: 10,
     trustScore: 15,

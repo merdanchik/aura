@@ -17,6 +17,7 @@ function figmaAssets(): Plugin {
 }
 
 export default defineConfig({
+  base: '/aura/',
   plugins: [
     figmaAssets(),
     react(),

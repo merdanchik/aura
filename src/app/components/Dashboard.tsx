@@ -38,7 +38,12 @@ export const Dashboard = () => {
   const { services, globalTrustScore, globalKnowledgeScore, overallScore, theme, triggerEvent } = useAura();
   const navigate = useNavigate();
   const isTrustCritical = globalTrustScore < 50;
-  const [servicesExpanded, setServicesExpanded] = useState(false);
+  const [servicesExpanded, setServicesExpanded] = useState(() => sessionStorage.getItem('servicesExpanded') === 'true');
+
+  const toggleExpanded = (v: boolean) => {
+    setServicesExpanded(v);
+    sessionStorage.setItem('servicesExpanded', String(v));
+  };
 
   const trustDotGradient = globalTrustScore < 40
     ? 'linear-gradient(135deg, #FF3B30, #FF6961)'
@@ -152,7 +157,7 @@ export const Dashboard = () => {
 
           {/* Expand button */}
           <button
-            onClick={() => setServicesExpanded(v => !v)}
+            onClick={() => toggleExpanded(!servicesExpanded)}
             className="w-full flex items-center justify-center gap-1.5 py-3.5 border-t border-white/[0.08] active:bg-white/[0.05] transition-colors"
           >
             <span className="text-[15px] text-[#98989D]" style={{ fontWeight: 500 }}>

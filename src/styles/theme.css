@@ -127,6 +127,30 @@
   display: none;
 }
 
+/* Animated memory card blobs */
+@keyframes blob-drift-a {
+  0%   { transform: translate(-50%, -50%) scale(1)    translate(0px, 0px); }
+  33%  { transform: translate(-50%, -50%) scale(1.18) translate(12px, -8px); }
+  66%  { transform: translate(-50%, -50%) scale(0.95) translate(-8px, 14px); }
+  100% { transform: translate(-50%, -50%) scale(1.1)  translate(6px, -4px); }
+}
+@keyframes blob-drift-b {
+  0%   { transform: translate(-50%, -50%) scale(1)    translate(0px, 0px); }
+  33%  { transform: translate(-50%, -50%) scale(1.12) translate(-14px, 10px); }
+  66%  { transform: translate(-50%, -50%) scale(1.22) translate(10px, -12px); }
+  100% { transform: translate(-50%, -50%) scale(0.92) translate(-6px, 8px); }
+}
+@keyframes blob-drift-c {
+  0%   { transform: translate(-50%, -50%) scale(1)    translate(0px, 0px); }
+  33%  { transform: translate(-50%, -50%) scale(0.9)  translate(8px, 12px); }
+  66%  { transform: translate(-50%, -50%) scale(1.15) translate(-12px, -8px); }
+  100% { transform: translate(-50%, -50%) scale(1.05) translate(4px, 10px); }
+}
+
+.blob-a { animation: blob-drift-a 11s ease-in-out infinite; }
+.blob-b { animation: blob-drift-b 14s ease-in-out infinite; }
+.blob-c { animation: blob-drift-c  9s ease-in-out infinite; }
+
 
 @layer base {
   * {

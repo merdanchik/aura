@@ -196,12 +196,12 @@ export const Dashboard = () => {
               {mem.blobs.map((blob, j) => (
                 <div
                   key={j}
-                  className="absolute pointer-events-none"
+                  className={`absolute pointer-events-none ${['blob-a','blob-b','blob-c'][j]}`}
                   style={{
                     left: blob.x, top: blob.y,
                     width: blob.size, height: blob.size,
                     background: `radial-gradient(circle, ${blob.color} 0%, transparent 68%)`,
-                    transform: 'translate(-50%, -50%)',
+                    animationDelay: `${i * 1.7 + j * 0.9}s`,
                   }}
                 />
               ))}

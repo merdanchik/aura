@@ -75,9 +75,8 @@ export const ServiceDetail = () => {
       <div className="sticky top-[65px] z-40 px-4 pt-2 pb-2">
       <div className="rounded-2xl p-4 relative overflow-hidden backdrop-blur-xl" style={{ backgroundColor: 'rgba(28,28,30,0.75)' }}>
         {/* subtle glow */}
-        <div className="absolute inset-0 pointer-events-none" style={{
-          background: `radial-gradient(circle at 80% 50%, ${sTrust < 40 ? 'rgba(255,59,48,0.08)' : 'rgba(191,90,242,0.08)'} 0%, transparent 70%)`,
-        }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(ellipse at 75% 50%, ${sTrust < 40 ? 'rgba(255,59,48,0.22)' : sTrust < 70 ? 'rgba(255,149,0,0.18)' : 'rgba(48,209,88,0.18)'} 0%, transparent 65%)`, filter: 'blur(16px)' }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 25% 50%, rgba(94,92,230,0.16) 0%, transparent 65%)', filter: 'blur(16px)' }} />
         <div className="flex items-center gap-4 relative z-10">
           {/* Left: text + stats */}
           <div className="flex-1 min-w-0">

@@ -56,13 +56,13 @@ export const Dashboard = () => {
         className="rounded-2xl overflow-hidden mb-4 relative"
       >
         {/* Glow effect */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: `radial-gradient(circle at 50% 40%, ${globalTrustScore < 40 ? 'rgba(255,59,48,0.15)' : globalTrustScore < 70 ? 'rgba(255,149,0,0.12)' : 'rgba(48,209,88,0.12)'} 0%, rgba(191,90,242,0.08) 40%, transparent 70%)`,
-            filter: 'blur(20px)',
-          }}
-        />
+        {(() => {
+          const trustGlow = globalTrustScore < 40 ? 'rgba(255,59,48,0.22)' : globalTrustScore < 70 ? 'rgba(255,149,0,0.18)' : 'rgba(48,209,88,0.18)';
+          return <>
+            <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(ellipse at 65% 55%, ${trustGlow} 0%, transparent 60%)`, filter: 'blur(24px)' }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 35% 45%, rgba(94,92,230,0.18) 0%, transparent 60%)', filter: 'blur(24px)' }} />
+          </>;
+        })()}
         <div className="flex flex-col items-center pt-6 pb-2 relative z-10">
           {/* Rings */}
           <div className="relative">
@@ -230,12 +230,12 @@ export const Dashboard = () => {
               {mem.blobs.map((blob, j) => (
                 <div
                   key={j}
-                  className={`absolute pointer-events-none ${['blob-a','blob-b','blob-c'][j]}`}
+                  className="absolute pointer-events-none"
                   style={{
                     left: blob.x, top: blob.y,
                     width: blob.size, height: blob.size,
                     background: `radial-gradient(circle, ${blob.color} 0%, transparent 68%)`,
-                    animationDelay: `${i * 1.7 + j * 0.9}s`,
+                    transform: 'translate(-50%, -50%)',
                   }}
                 />
               ))}

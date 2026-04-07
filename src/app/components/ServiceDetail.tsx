@@ -3,7 +3,7 @@ import { useParams } from 'react-router';
 import { ServiceId, useAura } from '../context/AuraContext';
 import { AuraRings } from './AuraRings';
 import { motion, AnimatePresence } from 'motion/react';
-import { Check, Star } from 'lucide-react';
+import { Check } from 'lucide-react';
 
 import iconMusic from "figma:asset/52729efb5574f608701f92848e1b348745677960.png";
 import iconKinopoisk from "figma:asset/b39f941bc25c3069b2f4719e19fdc535f4a56625.png";
@@ -39,6 +39,16 @@ export const ServiceDetail = () => {
   const isPale = service.knowledgeScore < 50;
   const sTrust = service.trustScore ?? globalTrustScore;
 
+  const k = service.knowledgeScore;
+  const t = service.trustScore ?? 0;
+  const combined = service.trustScore !== null ? (k + t) / 2 : k;
+  let relLabel = 'новая';
+  let relColor = '#636366';
+  if (combined >= 70) { relLabel = 'глубокая'; relColor = '#BF5AF2'; }
+  else if (combined >= 45) { relLabel = 'близкая'; relColor = '#30D158'; }
+  else if (combined >= 25) { relLabel = 'знакомая'; relColor = '#FF9500'; }
+  else if (service.trustScore !== null && t < 30) { relLabel = 'сложная'; relColor = '#FF3B30'; }
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 30 }}
@@ -56,10 +66,13 @@ export const ServiceDetail = () => {
         <div className="flex items-center gap-4 relative z-10">
           {/* Left: text + stats */}
           <div className="flex-1 min-w-0">
-            <p className="text-[17px] text-white leading-snug" style={{ fontWeight: 600 }}>
-              {isPale ? 'Мы мало знаем о вас' : 'Хорошая персонализация'}
-            </p>
-            <p className="text-[13px] text-[#98989D] mt-1 leading-snug">
+            <div className="flex items-center gap-2 mb-0.5">
+              <p className="text-[17px] text-white leading-snug" style={{ fontWeight: 600 }}>
+                {isPale ? 'Мы мало знаем о вас' : 'Хорошая персонализация'}
+              </p>
+            </div>
+            <p className="text-[12px] font-semibold mb-1" style={{ color: relColor }}>{relLabel}</p>
+            <p className="text-[13px] text-[#98989D] leading-snug">
               {isPale ? 'Выполните действия, чтобы усилить ауру.' : 'Вкусы изучены, рекомендации точные.'}
             </p>
             <div className="flex gap-4 mt-3">
@@ -126,14 +139,13 @@ export const ServiceDetail = () => {
                     </p>
                     {!action.completed && action.knowledgeBoost && (
                       <div
-                        className="mt-2 inline-flex items-center gap-1 text-[12px] px-2.5 py-1 rounded-full"
+                        className="mt-2 inline-flex items-center text-[12px] px-2.5 py-1 rounded-full"
                         style={{
                           fontWeight: 600,
                           backgroundColor: sTheme.primary + '20',
                           color: sTheme.primary,
                         }}
                       >
-                        <Star className="w-3 h-3" />
                         +{action.knowledgeBoost}% к Ауре
                       </div>
                     )}

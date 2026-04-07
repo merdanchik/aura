@@ -1,0 +1,35 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg3" cx="40%" cy="35%">
+      <stop offset="0%" stop-color="#0a0020"/>
+      <stop offset="100%" stop-color="#050010"/>
+    </radialGradient>
+    <linearGradient id="gold3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffe066"/>
+      <stop offset="30%" stop-color="#c8860a"/>
+      <stop offset="60%" stop-color="#f5c842"/>
+      <stop offset="100%" stop-color="#8a5a00"/>
+    </linearGradient>
+    <radialGradient id="shine3" cx="35%" cy="30%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.18)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </radialGradient>
+    <filter id="shadow3">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#8250FF" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+  <circle cx="100" cy="100" r="96" fill="url(#gold3)" filter="url(#shadow3)"/>
+  <circle cx="100" cy="100" r="86" fill="url(#bg3)"/>
+  <circle cx="100" cy="100" r="78" fill="none" stroke="#BF5AF2" stroke-width="12" opacity="0.9"/>
+  <circle cx="100" cy="100" r="63" fill="none" stroke="#8250FF" stroke-width="10" opacity="0.8"/>
+  <circle cx="100" cy="100" r="50" fill="none" stroke="#DA8FFF" stroke-width="8" opacity="0.6"/>
+  <circle cx="100" cy="100" r="40" fill="#050010"/>
+  <!-- Headphones -->
+  <path d="M76 100 C76 84 88 73 100 73 C112 73 124 84 124 100" stroke="#BF5AF2" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <rect x="70" y="97" width="10" height="16" rx="4" fill="#BF5AF2"/>
+  <rect x="120" y="97" width="10" height="16" rx="4" fill="#BF5AF2"/>
+  <!-- Lightning -->
+  <path d="M103 86 L97 100 L102 100 L97 115 L108 97 L103 97 Z" fill="#DA8FFF"/>
+  <circle cx="100" cy="100" r="86" fill="url(#shine3)"/>
+  <circle cx="100" cy="100" r="96" fill="none" stroke="rgba(255,240,180,0.4)" stroke-width="1.5"/>
+</svg>

@@ -1,0 +1,46 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg1" cx="40%" cy="35%">
+      <stop offset="0%" stop-color="#1a0a00"/>
+      <stop offset="100%" stop-color="#0d0400"/>
+    </radialGradient>
+    <linearGradient id="gold1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffe066"/>
+      <stop offset="30%" stop-color="#c8860a"/>
+      <stop offset="60%" stop-color="#f5c842"/>
+      <stop offset="100%" stop-color="#8a5a00"/>
+    </linearGradient>
+    <radialGradient id="shine1" cx="35%" cy="30%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.18)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </radialGradient>
+    <filter id="shadow1">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#FF4400" flood-opacity="0.6"/>
+    </filter>
+    <filter id="inner1">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+  <!-- Outer gold ring -->
+  <circle cx="100" cy="100" r="96" fill="url(#gold1)" filter="url(#shadow1)"/>
+  <!-- Dark base -->
+  <circle cx="100" cy="100" r="86" fill="url(#bg1)"/>
+  <!-- Colored rings -->
+  <circle cx="100" cy="100" r="78" fill="none" stroke="#FF6600" stroke-width="12" opacity="0.9"/>
+  <circle cx="100" cy="100" r="63" fill="none" stroke="#FF3300" stroke-width="10" opacity="0.8"/>
+  <circle cx="100" cy="100" r="50" fill="none" stroke="#FF8800" stroke-width="8" opacity="0.7"/>
+  <!-- Center dark -->
+  <circle cx="100" cy="100" r="40" fill="#110500"/>
+  <!-- Film frame symbol -->
+  <rect x="72" y="82" width="56" height="36" rx="4" fill="none" stroke="#FF6600" stroke-width="3"/>
+  <polygon points="92,91 92,109 114,100" fill="#FF6600"/>
+  <rect x="72" y="82" width="8" height="6" rx="1" fill="#FF6600"/>
+  <rect x="72" y="112" width="8" height="6" rx="1" fill="#FF6600"/>
+  <rect x="120" y="82" width="8" height="6" rx="1" fill="#FF6600"/>
+  <rect x="120" y="112" width="8" height="6" rx="1" fill="#FF6600"/>
+  <!-- Shine -->
+  <circle cx="100" cy="100" r="86" fill="url(#shine1)"/>
+  <!-- Gold rim highlight -->
+  <circle cx="100" cy="100" r="96" fill="none" stroke="rgba(255,240,180,0.4)" stroke-width="1.5"/>
+  <circle cx="100" cy="100" r="87" fill="none" stroke="rgba(255,240,180,0.15)" stroke-width="1"/>
+</svg>

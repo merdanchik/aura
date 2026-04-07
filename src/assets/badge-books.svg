@@ -1,0 +1,35 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg4" cx="40%" cy="35%">
+      <stop offset="0%" stop-color="#1a0f00"/>
+      <stop offset="100%" stop-color="#0d0700"/>
+    </radialGradient>
+    <linearGradient id="gold4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffe066"/>
+      <stop offset="30%" stop-color="#c8860a"/>
+      <stop offset="60%" stop-color="#f5c842"/>
+      <stop offset="100%" stop-color="#8a5a00"/>
+    </linearGradient>
+    <radialGradient id="shine4" cx="35%" cy="30%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.18)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </radialGradient>
+    <filter id="shadow4">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#FFB400" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+  <circle cx="100" cy="100" r="96" fill="url(#gold4)" filter="url(#shadow4)"/>
+  <circle cx="100" cy="100" r="86" fill="url(#bg4)"/>
+  <circle cx="100" cy="100" r="78" fill="none" stroke="#FFB400" stroke-width="12" opacity="0.9"/>
+  <circle cx="100" cy="100" r="63" fill="none" stroke="#FF8C00" stroke-width="10" opacity="0.8"/>
+  <circle cx="100" cy="100" r="50" fill="none" stroke="#FFD700" stroke-width="8" opacity="0.6"/>
+  <circle cx="100" cy="100" r="40" fill="#0d0700"/>
+  <!-- Open book -->
+  <path d="M100 83 C100 83 84 86 80 90 L80 116 C84 112 96 110 100 113 C104 110 116 112 120 116 L120 90 C116 86 100 83 100 83Z" fill="none" stroke="#FFB400" stroke-width="3" stroke-linejoin="round"/>
+  <line x1="100" y1="83" x2="100" y2="113" stroke="#FFB400" stroke-width="3"/>
+  <line x1="84" y1="93" x2="97" y2="91" stroke="#FFB400" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+  <line x1="84" y1="99" x2="97" y2="97" stroke="#FFB400" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+  <line x1="84" y1="105" x2="97" y2="103" stroke="#FFB400" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+  <circle cx="100" cy="100" r="86" fill="url(#shine4)"/>
+  <circle cx="100" cy="100" r="96" fill="none" stroke="rgba(255,240,180,0.4)" stroke-width="1.5"/>
+</svg>

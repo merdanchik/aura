@@ -1,0 +1,150 @@
+import React from 'react';
+import { useParams } from 'react-router';
+import { ServiceId, useAura } from '../context/AuraContext';
+import { AuraRings } from './AuraRings';
+import { motion, AnimatePresence } from 'motion/react';
+import { Check, Star } from 'lucide-react';
+
+import iconMusic from "figma:asset/52729efb5574f608701f92848e1b348745677960.png";
+import iconKinopoisk from "figma:asset/b39f941bc25c3069b2f4719e19fdc535f4a56625.png";
+import iconBooks from "figma:asset/94e2bb438930a86c21d001934a49869c8425f73a.png";
+import iconMarket from "figma:asset/873668dc7d9e7bd9c16444667bc68a762e2b3499.png";
+import iconSplit from "figma:asset/1f449fc2f45163f28ee9045765bf74d1029f8916.png";
+
+const serviceIconMap: Record<string, string> = {
+  music: iconBooks,
+  kinopoisk: iconKinopoisk,
+  books: iconMusic,
+  market: iconMarket,
+  split: iconSplit,
+};
+
+export const ServiceDetail = () => {
+  const { id } = useParams<{ id: string }>();
+  const { services, performAction, undoAction, getServiceTheme, globalTrustScore } = useAura();
+
+  const service = services[id as ServiceId];
+
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
+
+  if (!service) {
+    return (
+      <div className="p-6 text-center text-[#98989D]">Сервис не найден</div>
+    );
+  }
+
+  const sTheme = getServiceTheme(service.id);
+  const isPale = service.knowledgeScore < 50;
+  const sTrust = service.trustScore ?? globalTrustScore;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: 30 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+      className="pb-10"
+    >
+      {/* Header — sticky, Apple Fitness compact style */}
+      <div className="sticky top-[49px] z-40 px-4 pt-2 pb-2">
+      <div className="rounded-2xl p-4 relative overflow-hidden backdrop-blur-xl" style={{ backgroundColor: 'rgba(28,28,30,0.75)' }}>
+        {/* subtle glow */}
+        <div className="absolute inset-0 pointer-events-none" style={{
+          background: `radial-gradient(circle at 80% 50%, ${sTrust < 40 ? 'rgba(255,59,48,0.08)' : 'rgba(191,90,242,0.08)'} 0%, transparent 70%)`,
+        }} />
+        <div className="flex items-center gap-4 relative z-10">
+          {/* Left: text + stats */}
+          <div className="flex-1 min-w-0">
+            <p className="text-[17px] text-white leading-snug" style={{ fontWeight: 600 }}>
+              {isPale ? 'Мы мало знаем о вас' : 'Хорошая персонализация'}
+            </p>
+            <p className="text-[13px] text-[#98989D] mt-1 leading-snug">
+              {isPale ? 'Выполните действия, чтобы усилить ауру.' : 'Вкусы изучены, рекомендации точные.'}
+            </p>
+            <div className="flex gap-4 mt-3">
+              <div>
+                <p className="text-[11px] text-[#98989D] uppercase tracking-wide font-medium">Знания</p>
+                <p className="text-[20px] font-bold" style={{ color: '#BF5AF2' }}>{service.knowledgeScore}</p>
+              </div>
+              {service.trustScore !== null && (
+                <div>
+                  <p className="text-[11px] text-[#98989D] uppercase tracking-wide font-medium">Доверие</p>
+                  <p className="text-[20px] font-bold" style={{ color: service.trustScore < 40 ? '#FF3B30' : '#30D158' }}>{service.trustScore}</p>
+                </div>
+              )}
+            </div>
+          </div>
+          {/* Right: rings with icon in center */}
+          <div className="flex-shrink-0 relative">
+            <AuraRings knowledge={service.knowledgeScore} trust={sTrust} size={100} />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <img src={serviceIconMap[service.id]} alt={service.name} className="w-9 h-9 rounded-[10px] object-cover" />
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+
+      {/* Scrollable content */}
+      <div className="px-4">
+      {/* Actions */}
+      <h2 className="text-[22px] text-white px-1 mb-3 mt-4" style={{ fontWeight: 700 }}>
+        Действия
+      </h2>
+
+      {service.actions.length === 0 ? (
+        <div className="rounded-2xl p-6 text-center" style={{ backgroundColor: '#1C1C1E' }}>
+          <p className="text-[15px] text-[#98989D]">Нет доступных действий</p>
+        </div>
+      ) : (
+        <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#1C1C1E' }}>
+          <AnimatePresence>
+            {service.actions.map((action, idx) => {
+              const isLast = idx === service.actions.length - 1;
+              return (
+                <motion.button
+                  key={action.id}
+                  onClick={() => action.completed ? undoAction(service.id, action.id) : performAction(service.id, action.id)}
+                  className="w-full flex items-start gap-3.5 px-4 py-4 text-left transition-colors active:bg-white/[0.05]"
+                >
+                  <div
+                    className="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5 border-2 transition-all"
+                    style={{
+                      backgroundColor: action.completed ? sTheme.primary : 'transparent',
+                      borderColor: action.completed ? sTheme.primary : '#48484A',
+                    }}
+                  >
+                    {action.completed && <Check className="w-3.5 h-3.5 text-white" strokeWidth={3} />}
+                  </div>
+                  <div className={`flex-1 ${!isLast ? 'border-b border-white/[0.08] pb-4 -mb-4' : ''}`}>
+                    <p className={`text-[17px] ${action.completed ? 'line-through text-[#98989D]' : 'text-white'}`} style={{ fontWeight: 400 }}>
+                      {action.title}
+                    </p>
+                    <p className="text-[13px] text-[#98989D] mt-0.5 leading-snug">
+                      {action.description}
+                    </p>
+                    {!action.completed && action.knowledgeBoost && (
+                      <div
+                        className="mt-2 inline-flex items-center gap-1 text-[12px] px-2.5 py-1 rounded-full"
+                        style={{
+                          fontWeight: 600,
+                          backgroundColor: sTheme.primary + '20',
+                          color: sTheme.primary,
+                        }}
+                      >
+                        <Star className="w-3 h-3" />
+                        +{action.knowledgeBoost}% к Ауре
+                      </div>
+                    )}
+                  </div>
+                </motion.button>
+              );
+            })}
+          </AnimatePresence>
+        </div>
+      )}
+      </div>
+    </motion.div>
+  );
+};

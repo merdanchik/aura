@@ -48,8 +48,11 @@ export const ServiceDetail = () => {
   }
 
   const sTheme = getServiceTheme(service.id);
-  const isPale = service.knowledgeScore < 50;
+  const allDone = service.actions.length > 0 && service.actions.every(a => a.completed);
+  const isPale = service.knowledgeScore < 50 && !allDone;
   const sTrust = service.trustScore ?? globalTrustScore;
+  const displayKnowledge = allDone ? 100 : service.knowledgeScore;
+  const displayTrust = allDone ? 100 : sTrust;
 
   const k = service.knowledgeScore;
   const t = service.trustScore ?? 0;
@@ -102,7 +105,7 @@ export const ServiceDetail = () => {
           </div>
           {/* Right: rings with icon in center */}
           <div className="flex-shrink-0 relative">
-            <AuraRings knowledge={service.knowledgeScore} trust={sTrust} size={100} />
+            <AuraRings knowledge={displayKnowledge} trust={displayTrust} size={100} />
             <div className="absolute inset-0 flex items-center justify-center">
               <img src={serviceIconMap[service.id]} alt={service.name} className="w-9 h-9 rounded-[10px] object-cover" />
             </div>

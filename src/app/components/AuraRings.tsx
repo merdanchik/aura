@@ -6,15 +6,16 @@ interface AuraRingsProps {
   trust: number;     // 0-100
   size?: number;
   className?: string;
+  singleRing?: boolean;
 }
 
-export const AuraRings: React.FC<AuraRingsProps> = ({ knowledge, trust, size = 200, className }) => {
+export const AuraRings: React.FC<AuraRingsProps> = ({ knowledge, trust, size = 200, className, singleRing = false }) => {
   const uid = useId().replace(/:/g, '');
   const center = size / 2;
-  const strokeWidth = size * 0.09;
+  const strokeWidth = singleRing ? size * 0.11 : size * 0.09;
   const gap = size * 0.025;
 
-  const outerR = center - strokeWidth / 2 - 4;
+  const outerR = singleRing ? center - strokeWidth / 2 - 4 : center - strokeWidth / 2 - 4;
   const innerR = outerR - strokeWidth - gap;
 
   const outerC = 2 * Math.PI * outerR;
@@ -102,31 +103,31 @@ export const AuraRings: React.FC<AuraRingsProps> = ({ knowledge, trust, size = 2
         />
 
         {/* ── INNER RING ── */}
-        {/* Track */}
-        <circle cx={center} cy={center} r={innerR}
+        {!singleRing && <circle cx={center} cy={center} r={innerR}
           fill="none" stroke={trustTrack} strokeWidth={strokeWidth}
           filter={`url(#track${uid})`}
-        />
+        />}
         {/* Main arc */}
-        <motion.circle
-          cx={center} cy={center} r={innerR}
-          fill="none" stroke={`url(#tg${uid})`}
-          strokeWidth={strokeWidth} strokeLinecap="round"
-          strokeDasharray={innerC}
-          variants={{ hidden: { strokeDashoffset: innerC }, visible: { strokeDashoffset: innerC - innerDash } }}
-          transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-          transform={`rotate(-90 ${center} ${center})`}
-        />
-        {/* Tube highlight stripe */}
-        <motion.circle
-          cx={center} cy={center} r={innerR}
-          fill="none" stroke="white" strokeOpacity={0.18}
-          strokeWidth={hlSW} strokeLinecap="round"
-          strokeDasharray={innerC}
-          variants={{ hidden: { strokeDashoffset: innerC }, visible: { strokeDashoffset: innerC - innerDash } }}
-          transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-          transform={`rotate(-90 ${center} ${center})`}
-        />
+        {!singleRing && <>
+          <motion.circle
+            cx={center} cy={center} r={innerR}
+            fill="none" stroke={`url(#tg${uid})`}
+            strokeWidth={strokeWidth} strokeLinecap="round"
+            strokeDasharray={innerC}
+            variants={{ hidden: { strokeDashoffset: innerC }, visible: { strokeDashoffset: innerC - innerDash } }}
+            transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+            transform={`rotate(-90 ${center} ${center})`}
+          />
+          <motion.circle
+            cx={center} cy={center} r={innerR}
+            fill="none" stroke="white" strokeOpacity={0.18}
+            strokeWidth={hlSW} strokeLinecap="round"
+            strokeDasharray={innerC}
+            variants={{ hidden: { strokeDashoffset: innerC }, visible: { strokeDashoffset: innerC - innerDash } }}
+            transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+            transform={`rotate(-90 ${center} ${center})`}
+          />
+        </>}
       </svg>
     </motion.div>
   );

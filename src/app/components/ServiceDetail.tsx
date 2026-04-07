@@ -105,7 +105,7 @@ export const ServiceDetail = () => {
           </div>
           {/* Right: rings with icon in center */}
           <div className="flex-shrink-0 relative">
-            <AuraRings knowledge={displayKnowledge} trust={displayTrust} size={100} />
+            <AuraRings knowledge={displayKnowledge} trust={displayTrust} size={100} singleRing={service.trustScore === null} />
             <div className="absolute inset-0 flex items-center justify-center">
               <img src={serviceIconMap[service.id]} alt={service.name} className="w-9 h-9 rounded-[10px] object-cover" />
             </div>

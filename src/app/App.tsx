@@ -135,7 +135,7 @@ const router = createBrowserRouter([
       { path: "service/:id", Component: ServiceDetail },
     ],
   },
-]);
+], { basename: import.meta.env.BASE_URL });
 
 export default function App() {
   return (

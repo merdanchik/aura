@@ -22,7 +22,8 @@ const ShellInner = () => {
   const [alertDismissed, setAlertDismissed] = React.useState(false);
 
   const isRoot = location.pathname === '/';
-  const isTrustCritical = globalTrustScore < 50;
+  const splitTrust = services['split' as ServiceId]?.trustScore ?? 100;
+  const isTrustCritical = splitTrust < 50;
 
   // Extract service name from path
   const serviceMatch = location.pathname.match(/^\/service\/(.+)$/);
@@ -92,7 +93,7 @@ const ShellInner = () => {
                   </p>
                   <div className="mt-3 flex gap-2">
                     <button
-                      onClick={() => triggerEvent('recovery')}
+                      onClick={() => { triggerEvent('recovery'); setAlertDismissed(true); }}
                       className="flex-1 text-white text-[15px] py-2.5 rounded-xl active:opacity-70 transition-all"
                       style={{ fontWeight: 600, backgroundColor: theme.primary }}
                     >

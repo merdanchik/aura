@@ -151,16 +151,18 @@ export const ServiceDetail = () => {
                     <p className="text-[13px] text-[#98989D] mt-0.5 leading-snug">
                       {action.description}
                     </p>
-                    {!action.completed && action.knowledgeBoost && (
-                      <div
-                        className="mt-2 inline-flex items-center text-[12px] px-2.5 py-1 rounded-full"
-                        style={{
-                          fontWeight: 600,
-                          backgroundColor: sTheme.primary + '20',
-                          color: sTheme.primary,
-                        }}
-                      >
-                        +{action.knowledgeBoost}% к Ауре
+                    {!action.completed && (
+                      <div className="mt-2 flex flex-wrap gap-1.5">
+                        {action.knowledgeBoost && (
+                          <div className="inline-flex items-center text-[12px] px-2.5 py-1 rounded-full" style={{ fontWeight: 600, backgroundColor: sTheme.primary + '20', color: sTheme.primary }}>
+                            +{action.knowledgeBoost}% к знанию
+                          </div>
+                        )}
+                        {action.trustBoost && (
+                          <div className="inline-flex items-center text-[12px] px-2.5 py-1 rounded-full" style={{ fontWeight: 600, backgroundColor: 'rgba(48,209,88,0.15)', color: '#30D158' }}>
+                            +{action.trustBoost}% к доверию
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>

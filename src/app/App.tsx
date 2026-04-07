@@ -34,19 +34,19 @@ const ShellInner = () => {
       style={{ backgroundColor: '#000000', fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif" }}
     >
       <header className="w-full max-w-md mx-auto sticky top-0 z-50 backdrop-blur-2xl" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }}>
-        <div className="h-12 flex items-center px-4 relative">
+        <div className="h-16 flex items-end pb-2 px-4 relative">
           {isRoot && (
-            <span className="text-[17px] text-white" style={{ fontWeight: 700 }}>Аура</span>
+            <span className="text-[28px] text-white leading-tight" style={{ fontWeight: 700 }}>Аура</span>
           )}
           {!isRoot && (
             <button
               onClick={() => navigate(-1)}
-              className="flex items-center gap-1 active:opacity-50 transition-opacity -ml-1"
+              className="flex items-center gap-1 active:opacity-50 transition-opacity -ml-1.5"
               style={{ color: theme.primary }}
             >
-              <ChevronLeft className="w-6 h-6" strokeWidth={2.5} />
+              <ChevronLeft className="w-7 h-7" strokeWidth={2.5} />
               {serviceName && (
-                <span className="text-[17px] text-white" style={{ fontWeight: 600 }}>
+                <span className="text-[22px] text-white leading-tight" style={{ fontWeight: 700 }}>
                   {serviceName}
                 </span>
               )}

@@ -47,7 +47,7 @@ export const ServiceDetail = () => {
       className="pb-10"
     >
       {/* Header — sticky, Apple Fitness compact style */}
-      <div className="sticky top-[49px] z-40 px-4 pt-2 pb-2">
+      <div className="sticky top-[65px] z-40 px-4 pt-2 pb-2">
       <div className="rounded-2xl p-4 relative overflow-hidden backdrop-blur-xl" style={{ backgroundColor: 'rgba(28,28,30,0.75)' }}>
         {/* subtle glow */}
         <div className="absolute inset-0 pointer-events-none" style={{

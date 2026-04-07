@@ -35,23 +35,22 @@ const ShellInner = () => {
     >
       <header className="w-full max-w-md mx-auto sticky top-0 z-50 backdrop-blur-2xl" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }}>
         <div className="h-12 flex items-center px-4 relative">
-          {!isRoot && (
-            <button
-              onClick={() => navigate(-1)}
-              className="flex items-center gap-0.5 active:opacity-50 transition-opacity -ml-1"
-              style={{ color: theme.primary }}
-            >
-              <ChevronLeft className="w-5 h-5" strokeWidth={2.5} />
-              <span className="text-[17px]">Назад</span>
-            </button>
-          )}
           {isRoot && (
             <span className="text-[17px] text-white" style={{ fontWeight: 700 }}>Аура</span>
           )}
-          {serviceName && (
-            <span className="absolute left-1/2 -translate-x-1/2 text-[17px] text-white" style={{ fontWeight: 600 }}>
-              {serviceName}
-            </span>
+          {!isRoot && (
+            <button
+              onClick={() => navigate(-1)}
+              className="flex items-center gap-1 active:opacity-50 transition-opacity -ml-1"
+              style={{ color: theme.primary }}
+            >
+              <ChevronLeft className="w-6 h-6" strokeWidth={2.5} />
+              {serviceName && (
+                <span className="text-[17px] text-white" style={{ fontWeight: 600 }}>
+                  {serviceName}
+                </span>
+              )}
+            </button>
           )}
           <img
             src={avatarImg}

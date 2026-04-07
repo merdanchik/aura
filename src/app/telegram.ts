@@ -11,7 +11,7 @@ export function initTelegram() {
   tg.expand();
   // Go truly fullscreen — removes URL bar (Bot API 8.0+)
   if ('requestFullscreen' in tg) {
-    (tg as any).requestFullscreen();
+    try { (tg as any).requestFullscreen(); } catch {}
   }
   // Prevent swipe-down-to-close when scrolling up (Bot API 7.7+)
   if ('disableVerticalSwipes' in tg) {

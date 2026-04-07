@@ -127,17 +127,6 @@
   display: none;
 }
 
-/* Prevent Telegram Mini App from closing on overscroll */
-html, body {
-  overscroll-behavior: none;
-  overscroll-behavior-y: none;
-}
-
-/* Safe area support for Telegram Mini App and notched phones */
-:root {
-  --safe-top: env(safe-area-inset-top, 0px);
-  --safe-bottom: env(safe-area-inset-bottom, 0px);
-}
 
 @layer base {
   * {

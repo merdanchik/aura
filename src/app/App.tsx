@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { RouterProvider, createBrowserRouter, Outlet, useNavigate, useLocation } from 'react-router';
 import { AuraProvider } from './context/AuraContext';
 import { Dashboard } from './components/Dashboard';
@@ -7,8 +7,6 @@ import { ChevronLeft } from 'lucide-react';
 import { useAura, ServiceId } from './context/AuraContext';
 import { motion, AnimatePresence } from 'motion/react';
 import avatarImg from "figma:asset/af996051af75ea73ec3b5d8dc322885e71d341d8.png";
-import { tg, setBackButton } from './telegram';
-
 const Shell = () => {
   return (
     <AuraProvider>
@@ -25,26 +23,19 @@ const ShellInner = () => {
 
   const isRoot = location.pathname === '/';
   const isTrustCritical = globalTrustScore < 50;
-  const inTelegram = !!tg;
 
   // Extract service name from path
   const serviceMatch = location.pathname.match(/^\/service\/(.+)$/);
   const serviceName = serviceMatch ? services[serviceMatch[1] as ServiceId]?.name : null;
-
-  // Sync Telegram BackButton with route
-  useEffect(() => {
-    setBackButton(!isRoot, () => navigate(-1));
-  }, [isRoot, navigate]);
 
   return (
     <div
       className="min-h-screen flex flex-col items-center"
       style={{ backgroundColor: '#000000', fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif" }}
     >
-      {/* iOS-style navbar — hidden in Telegram (uses native BackButton) */}
-      <header className="w-full max-w-md mx-auto sticky top-0 z-50 backdrop-blur-2xl" style={{ backgroundColor: 'rgba(0,0,0,0.6)', paddingTop: 'env(safe-area-inset-top, 0px)' }}>
+      <header className="w-full max-w-md mx-auto sticky top-0 z-50 backdrop-blur-2xl" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }}>
         <div className="h-12 flex items-center px-4 relative">
-          {!isRoot && !inTelegram && (
+          {!isRoot && (
             <button
               onClick={() => navigate(-1)}
               className="flex items-center gap-0.5 active:opacity-50 transition-opacity -ml-1"
@@ -58,7 +49,7 @@ const ShellInner = () => {
             <span className="text-[17px] text-white" style={{ fontWeight: 700 }}>Аура</span>
           )}
           {serviceName && (
-            <span className={`${inTelegram ? 'ml-0' : 'absolute left-1/2 -translate-x-1/2'} text-[17px] text-white`} style={{ fontWeight: 600 }}>
+            <span className="absolute left-1/2 -translate-x-1/2 text-[17px] text-white" style={{ fontWeight: 600 }}>
               {serviceName}
             </span>
           )}

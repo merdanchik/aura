@@ -290,13 +290,21 @@ const AuraContext = createContext<AuraContextType | undefined>(undefined);
 export const AuraProvider = ({ children }: { children: ReactNode }) => {
   const [services, setServices] = useState<Record<ServiceId, ServiceData>>(initialServices);
   
-  const trustServices = Object.values(services).filter(s => s.trustScore !== null);
-  const globalTrustScore = trustServices.length > 0
-    ? trustServices.reduce((acc, s) => acc + (s.trustScore || 0), 0) / trustServices.length
-    : 0;
+  const effectiveScore = (s: ServiceData) => {
+    const allDone = s.actions.length > 0 && s.actions.every(a => a.completed);
+    return {
+      knowledge: allDone ? 100 : s.knowledgeScore,
+      trust: allDone ? 100 : (s.trustScore ?? null),
+    };
+  };
 
   const allServices = Object.values(services);
-  const globalKnowledgeScore = allServices.reduce((acc, s) => acc + s.knowledgeScore, 0) / allServices.length;
+  const trustServices = allServices.filter(s => s.trustScore !== null);
+  const globalTrustScore = trustServices.length > 0
+    ? trustServices.reduce((acc, s) => acc + (effectiveScore(s).trust ?? 0), 0) / trustServices.length
+    : 0;
+
+  const globalKnowledgeScore = allServices.reduce((acc, s) => acc + effectiveScore(s).knowledge, 0) / allServices.length;
 
   const overallScore = (globalKnowledgeScore + globalTrustScore) / 2;
 

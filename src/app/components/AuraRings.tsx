@@ -100,16 +100,6 @@ export const AuraRings: React.FC<AuraRingsProps> = ({ knowledge, trust, size = 2
           transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
           transform={`rotate(-90 ${center} ${center})`}
         />
-        {/* End glow cap */}
-        {knowledge > 3 && (
-          <motion.circle
-            cx={outerCapX} cy={outerCapY} r={capR}
-            fill="#BF5AF2"
-            filter={`url(#glow${uid})`}
-            variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
-            transition={{ duration: 0.5, delay: 1.3 }}
-          />
-        )}
 
         {/* ── INNER RING ── */}
         {/* Track */}
@@ -137,16 +127,6 @@ export const AuraRings: React.FC<AuraRingsProps> = ({ knowledge, trust, size = 2
           transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
           transform={`rotate(-90 ${center} ${center})`}
         />
-        {/* End glow cap */}
-        {trust > 3 && (
-          <motion.circle
-            cx={innerCapX} cy={innerCapY} r={capR}
-            fill={trustEnd}
-            filter={`url(#glow${uid})`}
-            variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
-            transition={{ duration: 0.5, delay: 1.45 }}
-          />
-        )}
       </svg>
     </motion.div>
   );

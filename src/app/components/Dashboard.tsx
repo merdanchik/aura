@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAura } from '../context/AuraContext';
 import { AuraRings, AuraRingsMini } from './AuraRings';
 import { useNavigate } from 'react-router';
-import { ChevronRight, ChevronDown } from 'lucide-react';
+import { ChevronRight, ChevronDown, Zap } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 // Service icons

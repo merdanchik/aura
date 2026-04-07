@@ -110,9 +110,10 @@ export const Dashboard = () => {
             .filter(s => servicesExpanded || PRIMARY_SERVICES.includes(s.id))
             .map((service, idx, arr) => {
               const isLast = idx === arr.length - 1 && servicesExpanded;
-              const k = service.knowledgeScore;
-              const t = service.trustScore ?? 0;
-              const sTrust = service.trustScore ?? globalTrustScore;
+              const allDone = service.actions.length > 0 && service.actions.every(a => a.completed);
+              const k = allDone ? 100 : service.knowledgeScore;
+              const t = allDone ? 100 : (service.trustScore ?? 0);
+              const sTrust = allDone ? 100 : (service.trustScore ?? globalTrustScore);
               const combined = service.trustScore !== null ? (k + t) / 2 : k;
 
               let label = 'новая';

@@ -24,8 +24,19 @@ export const AuraRings: React.FC<AuraRingsProps> = ({ knowledge, trust, size = 2
   const innerDash = (trust / 100) * innerC;
 
   const trustColor = trust < 40 ? '#FF3B30' : trust < 70 ? '#FF9500' : '#30D158';
-  const trustEnd = trust < 40 ? '#FF6961' : trust < 70 ? '#FFCC00' : '#4ADE80';
-  const trustTrack = trust < 40 ? '#FF3B3025' : trust < 70 ? '#FF950025' : '#30D15825';
+  const trustEnd   = trust < 40 ? '#FF6961' : trust < 70 ? '#FFCC00' : '#4ADE80';
+  const trustTrack = trust < 40 ? '#FF3B3018' : trust < 70 ? '#FF950018' : '#30D15818';
+
+  // End-cap positions (angle in radians, starting from top = -90°)
+  const outerAngle = ((knowledge / 100) * 360 - 90) * (Math.PI / 180);
+  const innerAngle = ((trust / 100) * 360 - 90) * (Math.PI / 180);
+  const outerCapX = center + outerR * Math.cos(outerAngle);
+  const outerCapY = center + outerR * Math.sin(outerAngle);
+  const innerCapX = center + innerR * Math.cos(innerAngle);
+  const innerCapY = center + innerR * Math.sin(innerAngle);
+
+  const capR = strokeWidth / 2 - 1;
+  const hlSW = strokeWidth * 0.32; // highlight stripe width
 
   return (
     <motion.div
@@ -36,59 +47,8 @@ export const AuraRings: React.FC<AuraRingsProps> = ({ knowledge, trust, size = 2
       viewport={{ once: true, amount: 0.5 }}
     >
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-        {/* Outer track */}
-        <circle cx={center} cy={center} r={outerR} fill="none" stroke="#5E5CE625" strokeWidth={strokeWidth} strokeLinecap="round" />
-        {/* Outer ring */}
-        <motion.circle
-          cx={center} cy={center} r={outerR}
-          fill="none"
-          stroke={`url(#kg${uid})`}
-          strokeWidth={strokeWidth}
-          strokeLinecap="round"
-          strokeDasharray={outerC}
-          variants={{
-            hidden: { strokeDashoffset: outerC },
-            visible: { strokeDashoffset: outerC - outerDash },
-          }}
-          transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
-          transform={`rotate(-90 ${center} ${center})`}
-        />
-
-        {/* Inner track */}
-        <circle cx={center} cy={center} r={innerR} fill="none" stroke={trustTrack} strokeWidth={strokeWidth} strokeLinecap="round" />
-        {/* Inner ring */}
-        <motion.circle
-          cx={center} cy={center} r={innerR}
-          fill="none"
-          stroke={`url(#tg${uid})`}
-          strokeWidth={strokeWidth}
-          strokeLinecap="round"
-          strokeDasharray={innerC}
-          variants={{
-            hidden: { strokeDashoffset: innerC },
-            visible: { strokeDashoffset: innerC - innerDash },
-          }}
-          transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-          transform={`rotate(-90 ${center} ${center})`}
-        />
-
-        {/* Glow caps — small bright circles at the end of each arc */}
-        {knowledge > 5 && (
-          <motion.circle
-            r={strokeWidth / 2 - 1}
-            fill={`url(#kg${uid})`}
-            filter={`url(#glow${uid})`}
-            variants={{
-              hidden: { opacity: 0 },
-              visible: { opacity: 0.6 },
-            }}
-            transition={{ duration: 0.4, delay: 1.2 }}
-            cx={center + outerR * Math.cos(((knowledge / 100) * 360 - 90) * (Math.PI / 180))}
-            cy={center + outerR * Math.sin(((knowledge / 100) * 360 - 90) * (Math.PI / 180))}
-          />
-        )}
-
         <defs>
+          {/* Arc gradients */}
           <linearGradient id={`kg${uid}`} x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stopColor="#5E5CE6" />
             <stop offset="100%" stopColor="#BF5AF2" />
@@ -97,14 +57,96 @@ export const AuraRings: React.FC<AuraRingsProps> = ({ knowledge, trust, size = 2
             <stop offset="0%" stopColor={trustColor} />
             <stop offset="100%" stopColor={trustEnd} />
           </linearGradient>
-          <filter id={`glow${uid}`}>
-            <feGaussianBlur stdDeviation="3" result="blur" />
+
+          {/* Glow filter for end caps */}
+          <filter id={`glow${uid}`} x="-80%" y="-80%" width="260%" height="260%">
+            <feGaussianBlur stdDeviation={strokeWidth * 0.28} result="blur" />
             <feMerge>
+              <feMergeNode in="blur" />
               <feMergeNode in="blur" />
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
+
+          {/* Subtle inner-shadow for tracks */}
+          <filter id={`track${uid}`}>
+            <feDropShadow dx="0" dy="0" stdDeviation="1.5" floodColor="#000" floodOpacity="0.6" />
+          </filter>
         </defs>
+
+        {/* ── OUTER RING ── */}
+        {/* Track */}
+        <circle cx={center} cy={center} r={outerR}
+          fill="none" stroke="#5E5CE620" strokeWidth={strokeWidth}
+          filter={`url(#track${uid})`}
+        />
+        {/* Main arc */}
+        <motion.circle
+          cx={center} cy={center} r={outerR}
+          fill="none" stroke={`url(#kg${uid})`}
+          strokeWidth={strokeWidth} strokeLinecap="round"
+          strokeDasharray={outerC}
+          variants={{ hidden: { strokeDashoffset: outerC }, visible: { strokeDashoffset: outerC - outerDash } }}
+          transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
+          transform={`rotate(-90 ${center} ${center})`}
+        />
+        {/* Tube highlight stripe */}
+        <motion.circle
+          cx={center} cy={center} r={outerR}
+          fill="none" stroke="white" strokeOpacity={0.18}
+          strokeWidth={hlSW} strokeLinecap="round"
+          strokeDasharray={outerC}
+          variants={{ hidden: { strokeDashoffset: outerC }, visible: { strokeDashoffset: outerC - outerDash } }}
+          transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
+          transform={`rotate(-90 ${center} ${center})`}
+        />
+        {/* End glow cap */}
+        {knowledge > 3 && (
+          <motion.circle
+            cx={outerCapX} cy={outerCapY} r={capR}
+            fill="#BF5AF2"
+            filter={`url(#glow${uid})`}
+            variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+            transition={{ duration: 0.5, delay: 1.3 }}
+          />
+        )}
+
+        {/* ── INNER RING ── */}
+        {/* Track */}
+        <circle cx={center} cy={center} r={innerR}
+          fill="none" stroke={trustTrack} strokeWidth={strokeWidth}
+          filter={`url(#track${uid})`}
+        />
+        {/* Main arc */}
+        <motion.circle
+          cx={center} cy={center} r={innerR}
+          fill="none" stroke={`url(#tg${uid})`}
+          strokeWidth={strokeWidth} strokeLinecap="round"
+          strokeDasharray={innerC}
+          variants={{ hidden: { strokeDashoffset: innerC }, visible: { strokeDashoffset: innerC - innerDash } }}
+          transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+          transform={`rotate(-90 ${center} ${center})`}
+        />
+        {/* Tube highlight stripe */}
+        <motion.circle
+          cx={center} cy={center} r={innerR}
+          fill="none" stroke="white" strokeOpacity={0.18}
+          strokeWidth={hlSW} strokeLinecap="round"
+          strokeDasharray={innerC}
+          variants={{ hidden: { strokeDashoffset: innerC }, visible: { strokeDashoffset: innerC - innerDash } }}
+          transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+          transform={`rotate(-90 ${center} ${center})`}
+        />
+        {/* End glow cap */}
+        {trust > 3 && (
+          <motion.circle
+            cx={innerCapX} cy={innerCapY} r={capR}
+            fill={trustEnd}
+            filter={`url(#glow${uid})`}
+            variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+            transition={{ duration: 0.5, delay: 1.45 }}
+          />
+        )}
       </svg>
     </motion.div>
   );
@@ -133,10 +175,28 @@ export const AuraRingsMini: React.FC<AuraRingsProps> = ({ knowledge, trust, size
         strokeDashoffset={outerC - (knowledge / 100) * outerC}
         transform={`rotate(-90 ${center} ${center})`}
       />
+      {/* highlight */}
+      <circle
+        cx={center} cy={center} r={outerR}
+        fill="none" stroke="white" strokeOpacity={0.15} strokeWidth={sw * 0.35}
+        strokeLinecap="round"
+        strokeDasharray={outerC}
+        strokeDashoffset={outerC - (knowledge / 100) * outerC}
+        transform={`rotate(-90 ${center} ${center})`}
+      />
       <circle cx={center} cy={center} r={innerR} fill="none" stroke={`${trustColor}20`} strokeWidth={sw} />
       <circle
         cx={center} cy={center} r={innerR}
         fill="none" stroke={trustColor} strokeWidth={sw}
+        strokeLinecap="round"
+        strokeDasharray={innerC}
+        strokeDashoffset={innerC - (trust / 100) * innerC}
+        transform={`rotate(-90 ${center} ${center})`}
+      />
+      {/* highlight */}
+      <circle
+        cx={center} cy={center} r={innerR}
+        fill="none" stroke="white" strokeOpacity={0.15} strokeWidth={sw * 0.35}
         strokeLinecap="round"
         strokeDasharray={innerC}
         strokeDashoffset={innerC - (trust / 100) * innerC}
@@ -149,13 +209,11 @@ export const AuraRingsMini: React.FC<AuraRingsProps> = ({ knowledge, trust, size
 /** Weekly rings strip — 7 days like Apple Fitness */
 const DAYS = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
-// Generate pseudo-historical data per day based on current scores
 function weekData(knowledge: number, trust: number) {
-  const today = new Date().getDay(); // 0=Sun .. 6=Sat
-  const todayIdx = today === 0 ? 6 : today - 1; // Mon=0
+  const today = new Date().getDay();
+  const todayIdx = today === 0 ? 6 : today - 1;
   return DAYS.map((d, i) => {
     if (i > todayIdx) return { day: d, k: 0, t: 0, future: true };
-    // slight daily variation
     const seed = (i * 17 + 3) % 13;
     const kVar = Math.max(5, Math.min(100, knowledge + (seed - 6) * 3));
     const tVar = Math.max(5, Math.min(100, trust + ((seed * 3 + 7) % 13 - 6) * 3));

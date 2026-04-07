@@ -134,9 +134,9 @@ export const AuraRings: React.FC<AuraRingsProps> = ({ knowledge, trust, size = 2
 };
 
 /** Small inline ring for list items */
-export const AuraRingsMini: React.FC<AuraRingsProps> = ({ knowledge, trust, size = 36, className }) => {
+export const AuraRingsMini: React.FC<AuraRingsProps> = ({ knowledge, trust, size = 36, className, singleRing = false }) => {
   const center = size / 2;
-  const sw = 3.5;
+  const sw = singleRing ? 4.5 : 3.5;
   const gap = 1.5;
   const outerR = center - sw / 2 - 1;
   const innerR = outerR - sw - gap;
@@ -156,7 +156,6 @@ export const AuraRingsMini: React.FC<AuraRingsProps> = ({ knowledge, trust, size
         strokeDashoffset={outerC - (knowledge / 100) * outerC}
         transform={`rotate(-90 ${center} ${center})`}
       />
-      {/* highlight */}
       <circle
         cx={center} cy={center} r={outerR}
         fill="none" stroke="white" strokeOpacity={0.15} strokeWidth={sw * 0.35}
@@ -165,24 +164,26 @@ export const AuraRingsMini: React.FC<AuraRingsProps> = ({ knowledge, trust, size
         strokeDashoffset={outerC - (knowledge / 100) * outerC}
         transform={`rotate(-90 ${center} ${center})`}
       />
-      <circle cx={center} cy={center} r={innerR} fill="none" stroke={`${trustColor}20`} strokeWidth={sw} />
-      <circle
-        cx={center} cy={center} r={innerR}
-        fill="none" stroke={trustColor} strokeWidth={sw}
-        strokeLinecap="round"
-        strokeDasharray={innerC}
-        strokeDashoffset={innerC - (trust / 100) * innerC}
-        transform={`rotate(-90 ${center} ${center})`}
-      />
+      {!singleRing && <>
+        <circle cx={center} cy={center} r={innerR} fill="none" stroke={`${trustColor}20`} strokeWidth={sw} />
+        <circle
+          cx={center} cy={center} r={innerR}
+          fill="none" stroke={trustColor} strokeWidth={sw}
+          strokeLinecap="round"
+          strokeDasharray={innerC}
+          strokeDashoffset={innerC - (trust / 100) * innerC}
+          transform={`rotate(-90 ${center} ${center})`}
+        />
       {/* highlight */}
-      <circle
-        cx={center} cy={center} r={innerR}
-        fill="none" stroke="white" strokeOpacity={0.15} strokeWidth={sw * 0.35}
-        strokeLinecap="round"
-        strokeDasharray={innerC}
-        strokeDashoffset={innerC - (trust / 100) * innerC}
-        transform={`rotate(-90 ${center} ${center})`}
-      />
+        <circle
+          cx={center} cy={center} r={innerR}
+          fill="none" stroke="white" strokeOpacity={0.15} strokeWidth={sw * 0.35}
+          strokeLinecap="round"
+          strokeDasharray={innerC}
+          strokeDashoffset={innerC - (trust / 100) * innerC}
+          transform={`rotate(-90 ${center} ${center})`}
+        />
+      </>}
     </svg>
   );
 };

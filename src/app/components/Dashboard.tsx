@@ -142,7 +142,7 @@ export const Dashboard = () => {
                       <p className="text-[17px] text-white truncate" style={{ fontWeight: 500 }}>{service.name}</p>
                       <p className="text-[13px] mt-0.5" style={{ color: labelColor, fontWeight: 500 }}>{label}</p>
                     </div>
-                    <AuraRingsMini knowledge={k} trust={sTrust} size={38} className="flex-shrink-0" />
+                    <AuraRingsMini knowledge={k} trust={sTrust} size={38} className="flex-shrink-0" singleRing={service.trustScore === null} />
                     <ChevronRight className="w-4 h-4 text-[#48484A] flex-shrink-0" />
                   </div>
                 </motion.button>

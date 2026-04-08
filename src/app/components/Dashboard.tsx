@@ -617,10 +617,10 @@ export const Dashboard = () => {
               className="flex-shrink-0 w-[155px] h-[200px] rounded-2xl flex flex-col justify-between p-4 active:opacity-70 transition-opacity items-center text-center"
               style={{ backgroundColor: mem.bg, boxShadow: mem.shadow, cursor: 'pointer' }}
             >
-              <p className="text-[11px] text-white/60 font-semibold tracking-widest uppercase">
+              <p className="text-[11px] text-white/60 font-semibold tracking-widest uppercase w-full">
                 {mem.label}
               </p>
-              <div>
+              <div className="flex flex-col items-center justify-center flex-1">
                 <p className="text-[15px] text-white leading-tight" style={{ fontWeight: 700 }}>{mem.title}</p>
                 <p className="text-[12px] text-white/50 mt-1">{mem.date}</p>
               </div>

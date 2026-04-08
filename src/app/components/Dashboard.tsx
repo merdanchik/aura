@@ -442,12 +442,13 @@ export const Dashboard = () => {
         <HeartAura overallScore={overallScore} globalTrustScore={globalTrustScore} size={429} />
       </motion.div>
 
-      {/* Rings + Scores — no background, just flex row */}
+      {/* Rings + Scores — golden-ratio spacing, nudged left */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="flex items-center justify-center gap-4 px-1 mb-4"
+        className="flex items-center justify-center gap-7 px-1 mb-4"
+        style={{ transform: 'translateX(-10px)' }}
       >
         {/* Rings */}
         <div className="relative flex-shrink-0">
@@ -461,14 +462,14 @@ export const Dashboard = () => {
         {/* Scores */}
         <div className="flex gap-4">
           <div>
-            <p className="text-[10px] text-[#98989D]" style={{ fontWeight: 500 }}>Знания</p>
-            <p className="text-[18px]" style={{ fontWeight: 700, color: '#BF5AF2', lineHeight: 1.2 }}>
+            <p className="text-[11px] text-[#98989D]" style={{ fontWeight: 500 }}>Знания</p>
+            <p className="text-[24px]" style={{ fontWeight: 700, color: '#BF5AF2', lineHeight: 1.15 }}>
               {Math.round(globalKnowledgeScore)}/100
             </p>
           </div>
           <div>
-            <p className="text-[10px] text-[#98989D]" style={{ fontWeight: 500 }}>Доверие</p>
-            <p className="text-[18px]" style={{ fontWeight: 700, color: globalTrustScore < 40 ? '#FF3B30' : globalTrustScore < 70 ? '#FF9500' : '#30D158', lineHeight: 1.2 }}>
+            <p className="text-[11px] text-[#98989D]" style={{ fontWeight: 500 }}>Доверие</p>
+            <p className="text-[24px]" style={{ fontWeight: 700, color: globalTrustScore < 40 ? '#FF3B30' : globalTrustScore < 70 ? '#FF9500' : '#30D158', lineHeight: 1.15 }}>
               {Math.round(globalTrustScore)}/100
             </p>
           </div>

@@ -6,7 +6,7 @@ import { ServiceDetail } from './components/ServiceDetail';
 import { ChevronLeft } from 'lucide-react';
 import { useAura, ServiceId } from './context/AuraContext';
 import { motion, AnimatePresence } from 'motion/react';
-import avatarImg from "figma:asset/af996051af75ea73ec3b5d8dc322885e71d341d8.png";
+import avatarImg from "../assets/avatar.jpg";
 const Shell = () => {
   return (
     <AuraProvider>

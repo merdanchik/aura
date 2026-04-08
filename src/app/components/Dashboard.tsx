@@ -115,7 +115,7 @@ const FriendsTab = () => {
               <Switch
                 checked={toggles[key]}
                 onCheckedChange={() => toggle(key)}
-                className="data-[state=checked]:bg-[#30D158] h-[28px] w-[50px]"
+                className="h-[31px] w-[51px] data-[state=checked]:bg-[#34C759] data-[state=unchecked]:bg-[#3A3A3C] border-0 [&>[data-slot=switch-thumb]]:size-[27px] [&>[data-slot=switch-thumb]]:data-[state=checked]:translate-x-[22px] [&>[data-slot=switch-thumb]]:shadow-[0_2px_6px_rgba(0,0,0,0.4)]"
               />
             </div>
           ))}

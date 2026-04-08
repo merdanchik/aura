@@ -3,3 +3,4 @@ dist/
 .env.deploy
 .DS_Store
 .netlify/
+CLAUDE.md

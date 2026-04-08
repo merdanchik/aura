@@ -3,6 +3,7 @@ import { RouterProvider, createBrowserRouter, Outlet, useNavigate, useLocation }
 import { AuraProvider } from './context/AuraContext';
 import { Dashboard } from './components/Dashboard';
 import { ServiceDetail } from './components/ServiceDetail';
+import { ChatScreen } from './components/ChatScreen';
 import { ChevronLeft } from 'lucide-react';
 import { useAura, ServiceId } from './context/AuraContext';
 import { motion, AnimatePresence } from 'motion/react';
@@ -28,7 +29,7 @@ const ShellInner = () => {
   const isTrustCritical = splitTrust < 50;
 
   // Extract service name from path
-  const serviceMatch = location.pathname.match(/^\/service\/(.+)$/);
+  const serviceMatch = location.pathname.match(/^\/service\/([^/]+)/);
   const serviceName = serviceMatch ? services[serviceMatch[1] as ServiceId]?.name : null;
 
   return (
@@ -161,6 +162,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, Component: Dashboard },
       { path: "service/:id", Component: ServiceDetail },
+      { path: "service/:id/chat/:actionId", Component: ChatScreen },
     ],
   },
 ], { basename: import.meta.env.BASE_URL });

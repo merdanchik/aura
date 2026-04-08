@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router';
+import { useParams, useNavigate } from 'react-router';
 import { ServiceId, useAura } from '../context/AuraContext';
 import { AuraRings } from './AuraRings';
 import { motion, AnimatePresence } from 'motion/react';
@@ -33,7 +33,8 @@ const serviceIconMap: Record<string, string> = {
 
 export const ServiceDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const { services, performAction, undoAction, getServiceTheme, globalTrustScore } = useAura();
+  const navigate = useNavigate();
+  const { services, undoAction, getServiceTheme, globalTrustScore } = useAura();
 
   const service = services[id as ServiceId];
 
@@ -132,7 +133,7 @@ export const ServiceDetail = () => {
               return (
                 <motion.button
                   key={action.id}
-                  onClick={() => action.completed ? undoAction(service.id, action.id) : performAction(service.id, action.id)}
+                  onClick={() => action.completed ? undoAction(service.id, action.id) : navigate(`/service/${service.id}/chat/${action.id}`)}
                   className="w-full flex items-start gap-3.5 px-4 py-4 text-left transition-colors active:bg-white/[0.05]"
                 >
                   <div

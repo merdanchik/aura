@@ -555,78 +555,81 @@ export const Dashboard = () => {
         <p className="text-[13px] text-[#98989D] px-1 mb-3 tracking-widest font-semibold uppercase">
           Воспоминания
         </p>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="flex gap-3 overflow-x-auto -mx-4 px-4 scrollbar-hide pb-1">
           {[
             {
               title: 'Вечер с Кинопоиском',
               label: 'Кинопоиск',
               date: 'Сегодня',
               contextId: 'mem-kinopoisk',
-              cardBg: '#060100',
-              orbGrad: 'radial-gradient(circle at 46% 42%, rgba(245,100,18,1) 0%, rgba(190,50,5,0.72) 36%, rgba(110,22,0,0.28) 62%, transparent 80%)',
+              bg: '#1a0500',
+              blobs: [
+                { x: '20%', y: '20%', color: 'rgba(220,60,0,0.75)', size: '70%' },
+                { x: '60%', y: '50%', color: 'rgba(120,20,0,0.5)', size: '60%' },
+                { x: '10%', y: '70%', color: 'rgba(255,100,0,0.3)', size: '50%' },
+              ],
             },
             {
               title: 'Дождливые пятницы',
               label: 'Музыка',
               date: 'Октябрь 2024',
               contextId: 'mem-music',
-              cardBg: 'linear-gradient(155deg, #183828 0%, #0c2018 55%, #040c08 100%)',
-              isDotCard: true,
-              orbGrad: 'radial-gradient(circle at 50% 44%, rgba(55,210,100,0.65) 0%, rgba(18,150,60,0.38) 44%, transparent 68%)',
+              bg: '#001a0a',
+              blobs: [
+                { x: '50%', y: '15%', color: 'rgba(0,200,80,0.6)', size: '65%' },
+                { x: '10%', y: '50%', color: 'rgba(180,220,0,0.4)', size: '55%' },
+                { x: '60%', y: '65%', color: 'rgba(0,140,60,0.5)', size: '50%' },
+              ],
             },
             {
               title: 'Ночные сессии',
               label: 'Электроника',
               date: 'Ноябрь 2024',
               contextId: 'mem-electronic',
-              cardBg: 'linear-gradient(155deg, #1a0a38 0%, #0c0422 55%, #040010 100%)',
-              isDotCard: true,
-              orbGrad: 'radial-gradient(circle at 48% 42%, rgba(165,72,255,0.9) 0%, rgba(105,30,215,0.58) 36%, rgba(60,10,140,0.22) 62%, transparent 80%)',
+              bg: '#08001f',
+              blobs: [
+                { x: '30%', y: '25%', color: 'rgba(160,60,255,0.7)', size: '70%' },
+                { x: '65%', y: '55%', color: 'rgba(80,0,200,0.5)', size: '55%' },
+                { x: '15%', y: '65%', color: 'rgba(220,100,255,0.3)', size: '45%' },
+              ],
             },
             {
               title: 'Осенний марафон',
               label: 'Книги',
               date: 'Сентябрь 2024',
               contextId: 'mem-books',
-              cardBg: '#070300',
-              orbGrad: 'radial-gradient(circle at 46% 42%, rgba(225,162,18,1) 0%, rgba(170,95,0,0.72) 36%, rgba(100,48,0,0.28) 62%, transparent 80%)',
+              bg: '#1a0c00',
+              blobs: [
+                { x: '60%', y: '20%', color: 'rgba(255,140,0,0.65)', size: '65%' },
+                { x: '15%', y: '45%', color: 'rgba(200,80,0,0.5)', size: '55%' },
+                { x: '50%', y: '70%', color: 'rgba(255,200,0,0.3)', size: '45%' },
+              ],
             },
           ].map((mem, i) => (
             <div
               key={i}
               onClick={() => navigate(`/chat/${mem.contextId}`)}
-              className="rounded-[22px] relative overflow-hidden active:opacity-70 transition-opacity"
-              style={{ height: 194, cursor: 'pointer', background: mem.cardBg }}
+              className="flex-shrink-0 w-[155px] h-[200px] rounded-2xl flex flex-col justify-between p-4 relative overflow-hidden active:opacity-70 transition-opacity"
+              style={{ backgroundColor: mem.bg, cursor: 'pointer' }}
             >
-              {/* Dot texture */}
-              {mem.isDotCard && (
-                <div className="absolute inset-0 pointer-events-none" style={{
-                  backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.14) 1px, transparent 1px)',
-                  backgroundSize: '10px 10px',
-                }} />
-              )}
-
-              {/* Glowing orb */}
-              <div className="absolute pointer-events-none" style={{
-                top: '6%', left: '10%', right: '10%', height: '60%',
-                background: mem.orbGrad,
-                filter: 'blur(2px)',
-              }} />
-
-              {/* Bottom fade */}
-              <div className="absolute inset-0 pointer-events-none" style={{
-                background: 'linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.22) 42%, transparent 65%)',
-              }} />
-
-              {/* Content */}
-              <div className="absolute inset-0 z-10 flex flex-col justify-between p-4">
-                <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.48)', fontWeight: 600, letterSpacing: 1, textTransform: 'uppercase' }}>
-                  {mem.label}
-                </p>
-                <div>
-                  <p style={{ fontSize: 15, fontWeight: 600, color: 'white', lineHeight: 1.3 }}>{mem.title}</p>
-                  <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.42)', marginTop: 3 }}>{mem.date}</p>
-                </div>
+              {mem.blobs.map((blob, j) => (
+                <div
+                  key={j}
+                  className="absolute pointer-events-none"
+                  style={{
+                    left: blob.x, top: blob.y,
+                    width: blob.size, height: blob.size,
+                    background: `radial-gradient(circle, ${blob.color} 0%, transparent 68%)`,
+                    transform: 'translate(-50%, -50%)',
+                  }}
+                />
+              ))}
+              <p className="text-[11px] text-white/70 font-semibold tracking-widest uppercase relative z-10">
+                {mem.label}
+              </p>
+              <div className="relative z-10">
+                <p className="text-[15px] text-white leading-tight" style={{ fontWeight: 700 }}>{mem.title}</p>
+                <p className="text-[12px] text-white/50 mt-1">{mem.date}</p>
               </div>
             </div>
           ))}

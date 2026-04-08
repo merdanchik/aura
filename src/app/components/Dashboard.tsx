@@ -384,7 +384,7 @@ export const Dashboard = () => {
               alt="Аура"
               animate={{ scale, opacity, filter: `saturate(${saturate}) brightness(${brightness})` }}
               transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-              style={{ width: 220, height: 124, objectFit: 'contain' }}
+              style={{ width: 240, height: 220, objectFit: 'contain' }}
             />
           </motion.div>
         );

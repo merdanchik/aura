@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useMemo, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useMemo, useCallback, ReactNode } from 'react';
 
 export type ServiceId = 'music' | 'kinopoisk' | 'books' | 'market' | 'split' | 'taxi' | 'pay' | 'scooters' | 'food' | 'afisha' | 'travel';
 
@@ -294,7 +294,7 @@ export const AuraProvider = ({ children }: { children: ReactNode }) => {
   const [strongAura, setStrongAura] = useState(false);
   const [savedServices, setSavedServices] = useState<Record<ServiceId, ServiceData> | null>(null);
 
-  const toggleStrongAura = () => {
+  const toggleStrongAura = useCallback(() => {
     if (!strongAura) {
       setSavedServices(services);
       setServices(prev => {
@@ -314,8 +314,8 @@ export const AuraProvider = ({ children }: { children: ReactNode }) => {
       setSavedServices(null);
       setStrongAura(false);
     }
-  };
-  
+  }, [strongAura, savedServices, services]);
+
   const effectiveScore = (s: ServiceData) => {
     const allDone = s.actions.length > 0 && s.actions.every(a => a.completed);
     return {
@@ -336,15 +336,7 @@ export const AuraProvider = ({ children }: { children: ReactNode }) => {
 
   const theme = useMemo(() => computeTheme(overallScore, globalTrustScore), [overallScore, globalTrustScore]);
 
-  const getServiceTheme = (id: ServiceId): AuraTheme => {
-    const s = services[id];
-    const sScore = s.trustScore !== null
-      ? (s.knowledgeScore + s.trustScore) / 2
-      : s.knowledgeScore;
-    return computeTheme(sScore, s.trustScore);
-  };
-
-  const performAction = (serviceId: ServiceId, actionId: string) => {
+  const performAction = useCallback((serviceId: ServiceId, actionId: string) => {
     setServices(prev => {
       const srv = prev[serviceId];
       const actionIndex = srv.actions.findIndex(a => a.id === actionId);
@@ -364,9 +356,9 @@ export const AuraProvider = ({ children }: { children: ReactNode }) => {
         }
       };
     });
-  };
+  }, []);
 
-  const undoAction = (serviceId: ServiceId, actionId: string) => {
+  const undoAction = useCallback((serviceId: ServiceId, actionId: string) => {
     setServices(prev => {
       const srv = prev[serviceId];
       const actionIndex = srv.actions.findIndex(a => a.id === actionId);
@@ -386,9 +378,9 @@ export const AuraProvider = ({ children }: { children: ReactNode }) => {
         }
       };
     });
-  };
+  }, []);
 
-  const triggerEvent = (type: 'overdue' | 'recovery') => {
+  const triggerEvent = useCallback((type: 'overdue' | 'recovery') => {
     if (type === 'overdue') {
       setServices(prev => ({
         ...prev,
@@ -406,10 +398,24 @@ export const AuraProvider = ({ children }: { children: ReactNode }) => {
         }
       }));
     }
-  };
+  }, []);
+
+  const getServiceTheme = useCallback((id: ServiceId): AuraTheme => {
+    const s = services[id];
+    const sScore = s.trustScore !== null
+      ? (s.knowledgeScore + s.trustScore) / 2
+      : s.knowledgeScore;
+    return computeTheme(sScore, s.trustScore);
+  }, [services]);
+
+  const contextValue = useMemo(() => ({
+    services, globalTrustScore, globalKnowledgeScore, overallScore, theme,
+    performAction, undoAction, triggerEvent, getServiceTheme, strongAura, toggleStrongAura,
+  }), [services, globalTrustScore, globalKnowledgeScore, overallScore, theme, strongAura,
+      performAction, undoAction, triggerEvent, getServiceTheme, toggleStrongAura]);
 
   return (
-    <AuraContext.Provider value={{ services, globalTrustScore, globalKnowledgeScore, overallScore, theme, performAction, undoAction, triggerEvent, getServiceTheme, strongAura, toggleStrongAura }}>
+    <AuraContext.Provider value={contextValue}>
       {children}
     </AuraContext.Provider>
   );

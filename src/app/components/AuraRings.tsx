@@ -59,27 +59,12 @@ export const AuraRings: React.FC<AuraRingsProps> = ({ knowledge, trust, size = 2
             <stop offset="100%" stopColor={trustEnd} />
           </linearGradient>
 
-          {/* Glow filter for end caps */}
-          <filter id={`glow${uid}`} x="-80%" y="-80%" width="260%" height="260%">
-            <feGaussianBlur stdDeviation={strokeWidth * 0.28} result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-
-          {/* Subtle inner-shadow for tracks */}
-          <filter id={`track${uid}`}>
-            <feDropShadow dx="0" dy="0" stdDeviation="1.5" floodColor="#000" floodOpacity="0.6" />
-          </filter>
         </defs>
 
         {/* ── OUTER RING ── */}
         {/* Track */}
         <circle cx={center} cy={center} r={outerR}
           fill="none" stroke="#5E5CE620" strokeWidth={strokeWidth}
-          filter={`url(#track${uid})`}
         />
         {/* Main arc */}
         <motion.circle
@@ -105,7 +90,6 @@ export const AuraRings: React.FC<AuraRingsProps> = ({ knowledge, trust, size = 2
         {/* ── INNER RING ── */}
         {!singleRing && <circle cx={center} cy={center} r={innerR}
           fill="none" stroke={trustTrack} strokeWidth={strokeWidth}
-          filter={`url(#track${uid})`}
         />}
         {/* Main arc */}
         {!singleRing && <>

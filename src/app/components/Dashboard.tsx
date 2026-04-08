@@ -450,7 +450,7 @@ export const Dashboard = () => {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.05 }}
-        className="flex justify-center mb-3"
+        className="flex justify-center -mb-5"
       >
         <HeartAura overallScore={overallScore} globalTrustScore={globalTrustScore} size={429} />
       </motion.div>

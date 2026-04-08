@@ -70,12 +70,16 @@ export const ServiceDetail = () => {
       transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
       className="pb-12"
     >
-      {/* ── Hero ── */}
+      {/* ── Hero — extends behind sticky header (65px) ── */}
       <div
         style={{
           background: heroGradient(service.color),
           borderRadius: '0 0 28px 28px',
-          padding: '28px 20px 34px',
+          marginTop: -65,
+          paddingTop: 93,
+          paddingLeft: 20,
+          paddingRight: 20,
+          paddingBottom: 34,
           position: 'relative',
           overflow: 'hidden',
         }}
@@ -91,9 +95,9 @@ export const ServiceDetail = () => {
 
           {/* Left: Доверие */}
           {hasTrust ? (
-            <div style={{ flex: 1 }}>
+            <div style={{ flex: 1, textAlign: 'center' }}>
               <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.48)', fontWeight: 400, marginBottom: 4 }}>Доверие</p>
-              <p style={{ fontSize: 52, fontWeight: 700, color: trustColor, lineHeight: 1 }}>{displayTrust}</p>
+              <p style={{ fontSize: 52, fontWeight: 600, color: trustColor, lineHeight: 1 }}>{displayTrust}</p>
             </div>
           ) : (
             <div style={{ flex: 1 }} />
@@ -114,15 +118,15 @@ export const ServiceDetail = () => {
               <img
                 src={serviceIconMap[service.id]}
                 alt={service.name}
-                style={{ width: 44, height: 44, borderRadius: 12, objectFit: 'cover' }}
+                style={{ width: 56, height: 56, borderRadius: 14, objectFit: 'cover' }}
               />
             </div>
           </div>
 
           {/* Right: Знания */}
-          <div style={{ flex: 1, textAlign: 'right' }}>
+          <div style={{ flex: 1, textAlign: 'center' }}>
             <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.48)', fontWeight: 400, marginBottom: 4 }}>Знания</p>
-            <p style={{ fontSize: 52, fontWeight: 700, color: '#BF5AF2', lineHeight: 1 }}>{displayKnowledge}</p>
+            <p style={{ fontSize: 52, fontWeight: 600, color: '#BF5AF2', lineHeight: 1 }}>{displayKnowledge}</p>
           </div>
         </div>
 
@@ -159,7 +163,7 @@ export const ServiceDetail = () => {
                   <div style={{
                     paddingTop: 15,
                     paddingBottom: 15,
-                    borderBottom: isLast ? 'none' : '1px solid rgba(255,255,255,0.08)',
+                    borderBottom: isLast ? 'none' : '1px solid rgba(255,255,255,0.16)',
                   }}>
                     <p style={{
                       fontSize: 17,
@@ -170,11 +174,9 @@ export const ServiceDetail = () => {
                     }}>
                       {action.title}
                     </p>
-                    {!action.completed && (
-                      <p style={{ fontSize: 13, color: '#636366', marginTop: 3, lineHeight: 1.4 }}>
-                        {action.description}
-                      </p>
-                    )}
+                    <p style={{ fontSize: 13, color: action.completed ? '#3A3A3C' : '#636366', marginTop: 3, lineHeight: 1.4 }}>
+                      {action.description}
+                    </p>
                   </div>
                 </button>
               );

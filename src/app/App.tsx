@@ -29,13 +29,14 @@ const ShellInner = () => {
   // Extract service name from path
   const serviceMatch = location.pathname.match(/^\/service\/([^/]+)/);
   const serviceName = serviceMatch ? services[serviceMatch[1] as ServiceId]?.name : null;
+  const isServiceRoute = !!serviceMatch;
 
   return (
     <div
       className="min-h-screen flex flex-col items-center overflow-x-hidden"
       style={{ backgroundColor: '#000000', fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif" }}
     >
-      {!isChatRoute && <header className="w-full max-w-md mx-auto sticky top-0 z-50 backdrop-blur-2xl" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }}>
+      {!isChatRoute && <header className={`w-full max-w-md mx-auto sticky top-0 z-50${!isServiceRoute ? ' backdrop-blur-2xl' : ''}`} style={{ backgroundColor: isServiceRoute ? 'transparent' : 'rgba(0,0,0,0.6)' }}>
         <div className="h-16 flex items-end pb-2 px-4 relative">
           {isRoot && (
             <span className="text-[28px] text-white leading-tight" style={{ fontWeight: 700 }}>Аура</span>
@@ -96,10 +97,10 @@ const ShellInner = () => {
           </div>
         </div>
         {/* Thin gradient accent line */}
-        <div
+        {!isServiceRoute && <div
           className="h-[0.5px] w-full"
           style={{ background: `linear-gradient(to right, transparent, ${theme.primary}60, transparent)` }}
-        />
+        />}
       </header>}
 
       {/* Content */}

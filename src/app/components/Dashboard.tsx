@@ -427,25 +427,24 @@ export const Dashboard = () => {
       >
         {/* Rings */}
         <div className="relative flex-shrink-0">
-          <AuraRings knowledge={globalKnowledgeScore} trust={globalTrustScore} size={110} />
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <p className="text-[26px] text-white" style={{ fontWeight: 700, lineHeight: 1 }}>
+          <AuraRings knowledge={globalKnowledgeScore} trust={globalTrustScore} size={77} />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <p className="text-[18px] text-white" style={{ fontWeight: 700, lineHeight: 1 }}>
               {Math.round(overallScore)}
             </p>
-            <p className="text-[10px] text-[#98989D] mt-0.5" style={{ fontWeight: 500 }}>из 100</p>
           </div>
         </div>
         {/* Scores */}
-        <div className="flex gap-6">
+        <div className="flex gap-4">
           <div>
-            <p className="text-[13px] text-[#98989D]" style={{ fontWeight: 500 }}>Знания</p>
-            <p className="text-[26px]" style={{ fontWeight: 700, color: '#BF5AF2', lineHeight: 1.2 }}>
+            <p className="text-[10px] text-[#98989D]" style={{ fontWeight: 500 }}>Знания</p>
+            <p className="text-[18px]" style={{ fontWeight: 700, color: '#BF5AF2', lineHeight: 1.2 }}>
               {Math.round(globalKnowledgeScore)}/100
             </p>
           </div>
           <div>
-            <p className="text-[13px] text-[#98989D]" style={{ fontWeight: 500 }}>Доверие</p>
-            <p className="text-[26px]" style={{ fontWeight: 700, color: globalTrustScore < 40 ? '#FF3B30' : globalTrustScore < 70 ? '#FF9500' : '#30D158', lineHeight: 1.2 }}>
+            <p className="text-[10px] text-[#98989D]" style={{ fontWeight: 500 }}>Доверие</p>
+            <p className="text-[18px]" style={{ fontWeight: 700, color: globalTrustScore < 40 ? '#FF3B30' : globalTrustScore < 70 ? '#FF9500' : '#30D158', lineHeight: 1.2 }}>
               {Math.round(globalTrustScore)}/100
             </p>
           </div>

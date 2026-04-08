@@ -12,7 +12,7 @@ interface AuraRingsProps {
 export const AuraRings: React.FC<AuraRingsProps> = ({ knowledge, trust, size = 200, className, singleRing = false }) => {
   const uid = useId().replace(/:/g, '');
   const center = size / 2;
-  const strokeWidth = singleRing ? size * 0.11 : size * 0.09;
+  const strokeWidth = singleRing ? size * 0.088 : size * 0.072;
   const gap = size * 0.025;
 
   const outerR = singleRing ? center - strokeWidth / 2 - 4 : center - strokeWidth / 2 - 4;

@@ -609,7 +609,7 @@ export const Dashboard = () => {
         </div>
       </motion.div>
 
-      {/* Что Яндекс знает обо мне */}
+      {/* Что Яндекс знает обо мне — grid cards */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -620,103 +620,56 @@ export const Dashboard = () => {
           <h2 className="text-[22px] text-white" style={{ fontWeight: 700 }}>Что Яндекс знает обо мне</h2>
           <p className="text-[15px] flex-shrink-0 ml-3" style={{ color: '#30D158', fontWeight: 600 }}>47 фактов</p>
         </div>
-        <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#1C1C1E' }}>
-          {[
-            { icon: '🎬', title: 'Интерес к историческим драмам', sub: 'Кинопоиск · оценка 10', pct: '72%', isNew: true },
-            { icon: '🍱', title: 'Предпочитает японскую кухню', sub: 'Яндекс Еда · 67 заказов', pct: '91%', isNew: false },
-          ].map((item, idx, arr) => (
-            <div key={idx} className={`flex items-center gap-3 px-4 py-3.5 ${idx < arr.length - 1 ? 'border-b border-white/[0.08]' : ''}`}>
-              <div className="w-11 h-11 rounded-[12px] flex items-center justify-center flex-shrink-0 text-[22px]" style={{ backgroundColor: '#2C2C2E' }}>{item.icon}</div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <p className="text-[17px] text-white leading-snug" style={{ fontWeight: 500 }}>{item.title}</p>
-                  {item.isNew && <span className="text-[11px] px-1.5 py-0.5 rounded-full flex-shrink-0" style={{ backgroundColor: 'rgba(48,209,88,0.15)', color: '#30D158', fontWeight: 600 }}>новое</span>}
+
+        {(() => {
+          const cards = [
+            { icon: '🎬', category: 'Кино', title: 'Интерес к историческим драмам', sub: 'Кинопоиск · оценка 10', pct: '72%', pctColor: '#FF9F45', isNew: true,  bg: '#1a0800', glow: 'rgba(220,80,0,0.65)' },
+            { icon: '🍱', category: 'Еда',  title: 'Предпочитает японскую кухню',   sub: 'Яндекс Еда · 67 заказов', pct: '91%', pctColor: '#30D158', isNew: false, bg: '#001a0a', glow: 'rgba(0,190,80,0.65)' },
+            { icon: '🌙', category: 'Паттерн', title: 'Активен в экосистеме после 23:00', sub: 'Все сервисы · активность', pct: '94%', pctColor: '#BF5AF2', isNew: false, bg: '#08001c', glow: 'rgba(130,60,255,0.65)' },
+            { icon: '🚕', category: 'Паттерн', title: 'Утренние поездки по одному маршруту', sub: 'Яндекс Такси · 214 поездок', pct: '96%', pctColor: '#FF9500', isNew: false, bg: '#180e00', glow: 'rgba(255,160,0,0.6)' },
+            { icon: '📍', category: 'Контекст', title: 'Живёт в Москве', sub: 'Яндекс Такси · адреса', pct: '99%', pctColor: '#40C8E0', isNew: false, bg: '#001418', glow: 'rgba(0,170,210,0.6)' },
+            { icon: '⭐', category: 'Репутация', title: 'Топ-8% по надёжности', sub: 'Все сервисы · рейтинг', pct: '100%', pctColor: '#FFD60A', isNew: false, bg: '#181200', glow: 'rgba(255,210,0,0.6)' },
+            { icon: '⚠️', category: 'Репутация', title: 'Незавершённая поездка на самокате', sub: 'Яндекс Самокаты · инцидент', pct: '100%', pctColor: '#FF453A', isNew: true, bg: '#180600', glow: 'rgba(255,70,40,0.6)', wide: true },
+          ];
+
+          return (
+            <div className="grid grid-cols-2 gap-3">
+              {cards.map((card, i) => (
+                <div
+                  key={i}
+                  className={`rounded-2xl p-4 relative overflow-hidden flex flex-col justify-between${card.wide ? ' col-span-2' : ''}`}
+                  style={{ backgroundColor: card.bg, minHeight: card.wide ? 120 : 168 }}
+                >
+                  {/* ambient glow */}
+                  <div className="absolute pointer-events-none" style={{ inset: 0, background: `radial-gradient(ellipse at 50% 60%, ${card.glow} 0%, transparent 68%)` }} />
+
+                  {/* top row */}
+                  <div className="relative z-10 flex items-start justify-between gap-2">
+                    <p className="text-[11px] uppercase tracking-widest font-semibold" style={{ color: 'rgba(255,255,255,0.4)' }}>{card.category}</p>
+                    {card.isNew && (
+                      <span className="text-[10px] px-1.5 py-0.5 rounded-full flex-shrink-0" style={{ backgroundColor: 'rgba(48,209,88,0.18)', color: '#30D158', fontWeight: 700 }}>новое</span>
+                    )}
+                  </div>
+
+                  {/* icon */}
+                  {!card.wide && (
+                    <div className="relative z-10 text-[36px] leading-none my-1">{card.icon}</div>
+                  )}
+
+                  {/* bottom */}
+                  <div className={`relative z-10 ${card.wide ? 'flex items-center gap-4 mt-2' : ''}`}>
+                    {card.wide && <div className="text-[32px] leading-none flex-shrink-0">{card.icon}</div>}
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[13px] text-white/80 leading-snug" style={{ fontWeight: 500 }}>{card.title}</p>
+                      <p className="text-[11px] mt-0.5" style={{ color: 'rgba(255,255,255,0.3)' }}>{card.sub}</p>
+                    </div>
+                    <p className={`${card.wide ? 'flex-shrink-0 text-[28px]' : 'text-[28px] mt-2'} leading-none`} style={{ color: card.pctColor, fontWeight: 700 }}>{card.pct}</p>
+                  </div>
                 </div>
-                <p className="text-[13px] text-[#636366] mt-0.5">{item.sub}</p>
-              </div>
-              <p className="text-[15px] flex-shrink-0" style={{ color: '#30D158', fontWeight: 600 }}>{item.pct}</p>
+              ))}
             </div>
-          ))}
-        </div>
-      </motion.div>
-
-      {/* Паттерны поведения */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.32 }}
-        className="mt-5"
-      >
-        <p className="text-[13px] text-[#98989D] px-1 mb-3 tracking-widest font-semibold uppercase">
-          Паттерны поведения
-        </p>
-        <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#1C1C1E' }}>
-          {[
-            { icon: '🌙', title: 'Активен в экосистеме после 23:00', sub: 'Все сервисы · анализ активности', pct: '94%' },
-            { icon: '🚕', title: 'Утренние поездки по одному маршруту', sub: 'Яндекс Такси · 214 поездок', pct: '96%' },
-          ].map((item, idx, arr) => (
-            <div key={idx} className={`flex items-center gap-3 px-4 py-3.5 ${idx < arr.length - 1 ? 'border-b border-white/[0.08]' : ''}`}>
-              <div className="w-11 h-11 rounded-[12px] flex items-center justify-center flex-shrink-0 text-[22px]" style={{ backgroundColor: '#2C2C2E' }}>{item.icon}</div>
-              <div className="flex-1 min-w-0">
-                <p className="text-[17px] text-white leading-snug" style={{ fontWeight: 500 }}>{item.title}</p>
-                <p className="text-[13px] text-[#636366] mt-0.5">{item.sub}</p>
-              </div>
-              <p className="text-[15px] flex-shrink-0" style={{ color: '#30D158', fontWeight: 600 }}>{item.pct}</p>
-            </div>
-          ))}
-        </div>
-      </motion.div>
-
-      {/* Жизненный контекст */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.34 }}
-        className="mt-5"
-      >
-        <p className="text-[13px] text-[#98989D] px-1 mb-3 tracking-widest font-semibold uppercase">
-          Жизненный контекст
-        </p>
-        <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#1C1C1E' }}>
-          <div className="flex items-center gap-3 px-4 py-3.5">
-            <div className="w-11 h-11 rounded-[12px] flex items-center justify-center flex-shrink-0 text-[22px]" style={{ backgroundColor: '#2C2C2E' }}>📍</div>
-            <div className="flex-1 min-w-0">
-              <p className="text-[17px] text-white" style={{ fontWeight: 500 }}>Живёт в Москве</p>
-              <p className="text-[13px] text-[#636366] mt-0.5">Яндекс Такси · адреса</p>
-            </div>
-            <p className="text-[15px] flex-shrink-0" style={{ color: '#30D158', fontWeight: 600 }}>99%</p>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Репутация */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.36 }}
-        className="mt-5"
-      >
-        <p className="text-[13px] text-[#98989D] px-1 mb-3 tracking-widest font-semibold uppercase">
-          Репутация
-        </p>
-        <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#1C1C1E' }}>
-          {[
-            { icon: '⭐', title: 'Топ-8% по надёжности', sub: 'Все сервисы · рейтинг', pct: '100%', isNew: false },
-            { icon: '⚠️', title: 'Незавершённая поездка на самокате', sub: 'Яндекс Самокаты · инцидент', pct: '100%', isNew: true },
-          ].map((item, idx, arr) => (
-            <div key={idx} className={`flex items-center gap-3 px-4 py-3.5 ${idx < arr.length - 1 ? 'border-b border-white/[0.08]' : ''}`}>
-              <div className="w-11 h-11 rounded-[12px] flex items-center justify-center flex-shrink-0 text-[22px]" style={{ backgroundColor: '#2C2C2E' }}>{item.icon}</div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <p className="text-[17px] text-white leading-snug" style={{ fontWeight: 500 }}>{item.title}</p>
-                  {item.isNew && <span className="text-[11px] px-1.5 py-0.5 rounded-full flex-shrink-0" style={{ backgroundColor: 'rgba(48,209,88,0.15)', color: '#30D158', fontWeight: 600 }}>новое</span>}
-                </div>
-                <p className="text-[13px] text-[#636366] mt-0.5">{item.sub}</p>
-              </div>
-              <p className="text-[15px] flex-shrink-0" style={{ color: '#30D158', fontWeight: 600 }}>{item.pct}</p>
-            </div>
-          ))}
-        </div>
+          );
+        })()}
       </motion.div>
 
       {/* Simulation */}

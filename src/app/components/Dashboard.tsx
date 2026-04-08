@@ -775,7 +775,7 @@ export const Dashboard = () => {
                   style={{ backgroundColor: card.bg, minHeight: card.wide ? 120 : 168 }}
                 >
                   {/* ambient glow */}
-                  <div className="absolute pointer-events-none" style={{ inset: 0, background: `radial-gradient(ellipse at 50% 60%, ${card.glow} 0%, transparent 68%)` }} />
+                  <div className="absolute pointer-events-none" style={{ inset: 0, background: `radial-gradient(ellipse at 15% 20%, ${card.glow} 0%, transparent 65%)` }} />
 
                   {/* top row */}
                   <div className="relative z-10 flex items-start justify-between gap-2">

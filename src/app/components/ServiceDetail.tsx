@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { ServiceId, useAura } from '../context/AuraContext';
 import { AuraRings } from './AuraRings';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 
 import iconMusic from "figma:asset/52729efb5574f608701f92848e1b348745677960.png";
 import iconKinopoisk from "figma:asset/b39f941bc25c3069b2f4719e19fdc535f4a56625.png";
@@ -30,10 +30,21 @@ const serviceIconMap: Record<string, string> = {
   travel: iconTravel,
 };
 
+// Derive a dark gradient background from the service's brand color
+function heroGradient(hex: string): string {
+  const n = parseInt(hex.replace('#', ''), 16);
+  const r = (n >> 16) & 0xff;
+  const g = (n >> 8) & 0xff;
+  const b = n & 0xff;
+  const mid = `#${((1 << 24) | (Math.round(r * 0.32) << 16) | (Math.round(g * 0.32) << 8) | Math.round(b * 0.32)).toString(16).slice(1)}`;
+  const dark = `#${((1 << 24) | (Math.round(r * 0.14) << 16) | (Math.round(g * 0.14) << 8) | Math.round(b * 0.14)).toString(16).slice(1)}`;
+  return `radial-gradient(ellipse at 50% 38%, ${mid} 0%, ${dark} 58%, #060606 100%)`;
+}
+
 export const ServiceDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { services, getServiceTheme, globalTrustScore } = useAura();
+  const { services } = useAura();
 
   const service = services[id as ServiceId];
 
@@ -42,123 +53,134 @@ export const ServiceDetail = () => {
   }, [id]);
 
   if (!service) {
-    return (
-      <div className="p-6 text-center text-[#98989D]">Сервис не найден</div>
-    );
+    return <div className="p-6 text-center text-[#98989D]">Сервис не найден</div>;
   }
 
-  const sTheme = getServiceTheme(service.id);
   const allDone = service.actions.length > 0 && service.actions.every(a => a.completed);
   const isPale = service.knowledgeScore < 50 && !allDone;
-  const sTrust = service.trustScore ?? globalTrustScore;
   const displayKnowledge = allDone ? 100 : service.knowledgeScore;
-  const displayTrust = allDone ? 100 : sTrust;
-
-  const k = service.knowledgeScore;
-  const t = service.trustScore ?? 0;
-  const combined = service.trustScore !== null ? (k + t) / 2 : k;
-  let relLabel = 'новая';
-  let relColor = '#636366';
-  if (combined >= 70) { relLabel = 'глубокая'; relColor = '#BF5AF2'; }
-  else if (combined >= 45) { relLabel = 'близкая'; relColor = '#30D158'; }
-  else if (combined >= 25) { relLabel = 'знакомая'; relColor = '#FF9500'; }
-  else if (service.trustScore !== null && t < 30) { relLabel = 'сложная'; relColor = '#FF3B30'; }
+  const displayTrust = allDone ? 100 : (service.trustScore ?? 0);
+  const hasTrust = service.trustScore !== null;
+  const trustColor = displayTrust < 40 ? '#FF3B30' : displayTrust < 70 ? '#FF9500' : '#30D158';
 
   return (
     <motion.div
       initial={{ opacity: 0, x: 30 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-      className="pb-10"
+      className="pb-12"
     >
-      {/* Header — sticky, Apple Fitness compact style */}
-      <div className="sticky top-[65px] z-40 px-4 pt-2 pb-2">
-      <div className="rounded-2xl p-4 relative overflow-hidden backdrop-blur-xl" style={{ backgroundColor: 'rgba(28,28,30,0.75)' }}>
-        {/* subtle glow */}
-        <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(ellipse at 75% 50%, ${sTrust < 40 ? 'rgba(255,59,48,0.22)' : sTrust < 70 ? 'rgba(255,149,0,0.18)' : 'rgba(48,209,88,0.18)'} 0%, transparent 65%)`, filter: 'blur(16px)' }} />
-        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 25% 50%, rgba(94,92,230,0.16) 0%, transparent 65%)', filter: 'blur(16px)' }} />
-        <div className="flex items-center gap-4 relative z-10">
-          {/* Left: text + stats */}
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-0.5">
-              <p className="text-[17px] text-white leading-snug" style={{ fontWeight: 600 }}>
-                {isPale ? 'Мы мало знаем о вас' : 'Хорошая персонализация'}
-              </p>
+      {/* ── Hero ── */}
+      <div
+        style={{
+          background: heroGradient(service.color),
+          borderRadius: '0 0 28px 28px',
+          padding: '28px 20px 34px',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        {/* Top-edge shine */}
+        <div style={{
+          position: 'absolute', inset: 0, pointerEvents: 'none',
+          background: 'linear-gradient(180deg, rgba(255,255,255,0.07) 0%, transparent 38%)',
+        }} />
+
+        {/* Scores + Rings row */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, position: 'relative', zIndex: 1 }}>
+
+          {/* Left: Доверие */}
+          {hasTrust ? (
+            <div style={{ flex: 1 }}>
+              <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.48)', fontWeight: 400, marginBottom: 4 }}>Доверие</p>
+              <p style={{ fontSize: 52, fontWeight: 700, color: trustColor, lineHeight: 1 }}>{displayTrust}</p>
             </div>
-            <p className="text-[12px] font-semibold mb-1" style={{ color: relColor }}>{relLabel}</p>
-            <p className="text-[13px] text-[#98989D] leading-snug">
-              {isPale ? 'Выполните действия, чтобы усилить ауру.' : 'Вкусы изучены, рекомендации точные.'}
-            </p>
-            <div className="flex gap-4 mt-3">
-              <div>
-                <p className="text-[11px] text-[#98989D] uppercase tracking-wide font-medium">Знания</p>
-                <p className="text-[20px] font-bold" style={{ color: '#BF5AF2' }}>{service.knowledgeScore}</p>
-              </div>
-              {service.trustScore !== null && (
-                <div>
-                  <p className="text-[11px] text-[#98989D] uppercase tracking-wide font-medium">Доверие</p>
-                  <p className="text-[20px] font-bold" style={{ color: service.trustScore < 40 ? '#FF3B30' : '#30D158' }}>{service.trustScore}</p>
-                </div>
-              )}
+          ) : (
+            <div style={{ flex: 1 }} />
+          )}
+
+          {/* Center: Rings + icon */}
+          <div style={{ position: 'relative', flexShrink: 0 }}>
+            <AuraRings
+              knowledge={displayKnowledge}
+              trust={displayTrust}
+              size={hasTrust ? 140 : 160}
+              singleRing={!hasTrust}
+            />
+            <div style={{
+              position: 'absolute', inset: 0,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <img
+                src={serviceIconMap[service.id]}
+                alt={service.name}
+                style={{ width: 44, height: 44, borderRadius: 12, objectFit: 'cover' }}
+              />
             </div>
           </div>
-          {/* Right: rings with icon in center */}
-          <div className="flex-shrink-0 relative">
-            <AuraRings knowledge={displayKnowledge} trust={displayTrust} size={100} singleRing={service.trustScore === null} />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <img src={serviceIconMap[service.id]} alt={service.name} className="w-9 h-9 rounded-[10px] object-cover" />
-            </div>
+
+          {/* Right: Знания */}
+          <div style={{ flex: 1, textAlign: 'right' }}>
+            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.48)', fontWeight: 400, marginBottom: 4 }}>Знания</p>
+            <p style={{ fontSize: 52, fontWeight: 700, color: '#BF5AF2', lineHeight: 1 }}>{displayKnowledge}</p>
           </div>
         </div>
-      </div>
-      </div>
 
-      {/* Scrollable content */}
-      <div className="px-4">
-      {/* Actions */}
-      <h2 className="text-[22px] text-white px-1 mb-3 mt-4" style={{ fontWeight: 700 }}>
-        Действия
-      </h2>
-
-      {service.actions.length === 0 ? (
-        <div className="rounded-2xl p-6 text-center" style={{ backgroundColor: '#1C1C1E' }}>
-          <p className="text-[15px] text-[#98989D]">Нет доступных действий</p>
+        {/* Status text */}
+        <div style={{ textAlign: 'center', marginTop: 24, position: 'relative', zIndex: 1 }}>
+          <p style={{ fontSize: 20, fontWeight: 700, color: 'white', marginBottom: 7, lineHeight: 1.2 }}>
+            {isPale ? 'Мы мало знаем о вас' : 'Хорошая персонализация'}
+          </p>
+          <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.48)', lineHeight: 1.5 }}>
+            {isPale
+              ? <>Выполните действия,<br />чтобы усилить ауру</>
+              : 'Вкусы изучены, рекомендации точные.'}
+          </p>
         </div>
-      ) : (
-        <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#1C1C1E' }}>
-          <AnimatePresence>
+      </div>
+
+      {/* ── Actions list ── */}
+      <div className="px-4 mt-6">
+        {service.actions.length === 0 ? (
+          <p style={{ color: '#636366', textAlign: 'center', fontSize: 15, padding: '24px 0' }}>
+            Нет доступных действий
+          </p>
+        ) : (
+          <div>
             {service.actions.map((action, idx) => {
               const isLast = idx === service.actions.length - 1;
               return (
-                <motion.button
+                <button
                   key={action.id}
                   onClick={() => !action.completed && navigate(`/service/${service.id}/chat/${action.id}`)}
-                  className="w-full flex items-start gap-3.5 px-4 py-4 text-left transition-colors active:bg-white/[0.05]"
+                  className="w-full text-left active:opacity-60 transition-opacity"
                   style={{ cursor: action.completed ? 'default' : 'pointer' }}
                 >
-                  <div className={`flex-1 ${!isLast ? 'border-b border-white/[0.08] pb-4 -mb-4' : ''}`}>
-                    <p
-                      className="text-[17px] leading-snug"
-                      style={{
-                        fontWeight: 400,
-                        color: action.completed ? '#48484A' : 'white',
-                        textDecoration: action.completed ? 'line-through' : 'none',
-                      }}
-                    >
+                  <div style={{
+                    paddingTop: 15,
+                    paddingBottom: 15,
+                    borderBottom: isLast ? 'none' : '1px solid rgba(255,255,255,0.08)',
+                  }}>
+                    <p style={{
+                      fontSize: 17,
+                      fontWeight: 400,
+                      color: action.completed ? '#48484A' : 'white',
+                      textDecoration: action.completed ? 'line-through' : 'none',
+                      lineHeight: 1.3,
+                    }}>
                       {action.title}
                     </p>
                     {!action.completed && (
-                      <p className="text-[13px] text-[#98989D] mt-0.5 leading-snug">
+                      <p style={{ fontSize: 13, color: '#636366', marginTop: 3, lineHeight: 1.4 }}>
                         {action.description}
                       </p>
                     )}
                   </div>
-                </motion.button>
+                </button>
               );
             })}
-          </AnimatePresence>
-        </div>
-      )}
+          </div>
+        )}
       </div>
     </motion.div>
   );

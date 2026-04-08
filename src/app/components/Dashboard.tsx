@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { useAura } from '../context/AuraContext';
 import { AuraRings, AuraRingsMini } from './AuraRings';
 import { useNavigate } from 'react-router';
-import { ChevronRight, ChevronDown, Zap } from 'lucide-react';
+import { ChevronRight, ChevronDown, Zap, Shield, CheckCircle, MapPin } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { Switch } from './ui/switch';
 
 // Service icons
 import iconMusic from "figma:asset/52729efb5574f608701f92848e1b348745677960.png";
@@ -34,11 +35,207 @@ const serviceIconMap: Record<string, string> = {
 
 const PRIMARY_SERVICES = ['music', 'kinopoisk', 'books', 'market', 'split'];
 
+// ─── Friends Tab ─────────────────────────────────────────────────────────────
+
+const FriendsTab = () => {
+  const [toggles, setToggles] = useState({
+    music: true,
+    cinema: true,
+    wishlist: false,
+    location: false,
+  });
+  const toggle = (key: keyof typeof toggles) => setToggles(p => ({ ...p, [key]: !p[key] }));
+
+  return (
+    <div className="px-4 pb-10 pt-2">
+      {/* ID Card */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.05 }}
+        className="rounded-2xl overflow-hidden mb-5 relative"
+        style={{ background: 'linear-gradient(135deg, #12102a 0%, #1a1635 45%, #0d2340 100%)', minHeight: 140 }}
+      >
+        {/* Glow layers */}
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 80% 15%, rgba(94,92,230,0.3) 0%, transparent 55%)' }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 10% 90%, rgba(191,90,242,0.18) 0%, transparent 50%)' }} />
+        {/* Subtle grid */}
+        <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)', backgroundSize: '28px 28px' }} />
+
+        <div className="relative z-10 p-5 flex flex-col gap-4">
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="text-[26px] text-white leading-tight" style={{ fontWeight: 700 }}>Александр</p>
+              <p className="text-[13px] text-white/50 mt-0.5" style={{ fontWeight: 400 }}>Публичный профиль</p>
+            </div>
+            <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full flex-shrink-0 ml-3"
+              style={{ backgroundColor: 'rgba(48,209,88,0.13)', border: '1px solid rgba(48,209,88,0.28)' }}>
+              <CheckCircle className="w-3.5 h-3.5 flex-shrink-0" style={{ color: '#30D158' }} />
+              <span className="text-[12px] whitespace-nowrap" style={{ color: '#30D158', fontWeight: 600 }}>Верифицирован</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <MapPin className="w-3.5 h-3.5 text-white/35" />
+            <span className="text-[13px] text-white/40" style={{ fontWeight: 400 }}>Москва</span>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Interest tags */}
+      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mb-5">
+        <p className="text-[13px] text-[#98989D] px-1 mb-3 tracking-widest font-semibold uppercase">Интересы</p>
+        <div className="flex flex-wrap gap-2">
+          {['Баскетбол', 'F1', 'Мексиканская еда', 'Электроника'].map(tag => (
+            <span
+              key={tag}
+              className="px-3.5 py-1.5 rounded-full text-[14px]"
+              style={{ backgroundColor: '#1C1C1E', color: '#EBEBF5', fontWeight: 500 }}
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Privacy toggles */}
+      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
+        <p className="text-[13px] text-[#98989D] px-1 mb-3 tracking-widest font-semibold uppercase">Видимость</p>
+        <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#1C1C1E' }}>
+          {([
+            { key: 'music', label: 'Музыкальные вкусы' },
+            { key: 'cinema', label: 'Кино и сериалы' },
+            { key: 'wishlist', label: 'Вишлист' },
+            { key: 'location', label: 'Местонахождение' },
+          ] as const).map(({ key, label }, idx, arr) => (
+            <div
+              key={key}
+              className={`flex items-center justify-between px-4 py-4 ${idx < arr.length - 1 ? 'border-b border-white/[0.08]' : ''}`}
+            >
+              <p className="text-[17px] text-white" style={{ fontWeight: 400 }}>{label}</p>
+              <Switch
+                checked={toggles[key]}
+                onCheckedChange={() => toggle(key)}
+                className="data-[state=checked]:bg-[#30D158] h-[28px] w-[50px]"
+              />
+            </div>
+          ))}
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
+// ─── Partners Tab ─────────────────────────────────────────────────────────────
+
+const PartnersTab = () => {
+  const [mvideoState, setMvideoState] = useState<'pending' | 'granted' | 'denied'>('pending');
+
+  return (
+    <div className="px-4 pb-10 pt-2">
+      {/* Notice */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.05 }}
+        className="rounded-2xl p-4 mb-5 flex items-start gap-3"
+        style={{ backgroundColor: 'rgba(94,92,230,0.1)', border: '1px solid rgba(94,92,230,0.22)' }}
+      >
+        <Shield className="w-[18px] h-[18px] flex-shrink-0 mt-0.5" style={{ color: '#5E5CE6' }} />
+        <p className="text-[14px] leading-snug" style={{ color: 'rgba(235,235,245,0.7)', fontWeight: 400 }}>
+          Партнеры видят только то, что вы разрешили. Каждый запрос — отдельное согласие.
+        </p>
+      </motion.div>
+
+      {/* Accesses */}
+      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+        <p className="text-[13px] text-[#98989D] px-1 mb-3 tracking-widest font-semibold uppercase">Активные доступы</p>
+        <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#1C1C1E' }}>
+
+          {/* Lamoda */}
+          <div className="px-4 py-4 border-b border-white/[0.08]">
+            <div className="flex items-center justify-between mb-1">
+              <p className="text-[17px] text-white" style={{ fontWeight: 500 }}>Ламода</p>
+              <span className="text-[12px] px-2.5 py-1 rounded-full" style={{ color: '#30D158', backgroundColor: 'rgba(48,209,88,0.1)', fontWeight: 500 }}>активен</span>
+            </div>
+            <p className="text-[13px]" style={{ color: '#636366' }}>доступ к: размер, стиль</p>
+          </div>
+
+          {/* Ivi */}
+          <div className={`px-4 py-4 ${mvideoState === 'pending' ? 'border-b border-white/[0.08]' : ''}`}>
+            <div className="flex items-center justify-between mb-1">
+              <p className="text-[17px] text-white" style={{ fontWeight: 500 }}>Иви</p>
+              <span className="text-[12px] px-2.5 py-1 rounded-full" style={{ color: '#30D158', backgroundColor: 'rgba(48,209,88,0.1)', fontWeight: 500 }}>активен</span>
+            </div>
+            <p className="text-[13px]" style={{ color: '#636366' }}>доступ к: кино, жанры</p>
+          </div>
+
+          {/* Mvideo */}
+          <AnimatePresence>
+            {mvideoState === 'pending' && (
+              <motion.div
+                initial={{ opacity: 1 }}
+                exit={{ opacity: 0, height: 0, overflow: 'hidden' }}
+                className="px-4 py-4"
+                style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <p className="text-[17px] text-white" style={{ fontWeight: 500 }}>Мвидео</p>
+                  <span className="text-[12px] px-2.5 py-1 rounded-full" style={{ color: '#FF9500', backgroundColor: 'rgba(255,149,0,0.1)', fontWeight: 500 }}>
+                    запрашивает доступ
+                  </span>
+                </div>
+                <div className="flex gap-2 mt-3">
+                  <button
+                    onClick={() => setMvideoState('granted')}
+                    className="flex-1 py-2.5 rounded-xl text-[15px] text-white active:opacity-70 transition-opacity"
+                    style={{ backgroundColor: '#2C2C2E', fontWeight: 500 }}
+                  >
+                    Дать
+                  </button>
+                  <button
+                    onClick={() => setMvideoState('denied')}
+                    className="flex-1 py-2.5 rounded-xl text-[15px] active:opacity-70 transition-opacity"
+                    style={{ backgroundColor: '#2C2C2E', color: '#FF3B30', fontWeight: 500 }}
+                  >
+                    Нет
+                  </button>
+                </div>
+              </motion.div>
+            )}
+            {mvideoState === 'granted' && (
+              <motion.div
+                key="granted"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="px-4 py-4"
+                style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <p className="text-[17px] text-white" style={{ fontWeight: 500 }}>Мвидео</p>
+                  <span className="text-[12px] px-2.5 py-1 rounded-full" style={{ color: '#30D158', backgroundColor: 'rgba(48,209,88,0.1)', fontWeight: 500 }}>активен</span>
+                </div>
+                <p className="text-[13px]" style={{ color: '#636366' }}>доступ выдан</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
+// ─── Tab Bar ──────────────────────────────────────────────────────────────────
+
+const TABS = ['Мой профиль', 'Друзья', 'Партнеры'] as const;
+type TabType = typeof TABS[number];
+
 export const Dashboard = () => {
   const { services, globalTrustScore, globalKnowledgeScore, overallScore, theme, triggerEvent } = useAura();
   const navigate = useNavigate();
   const isTrustCritical = globalTrustScore < 50;
   const [servicesExpanded, setServicesExpanded] = useState(() => sessionStorage.getItem('servicesExpanded') === 'true');
+  const [activeTab, setActiveTab] = useState<TabType>('Мой профиль');
 
   const toggleExpanded = (v: boolean) => {
     setServicesExpanded(v);
@@ -52,6 +249,60 @@ export const Dashboard = () => {
       : 'linear-gradient(135deg, #30D158, #4ADE80)';
 
   return (
+    <div>
+      {/* ── Tab bar ── */}
+      <div className="px-4 pt-3 pb-0">
+        <div className="flex relative">
+          {TABS.map(tab => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className="flex-1 py-2.5 text-[15px] relative transition-colors"
+              style={{ fontWeight: activeTab === tab ? 600 : 400, color: activeTab === tab ? '#FFFFFF' : '#636366' }}
+            >
+              {tab}
+              {activeTab === tab && (
+                <motion.div
+                  layoutId="tab-indicator"
+                  className="absolute bottom-0 left-3 right-3 h-[2px] rounded-full"
+                  style={{ backgroundColor: '#FFFFFF' }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 35 }}
+                />
+              )}
+            </button>
+          ))}
+        </div>
+        <div className="h-[0.5px] w-full" style={{ backgroundColor: 'rgba(255,255,255,0.08)' }} />
+      </div>
+
+      {/* ── Tab content ── */}
+      <AnimatePresence mode="wait">
+        {activeTab === 'Друзья' && (
+          <motion.div
+            key="friends"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.18 }}
+          >
+            <FriendsTab />
+          </motion.div>
+        )}
+        {activeTab === 'Партнеры' && (
+          <motion.div
+            key="partners"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.18 }}
+          >
+            <PartnersTab />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── Мой профиль content (existing) ── */}
+      {activeTab === 'Мой профиль' && (
     <div className="px-4 pb-10 pt-2">
       {/* Main rings card */}
       <motion.div
@@ -344,6 +595,8 @@ export const Dashboard = () => {
           </button>
         </div>
       </motion.div>
+    </div>
+      )}
     </div>
   );
 };

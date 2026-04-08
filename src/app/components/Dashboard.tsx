@@ -97,10 +97,13 @@ const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScor
     `saturate(2.2) brightness(${(0.85 + s * 0.15).toFixed(2)}) hue-rotate(${h.toFixed(0)}deg)`
   );
 
-  // Glow: separate opacity (beat) from color (hue) so only opacity animates at 60fps
+  // Glow: opacity animates with beat (GPU-only), color follows hue slowly
   const glowOpacity = useTransform(beatGlow, b => Math.min(1, b * 7));
-  const glowColor = useTransform(hue, h =>
-    `radial-gradient(ellipse at 50% 45%, hsla(${h + 20}, 85%, 60%, 0.55) 0%, transparent 68%)`
+  const glow1Color = useTransform(hue, h =>
+    `radial-gradient(ellipse at 55% 55%, hsla(${h + 20}, 85%, 60%, 0.65) 0%, transparent 68%)`
+  );
+  const glow2Color = useTransform(hue, h =>
+    `radial-gradient(ellipse at 38% 40%, hsla(${(h + 150) % 360}, 75%, 55%, 0.45) 0%, transparent 55%)`
   );
 
   const maskStyle = useTransform(clipRV, v => {
@@ -116,10 +119,12 @@ const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScor
       transition={{ delay: 0.05, duration: 0.5 }}
       style={{ width: size, height: size, margin: '0 auto', position: 'relative' }}
     >
-      {/* Glow: opacity animated (GPU), color updates slowly via hue */}
-      <motion.div
-        className="absolute pointer-events-none"
-        style={{ inset: -16, background: glowColor, filter: 'blur(18px)', opacity: glowOpacity, willChange: 'opacity' }}
+      {/* Two-layer glow: opacity beats (GPU), color shifts with hue */}
+      <motion.div className="absolute pointer-events-none"
+        style={{ inset: -28, background: glow1Color, filter: 'blur(26px)', opacity: glowOpacity, willChange: 'opacity' }}
+      />
+      <motion.div className="absolute pointer-events-none"
+        style={{ inset: -14, background: glow2Color, filter: 'blur(14px)', opacity: glowOpacity, willChange: 'opacity' }}
       />
 
       {/* Grayscale base — 1 element (was 6), single beat wrapper */}

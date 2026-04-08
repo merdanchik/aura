@@ -63,6 +63,16 @@ export const ServiceDetail = () => {
   const hasTrust = service.trustScore !== null;
   const trustColor = displayTrust < 40 ? '#FF3B30' : displayTrust < 70 ? '#FF9500' : '#30D158';
 
+  const k = service.knowledgeScore;
+  const t = service.trustScore ?? 0;
+  const combined = hasTrust ? (k + t) / 2 : k;
+  let relLabel = 'новая';
+  let relColor = 'rgba(255,255,255,0.38)';
+  if (combined >= 70)       { relLabel = 'глубокая';  relColor = '#BF5AF2'; }
+  else if (combined >= 45)  { relLabel = 'близкая';   relColor = '#30D158'; }
+  else if (combined >= 25)  { relLabel = 'знакомая';  relColor = '#FF9500'; }
+  else if (hasTrust && t < 30) { relLabel = 'сложная'; relColor = '#FF3B30'; }
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 30 }}
@@ -90,25 +100,15 @@ export const ServiceDetail = () => {
           background: 'linear-gradient(180deg, rgba(255,255,255,0.07) 0%, transparent 38%)',
         }} />
 
-        {/* Scores + Rings row */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, position: 'relative', zIndex: 1 }}>
+        {/* Hero body: rings LEFT, content RIGHT */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, position: 'relative', zIndex: 1 }}>
 
-          {/* Left: Доверие */}
-          {hasTrust ? (
-            <div style={{ flex: 1, textAlign: 'center' }}>
-              <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.48)', fontWeight: 400, marginBottom: 4 }}>Доверие</p>
-              <p style={{ fontSize: 52, fontWeight: 600, color: trustColor, lineHeight: 1 }}>{displayTrust}</p>
-            </div>
-          ) : (
-            <div style={{ flex: 1 }} />
-          )}
-
-          {/* Center: Rings + icon */}
+          {/* Left: Rings + icon */}
           <div style={{ position: 'relative', flexShrink: 0 }}>
             <AuraRings
               knowledge={displayKnowledge}
               trust={displayTrust}
-              size={hasTrust ? 140 : 160}
+              size={148}
               singleRing={!hasTrust}
             />
             <div style={{
@@ -118,28 +118,50 @@ export const ServiceDetail = () => {
               <img
                 src={serviceIconMap[service.id]}
                 alt={service.name}
-                style={{ width: 56, height: 56, borderRadius: 14, objectFit: 'cover' }}
+                style={{ width: 58, height: 58, borderRadius: 14, objectFit: 'cover' }}
               />
             </div>
           </div>
 
-          {/* Right: Знания */}
-          <div style={{ flex: 1, textAlign: 'center' }}>
-            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.48)', fontWeight: 400, marginBottom: 4 }}>Знания</p>
-            <p style={{ fontSize: 52, fontWeight: 600, color: '#BF5AF2', lineHeight: 1 }}>{displayKnowledge}</p>
-          </div>
-        </div>
+          {/* Right: label + title + subtitle + scores */}
+          <div style={{ flex: 1, minWidth: 0 }}>
+            {/* Relationship label */}
+            <p style={{ fontSize: 11, fontWeight: 600, letterSpacing: 1, textTransform: 'uppercase', color: relColor, marginBottom: 5 }}>
+              {relLabel}
+            </p>
 
-        {/* Status text */}
-        <div style={{ textAlign: 'center', marginTop: 24, position: 'relative', zIndex: 1 }}>
-          <p style={{ fontSize: 20, fontWeight: 700, color: 'white', marginBottom: 7, lineHeight: 1.2 }}>
-            {isPale ? 'Мы мало знаем о вас' : 'Хорошая персонализация'}
-          </p>
-          <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.48)', lineHeight: 1.5 }}>
-            {isPale
-              ? <>Выполните действия,<br />чтобы усилить ауру</>
-              : 'Вкусы изучены, рекомендации точные.'}
-          </p>
+            {/* Status title */}
+            <p style={{ fontSize: 20, fontWeight: 700, color: 'white', lineHeight: 1.2, marginBottom: 6 }}>
+              {isPale ? 'Мы мало знаем о вас' : 'Хорошая персонализация'}
+            </p>
+
+            {/* Subtitle */}
+            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.46)', lineHeight: 1.45, marginBottom: 18 }}>
+              {isPale
+                ? <>Выполните действия<br />чтобы усилить ауру</>
+                : 'Вкусы изучены, рекомендации точные.'}
+            </p>
+
+            {/* Scores */}
+            <div style={{ display: 'flex', gap: 16 }}>
+              {hasTrust && (
+                <div>
+                  <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)', marginBottom: 2 }}>Доверие</p>
+                  <p style={{ fontSize: 26, fontWeight: 600, color: trustColor, lineHeight: 1 }}>
+                    {displayTrust}
+                    <span style={{ fontSize: 14, fontWeight: 400, color: 'rgba(255,255,255,0.3)' }}>/100</span>
+                  </p>
+                </div>
+              )}
+              <div>
+                <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)', marginBottom: 2 }}>Знания</p>
+                <p style={{ fontSize: 26, fontWeight: 600, color: '#BF5AF2', lineHeight: 1 }}>
+                  {displayKnowledge}
+                  <span style={{ fontSize: 14, fontWeight: 400, color: 'rgba(255,255,255,0.3)' }}>/100</span>
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

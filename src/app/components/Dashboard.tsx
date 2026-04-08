@@ -77,7 +77,7 @@ const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScor
   }, [isStrong, s]);
 
   React.useEffect(() => {
-    const a = motionAnimate(clipRV, overallScore * 0.62, { duration: 1.2, ease: [0.22, 1, 0.36, 1] });
+    const a = motionAnimate(clipRV, overallScore * 0.82, { duration: 1.2, ease: [0.22, 1, 0.36, 1] });
     return () => a.stop();
   }, [overallScore]);
 

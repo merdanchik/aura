@@ -744,13 +744,55 @@ export const Dashboard = () => {
 
         {(() => {
           const cards = [
-            { icon: '🎬', category: 'Кино', title: 'Интерес к историческим драмам', sub: 'Кинопоиск · оценка 10', pct: '72%', pctColor: '#FF9F45', isNew: true,  bg: '#1a0800', glow: 'rgba(220,80,0,0.26)' },
-            { icon: '🍱', category: 'Еда',  title: 'Предпочитает японскую кухню',   sub: 'Яндекс Еда · 67 заказов', pct: '91%', pctColor: '#30D158', isNew: false, bg: '#001a0a', glow: 'rgba(0,190,80,0.26)' },
-            { icon: '🌙', category: 'Паттерн', title: 'Активен в экосистеме после 23:00', sub: 'Все сервисы · активность', pct: '94%', pctColor: '#BF5AF2', isNew: false, bg: '#08001c', glow: 'rgba(130,60,255,0.26)' },
-            { icon: '🚕', category: 'Паттерн', title: 'Утренние поездки по одному маршруту', sub: 'Яндекс Такси · 214 поездок', pct: '96%', pctColor: '#FF9500', isNew: false, bg: '#180e00', glow: 'rgba(255,160,0,0.24)' },
-            { icon: '📍', category: 'Контекст', title: 'Живёт в Москве', sub: 'Яндекс Такси · адреса', pct: '99%', pctColor: '#40C8E0', isNew: false, bg: '#001418', glow: 'rgba(0,170,210,0.24)' },
-            { icon: '⭐', category: 'Репутация', title: 'Топ-8% по надёжности', sub: 'Все сервисы · рейтинг', pct: '100%', pctColor: '#FFD60A', isNew: false, bg: '#181200', glow: 'rgba(255,210,0,0.24)' },
-            { icon: '⚠️', category: 'Репутация', title: 'Незавершённая поездка на самокате', sub: 'Яндекс Самокаты · инцидент', pct: '100%', pctColor: '#FF453A', isNew: true, bg: '#180600', glow: 'rgba(255,70,40,0.24)', wide: true },
+            {
+              category: 'Кино', sub: 'Кинопоиск',
+              value: '72', unit: '%', label: 'Исторические драмы',
+              isNew: true, wide: false,
+              g1: '#FF8040', g2: '#C83000', g3: '#7A1000',
+              blob: '55% 60%',
+            },
+            {
+              category: 'Еда', sub: 'Яндекс Еда · 67 заказов',
+              value: '91', unit: '%', label: 'Японская кухня',
+              isNew: false, wide: false,
+              g1: '#34C878', g2: '#108848', g3: '#044820',
+              blob: '45% 55%',
+            },
+            {
+              category: 'Паттерн', sub: 'Все сервисы',
+              value: '94', unit: '%', label: 'Активен после 23:00',
+              isNew: false, wide: false,
+              g1: '#A060F8', g2: '#5820C0', g3: '#200860',
+              blob: '50% 60%',
+            },
+            {
+              category: 'Паттерн', sub: 'Яндекс Такси',
+              value: '96', unit: '%', label: 'Утренние поездки',
+              isNew: false, wide: false,
+              g1: '#FFB020', g2: '#D06800', g3: '#7A3400',
+              blob: '50% 55%',
+            },
+            {
+              category: 'Контекст', sub: 'Яндекс Такси · адреса',
+              value: '99', unit: '%', label: 'Живёт в Москве',
+              isNew: false, wide: false,
+              g1: '#20D4D4', g2: '#088888', g3: '#024040',
+              blob: '50% 60%',
+            },
+            {
+              category: 'Репутация', sub: 'Все сервисы',
+              value: 'топ\n8', unit: '%', label: 'По надёжности',
+              isNew: false, wide: false,
+              g1: '#FFD030', g2: '#C88000', g3: '#704000',
+              blob: '45% 55%',
+            },
+            {
+              category: 'Инцидент', sub: 'Яндекс Самокаты',
+              value: '!', unit: '', label: 'Незавершённая поездка на самокате',
+              isNew: true, wide: true,
+              g1: '#FF4848', g2: '#C01010', g3: '#700000',
+              blob: '30% 50%',
+            },
           ];
 
           return (
@@ -758,34 +800,59 @@ export const Dashboard = () => {
               {cards.map((card, i) => (
                 <div
                   key={i}
-                  className={`rounded-2xl p-4 relative overflow-hidden flex flex-col justify-between${card.wide ? ' col-span-2' : ''}`}
-                  style={{ backgroundColor: card.bg, minHeight: card.wide ? 120 : 168 }}
+                  className={`rounded-[22px] relative overflow-hidden flex flex-col${card.wide ? ' col-span-2' : ''}`}
+                  style={{
+                    background: `linear-gradient(145deg, ${card.g1} 0%, ${card.g2} 50%, ${card.g3} 100%)`,
+                    minHeight: card.wide ? 108 : 172,
+                  }}
                 >
-                  {/* ambient glow */}
-                  <div className="absolute pointer-events-none" style={{ inset: 0, background: `radial-gradient(ellipse at 15% 20%, ${card.glow} 0%, transparent 65%)` }} />
+                  {/* Depth blob — darkens center for 3-D feel */}
+                  <div className="absolute pointer-events-none" style={{
+                    inset: 0,
+                    background: `radial-gradient(ellipse at ${card.blob}, rgba(0,0,0,0.42) 0%, transparent 68%)`,
+                  }} />
+                  {/* Top-edge shine */}
+                  <div className="absolute pointer-events-none" style={{
+                    inset: 0,
+                    background: 'linear-gradient(180deg, rgba(255,255,255,0.10) 0%, transparent 40%)',
+                  }} />
 
-                  {/* top row */}
-                  <div className="relative z-10 flex items-start justify-between gap-2">
-                    <p className="text-[11px] uppercase tracking-widest font-semibold" style={{ color: 'rgba(255,255,255,0.4)' }}>{card.category}</p>
-                    {card.isNew && (
-                      <span className="text-[10px] px-1.5 py-0.5 rounded-full flex-shrink-0" style={{ backgroundColor: 'rgba(48,209,88,0.18)', color: '#30D158', fontWeight: 700 }}>новое</span>
-                    )}
-                  </div>
-
-                  {/* icon */}
-                  {!card.wide && (
-                    <div className="relative z-10 text-[36px] leading-none my-1">{card.icon}</div>
-                  )}
-
-                  {/* bottom */}
-                  <div className={`relative z-10 ${card.wide ? 'flex items-center gap-4 mt-2' : ''}`}>
-                    {card.wide && <div className="text-[32px] leading-none flex-shrink-0">{card.icon}</div>}
-                    <div className="flex-1 min-w-0">
-                      <p className="text-[13px] text-white/80 leading-snug" style={{ fontWeight: 500 }}>{card.title}</p>
-                      <p className="text-[11px] mt-0.5" style={{ color: 'rgba(255,255,255,0.3)' }}>{card.sub}</p>
+                  {card.wide ? (
+                    /* ── Wide / alert card ── */
+                    <div className="relative z-10 flex items-center gap-4 px-5 py-5">
+                      <p style={{ fontSize: 40, lineHeight: 1 }}>⚠️</p>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <p style={{ fontSize: 13, fontWeight: 700, color: 'rgba(255,255,255,0.6)', letterSpacing: 1, textTransform: 'uppercase' }}>{card.category}</p>
+                          <span style={{ fontSize: 9, padding: '2px 7px', borderRadius: 10, backgroundColor: 'rgba(255,255,255,0.18)', color: 'white', fontWeight: 700, letterSpacing: 0.5 }}>НОВОЕ</span>
+                        </div>
+                        <p style={{ fontSize: 16, fontWeight: 700, color: 'white', lineHeight: 1.25 }}>{card.label}</p>
+                        <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', marginTop: 2 }}>{card.sub}</p>
+                      </div>
                     </div>
-                    <p className={`${card.wide ? 'flex-shrink-0 text-[28px]' : 'text-[28px] mt-2'} leading-none`} style={{ color: card.pctColor, fontWeight: 700 }}>{card.pct}</p>
-                  </div>
+                  ) : (
+                    /* ── Normal card ── */
+                    <div className="relative z-10 flex flex-col justify-between px-4 py-4 h-full" style={{ flex: 1 }}>
+                      {/* Header */}
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <p style={{ fontSize: 13, fontWeight: 700, color: 'rgba(255,255,255,0.95)', letterSpacing: 0.3 }}>{card.category}</p>
+                          <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)', marginTop: 1 }}>{card.sub}</p>
+                        </div>
+                        {card.isNew && (
+                          <span style={{ fontSize: 9, padding: '2px 7px', borderRadius: 10, backgroundColor: 'rgba(255,255,255,0.2)', color: 'white', fontWeight: 700, letterSpacing: 0.5 }}>NEW</span>
+                        )}
+                      </div>
+
+                      {/* Big value */}
+                      <p style={{ fontSize: 54, fontWeight: 800, color: 'white', lineHeight: 1, margin: '10px 0 6px', whiteSpace: 'pre-line' }}>
+                        {card.value}<span style={{ fontSize: 26, fontWeight: 600, verticalAlign: 'super', lineHeight: 0 }}>{card.unit}</span>
+                      </p>
+
+                      {/* Bottom label */}
+                      <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)', fontWeight: 500 }}>{card.label}</p>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

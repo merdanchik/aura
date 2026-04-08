@@ -75,11 +75,10 @@ const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScor
     return () => a.stop();
   }, [isStrong, s]);
 
-  const saturate = isStrong ? 2.2 + s * 0.8 : 0.04 + s * 0.6;
-  const brightness = 0.5 + s * 0.7;
-
+  // Colored zone: always vivid (saturation not tied to overall score)
+  const colorBrightness = 0.85 + s * 0.15;
   const imgFilter = useTransform(hue, h =>
-    `saturate(${saturate.toFixed(2)}) brightness(${brightness.toFixed(2)}) hue-rotate(${h.toFixed(0)}deg)`
+    `saturate(2.2) brightness(${colorBrightness.toFixed(2)}) hue-rotate(${h.toFixed(0)}deg)`
   );
 
   const glowAlpha = 0.07 + s * 0.18;
@@ -89,6 +88,9 @@ const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScor
   const glow2Bg = useTransform(hue, h =>
     `radial-gradient(ellipse at 40% 42%, hsla(${(h + 150) % 360}, 70%, 50%, ${glowAlpha * 0.6}) 0%, transparent 52%)`
   );
+
+  // Color grows from center: radius covers score% of heart (0→0%, 100→~62%)
+  const clipRadius = (overallScore * 0.62).toFixed(1);
 
   return (
     <motion.div
@@ -101,30 +103,56 @@ const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScor
       <motion.div className="absolute pointer-events-none" style={{ inset: -20, background: glow1Bg, filter: 'blur(28px)' }} />
       <motion.div className="absolute pointer-events-none" style={{ inset: -20, background: glow2Bg, filter: 'blur(20px)' }} />
 
-      {/* individual heart layers — each pulses asynchronously via w/h */}
-      {HEART_LAYERS.map((src, i) => {
-        const [scaleMax, duration, delay] = HEART_PULSE[i];
-        const wMax = size * scaleMax;
-        return (
-          <motion.img
-            key={i}
-            src={src}
-            aria-hidden={i > 0}
-            alt={i === 0 ? 'Аура' : undefined}
-            animate={{ width: [size, wMax, size], height: [size, wMax, size] }}
-            transition={{ duration, repeat: Infinity, ease: 'easeInOut', delay, repeatType: 'loop' }}
-            style={{
-              position: 'absolute',
-              left: '50%',
-              top: '50%',
-              transform: 'translate(-50%, -50%)',
-              objectFit: 'contain',
-              filter: imgFilter as any,
-              zIndex: i + 1,
-            }}
-          />
-        );
-      })}
+      {/* Grayscale base — all layers, static */}
+      {HEART_LAYERS.map((src, i) => (
+        <img
+          key={`g${i}`}
+          src={src}
+          aria-hidden
+          style={{
+            position: 'absolute',
+            left: '50%', top: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: size, height: size,
+            objectFit: 'contain',
+            filter: 'saturate(0.08) brightness(0.45)',
+            zIndex: i + 1,
+          }}
+        />
+      ))}
+
+      {/* Colored layers — revealed from center by radial clip, expanding with score */}
+      <div
+        style={{
+          position: 'absolute', inset: 0,
+          clipPath: `circle(${clipRadius}% at 50% 48%)`,
+          transition: 'clip-path 1.2s cubic-bezier(0.22, 1, 0.36, 1)',
+          zIndex: 10,
+        }}
+      >
+        {HEART_LAYERS.map((src, i) => {
+          const [scaleMax, duration, delay] = HEART_PULSE[i];
+          const wMax = size * scaleMax;
+          return (
+            <motion.img
+              key={`c${i}`}
+              src={src}
+              aria-hidden={i > 0}
+              alt={i === 0 ? 'Аура' : undefined}
+              animate={{ width: [size, wMax, size], height: [size, wMax, size] }}
+              transition={{ duration, repeat: Infinity, ease: 'easeInOut', delay, repeatType: 'loop' }}
+              style={{
+                position: 'absolute',
+                left: '50%', top: '50%',
+                transform: 'translate(-50%, -50%)',
+                objectFit: 'contain',
+                filter: imgFilter as any,
+                zIndex: i + 1,
+              }}
+            />
+          );
+        })}
+      </div>
     </motion.div>
   );
 };

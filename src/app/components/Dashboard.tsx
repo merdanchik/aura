@@ -793,14 +793,14 @@ export const Dashboard = () => {
           const cardZ = [1, 3, 5, 7, 4, 6, 2];
 
           return (
-            <div className="grid grid-cols-3 gap-2.5" style={{ padding: '8px 4px 6px', overflow: 'visible' }}>
+            <div className="grid grid-cols-2 gap-3" style={{ padding: '8px 4px 6px', overflow: 'visible' }}>
               {cards.map((card, i) => (
                 <div
                   key={i}
-                  className={`rounded-[20px] relative overflow-hidden flex flex-col${card.wide ? ' col-span-3' : ''}`}
+                  className={`rounded-[22px] relative overflow-hidden flex flex-col${card.wide ? ' col-span-2' : ''}`}
                   style={{
                     background: card.bg,
-                    minHeight: card.wide ? 100 : 215,
+                    minHeight: card.wide ? 104 : 200,
                     transform: cardTransforms[i] ?? 'none',
                     boxShadow: '0 8px 28px rgba(0,0,0,0.65)',
                     zIndex: cardZ[i] ?? 1,
@@ -827,25 +827,25 @@ export const Dashboard = () => {
                     </div>
                   ) : (
                     /* ── Normal card ── */
-                    <div className="relative z-10 flex flex-col items-center text-center px-2.5 py-3" style={{ flex: 1, height: '100%' }}>
-                      {/* Top: category + badge */}
-                      <div className="flex items-center gap-1 self-stretch justify-between">
-                        <p style={{ fontSize: 10, fontWeight: 500, color: 'rgba(255,255,255,0.48)', letterSpacing: 0.3, textTransform: 'uppercase' }}>{card.category}</p>
+                    <div className="relative z-10 flex flex-col items-center text-center px-4 py-4" style={{ flex: 1, height: '100%' }}>
+                      {/* Top: category centered + badge */}
+                      <div className="flex items-center justify-center gap-1.5 w-full">
+                        <p style={{ fontSize: 11, fontWeight: 500, color: 'rgba(255,255,255,0.45)', letterSpacing: 0.4, textTransform: 'uppercase' }}>{card.category}</p>
                         {card.isNew && (
-                          <span style={{ fontSize: 8, padding: '2px 5px', borderRadius: 8, backgroundColor: 'rgba(255,255,255,0.18)', color: 'white', fontWeight: 600 }}>NEW</span>
+                          <span style={{ fontSize: 8, padding: '2px 6px', borderRadius: 8, backgroundColor: 'rgba(255,255,255,0.18)', color: 'white', fontWeight: 600 }}>NEW</span>
                         )}
                       </div>
 
-                      {/* Center: label ABOVE value */}
+                      {/* Center: label (main) ABOVE value (secondary) */}
                       <div className="flex flex-col items-center justify-center" style={{ flex: 1 }}>
-                        <p style={{ fontSize: 15, fontWeight: 600, color: 'white', lineHeight: 1.25, marginBottom: 7, textAlign: 'center' }}>{card.label}</p>
-                        <p style={{ fontSize: 26, fontWeight: 300, color: 'rgba(255,255,255,0.72)', lineHeight: 1, letterSpacing: -0.5, whiteSpace: 'pre-line' }}>
-                          {card.value}<span style={{ fontSize: 13, fontWeight: 300, verticalAlign: 'super', lineHeight: 0 }}>{card.unit}</span>
+                        <p style={{ fontSize: 18, fontWeight: 700, color: 'white', lineHeight: 1.2, marginBottom: 10, textAlign: 'center' }}>{card.label}</p>
+                        <p style={{ fontSize: 22, fontWeight: 300, color: 'rgba(255,255,255,0.55)', lineHeight: 1, letterSpacing: -0.3, whiteSpace: 'pre-line' }}>
+                          {card.value}{card.unit}
                         </p>
                       </div>
 
                       {/* Bottom: sub */}
-                      <p style={{ fontSize: 9, color: 'rgba(255,255,255,0.32)', marginTop: 6, textAlign: 'center', lineHeight: 1.3 }}>{card.sub}</p>
+                      <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.30)', textAlign: 'center', lineHeight: 1.3 }}>{card.sub}</p>
                     </div>
                   )}
                 </div>

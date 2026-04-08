@@ -74,6 +74,9 @@ const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScor
     `radial-gradient(ellipse at 40% 42%, hsla(${(h + 150) % 360}, 70%, 50%, ${glowAlpha * 0.6}) 0%, transparent 52%)`
   );
 
+  // async pulse phases for shimmer layers (simulates per-icon pulsing)
+  const pulsePhases = [0, 1.1, 2.3] as const;
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -82,13 +85,36 @@ const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScor
       className="relative flex justify-center"
       style={{ width: size, height: size, margin: '0 auto' }}
     >
+      {/* glow */}
       <motion.div className="absolute pointer-events-none" style={{ inset: -20, background: glow1Bg, filter: 'blur(28px)' }} />
       <motion.div className="absolute pointer-events-none" style={{ inset: -20, background: glow2Bg, filter: 'blur(20px)' }} />
+
+      {/* base image */}
       <motion.img
         src={heartSvg}
         alt="Аура"
         style={{ width: size, height: size, objectFit: 'contain', position: 'relative', zIndex: 1, filter: imgFilter as any }}
       />
+
+      {/* async shimmer layers — screen blend, each at a different phase */}
+      {isStrong && pulsePhases.map((delay, i) => (
+        <motion.img
+          key={i}
+          src={heartSvg}
+          aria-hidden
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0, 0.12 + i * 0.04, 0] }}
+          transition={{ duration: 1.6 + i * 0.5, repeat: Infinity, ease: 'easeInOut', delay }}
+          style={{
+            position: 'absolute', inset: 0,
+            width: size, height: size,
+            objectFit: 'contain',
+            mixBlendMode: 'screen',
+            filter: imgFilter as any,
+            zIndex: 2,
+          }}
+        />
+      ))}
     </motion.div>
   );
 };
@@ -379,50 +405,39 @@ export const Dashboard = () => {
         transition={{ delay: 0.05 }}
         className="flex justify-center mb-3"
       >
-        <HeartAura overallScore={overallScore} globalTrustScore={globalTrustScore} size={330} />
+        <HeartAura overallScore={overallScore} globalTrustScore={globalTrustScore} size={429} />
       </motion.div>
 
-      {/* Rings + Scores — compact horizontal card */}
+      {/* Rings + Scores — no background, just flex row */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="rounded-2xl overflow-hidden mb-4 relative"
-        style={{ backgroundColor: '#1C1C1E' }}
+        className="flex items-center gap-4 px-1 mb-4"
       >
-        {/* subtle glow */}
-        {(() => {
-          const trustGlow = globalTrustScore < 40 ? 'rgba(255,59,48,0.14)' : globalTrustScore < 70 ? 'rgba(255,149,0,0.12)' : 'rgba(48,209,88,0.12)';
-          return <>
-            <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(ellipse at 20% 50%, ${trustGlow} 0%, transparent 55%)`, filter: 'blur(18px)' }} />
-            <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 80% 50%, rgba(94,92,230,0.1) 0%, transparent 55%)', filter: 'blur(18px)' }} />
-          </>;
-        })()}
-        <div className="flex items-center gap-4 px-4 py-4 relative z-10">
-          {/* Rings */}
-          <div className="relative flex-shrink-0">
-            <AuraRings knowledge={globalKnowledgeScore} trust={globalTrustScore} size={110} />
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <p className="text-[26px] text-white" style={{ fontWeight: 700, lineHeight: 1 }}>
-                {Math.round(overallScore)}
-              </p>
-              <p className="text-[10px] text-[#98989D] mt-0.5" style={{ fontWeight: 500 }}>из 100</p>
-            </div>
+        {/* Rings */}
+        <div className="relative flex-shrink-0">
+          <AuraRings knowledge={globalKnowledgeScore} trust={globalTrustScore} size={110} />
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <p className="text-[26px] text-white" style={{ fontWeight: 700, lineHeight: 1 }}>
+              {Math.round(overallScore)}
+            </p>
+            <p className="text-[10px] text-[#98989D] mt-0.5" style={{ fontWeight: 500 }}>из 100</p>
           </div>
-          {/* Scores */}
-          <div className="flex gap-5 flex-1">
-            <div>
-              <p className="text-[13px] text-[#98989D]" style={{ fontWeight: 500 }}>Знания</p>
-              <p className="text-[26px]" style={{ fontWeight: 700, color: '#BF5AF2', lineHeight: 1.15 }}>
-                {Math.round(globalKnowledgeScore)}<span className="text-[16px]">/100</span>
-              </p>
-            </div>
-            <div>
-              <p className="text-[13px] text-[#98989D]" style={{ fontWeight: 500 }}>Доверие</p>
-              <p className="text-[26px]" style={{ fontWeight: 700, color: globalTrustScore < 40 ? '#FF3B30' : globalTrustScore < 70 ? '#FF9500' : '#30D158', lineHeight: 1.15 }}>
-                {Math.round(globalTrustScore)}<span className="text-[16px]">/100</span>
-              </p>
-            </div>
+        </div>
+        {/* Scores */}
+        <div className="flex gap-6">
+          <div>
+            <p className="text-[13px] text-[#98989D]" style={{ fontWeight: 500 }}>Знания</p>
+            <p className="text-[26px]" style={{ fontWeight: 700, color: '#BF5AF2', lineHeight: 1.2 }}>
+              {Math.round(globalKnowledgeScore)}/100
+            </p>
+          </div>
+          <div>
+            <p className="text-[13px] text-[#98989D]" style={{ fontWeight: 500 }}>Доверие</p>
+            <p className="text-[26px]" style={{ fontWeight: 700, color: globalTrustScore < 40 ? '#FF3B30' : globalTrustScore < 70 ? '#FF9500' : '#30D158', lineHeight: 1.2 }}>
+              {Math.round(globalTrustScore)}/100
+            </p>
           </div>
         </div>
       </motion.div>

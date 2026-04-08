@@ -781,8 +781,19 @@ export const Dashboard = () => {
             },
           ];
 
+          const cardTransforms = [
+            'rotate(-1.8deg) translate(-3px, 4px)',
+            'rotate(1.5deg) translate(2px, -3px)',
+            'rotate(-1.3deg) translate(-4px, 2px)',
+            'rotate(2.1deg) translate(3px, -5px)',
+            'rotate(-1.7deg) translate(-2px, 3px)',
+            'rotate(1.9deg) translate(4px, -2px)',
+            'rotate(-0.6deg) translate(1px, 2px)',
+          ];
+          const cardZ = [1, 3, 5, 7, 4, 6, 2];
+
           return (
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3" style={{ padding: '8px 6px 6px', overflow: 'visible' }}>
               {cards.map((card, i) => (
                 <div
                   key={i}
@@ -790,6 +801,9 @@ export const Dashboard = () => {
                   style={{
                     background: card.bg,
                     minHeight: card.wide ? 108 : 172,
+                    transform: cardTransforms[i] ?? 'none',
+                    boxShadow: '0 8px 28px rgba(0,0,0,0.65)',
+                    zIndex: cardZ[i] ?? 1,
                   }}
                 >
                   {/* Top-edge shine */}

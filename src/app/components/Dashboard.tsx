@@ -368,23 +368,62 @@ export const Dashboard = () => {
       {/* Heart aura */}
       {(() => {
         const s = overallScore / 100;
-        const scale = 0.6 + s * 0.45;
-        const opacity = 0.18 + s * 0.82;
-        const saturate = s * 2.2;
-        const brightness = 0.45 + s * 0.75;
+        const isStrong = overallScore >= 70;
+
+        // glow colors matching rings
+        const glowMain = globalTrustScore < 40
+          ? `rgba(255,59,48,${0.15 + s * 0.45})`
+          : globalTrustScore < 70
+            ? `rgba(255,149,0,${0.15 + s * 0.45})`
+            : `rgba(48,209,88,${0.15 + s * 0.45})`;
+        const glowPurple = `rgba(94,92,230,${0.12 + s * 0.35})`;
+
+        // image filter: grayscale when weak, vibrant when strong
+        const saturate = 0.05 + s * 2.5;
+        const brightness = 0.55 + s * 0.65;
+
         return (
           <motion.div
-            initial={{ opacity: 0, scale: 0.7 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.08, duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-            className="flex justify-center mt-1 mb-1"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.08, duration: 0.5 }}
+            className="flex justify-center mt-1 mb-1 relative"
+            style={{ width: 220, alignSelf: 'center', margin: '4px auto' }}
           >
+            {/* glow layers — same pattern as rings card */}
+            <motion.div
+              animate={{ opacity: 0.6 + s * 0.4 }}
+              className="absolute pointer-events-none"
+              style={{ inset: -30, background: `radial-gradient(ellipse at 65% 55%, ${glowMain} 0%, transparent 60%)`, filter: 'blur(22px)' }}
+            />
+            <motion.div
+              animate={{ opacity: 0.5 + s * 0.5 }}
+              className="absolute pointer-events-none"
+              style={{ inset: -30, background: `radial-gradient(ellipse at 35% 45%, ${glowPurple} 0%, transparent 60%)`, filter: 'blur(22px)' }}
+            />
+
+            {/* heart image */}
             <motion.img
               src={heartSvg}
               alt="Аура"
-              animate={{ scale, opacity, filter: `saturate(${saturate}) brightness(${brightness})` }}
-              transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-              style={{ width: 240, height: 220, objectFit: 'contain' }}
+              animate={isStrong ? {
+                filter: [
+                  `saturate(${saturate}) brightness(${brightness})`,
+                  `saturate(${saturate * 1.3}) brightness(${brightness + 0.2})`,
+                  `saturate(${saturate}) brightness(${brightness})`,
+                ],
+              } : {
+                filter: `saturate(${saturate}) brightness(${brightness})`,
+              }}
+              transition={isStrong ? {
+                duration: 2.5,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              } : {
+                duration: 0.8,
+                ease: [0.25, 0.1, 0.25, 1],
+              }}
+              style={{ width: 220, height: 220, objectFit: 'contain', position: 'relative', zIndex: 1 }}
             />
           </motion.div>
         );

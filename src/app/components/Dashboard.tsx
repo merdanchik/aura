@@ -757,13 +757,13 @@ export const Dashboard = () => {
 
         {(() => {
           const cards = [
-            { icon: '🎬', category: 'Кино', title: 'Интерес к историческим драмам', sub: 'Кинопоиск · оценка 10', pct: '72%', pctColor: '#FF9F45', isNew: true,  bg: '#1a0800', glow: 'rgba(220,80,0,0.65)' },
-            { icon: '🍱', category: 'Еда',  title: 'Предпочитает японскую кухню',   sub: 'Яндекс Еда · 67 заказов', pct: '91%', pctColor: '#30D158', isNew: false, bg: '#001a0a', glow: 'rgba(0,190,80,0.65)' },
-            { icon: '🌙', category: 'Паттерн', title: 'Активен в экосистеме после 23:00', sub: 'Все сервисы · активность', pct: '94%', pctColor: '#BF5AF2', isNew: false, bg: '#08001c', glow: 'rgba(130,60,255,0.65)' },
-            { icon: '🚕', category: 'Паттерн', title: 'Утренние поездки по одному маршруту', sub: 'Яндекс Такси · 214 поездок', pct: '96%', pctColor: '#FF9500', isNew: false, bg: '#180e00', glow: 'rgba(255,160,0,0.6)' },
-            { icon: '📍', category: 'Контекст', title: 'Живёт в Москве', sub: 'Яндекс Такси · адреса', pct: '99%', pctColor: '#40C8E0', isNew: false, bg: '#001418', glow: 'rgba(0,170,210,0.6)' },
-            { icon: '⭐', category: 'Репутация', title: 'Топ-8% по надёжности', sub: 'Все сервисы · рейтинг', pct: '100%', pctColor: '#FFD60A', isNew: false, bg: '#181200', glow: 'rgba(255,210,0,0.6)' },
-            { icon: '⚠️', category: 'Репутация', title: 'Незавершённая поездка на самокате', sub: 'Яндекс Самокаты · инцидент', pct: '100%', pctColor: '#FF453A', isNew: true, bg: '#180600', glow: 'rgba(255,70,40,0.6)', wide: true },
+            { icon: '🎬', category: 'Кино', title: 'Интерес к историческим драмам', sub: 'Кинопоиск · оценка 10', pct: '72%', pctColor: '#FF9F45', isNew: true,  bg: '#1a0800', glow: 'rgba(220,80,0,0.26)' },
+            { icon: '🍱', category: 'Еда',  title: 'Предпочитает японскую кухню',   sub: 'Яндекс Еда · 67 заказов', pct: '91%', pctColor: '#30D158', isNew: false, bg: '#001a0a', glow: 'rgba(0,190,80,0.26)' },
+            { icon: '🌙', category: 'Паттерн', title: 'Активен в экосистеме после 23:00', sub: 'Все сервисы · активность', pct: '94%', pctColor: '#BF5AF2', isNew: false, bg: '#08001c', glow: 'rgba(130,60,255,0.26)' },
+            { icon: '🚕', category: 'Паттерн', title: 'Утренние поездки по одному маршруту', sub: 'Яндекс Такси · 214 поездок', pct: '96%', pctColor: '#FF9500', isNew: false, bg: '#180e00', glow: 'rgba(255,160,0,0.24)' },
+            { icon: '📍', category: 'Контекст', title: 'Живёт в Москве', sub: 'Яндекс Такси · адреса', pct: '99%', pctColor: '#40C8E0', isNew: false, bg: '#001418', glow: 'rgba(0,170,210,0.24)' },
+            { icon: '⭐', category: 'Репутация', title: 'Топ-8% по надёжности', sub: 'Все сервисы · рейтинг', pct: '100%', pctColor: '#FFD60A', isNew: false, bg: '#181200', glow: 'rgba(255,210,0,0.24)' },
+            { icon: '⚠️', category: 'Репутация', title: 'Незавершённая поездка на самокате', sub: 'Яндекс Самокаты · инцидент', pct: '100%', pctColor: '#FF453A', isNew: true, bg: '#180600', glow: 'rgba(255,70,40,0.24)', wide: true },
           ];
 
           return (

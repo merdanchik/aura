@@ -60,7 +60,7 @@ const HEART_PULSE: [number, number, number][] = [
 ];
 
 // lub-dub cardiac keyframes: quick first beat → small valley → second beat → diastole rest
-const BEAT_SCALE  = [1, 1.11, 1.04, 1.09, 0.97, 1.0];
+const BEAT_SCALE  = [1, 1.055, 1.02, 1.045, 0.985, 1.0];
 const BEAT_TIMES  = [0, 0.14, 0.26, 0.40, 0.65, 1.0];
 const BEAT_DUR    = 0.58;   // seconds for active beat
 const BEAT_REST   = 0.30;   // seconds of rest between beats (~72 BPM)
@@ -92,7 +92,7 @@ const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScor
 
   // Heartbeat glow — active at ALL score levels, stronger when score is high
   React.useEffect(() => {
-    const peak = 0.20 + s * 0.32; // min 0.20 even at score 0
+    const peak = 0.10 + s * 0.16;
     const a = motionAnimate(
       beatGlow,
       [0, peak, peak * 0.35, peak * 0.80, 0],

@@ -42,7 +42,7 @@ const PRIMARY_SERVICES = ['music', 'kinopoisk', 'books', 'market', 'split'];
 
 // ─── Heart Aura ──────────────────────────────────────────────────────────────
 
-const HeartAura = ({ overallScore, globalTrustScore }: { overallScore: number; globalTrustScore: number }) => {
+const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScore: number; globalTrustScore: number; size?: number }) => {
   const s = overallScore / 100;
   const isStrong = overallScore >= 60;
 
@@ -53,12 +53,8 @@ const HeartAura = ({ overallScore, globalTrustScore }: { overallScore: number; g
       const a = motionAnimate(hue, 0, { duration: 1 });
       return () => a.stop();
     }
-    const speed = 6 + (1 - s) * 4; // faster when stronger
-    const a = motionAnimate(hue, [0, 360], {
-      duration: speed,
-      repeat: Infinity,
-      ease: 'linear',
-    });
+    const speed = 6 + (1 - s) * 4;
+    const a = motionAnimate(hue, [0, 360], { duration: speed, repeat: Infinity, ease: 'linear' });
     return () => a.stop();
   }, [isStrong, s]);
 
@@ -69,28 +65,29 @@ const HeartAura = ({ overallScore, globalTrustScore }: { overallScore: number; g
     `saturate(${saturate.toFixed(2)}) brightness(${brightness.toFixed(2)}) hue-rotate(${h.toFixed(0)}deg)`
   );
 
-  const glowAlpha = 0.18 + s * 0.52;
+  // weaker glow — doesn't overpower the heart
+  const glowAlpha = 0.07 + s * 0.18;
   const glow1Bg = useTransform(hue, h =>
-    `radial-gradient(ellipse at 60% 55%, hsla(${h + 20}, 85%, 58%, ${glowAlpha}) 0%, transparent 62%)`
+    `radial-gradient(ellipse at 55% 55%, hsla(${h + 20}, 80%, 55%, ${glowAlpha}) 0%, transparent 58%)`
   );
   const glow2Bg = useTransform(hue, h =>
-    `radial-gradient(ellipse at 35% 45%, hsla(${(h + 150) % 360}, 75%, 52%, ${glowAlpha * 0.75}) 0%, transparent 58%)`
+    `radial-gradient(ellipse at 40% 42%, hsla(${(h + 150) % 360}, 70%, 50%, ${glowAlpha * 0.6}) 0%, transparent 52%)`
   );
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ delay: 0.08, duration: 0.5 }}
+      transition={{ delay: 0.05, duration: 0.5 }}
       className="relative flex justify-center"
-      style={{ width: 220, height: 220, margin: '4px auto' }}
+      style={{ width: size, height: size, margin: '0 auto' }}
     >
-      <motion.div className="absolute pointer-events-none" style={{ inset: -28, background: glow1Bg, filter: 'blur(24px)' }} />
-      <motion.div className="absolute pointer-events-none" style={{ inset: -28, background: glow2Bg, filter: 'blur(20px)' }} />
+      <motion.div className="absolute pointer-events-none" style={{ inset: -20, background: glow1Bg, filter: 'blur(28px)' }} />
+      <motion.div className="absolute pointer-events-none" style={{ inset: -20, background: glow2Bg, filter: 'blur(20px)' }} />
       <motion.img
         src={heartSvg}
         alt="Аура"
-        style={{ width: 220, height: 220, objectFit: 'contain', position: 'relative', zIndex: 1, filter: imgFilter as any }}
+        style={{ width: size, height: size, objectFit: 'contain', position: 'relative', zIndex: 1, filter: imgFilter as any }}
       />
     </motion.div>
   );
@@ -375,54 +372,60 @@ export const Dashboard = () => {
       {/* ── Мой профиль content (existing) ── */}
       {activeTab === 'Мой профиль' && (
     <div className="px-4 pb-10 pt-2">
-      {/* Main rings card */}
+      {/* Heart — large, first */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.05 }}
-        className="rounded-2xl overflow-hidden mb-4 relative"
+        className="flex justify-center mb-3"
       >
-        {/* Glow effect */}
+        <HeartAura overallScore={overallScore} globalTrustScore={globalTrustScore} size={330} />
+      </motion.div>
+
+      {/* Rings + Scores — compact horizontal card */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="rounded-2xl overflow-hidden mb-4 relative"
+        style={{ backgroundColor: '#1C1C1E' }}
+      >
+        {/* subtle glow */}
         {(() => {
-          const trustGlow = globalTrustScore < 40 ? 'rgba(255,59,48,0.22)' : globalTrustScore < 70 ? 'rgba(255,149,0,0.18)' : 'rgba(48,209,88,0.18)';
+          const trustGlow = globalTrustScore < 40 ? 'rgba(255,59,48,0.14)' : globalTrustScore < 70 ? 'rgba(255,149,0,0.12)' : 'rgba(48,209,88,0.12)';
           return <>
-            <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(ellipse at 65% 55%, ${trustGlow} 0%, transparent 60%)`, filter: 'blur(24px)' }} />
-            <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 35% 45%, rgba(94,92,230,0.18) 0%, transparent 60%)', filter: 'blur(24px)' }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(ellipse at 20% 50%, ${trustGlow} 0%, transparent 55%)`, filter: 'blur(18px)' }} />
+            <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 80% 50%, rgba(94,92,230,0.1) 0%, transparent 55%)', filter: 'blur(18px)' }} />
           </>;
         })()}
-        <div className="flex flex-col items-center pt-6 pb-2 relative z-10">
+        <div className="flex items-center gap-4 px-4 py-4 relative z-10">
           {/* Rings */}
-          <div className="relative">
-            <AuraRings knowledge={globalKnowledgeScore} trust={globalTrustScore} size={220} />
-            {/* Center score */}
+          <div className="relative flex-shrink-0">
+            <AuraRings knowledge={globalKnowledgeScore} trust={globalTrustScore} size={110} />
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <p className="text-[48px] text-white" style={{ fontWeight: 700, lineHeight: 1 }}>
+              <p className="text-[26px] text-white" style={{ fontWeight: 700, lineHeight: 1 }}>
                 {Math.round(overallScore)}
               </p>
-              <p className="text-[12px] text-[#98989D] mt-1" style={{ fontWeight: 500 }}>из 100</p>
+              <p className="text-[10px] text-[#98989D] mt-0.5" style={{ fontWeight: 500 }}>из 100</p>
+            </div>
+          </div>
+          {/* Scores */}
+          <div className="flex gap-5 flex-1">
+            <div>
+              <p className="text-[13px] text-[#98989D]" style={{ fontWeight: 500 }}>Знания</p>
+              <p className="text-[26px]" style={{ fontWeight: 700, color: '#BF5AF2', lineHeight: 1.15 }}>
+                {Math.round(globalKnowledgeScore)}<span className="text-[16px]">/100</span>
+              </p>
+            </div>
+            <div>
+              <p className="text-[13px] text-[#98989D]" style={{ fontWeight: 500 }}>Доверие</p>
+              <p className="text-[26px]" style={{ fontWeight: 700, color: globalTrustScore < 40 ? '#FF3B30' : globalTrustScore < 70 ? '#FF9500' : '#30D158', lineHeight: 1.15 }}>
+                {Math.round(globalTrustScore)}<span className="text-[16px]">/100</span>
+              </p>
             </div>
           </div>
         </div>
-
-        {/* Legend */}
-        <div className="flex justify-center gap-6 pb-5 pt-1">
-          <div>
-            <p className="text-[13px] text-[#98989D]" style={{ fontWeight: 500 }}>Знания</p>
-            <p className="text-[28px]" style={{ fontWeight: 700, color: '#BF5AF2' }}>
-              {Math.round(globalKnowledgeScore)}/100
-            </p>
-          </div>
-          <div>
-            <p className="text-[13px] text-[#98989D]" style={{ fontWeight: 500 }}>Доверие</p>
-            <p className="text-[28px]" style={{ fontWeight: 700, color: globalTrustScore < 40 ? '#FF3B30' : globalTrustScore < 70 ? '#FF9500' : '#30D158' }}>
-              {Math.round(globalTrustScore)}/100
-            </p>
-          </div>
-        </div>
       </motion.div>
-
-      {/* Heart aura */}
-      <HeartAura overallScore={overallScore} globalTrustScore={globalTrustScore} />
 
       {/* Services + Relationship merged — MOVED UP */}
       <motion.div

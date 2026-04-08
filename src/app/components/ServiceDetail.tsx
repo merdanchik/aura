@@ -175,16 +175,14 @@ export const ServiceDetail = () => {
                 <div>
                   <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)', marginBottom: 2 }}>Доверие</p>
                   <p style={{ fontSize: 26, fontWeight: 600, color: trustColor, lineHeight: 1 }}>
-                    {displayTrust}
-                    <span style={{ fontSize: 17, fontWeight: 400 }}>/100</span>
+                    {displayTrust}/100
                   </p>
                 </div>
               )}
               <div>
                 <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)', marginBottom: 2 }}>Знания</p>
                 <p style={{ fontSize: 26, fontWeight: 600, color: '#BF5AF2', lineHeight: 1 }}>
-                  {displayKnowledge}
-                  <span style={{ fontSize: 17, fontWeight: 400 }}>/100</span>
+                  {displayKnowledge}/100
                 </p>
               </div>
             </div>

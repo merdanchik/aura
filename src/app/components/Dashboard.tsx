@@ -555,81 +555,78 @@ export const Dashboard = () => {
         <p className="text-[13px] text-[#98989D] px-1 mb-3 tracking-widest font-semibold uppercase">
           Воспоминания
         </p>
-        <div className="flex gap-3 overflow-x-auto -mx-4 px-4 scrollbar-hide pb-1">
+        <div className="grid grid-cols-2 gap-3">
           {[
             {
               title: 'Вечер с Кинопоиском',
               label: 'Кинопоиск',
               date: 'Сегодня',
               contextId: 'mem-kinopoisk',
-              bg: '#1a0500',
-              blobs: [
-                { x: '20%', y: '20%', color: 'rgba(220,60,0,0.75)', size: '70%' },
-                { x: '60%', y: '50%', color: 'rgba(120,20,0,0.5)', size: '60%' },
-                { x: '10%', y: '70%', color: 'rgba(255,100,0,0.3)', size: '50%' },
-              ],
+              cardBg: '#060100',
+              orbGrad: 'radial-gradient(circle at 46% 42%, rgba(245,100,18,1) 0%, rgba(190,50,5,0.72) 36%, rgba(110,22,0,0.28) 62%, transparent 80%)',
             },
             {
               title: 'Дождливые пятницы',
               label: 'Музыка',
               date: 'Октябрь 2024',
               contextId: 'mem-music',
-              bg: '#001a0a',
-              blobs: [
-                { x: '50%', y: '15%', color: 'rgba(0,200,80,0.6)', size: '65%' },
-                { x: '10%', y: '50%', color: 'rgba(180,220,0,0.4)', size: '55%' },
-                { x: '60%', y: '65%', color: 'rgba(0,140,60,0.5)', size: '50%' },
-              ],
+              cardBg: 'linear-gradient(155deg, #183828 0%, #0c2018 55%, #040c08 100%)',
+              isDotCard: true,
+              orbGrad: 'radial-gradient(circle at 50% 44%, rgba(55,210,100,0.65) 0%, rgba(18,150,60,0.38) 44%, transparent 68%)',
             },
             {
               title: 'Ночные сессии',
               label: 'Электроника',
               date: 'Ноябрь 2024',
               contextId: 'mem-electronic',
-              bg: '#08001f',
-              blobs: [
-                { x: '30%', y: '25%', color: 'rgba(160,60,255,0.7)', size: '70%' },
-                { x: '65%', y: '55%', color: 'rgba(80,0,200,0.5)', size: '55%' },
-                { x: '15%', y: '65%', color: 'rgba(220,100,255,0.3)', size: '45%' },
-              ],
+              cardBg: 'linear-gradient(155deg, #1a0a38 0%, #0c0422 55%, #040010 100%)',
+              isDotCard: true,
+              orbGrad: 'radial-gradient(circle at 48% 42%, rgba(165,72,255,0.9) 0%, rgba(105,30,215,0.58) 36%, rgba(60,10,140,0.22) 62%, transparent 80%)',
             },
             {
               title: 'Осенний марафон',
               label: 'Книги',
               date: 'Сентябрь 2024',
               contextId: 'mem-books',
-              bg: '#1a0c00',
-              blobs: [
-                { x: '60%', y: '20%', color: 'rgba(255,140,0,0.65)', size: '65%' },
-                { x: '15%', y: '45%', color: 'rgba(200,80,0,0.5)', size: '55%' },
-                { x: '50%', y: '70%', color: 'rgba(255,200,0,0.3)', size: '45%' },
-              ],
+              cardBg: '#070300',
+              orbGrad: 'radial-gradient(circle at 46% 42%, rgba(225,162,18,1) 0%, rgba(170,95,0,0.72) 36%, rgba(100,48,0,0.28) 62%, transparent 80%)',
             },
           ].map((mem, i) => (
             <div
               key={i}
               onClick={() => navigate(`/chat/${mem.contextId}`)}
-              className="flex-shrink-0 w-[155px] h-[200px] rounded-2xl flex flex-col justify-between p-4 relative overflow-hidden active:opacity-70 transition-opacity"
-              style={{ backgroundColor: mem.bg, cursor: 'pointer' }}
+              className="rounded-[22px] relative overflow-hidden active:opacity-70 transition-opacity"
+              style={{ height: 194, cursor: 'pointer', background: mem.cardBg }}
             >
-              {mem.blobs.map((blob, j) => (
-                <div
-                  key={j}
-                  className="absolute pointer-events-none"
-                  style={{
-                    left: blob.x, top: blob.y,
-                    width: blob.size, height: blob.size,
-                    background: `radial-gradient(circle, ${blob.color} 0%, transparent 68%)`,
-                    transform: 'translate(-50%, -50%)',
-                  }}
-                />
-              ))}
-              <p className="text-[11px] text-white/70 font-semibold tracking-widest uppercase relative z-10">
-                {mem.label}
-              </p>
-              <div className="relative z-10">
-                <p className="text-[15px] text-white leading-tight" style={{ fontWeight: 700 }}>{mem.title}</p>
-                <p className="text-[12px] text-white/50 mt-1">{mem.date}</p>
+              {/* Dot texture */}
+              {mem.isDotCard && (
+                <div className="absolute inset-0 pointer-events-none" style={{
+                  backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.14) 1px, transparent 1px)',
+                  backgroundSize: '10px 10px',
+                }} />
+              )}
+
+              {/* Glowing orb */}
+              <div className="absolute pointer-events-none" style={{
+                top: '6%', left: '10%', right: '10%', height: '60%',
+                background: mem.orbGrad,
+                filter: 'blur(2px)',
+              }} />
+
+              {/* Bottom fade */}
+              <div className="absolute inset-0 pointer-events-none" style={{
+                background: 'linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.22) 42%, transparent 65%)',
+              }} />
+
+              {/* Content */}
+              <div className="absolute inset-0 z-10 flex flex-col justify-between p-4">
+                <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.48)', fontWeight: 600, letterSpacing: 1, textTransform: 'uppercase' }}>
+                  {mem.label}
+                </p>
+                <div>
+                  <p style={{ fontSize: 15, fontWeight: 600, color: 'white', lineHeight: 1.3 }}>{mem.title}</p>
+                  <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.42)', marginTop: 3 }}>{mem.date}</p>
+                </div>
               </div>
             </div>
           ))}
@@ -748,50 +745,43 @@ export const Dashboard = () => {
               category: 'Кино', sub: 'Кинопоиск',
               value: '72', unit: '%', label: 'Исторические драмы',
               isNew: true, wide: false,
-              g1: '#FF8040', g2: '#C83000', g3: '#7A1000',
-              blob: '55% 60%',
+              bg: 'radial-gradient(ellipse at 75% 28%, rgba(190,60,15,0.72) 0%, transparent 58%), radial-gradient(ellipse at 22% 78%, rgba(110,25,8,0.55) 0%, transparent 52%), #1C0804',
             },
             {
               category: 'Еда', sub: 'Яндекс Еда · 67 заказов',
               value: '91', unit: '%', label: 'Японская кухня',
               isNew: false, wide: false,
-              g1: '#34C878', g2: '#108848', g3: '#044820',
-              blob: '45% 55%',
+              bg: 'radial-gradient(ellipse at 65% 28%, rgba(15,130,55,0.65) 0%, transparent 58%), radial-gradient(ellipse at 25% 72%, rgba(8,80,35,0.5) 0%, transparent 52%), #030F06',
             },
             {
               category: 'Паттерн', sub: 'Все сервисы',
               value: '94', unit: '%', label: 'Активен после 23:00',
               isNew: false, wide: false,
-              g1: '#A060F8', g2: '#5820C0', g3: '#200860',
-              blob: '50% 60%',
+              bg: 'radial-gradient(ellipse at 68% 25%, rgba(110,45,210,0.68) 0%, transparent 58%), radial-gradient(ellipse at 28% 72%, rgba(65,20,145,0.52) 0%, transparent 52%), #0A0418',
             },
             {
               category: 'Паттерн', sub: 'Яндекс Такси',
               value: '96', unit: '%', label: 'Утренние поездки',
               isNew: false, wide: false,
-              g1: '#FFB020', g2: '#D06800', g3: '#7A3400',
-              blob: '50% 55%',
+              bg: 'radial-gradient(ellipse at 68% 28%, rgba(185,105,0,0.65) 0%, transparent 58%), radial-gradient(ellipse at 25% 72%, rgba(115,58,0,0.5) 0%, transparent 52%), #180C00',
             },
             {
               category: 'Контекст', sub: 'Яндекс Такси · адреса',
               value: '99', unit: '%', label: 'Живёт в Москве',
               isNew: false, wide: false,
-              g1: '#20D4D4', g2: '#088888', g3: '#024040',
-              blob: '50% 60%',
+              bg: 'radial-gradient(ellipse at 68% 28%, rgba(12,125,125,0.65) 0%, transparent 58%), radial-gradient(ellipse at 25% 72%, rgba(8,75,75,0.5) 0%, transparent 52%), #021416',
             },
             {
               category: 'Репутация', sub: 'Все сервисы',
               value: 'топ\n8', unit: '%', label: 'По надёжности',
               isNew: false, wide: false,
-              g1: '#FFD030', g2: '#C88000', g3: '#704000',
-              blob: '45% 55%',
+              bg: 'radial-gradient(ellipse at 65% 25%, rgba(175,135,15,0.65) 0%, transparent 58%), radial-gradient(ellipse at 25% 72%, rgba(120,80,8,0.5) 0%, transparent 52%), #160E00',
             },
             {
               category: 'Инцидент', sub: 'Яндекс Самокаты',
               value: '!', unit: '', label: 'Незавершённая поездка на самокате',
               isNew: true, wide: true,
-              g1: '#FF4848', g2: '#C01010', g3: '#700000',
-              blob: '30% 50%',
+              bg: 'radial-gradient(ellipse at 38% 50%, rgba(195,30,30,0.7) 0%, transparent 55%), radial-gradient(ellipse at 72% 35%, rgba(115,10,10,0.5) 0%, transparent 50%), #1A0202',
             },
           ];
 
@@ -802,55 +792,53 @@ export const Dashboard = () => {
                   key={i}
                   className={`rounded-[22px] relative overflow-hidden flex flex-col${card.wide ? ' col-span-2' : ''}`}
                   style={{
-                    background: `linear-gradient(145deg, ${card.g1} 0%, ${card.g2} 50%, ${card.g3} 100%)`,
+                    background: card.bg,
                     minHeight: card.wide ? 108 : 172,
                   }}
                 >
-                  {/* Depth blob — darkens center for 3-D feel */}
-                  <div className="absolute pointer-events-none" style={{
-                    inset: 0,
-                    background: `radial-gradient(ellipse at ${card.blob}, rgba(0,0,0,0.42) 0%, transparent 68%)`,
-                  }} />
                   {/* Top-edge shine */}
                   <div className="absolute pointer-events-none" style={{
                     inset: 0,
-                    background: 'linear-gradient(180deg, rgba(255,255,255,0.10) 0%, transparent 40%)',
+                    background: 'linear-gradient(180deg, rgba(255,255,255,0.09) 0%, transparent 38%)',
                   }} />
 
                   {card.wide ? (
                     /* ── Wide / alert card ── */
                     <div className="relative z-10 flex items-center gap-4 px-5 py-5">
-                      <p style={{ fontSize: 40, lineHeight: 1 }}>⚠️</p>
+                      <p style={{ fontSize: 38, lineHeight: 1 }}>⚠️</p>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-0.5">
-                          <p style={{ fontSize: 13, fontWeight: 700, color: 'rgba(255,255,255,0.6)', letterSpacing: 1, textTransform: 'uppercase' }}>{card.category}</p>
-                          <span style={{ fontSize: 9, padding: '2px 7px', borderRadius: 10, backgroundColor: 'rgba(255,255,255,0.18)', color: 'white', fontWeight: 700, letterSpacing: 0.5 }}>НОВОЕ</span>
+                        <div className="flex items-center gap-2 mb-1">
+                          <p style={{ fontSize: 13, fontWeight: 400, color: 'rgba(255,255,255,0.58)', letterSpacing: 0.2 }}>{card.category}</p>
+                          {card.isNew && <span style={{ fontSize: 9, padding: '2px 7px', borderRadius: 10, backgroundColor: 'rgba(255,255,255,0.18)', color: 'white', fontWeight: 600, letterSpacing: 0.5 }}>НОВОЕ</span>}
                         </div>
-                        <p style={{ fontSize: 16, fontWeight: 700, color: 'white', lineHeight: 1.25 }}>{card.label}</p>
-                        <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', marginTop: 2 }}>{card.sub}</p>
+                        <p style={{ fontSize: 15, fontWeight: 500, color: 'white', lineHeight: 1.3 }}>{card.label}</p>
+                        <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.42)', marginTop: 3 }}>{card.sub}</p>
                       </div>
                     </div>
                   ) : (
                     /* ── Normal card ── */
-                    <div className="relative z-10 flex flex-col justify-between px-4 py-4 h-full" style={{ flex: 1 }}>
-                      {/* Header */}
+                    <div className="relative z-10 flex flex-col px-4 py-4 h-full" style={{ flex: 1 }}>
+                      {/* Top: category + sub + badge */}
                       <div className="flex items-start justify-between">
                         <div>
-                          <p style={{ fontSize: 13, fontWeight: 700, color: 'rgba(255,255,255,0.95)', letterSpacing: 0.3 }}>{card.category}</p>
-                          <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)', marginTop: 1 }}>{card.sub}</p>
+                          <p style={{ fontSize: 13, fontWeight: 400, color: 'rgba(255,255,255,0.78)' }}>{card.category}</p>
+                          <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.40)', marginTop: 2 }}>{card.sub}</p>
                         </div>
                         {card.isNew && (
-                          <span style={{ fontSize: 9, padding: '2px 7px', borderRadius: 10, backgroundColor: 'rgba(255,255,255,0.2)', color: 'white', fontWeight: 700, letterSpacing: 0.5 }}>NEW</span>
+                          <span style={{ fontSize: 9, padding: '2px 7px', borderRadius: 10, backgroundColor: 'rgba(255,255,255,0.18)', color: 'white', fontWeight: 600, letterSpacing: 0.5 }}>NEW</span>
                         )}
                       </div>
 
-                      {/* Big value */}
-                      <p style={{ fontSize: 54, fontWeight: 800, color: 'white', lineHeight: 1, margin: '10px 0 6px', whiteSpace: 'pre-line' }}>
-                        {card.value}<span style={{ fontSize: 26, fontWeight: 600, verticalAlign: 'super', lineHeight: 0 }}>{card.unit}</span>
-                      </p>
+                      {/* Spacer */}
+                      <div style={{ flex: 1 }} />
 
-                      {/* Bottom label */}
-                      <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)', fontWeight: 500 }}>{card.label}</p>
+                      {/* Bottom: value + label */}
+                      <div>
+                        <p style={{ fontSize: 40, fontWeight: 300, color: 'white', lineHeight: 1, letterSpacing: -0.5, whiteSpace: 'pre-line' }}>
+                          {card.value}<span style={{ fontSize: 19, fontWeight: 300, verticalAlign: 'super', lineHeight: 0 }}>{card.unit}</span>
+                        </p>
+                        <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.50)', fontWeight: 400, marginTop: 5 }}>{card.label}</p>
+                      </div>
                     </div>
                   )}
                 </div>

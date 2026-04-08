@@ -563,72 +563,64 @@ export const Dashboard = () => {
               label: 'Кинопоиск',
               date: 'Сегодня',
               contextId: 'mem-kinopoisk',
-              bg: '#1a0500',
-              blobs: [
-                { x: '20%', y: '20%', color: 'rgba(220,60,0,0.75)', size: '70%' },
-                { x: '60%', y: '50%', color: 'rgba(120,20,0,0.5)', size: '60%' },
-                { x: '10%', y: '70%', color: 'rgba(255,100,0,0.3)', size: '50%' },
-              ],
+              bg: '#150400',
+              shadow: [
+                'inset 0 2px 42px 28px rgba(100,15,0,0.98)',
+                'inset 0 0 32px 18px rgba(200,50,0,0.82)',
+                'inset 0 6px 24px 8px rgba(255,85,20,0.62)',
+                'inset 0 1px 20px 5px rgba(255,175,100,0.42)',
+              ].join(', '),
             },
             {
               title: 'Дождливые пятницы',
               label: 'Музыка',
               date: 'Октябрь 2024',
               contextId: 'mem-music',
-              bg: '#001a0a',
-              blobs: [
-                { x: '50%', y: '15%', color: 'rgba(0,200,80,0.6)', size: '65%' },
-                { x: '10%', y: '50%', color: 'rgba(180,220,0,0.4)', size: '55%' },
-                { x: '60%', y: '65%', color: 'rgba(0,140,60,0.5)', size: '50%' },
-              ],
+              bg: '#001508',
+              shadow: [
+                'inset 0 2px 42px 28px rgba(0,70,20,0.98)',
+                'inset 0 0 32px 18px rgba(0,155,55,0.82)',
+                'inset 0 6px 24px 8px rgba(20,220,80,0.60)',
+                'inset 0 1px 20px 5px rgba(160,255,195,0.40)',
+              ].join(', '),
             },
             {
               title: 'Ночные сессии',
               label: 'Электроника',
               date: 'Ноябрь 2024',
               contextId: 'mem-electronic',
-              bg: '#08001f',
-              blobs: [
-                { x: '30%', y: '25%', color: 'rgba(160,60,255,0.7)', size: '70%' },
-                { x: '65%', y: '55%', color: 'rgba(80,0,200,0.5)', size: '55%' },
-                { x: '15%', y: '65%', color: 'rgba(220,100,255,0.3)', size: '45%' },
-              ],
+              bg: '#060018',
+              shadow: [
+                'inset 0 2px 42px 28px rgba(38,8,98,0.98)',
+                'inset 0 0 32px 18px rgba(98,28,218,0.82)',
+                'inset 0 6px 24px 8px rgba(158,78,255,0.65)',
+                'inset 0 1px 20px 5px rgba(210,178,255,0.42)',
+              ].join(', '),
             },
             {
               title: 'Осенний марафон',
               label: 'Книги',
               date: 'Сентябрь 2024',
               contextId: 'mem-books',
-              bg: '#1a0c00',
-              blobs: [
-                { x: '60%', y: '20%', color: 'rgba(255,140,0,0.65)', size: '65%' },
-                { x: '15%', y: '45%', color: 'rgba(200,80,0,0.5)', size: '55%' },
-                { x: '50%', y: '70%', color: 'rgba(255,200,0,0.3)', size: '45%' },
-              ],
+              bg: '#150900',
+              shadow: [
+                'inset 0 2px 42px 28px rgba(98,42,0,0.98)',
+                'inset 0 0 32px 18px rgba(178,88,0,0.82)',
+                'inset 0 6px 24px 8px rgba(228,138,10,0.62)',
+                'inset 0 1px 20px 5px rgba(255,210,118,0.42)',
+              ].join(', '),
             },
           ].map((mem, i) => (
             <div
               key={i}
               onClick={() => navigate(`/chat/${mem.contextId}`)}
-              className="flex-shrink-0 w-[155px] h-[200px] rounded-2xl flex flex-col justify-between p-4 relative overflow-hidden active:opacity-70 transition-opacity"
-              style={{ backgroundColor: mem.bg, cursor: 'pointer' }}
+              className="flex-shrink-0 w-[155px] h-[200px] rounded-2xl flex flex-col justify-between p-4 active:opacity-70 transition-opacity"
+              style={{ backgroundColor: mem.bg, boxShadow: mem.shadow, cursor: 'pointer' }}
             >
-              {mem.blobs.map((blob, j) => (
-                <div
-                  key={j}
-                  className="absolute pointer-events-none"
-                  style={{
-                    left: blob.x, top: blob.y,
-                    width: blob.size, height: blob.size,
-                    background: `radial-gradient(circle, ${blob.color} 0%, transparent 68%)`,
-                    transform: 'translate(-50%, -50%)',
-                  }}
-                />
-              ))}
-              <p className="text-[11px] text-white/70 font-semibold tracking-widest uppercase relative z-10">
+              <p className="text-[11px] text-white/60 font-semibold tracking-widest uppercase">
                 {mem.label}
               </p>
-              <div className="relative z-10">
+              <div>
                 <p className="text-[15px] text-white leading-tight" style={{ fontWeight: 700 }}>{mem.title}</p>
                 <p className="text-[12px] text-white/50 mt-1">{mem.date}</p>
               </div>

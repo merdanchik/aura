@@ -39,6 +39,7 @@ const PRIMARY_SERVICES = ['music', 'kinopoisk', 'books', 'market', 'split'];
 // ─── Friends Tab ─────────────────────────────────────────────────────────────
 
 const FriendsTab = () => {
+  const { globalKnowledgeScore, globalTrustScore } = useAura();
   const [toggles, setToggles] = useState({
     music: true,
     cinema: true,
@@ -77,7 +78,7 @@ const FriendsTab = () => {
           </div>
           {/* Right — rings with avatar in center */}
           <div className="flex-shrink-0 relative">
-            <AuraRings knowledge={88} trust={92} size={100} />
+            <AuraRings knowledge={globalKnowledgeScore} trust={globalTrustScore} size={100} />
             <div className="absolute inset-0 flex items-center justify-center">
               <img src={avatarImg} alt="Александр" className="w-10 h-10 rounded-full object-cover" />
             </div>

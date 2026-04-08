@@ -19,6 +19,7 @@ import iconFood from "../../assets/food.png";
 import iconAfisha from "../../assets/afisha.png";
 import iconTravel from "../../assets/travel.png";
 import avatarImg from "../../assets/avatar.jpg";
+import heartSvg from "../../assets/heart.svg";
 import iconLamoda from "../../assets/partner-lamoda.jpg";
 import iconIvi from "../../assets/partner-ivi.jpg";
 import iconMvideo from "../../assets/partner-mvideo.jpg";
@@ -364,6 +365,30 @@ export const Dashboard = () => {
         </div>
       </motion.div>
 
+      {/* Heart aura */}
+      {(() => {
+        const s = overallScore / 100;
+        const scale = 0.6 + s * 0.45;
+        const opacity = 0.18 + s * 0.82;
+        const saturate = s * 2.2;
+        const brightness = 0.45 + s * 0.75;
+        return (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.7 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.08, duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+            className="flex justify-center mt-1 mb-1"
+          >
+            <motion.img
+              src={heartSvg}
+              alt="Аура"
+              animate={{ scale, opacity, filter: `saturate(${saturate}) brightness(${brightness})` }}
+              transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+              style={{ width: 220, height: 124, objectFit: 'contain' }}
+            />
+          </motion.div>
+        );
+      })()}
 
       {/* Services + Relationship merged — MOVED UP */}
       <motion.div

@@ -97,13 +97,13 @@ const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScor
     `saturate(2.2) brightness(${(0.85 + s * 0.15).toFixed(2)}) hue-rotate(${h.toFixed(0)}deg)`
   );
 
-  // Glow: opacity animates with beat (GPU-only), color follows hue slowly
-  const glowOpacity = useTransform(beatGlow, b => Math.min(1, b * 7));
-  const glow1Color = useTransform(hue, h =>
-    `radial-gradient(ellipse at 55% 55%, hsla(${h + 20}, 85%, 60%, 0.65) 0%, transparent 68%)`
+  // Soft ambient glow — no beat flash, just gentle hue shift
+  const glowAlpha = 0.07 + s * 0.18;
+  const glow1Bg = useTransform(hue, h =>
+    `radial-gradient(ellipse at 55% 55%, hsla(${h + 20}, 80%, 55%, ${glowAlpha.toFixed(3)}) 0%, transparent 58%)`
   );
-  const glow2Color = useTransform(hue, h =>
-    `radial-gradient(ellipse at 38% 40%, hsla(${(h + 150) % 360}, 75%, 55%, 0.45) 0%, transparent 55%)`
+  const glow2Bg = useTransform(hue, h =>
+    `radial-gradient(ellipse at 40% 42%, hsla(${(h + 150) % 360}, 70%, 50%, ${(glowAlpha * 0.6).toFixed(3)}) 0%, transparent 52%)`
   );
 
   const maskStyle = useTransform(clipRV, v => {
@@ -119,13 +119,9 @@ const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScor
       transition={{ delay: 0.05, duration: 0.5 }}
       style={{ width: size, height: size, margin: '0 auto', position: 'relative' }}
     >
-      {/* Two-layer glow: opacity beats (GPU), color shifts with hue */}
-      <motion.div className="absolute pointer-events-none"
-        style={{ inset: -28, background: glow1Color, filter: 'blur(26px)', opacity: glowOpacity, willChange: 'opacity' }}
-      />
-      <motion.div className="absolute pointer-events-none"
-        style={{ inset: -14, background: glow2Color, filter: 'blur(14px)', opacity: glowOpacity, willChange: 'opacity' }}
-      />
+      {/* Soft ambient glow — static opacity, slow hue shift */}
+      <motion.div className="absolute pointer-events-none" style={{ inset: -20, background: glow1Bg, filter: 'blur(28px)' }} />
+      <motion.div className="absolute pointer-events-none" style={{ inset: -20, background: glow2Bg, filter: 'blur(20px)' }} />
 
       {/* Grayscale base — 1 element (was 6), single beat wrapper */}
       <motion.div

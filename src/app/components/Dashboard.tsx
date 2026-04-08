@@ -3,7 +3,7 @@ import { useAura } from '../context/AuraContext';
 import { AuraRings, AuraRingsMini } from './AuraRings';
 import { useNavigate } from 'react-router';
 import { ChevronRight, ChevronDown, Zap, Shield, CheckCircle, MapPin } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useMotionValue, useTransform, animate as motionAnimate } from 'motion/react';
 import { Switch } from './ui/switch';
 
 // Service icons
@@ -39,6 +39,62 @@ const serviceIconMap: Record<string, string> = {
 };
 
 const PRIMARY_SERVICES = ['music', 'kinopoisk', 'books', 'market', 'split'];
+
+// ─── Heart Aura ──────────────────────────────────────────────────────────────
+
+const HeartAura = ({ overallScore, globalTrustScore }: { overallScore: number; globalTrustScore: number }) => {
+  const s = overallScore / 100;
+  const isStrong = overallScore >= 60;
+
+  const hue = useMotionValue(0);
+
+  React.useEffect(() => {
+    if (!isStrong) {
+      const a = motionAnimate(hue, 0, { duration: 1 });
+      return () => a.stop();
+    }
+    const speed = 6 + (1 - s) * 4; // faster when stronger
+    const a = motionAnimate(hue, [0, 360], {
+      duration: speed,
+      repeat: Infinity,
+      ease: 'linear',
+    });
+    return () => a.stop();
+  }, [isStrong, s]);
+
+  const saturate = isStrong ? 2.2 + s * 0.8 : 0.04 + s * 0.6;
+  const brightness = 0.5 + s * 0.7;
+
+  const imgFilter = useTransform(hue, h =>
+    `saturate(${saturate.toFixed(2)}) brightness(${brightness.toFixed(2)}) hue-rotate(${h.toFixed(0)}deg)`
+  );
+
+  const glowAlpha = 0.18 + s * 0.52;
+  const glow1Bg = useTransform(hue, h =>
+    `radial-gradient(ellipse at 60% 55%, hsla(${h + 20}, 85%, 58%, ${glowAlpha}) 0%, transparent 62%)`
+  );
+  const glow2Bg = useTransform(hue, h =>
+    `radial-gradient(ellipse at 35% 45%, hsla(${(h + 150) % 360}, 75%, 52%, ${glowAlpha * 0.75}) 0%, transparent 58%)`
+  );
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.08, duration: 0.5 }}
+      className="relative flex justify-center"
+      style={{ width: 220, height: 220, margin: '4px auto' }}
+    >
+      <motion.div className="absolute pointer-events-none" style={{ inset: -28, background: glow1Bg, filter: 'blur(24px)' }} />
+      <motion.div className="absolute pointer-events-none" style={{ inset: -28, background: glow2Bg, filter: 'blur(20px)' }} />
+      <motion.img
+        src={heartSvg}
+        alt="Аура"
+        style={{ width: 220, height: 220, objectFit: 'contain', position: 'relative', zIndex: 1, filter: imgFilter as any }}
+      />
+    </motion.div>
+  );
+};
 
 // ─── Friends Tab ─────────────────────────────────────────────────────────────
 
@@ -366,68 +422,7 @@ export const Dashboard = () => {
       </motion.div>
 
       {/* Heart aura */}
-      {(() => {
-        const s = overallScore / 100;
-        const isStrong = overallScore >= 70;
-
-        // glow colors matching rings
-        const glowMain = globalTrustScore < 40
-          ? `rgba(255,59,48,${0.15 + s * 0.45})`
-          : globalTrustScore < 70
-            ? `rgba(255,149,0,${0.15 + s * 0.45})`
-            : `rgba(48,209,88,${0.15 + s * 0.45})`;
-        const glowPurple = `rgba(94,92,230,${0.12 + s * 0.35})`;
-
-        // image filter: grayscale when weak, vibrant when strong
-        const saturate = 0.05 + s * 2.5;
-        const brightness = 0.55 + s * 0.65;
-
-        return (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.08, duration: 0.5 }}
-            className="flex justify-center mt-1 mb-1 relative"
-            style={{ width: 220, alignSelf: 'center', margin: '4px auto' }}
-          >
-            {/* glow layers — same pattern as rings card */}
-            <motion.div
-              animate={{ opacity: 0.6 + s * 0.4 }}
-              className="absolute pointer-events-none"
-              style={{ inset: -30, background: `radial-gradient(ellipse at 65% 55%, ${glowMain} 0%, transparent 60%)`, filter: 'blur(22px)' }}
-            />
-            <motion.div
-              animate={{ opacity: 0.5 + s * 0.5 }}
-              className="absolute pointer-events-none"
-              style={{ inset: -30, background: `radial-gradient(ellipse at 35% 45%, ${glowPurple} 0%, transparent 60%)`, filter: 'blur(22px)' }}
-            />
-
-            {/* heart image */}
-            <motion.img
-              src={heartSvg}
-              alt="Аура"
-              animate={isStrong ? {
-                filter: [
-                  `saturate(${saturate}) brightness(${brightness})`,
-                  `saturate(${saturate * 1.3}) brightness(${brightness + 0.2})`,
-                  `saturate(${saturate}) brightness(${brightness})`,
-                ],
-              } : {
-                filter: `saturate(${saturate}) brightness(${brightness})`,
-              }}
-              transition={isStrong ? {
-                duration: 2.5,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              } : {
-                duration: 0.8,
-                ease: [0.25, 0.1, 0.25, 1],
-              }}
-              style={{ width: 220, height: 220, objectFit: 'contain', position: 'relative', zIndex: 1 }}
-            />
-          </motion.div>
-        );
-      })()}
+      <HeartAura overallScore={overallScore} globalTrustScore={globalTrustScore} />
 
       {/* Services + Relationship merged — MOVED UP */}
       <motion.div

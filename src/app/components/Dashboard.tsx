@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAura } from '../context/AuraContext';
 import { AuraRings, AuraRingsMini } from './AuraRings';
 import { useNavigate } from 'react-router';
-import { ChevronRight, ChevronDown, Zap, Shield, CheckCircle, MapPin } from 'lucide-react';
+import { ChevronRight, ChevronDown, Shield, CheckCircle, MapPin } from 'lucide-react';
 import { motion, AnimatePresence, useMotionValue, useTransform, animate as motionAnimate } from 'motion/react';
 import { Switch } from './ui/switch';
 
@@ -360,9 +360,8 @@ const TABS = ['Мой профиль', 'Друзья', 'Партнеры'] as co
 type TabType = typeof TABS[number];
 
 export const Dashboard = () => {
-  const { services, globalTrustScore, globalKnowledgeScore, overallScore, theme, triggerEvent } = useAura();
+  const { services, globalTrustScore, globalKnowledgeScore, overallScore } = useAura();
   const navigate = useNavigate();
-  const isTrustCritical = globalTrustScore < 50;
   const [servicesExpanded, setServicesExpanded] = useState(() => sessionStorage.getItem('servicesExpanded') === 'true');
   const [activeTab, setActiveTab] = useState<TabType>('Мой профиль');
 
@@ -562,6 +561,7 @@ export const Dashboard = () => {
               title: 'Вечер с Кинопоиском',
               label: 'Кинопоиск',
               date: 'Сегодня',
+              contextId: 'mem-kinopoisk',
               bg: '#1a0500',
               blobs: [
                 { x: '20%', y: '20%', color: 'rgba(220,60,0,0.75)', size: '70%' },
@@ -573,6 +573,7 @@ export const Dashboard = () => {
               title: 'Дождливые пятницы',
               label: 'Музыка',
               date: 'Октябрь 2024',
+              contextId: 'mem-music',
               bg: '#001a0a',
               blobs: [
                 { x: '50%', y: '15%', color: 'rgba(0,200,80,0.6)', size: '65%' },
@@ -584,6 +585,7 @@ export const Dashboard = () => {
               title: 'Ночные сессии',
               label: 'Электроника',
               date: 'Ноябрь 2024',
+              contextId: 'mem-electronic',
               bg: '#08001f',
               blobs: [
                 { x: '30%', y: '25%', color: 'rgba(160,60,255,0.7)', size: '70%' },
@@ -595,6 +597,7 @@ export const Dashboard = () => {
               title: 'Осенний марафон',
               label: 'Книги',
               date: 'Сентябрь 2024',
+              contextId: 'mem-books',
               bg: '#1a0c00',
               blobs: [
                 { x: '60%', y: '20%', color: 'rgba(255,140,0,0.65)', size: '65%' },
@@ -605,8 +608,9 @@ export const Dashboard = () => {
           ].map((mem, i) => (
             <div
               key={i}
-              className="flex-shrink-0 w-[155px] h-[200px] rounded-2xl flex flex-col justify-between p-4 relative overflow-hidden"
-              style={{ backgroundColor: mem.bg }}
+              onClick={() => navigate(`/chat/${mem.contextId}`)}
+              className="flex-shrink-0 w-[155px] h-[200px] rounded-2xl flex flex-col justify-between p-4 relative overflow-hidden active:opacity-70 transition-opacity"
+              style={{ backgroundColor: mem.bg, cursor: 'pointer' }}
             >
               {mem.blobs.map((blob, j) => (
                 <div
@@ -647,38 +651,44 @@ export const Dashboard = () => {
             {
               category: 'ВКУС · МУЗЫКА',
               icon: '🎵',
-              text: `Электроника в 2× чаще по пятницам после 22:00`,
+              text: 'Электроника в 2× чаще по пятницам после 22:00',
               accent: '#E03366',
+              contextId: 'ins-music',
             },
             {
               category: 'ОТКРЫТИЕ · КИНОПОИСК',
               icon: '🎬',
               text: 'Аниме расширило профиль знания',
               accent: '#FF6600',
+              contextId: 'ins-kinopoisk',
             },
             {
               category: 'ПРИВЫЧКА · МАРКЕТ',
               icon: '🛍️',
               text: 'Чаще покупаете по воскресеньям',
               accent: '#FFCC00',
+              contextId: 'ins-market',
             },
             {
               category: 'ПАТТЕРН · СПЛИТ',
               icon: '💳',
-              text: globalTrustScore > 50 ? 'Платите вовремя — доверие растёт' : 'Просрочки снижают ауру',
+              text: 'Платите вовремя — доверие растёт',
               accent: '#30D158',
+              contextId: 'ins-split',
             },
             {
               category: 'ОТКРЫТИЕ · КНИГИ',
               icon: '📚',
               text: 'Читаете больше нон-фикшна по утрам',
               accent: '#0077FF',
+              contextId: 'ins-books',
             },
           ].map((insight, i) => (
             <div
               key={i}
-              className="flex-shrink-0 w-[160px] rounded-2xl p-3.5 flex flex-col gap-2.5"
-              style={{ backgroundColor: '#1C1C1E' }}
+              onClick={() => navigate(`/chat/${insight.contextId}`)}
+              className="flex-shrink-0 w-[160px] rounded-2xl p-3.5 flex flex-col gap-2.5 active:opacity-70 transition-opacity"
+              style={{ backgroundColor: '#1C1C1E', cursor: 'pointer' }}
             >
               <div className="text-[24px] leading-none">{insight.icon}</div>
               <p className="text-[10px] font-semibold tracking-wider leading-tight" style={{ color: insight.accent }}>
@@ -783,34 +793,6 @@ export const Dashboard = () => {
         })()}
       </motion.div>
 
-      {/* Simulation */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.25 }}
-        className="mt-5 mb-6"
-      >
-        <h2 className="text-[22px] text-white px-1 mb-3" style={{ fontWeight: 700 }}>
-          Симуляция
-        </h2>
-
-        <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#1C1C1E' }}>
-          <button
-            onClick={() => triggerEvent('overdue')}
-            disabled={isTrustCritical}
-            className="w-full flex items-center gap-3.5 px-4 py-3.5 active:bg-white/[0.05] transition-colors text-left disabled:opacity-40"
-          >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center">
-              <Zap className="w-5 h-5 text-white" />
-            </div>
-            <div className="flex-1">
-              <p className="text-[17px] text-white" style={{ fontWeight: 400 }}>Просрочка по Сплиту</p>
-              <p className="text-[13px] text-[#98989D] mt-0.5">Симулировать падение доверия</p>
-            </div>
-            <ChevronRight className="w-4 h-4 text-[#48484A] flex-shrink-0" />
-          </button>
-        </div>
-      </motion.div>
     </div>
       )}
     </div>

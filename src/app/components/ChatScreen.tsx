@@ -75,6 +75,20 @@ const ACTION_STARTERS: Record<string, string> = {
   tr6: 'на путешествия обычно сколько закладываешь — расскажи, подберу варианты',
 };
 
+// Context chats (memories / insights) — no performAction needed
+interface ContextChat { message: string; color: string }
+const CONTEXT_CHATS: Record<string, ContextChat> = {
+  'mem-kinopoisk':  { message: 'о, сейчас расскажу — тут как раз несколько новинок', color: '#FF6600' },
+  'mem-music':      { message: 'помню этот плейлист — хочешь послушать снова?',       color: '#E03366' },
+  'mem-electronic': { message: 'ночная электроника — это твоя тема, саша',            color: '#8C3FED' },
+  'mem-books':      { message: 'сентябрьские книги — что из них понравилось больше?',  color: '#0077FF' },
+  'ins-music':      { message: 'электроника в пятницу вечером — это твоя традиция?',  color: '#E03366' },
+  'ins-kinopoisk':  { message: 'аниме тебя удивило? что посмотрел в итоге?',          color: '#FF6600' },
+  'ins-market':     { message: 'воскресные покупки — что обычно берёшь?',             color: '#FFCC00' },
+  'ins-split':      { message: 'с оплатами всё окей, саша?',                          color: '#00C853' },
+  'ins-books':      { message: 'утренний нон-фикшн — что читаешь сейчас?',            color: '#0077FF' },
+};
+
 // Lighten a hex color by mixing with white
 function lightenHex(hex: string, t = 0.45): string {
   const n = parseInt(hex.replace('#', ''), 16);
@@ -163,22 +177,23 @@ const FakeKeyboard: React.FC<{ onAnyTap: () => void }> = ({ onAnyTap }) => (
 
 // ── Chat screen ────────────────────────────────────────────────
 export const ChatScreen = () => {
-  const { id, actionId } = useParams<{ id: string; actionId: string }>();
+  const { id, actionId, contextId } = useParams<{ id?: string; actionId?: string; contextId?: string }>();
   const { services, performAction } = useAura();
   const navigate = useNavigate();
 
-  const service = services[id as ServiceId];
-  const messageText = ACTION_STARTERS[actionId!] ?? 'привет, саша!';
+  // Context mode (memory / insight) vs service-action mode
+  const ctx = contextId ? CONTEXT_CHATS[contextId] : null;
+
+  const service = id ? services[id as ServiceId] : null;
+  const messageText = ctx?.message ?? ACTION_STARTERS[actionId!] ?? 'привет, саша!';
 
   const handleComplete = () => {
-    performAction(id as ServiceId, actionId!);
+    if (id && actionId) performAction(id as ServiceId, actionId);
     navigate(-1);
   };
 
-  if (!service) return null;
-
-  const c1 = service.color;
-  const c2 = lightenHex(service.color, 0.5);
+  const c1 = ctx?.color ?? service?.color ?? '#5E5CE6';
+  const c2 = lightenHex(c1, 0.5);
 
   return (
     <motion.div

@@ -614,7 +614,7 @@ export const Dashboard = () => {
             <div
               key={i}
               onClick={() => navigate(`/chat/${mem.contextId}`)}
-              className="flex-shrink-0 w-[155px] h-[200px] rounded-2xl flex flex-col justify-between p-4 active:opacity-70 transition-opacity"
+              className="flex-shrink-0 w-[155px] h-[200px] rounded-2xl flex flex-col justify-between p-4 active:opacity-70 transition-opacity items-center text-center"
               style={{ backgroundColor: mem.bg, boxShadow: mem.shadow, cursor: 'pointer' }}
             >
               <p className="text-[11px] text-white/60 font-semibold tracking-widest uppercase">

@@ -18,6 +18,7 @@ import iconScooters from "../../assets/scooters.png";
 import iconFood from "../../assets/food.png";
 import iconAfisha from "../../assets/afisha.png";
 import iconTravel from "../../assets/travel.png";
+import avatarImg from "../../assets/avatar.jpg";
 
 const serviceIconMap: Record<string, string> = {
   music: iconBooks,
@@ -53,30 +54,33 @@ const FriendsTab = () => {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.05 }}
-        className="rounded-2xl overflow-hidden mb-5 relative"
-        style={{ background: 'linear-gradient(135deg, #12102a 0%, #1a1635 45%, #0d2340 100%)', minHeight: 140 }}
+        className="rounded-2xl p-4 mb-5 relative overflow-hidden"
+        style={{ backgroundColor: 'rgba(28,28,30,0.9)' }}
       >
-        {/* Glow layers */}
-        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 80% 15%, rgba(94,92,230,0.3) 0%, transparent 55%)' }} />
-        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 10% 90%, rgba(191,90,242,0.18) 0%, transparent 50%)' }} />
-        {/* Subtle grid */}
-        <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)', backgroundSize: '28px 28px' }} />
+        {/* Glow layers — same as ServiceDetail */}
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 75% 50%, rgba(48,209,88,0.18) 0%, transparent 65%)', filter: 'blur(16px)' }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 25% 50%, rgba(94,92,230,0.16) 0%, transparent 65%)', filter: 'blur(16px)' }} />
 
-        <div className="relative z-10 p-5 flex flex-col gap-4">
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-[26px] text-white leading-tight" style={{ fontWeight: 700 }}>Александр</p>
-              <p className="text-[13px] text-white/50 mt-0.5" style={{ fontWeight: 400 }}>Публичный профиль</p>
+        <div className="flex items-center gap-4 relative z-10">
+          {/* Left */}
+          <div className="flex-1 min-w-0">
+            <p className="text-[22px] text-white leading-tight mb-0.5" style={{ fontWeight: 700 }}>Александр</p>
+            <div className="flex items-center gap-1.5 mb-2">
+              <CheckCircle className="w-3 h-3 flex-shrink-0" style={{ color: '#30D158' }} />
+              <p className="text-[12px] font-semibold" style={{ color: '#30D158' }}>верифицирован</p>
             </div>
-            <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full flex-shrink-0 ml-3"
-              style={{ backgroundColor: 'rgba(48,209,88,0.13)', border: '1px solid rgba(48,209,88,0.28)' }}>
-              <CheckCircle className="w-3.5 h-3.5 flex-shrink-0" style={{ color: '#30D158' }} />
-              <span className="text-[12px] whitespace-nowrap" style={{ color: '#30D158', fontWeight: 600 }}>Верифицирован</span>
+            <p className="text-[13px] text-[#98989D] leading-snug">Публичный профиль</p>
+            <div className="flex items-center gap-1 mt-3">
+              <MapPin className="w-3.5 h-3.5" style={{ color: '#636366' }} />
+              <p className="text-[11px] text-[#636366] uppercase tracking-wide font-medium">Москва</p>
             </div>
           </div>
-          <div className="flex items-center gap-1.5">
-            <MapPin className="w-3.5 h-3.5 text-white/35" />
-            <span className="text-[13px] text-white/40" style={{ fontWeight: 400 }}>Москва</span>
+          {/* Right — rings with avatar in center */}
+          <div className="flex-shrink-0 relative">
+            <AuraRings knowledge={88} trust={92} size={100} />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <img src={avatarImg} alt="Александр" className="w-10 h-10 rounded-full object-cover" />
+            </div>
           </div>
         </div>
       </motion.div>

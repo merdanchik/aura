@@ -63,8 +63,8 @@ const HEART_PULSE: [number, number, number][] = [
 // lub-dub cardiac keyframes
 const BEAT_SCALE  = [1, 1.055, 1.02, 1.045, 0.985, 1.0];
 const BEAT_TIMES  = [0, 0.14, 0.26, 0.40, 0.65, 1.0];
-const BEAT_DUR    = 0.58;
-const BEAT_REST   = 0.30;
+const BEAT_DUR    = 0.87;
+const BEAT_REST   = 0.45;
 const BEAT_SCALE_GRAY = BEAT_SCALE.map(v => 1 + (v - 1) * 0.45);
 
 const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScore: number; globalTrustScore: number; size?: number }) => {

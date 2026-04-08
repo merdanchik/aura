@@ -19,7 +19,12 @@ import iconFood from "../../assets/food.png";
 import iconAfisha from "../../assets/afisha.png";
 import iconTravel from "../../assets/travel.png";
 import avatarImg from "../../assets/avatar.jpg";
-import heartSvg from "../../assets/heart.svg";
+import heartLayer0 from "../../assets/heart-layer-0.svg";
+import heartLayer1 from "../../assets/heart-layer-1.svg";
+import heartLayer2 from "../../assets/heart-layer-2.svg";
+import heartLayer3 from "../../assets/heart-layer-3.svg";
+import heartLayer4 from "../../assets/heart-layer-4.svg";
+import heartLayer5 from "../../assets/heart-layer-5.svg";
 import iconLamoda from "../../assets/partner-lamoda.jpg";
 import iconIvi from "../../assets/partner-ivi.jpg";
 import iconMvideo from "../../assets/partner-mvideo.jpg";
@@ -41,6 +46,18 @@ const serviceIconMap: Record<string, string> = {
 const PRIMARY_SERVICES = ['music', 'kinopoisk', 'books', 'market', 'split'];
 
 // ─── Heart Aura ──────────────────────────────────────────────────────────────
+
+const HEART_LAYERS = [heartLayer0, heartLayer1, heartLayer2, heartLayer3, heartLayer4, heartLayer5];
+
+// async pulse config per layer: [scaleMax, durationSec, delaySec]
+const HEART_PULSE: [number, number, number][] = [
+  [1.07, 2.6, 0.0],
+  [1.05, 3.1, 0.7],
+  [1.06, 2.9, 1.5],
+  [1.04, 3.4, 0.3],
+  [1.05, 2.7, 1.1],
+  [1.03, 3.0, 0.9],
+];
 
 const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScore: number; globalTrustScore: number; size?: number }) => {
   const s = overallScore / 100;
@@ -65,7 +82,6 @@ const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScor
     `saturate(${saturate.toFixed(2)}) brightness(${brightness.toFixed(2)}) hue-rotate(${h.toFixed(0)}deg)`
   );
 
-  // weaker glow — doesn't overpower the heart
   const glowAlpha = 0.07 + s * 0.18;
   const glow1Bg = useTransform(hue, h =>
     `radial-gradient(ellipse at 55% 55%, hsla(${h + 20}, 80%, 55%, ${glowAlpha}) 0%, transparent 58%)`
@@ -74,47 +90,41 @@ const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScor
     `radial-gradient(ellipse at 40% 42%, hsla(${(h + 150) % 360}, 70%, 50%, ${glowAlpha * 0.6}) 0%, transparent 52%)`
   );
 
-  // async pulse phases for shimmer layers (simulates per-icon pulsing)
-  const pulsePhases = [0, 1.1, 2.3] as const;
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 0.05, duration: 0.5 }}
-      className="relative flex justify-center"
-      style={{ width: size, height: size, margin: '0 auto' }}
+      style={{ width: size, height: size, margin: '0 auto', position: 'relative' }}
     >
       {/* glow */}
       <motion.div className="absolute pointer-events-none" style={{ inset: -20, background: glow1Bg, filter: 'blur(28px)' }} />
       <motion.div className="absolute pointer-events-none" style={{ inset: -20, background: glow2Bg, filter: 'blur(20px)' }} />
 
-      {/* base image */}
-      <motion.img
-        src={heartSvg}
-        alt="Аура"
-        style={{ width: size, height: size, objectFit: 'contain', position: 'relative', zIndex: 1, filter: imgFilter as any }}
-      />
-
-      {/* async shimmer layers — screen blend, each at a different phase */}
-      {isStrong && pulsePhases.map((delay, i) => (
-        <motion.img
-          key={i}
-          src={heartSvg}
-          aria-hidden
-          initial={{ opacity: 0 }}
-          animate={{ opacity: [0, 0.12 + i * 0.04, 0] }}
-          transition={{ duration: 1.6 + i * 0.5, repeat: Infinity, ease: 'easeInOut', delay }}
-          style={{
-            position: 'absolute', inset: 0,
-            width: size, height: size,
-            objectFit: 'contain',
-            mixBlendMode: 'screen',
-            filter: imgFilter as any,
-            zIndex: 2,
-          }}
-        />
-      ))}
+      {/* individual heart layers — each pulses asynchronously via w/h */}
+      {HEART_LAYERS.map((src, i) => {
+        const [scaleMax, duration, delay] = HEART_PULSE[i];
+        const wMax = size * scaleMax;
+        return (
+          <motion.img
+            key={i}
+            src={src}
+            aria-hidden={i > 0}
+            alt={i === 0 ? 'Аура' : undefined}
+            animate={{ width: [size, wMax, size], height: [size, wMax, size] }}
+            transition={{ duration, repeat: Infinity, ease: 'easeInOut', delay, repeatType: 'loop' }}
+            style={{
+              position: 'absolute',
+              left: '50%',
+              top: '50%',
+              transform: 'translate(-50%, -50%)',
+              objectFit: 'contain',
+              filter: imgFilter as any,
+              zIndex: i + 1,
+            }}
+          />
+        );
+      })}
     </motion.div>
   );
 };

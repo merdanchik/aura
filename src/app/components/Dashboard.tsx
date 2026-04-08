@@ -64,6 +64,7 @@ const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScor
   const isStrong = overallScore >= 60;
 
   const hue = useMotionValue(0);
+  const clipRV = useMotionValue(0);
 
   React.useEffect(() => {
     if (!isStrong) {
@@ -75,7 +76,11 @@ const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScor
     return () => a.stop();
   }, [isStrong, s]);
 
-  // Colored zone: always vivid (saturation not tied to overall score)
+  React.useEffect(() => {
+    const a = motionAnimate(clipRV, overallScore * 0.62, { duration: 1.2, ease: [0.22, 1, 0.36, 1] });
+    return () => a.stop();
+  }, [overallScore]);
+
   const colorBrightness = 0.85 + s * 0.15;
   const imgFilter = useTransform(hue, h =>
     `saturate(2.2) brightness(${colorBrightness.toFixed(2)}) hue-rotate(${h.toFixed(0)}deg)`
@@ -89,8 +94,12 @@ const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScor
     `radial-gradient(ellipse at 40% 42%, hsla(${(h + 150) % 360}, 70%, 50%, ${glowAlpha * 0.6}) 0%, transparent 52%)`
   );
 
-  // Color grows from center: radius covers score% of heart (0→0%, 100→~62%)
-  const clipRadius = (overallScore * 0.62).toFixed(1);
+  // Soft feathered mask: colored zone solid in center, fades out over 28% at the edge
+  const maskStyle = useTransform(clipRV, v => {
+    const outer = v.toFixed(1);
+    const inner = Math.max(0, v - 28).toFixed(1);
+    return `radial-gradient(circle at 50% 48%, black 0%, black ${inner}%, transparent ${outer}%)`;
+  });
 
   return (
     <motion.div
@@ -103,7 +112,7 @@ const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScor
       <motion.div className="absolute pointer-events-none" style={{ inset: -20, background: glow1Bg, filter: 'blur(28px)' }} />
       <motion.div className="absolute pointer-events-none" style={{ inset: -20, background: glow2Bg, filter: 'blur(20px)' }} />
 
-      {/* Grayscale base — all layers, static */}
+      {/* Grayscale base — always visible */}
       {HEART_LAYERS.map((src, i) => (
         <img
           key={`g${i}`}
@@ -121,12 +130,12 @@ const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScor
         />
       ))}
 
-      {/* Colored layers — revealed from center by radial clip, expanding with score */}
-      <div
+      {/* Colored layers — soft radial mask animated via MotionValue */}
+      <motion.div
         style={{
           position: 'absolute', inset: 0,
-          clipPath: `circle(${clipRadius}% at 50% 48%)`,
-          transition: 'clip-path 1.2s cubic-bezier(0.22, 1, 0.36, 1)',
+          maskImage: maskStyle as any,
+          WebkitMaskImage: maskStyle as any,
           zIndex: 10,
         }}
       >
@@ -152,7 +161,7 @@ const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScor
             />
           );
         })}
-      </div>
+      </motion.div>
     </motion.div>
   );
 };

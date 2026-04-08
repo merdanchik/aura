@@ -113,6 +113,8 @@ interface AuraContextType {
   undoAction: (serviceId: ServiceId, actionId: string) => void;
   triggerEvent: (type: 'overdue' | 'recovery') => void;
   getServiceTheme: (id: ServiceId) => AuraTheme;
+  strongAura: boolean;
+  toggleStrongAura: () => void;
 }
 
 const initialServices: Record<ServiceId, ServiceData> = {
@@ -289,6 +291,30 @@ const AuraContext = createContext<AuraContextType | undefined>(undefined);
 
 export const AuraProvider = ({ children }: { children: ReactNode }) => {
   const [services, setServices] = useState<Record<ServiceId, ServiceData>>(initialServices);
+  const [strongAura, setStrongAura] = useState(false);
+  const [savedServices, setSavedServices] = useState<Record<ServiceId, ServiceData> | null>(null);
+
+  const toggleStrongAura = () => {
+    if (!strongAura) {
+      setSavedServices(services);
+      setServices(prev => {
+        const updated = { ...prev };
+        (Object.keys(updated) as ServiceId[]).forEach(id => {
+          updated[id] = {
+            ...updated[id],
+            knowledgeScore: 99,
+            trustScore: updated[id].trustScore !== null ? 99 : null,
+          };
+        });
+        return updated;
+      });
+      setStrongAura(true);
+    } else {
+      if (savedServices) setServices(savedServices);
+      setSavedServices(null);
+      setStrongAura(false);
+    }
+  };
   
   const effectiveScore = (s: ServiceData) => {
     const allDone = s.actions.length > 0 && s.actions.every(a => a.completed);
@@ -383,7 +409,7 @@ export const AuraProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuraContext.Provider value={{ services, globalTrustScore, globalKnowledgeScore, overallScore, theme, performAction, undoAction, triggerEvent, getServiceTheme }}>
+    <AuraContext.Provider value={{ services, globalTrustScore, globalKnowledgeScore, overallScore, theme, performAction, undoAction, triggerEvent, getServiceTheme, strongAura, toggleStrongAura }}>
       {children}
     </AuraContext.Provider>
   );

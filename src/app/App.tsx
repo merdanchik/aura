@@ -6,6 +6,7 @@ import { ServiceDetail } from './components/ServiceDetail';
 import { ChevronLeft } from 'lucide-react';
 import { useAura, ServiceId } from './context/AuraContext';
 import { motion, AnimatePresence } from 'motion/react';
+import { Switch } from './components/ui/switch';
 import avatarImg from "../assets/avatar.jpg";
 const Shell = () => {
   return (
@@ -18,8 +19,9 @@ const Shell = () => {
 const ShellInner = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { globalTrustScore, triggerEvent, theme, services } = useAura();
+  const { globalTrustScore, triggerEvent, theme, services, strongAura, toggleStrongAura } = useAura();
   const [alertDismissed, setAlertDismissed] = React.useState(false);
+  const [showMenu, setShowMenu] = React.useState(false);
 
   const isRoot = location.pathname === '/';
   const splitTrust = services['split' as ServiceId]?.trustScore ?? 100;
@@ -53,11 +55,46 @@ const ShellInner = () => {
               )}
             </button>
           )}
-          <img
-            src={avatarImg}
-            alt="Profile"
-            className="w-8 h-8 rounded-full object-cover ml-auto"
-          />
+          <div className="relative ml-auto">
+            <button onClick={() => setShowMenu(v => !v)} className="active:opacity-70 transition-opacity">
+              <img
+                src={avatarImg}
+                alt="Profile"
+                className="w-8 h-8 rounded-full object-cover"
+                style={strongAura ? { boxShadow: '0 0 0 2px #30D158' } : undefined}
+              />
+            </button>
+
+            {/* Dropdown */}
+            <AnimatePresence>
+              {showMenu && (
+                <>
+                  {/* backdrop */}
+                  <div className="fixed inset-0 z-40" onClick={() => setShowMenu(false)} />
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.92, y: -6 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.92, y: -6 }}
+                    transition={{ duration: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
+                    className="absolute right-0 top-10 z-50 rounded-2xl overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.6)]"
+                    style={{ backgroundColor: '#1C1C1E', border: '1px solid rgba(255,255,255,0.08)', minWidth: 220 }}
+                  >
+                    <div className="flex items-center justify-between px-4 py-4">
+                      <div>
+                        <p className="text-[15px] text-white" style={{ fontWeight: 500 }}>Сильная аура</p>
+                        <p className="text-[12px] text-[#636366] mt-0.5">Все показатели → 99</p>
+                      </div>
+                      <Switch
+                        checked={strongAura}
+                        onCheckedChange={() => { toggleStrongAura(); }}
+                        className="h-[31px] w-[51px] data-[state=checked]:bg-[#30D158] data-[state=unchecked]:bg-[#3A3A3C] border-0 [&>[data-slot=switch-thumb]]:size-[27px] [&>[data-slot=switch-thumb]]:data-[state=checked]:translate-x-[22px] [&>[data-slot=switch-thumb]]:shadow-[0_2px_6px_rgba(0,0,0,0.4)]"
+                      />
+                    </div>
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
         {/* Thin gradient accent line */}
         <div

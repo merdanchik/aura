@@ -25,6 +25,7 @@ const ShellInner = () => {
   const [showMenu, setShowMenu] = React.useState(false);
 
   const isRoot = location.pathname === '/';
+  const isChatRoute = /\/chat\//.test(location.pathname);
   const splitTrust = services['split' as ServiceId]?.trustScore ?? 100;
   const isTrustCritical = splitTrust < 50;
 
@@ -37,7 +38,7 @@ const ShellInner = () => {
       className="min-h-screen flex flex-col items-center overflow-x-hidden"
       style={{ backgroundColor: '#000000', fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif" }}
     >
-      <header className="w-full max-w-md mx-auto sticky top-0 z-50 backdrop-blur-2xl" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }}>
+      {!isChatRoute && <header className="w-full max-w-md mx-auto sticky top-0 z-50 backdrop-blur-2xl" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }}>
         <div className="h-16 flex items-end pb-2 px-4 relative">
           {isRoot && (
             <span className="text-[28px] text-white leading-tight" style={{ fontWeight: 700 }}>Аура</span>
@@ -102,10 +103,10 @@ const ShellInner = () => {
           className="h-[0.5px] w-full"
           style={{ background: `linear-gradient(to right, transparent, ${theme.primary}60, transparent)` }}
         />
-      </header>
+      </header>}
 
       {/* Content */}
-      <main className="flex-1 w-full max-w-md mx-auto relative">
+      <main className={`flex-1 w-full max-w-md mx-auto relative${isChatRoute ? ' flex flex-col' : ''}`}>
         <Outlet />
       </main>
 

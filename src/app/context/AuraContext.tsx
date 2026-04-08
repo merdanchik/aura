@@ -344,7 +344,7 @@ export const AuraProvider = ({ children }: { children: ReactNode }) => {
 
       const action = srv.actions[actionIndex];
       const newActions = [...srv.actions];
-      newActions[actionIndex] = { ...action, completed: false };
+      newActions[actionIndex] = { ...action, completed: true };
 
       return {
         ...prev,

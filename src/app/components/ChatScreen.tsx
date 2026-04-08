@@ -1,38 +1,12 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { ServiceId, useAura } from '../context/AuraContext';
-import { motion, AnimatePresence } from 'motion/react';
-import { Send } from 'lucide-react';
-
-import iconMusic from "figma:asset/52729efb5574f608701f92848e1b348745677960.png";
-import iconKinopoisk from "figma:asset/b39f941bc25c3069b2f4719e19fdc535f4a56625.png";
-import iconBooks from "figma:asset/94e2bb438930a86c21d001934a49869c8425f73a.png";
-import iconMarket from "figma:asset/873668dc7d9e7bd9c16444667bc68a762e2b3499.png";
-import iconSplit from "figma:asset/1f449fc2f45163f28ee9045765bf74d1029f8916.png";
-import iconTaxi from "../../assets/taxi.png";
-import iconPay from "../../assets/pay.png";
-import iconScooters from "../../assets/scooters.png";
-import iconFood from "../../assets/food.png";
-import iconAfisha from "../../assets/afisha.png";
-import iconTravel from "../../assets/travel.png";
-
-const serviceIconMap: Record<string, string> = {
-  music: iconBooks,
-  kinopoisk: iconKinopoisk,
-  books: iconMusic,
-  market: iconMarket,
-  split: iconSplit,
-  taxi: iconTaxi,
-  pay: iconPay,
-  scooters: iconScooters,
-  food: iconFood,
-  afisha: iconAfisha,
-  travel: iconTravel,
-};
+import { motion } from 'motion/react';
+import wolfImg from '../../assets/wolf.png';
 
 const ACTION_STARTERS: Record<string, string> = {
   // Music
-  m1: 'миш, какие треки цепляют тебя прямо сейчас?',
+  m1: 'какие треки цепляют тебя прямо сейчас, саша?',
   m2: 'расскажи, какие плейлисты слушаешь чаще всего?',
   m3: 'кого из исполнителей слушаешь постоянно?',
   m4: 'давай послушаем что-нибудь вместе — включи Мою Волну на полчасика?',
@@ -40,14 +14,14 @@ const ACTION_STARTERS: Record<string, string> = {
   m6: 'какая музыка тебя заряжает — рок, джаз, хип-хоп?',
   // Kinopoisk
   k1: 'расскажи, какие фильмы тебя впечатлили в последнее время?',
-  k2: 'ты больше по триллерам или мелодрамам?',
+  k2: 'ты больше по триллерам или мелодрамам, саша?',
   k3: 'что давно хотел посмотреть, но всё руки не доходят?',
   k4: 'какой сериал недавно затянул тебя с головой?',
   k5: 'поделись — что думаешь о последнем просмотренном фильме?',
   k6: 'кто из актёров нравится — за кем следишь?',
   // Books
   b1: 'что из прочитанного запомнилось больше всего?',
-  b2: 'больше любишь фантастику или нон-фикшн?',
+  b2: 'больше любишь фантастику или нон-фикшн, саша?',
   b3: 'оцени книги, которые уже читал — так пойму твой вкус',
   b4: 'есть книги, к которым хочется вернуться?',
   b5: 'хочешь, подберу тебе куратора с похожим вкусом?',
@@ -56,7 +30,7 @@ const ACTION_STARTERS: Record<string, string> = {
   mk1: 'расскажи немного о себе — чтобы скидки попадали точно в цель',
   mk2: 'что присматриваешь, но пока не купил?',
   mk3: 'как тебе последняя покупка — всё понравилось?',
-  mk4: 'какой у тебя размер одежды — помогу с подборкой',
+  mk4: 'какой у тебя размер одежды, саша — помогу с подборкой',
   mk5: 'как твои прошлые заказы — всё дошло в порядке?',
   mk6: 'заказы получил? подтверди — это важно для нас',
   mk7: 'хочешь копить баллы с каждой покупки?',
@@ -71,7 +45,7 @@ const ACTION_STARTERS: Record<string, string> = {
   // Taxi
   tx1: 'давай убедимся, что это ты — займёт секунду',
   tx2: 'подключи автооплату — после поездки всё пройдёт само',
-  tx3: 'как последняя поездка — всё прошло хорошо?',
+  tx3: 'как последняя поездка, саша — всё прошло хорошо?',
   tx4: 'куда чаще всего едешь — домой или на работу?',
   tx5: 'какой класс авто предпочитаешь — комфорт или эконом?',
   tx6: 'кстати, заказы лучше не отменять — рейтинг пассажира растёт',
@@ -87,12 +61,12 @@ const ACTION_STARTERS: Record<string, string> = {
   sc2: 'не забудь вернуть самокат в зону — это важно для всех',
   sc3: 'сфоткай самокат на парковке — займёт секунду и плюс к рейтингу',
   sc4: 'нужно подтвердить возраст — без этого не выдам самокат :)',
-  sc5: 'куда чаще катаешься — в парк, на работу?',
+  sc5: 'куда чаще катаешься, саша — в парк, на работу?',
   sc6: 'подключи автооплату — завершать поездку станет проще',
   // Food
   fd1: 'что любишь больше — суши, пиццу или что-то домашнее?',
   fd2: 'есть что-то, что не ешь? скажи — не буду предлагать',
-  fd3: 'как тебе последние заказы — было вкусно?',
+  fd3: 'как тебе последние заказы, саша — было вкусно?',
   fd4: 'куда чаще доставлять — домой или в офис?',
   fd5: 'расскажи про ресторан, где заказывал — понравилось?',
   fd6: 'есть место, куда хочется заказывать снова и снова?',
@@ -100,7 +74,7 @@ const ACTION_STARTERS: Record<string, string> = {
   af1: 'что привлекает больше — концерты, театры или выставки?',
   af2: 'присмотрел что-нибудь интересное на ближайшие выходные?',
   af3: 'как прошло мероприятие — стоило идти?',
-  af4: 'кого из исполнителей хочешь увидеть живьём?',
+  af4: 'кого из исполнителей хочешь увидеть живьём, саша?',
   af5: 'хочешь получать лучшее из афиши каждую неделю?',
   af6: 'есть места в городе, куда ходишь с удовольствием?',
   // Travel
@@ -109,163 +83,216 @@ const ACTION_STARTERS: Record<string, string> = {
   tr3: 'как отель в прошлой поездке — всё понравилось?',
   tr4: 'летаешь с какой-то авиакомпанией часто? добавь программу лояльности',
   tr5: 'есть пищевые ограничения в дороге — халяль, вегетарианское?',
-  tr6: 'на путешествия обычно сколько закладываешь — расскажи, подберу варианты',
+  tr6: 'на путешествия обычно сколько закладываешь, саша — расскажи, подберу варианты',
 };
 
-interface Message {
-  id: number;
-  from: 'bot' | 'user';
-  text: string;
-}
+// ── Fake iOS keyboard ──────────────────────────────────────────
+const ROWS = [
+  ['q','w','e','r','t','y','u','i','o','p'],
+  ['a','s','d','f','g','h','j','k','l'],
+  ['⇧','z','x','c','v','b','n','m','⌫'],
+];
 
+const FakeKeyboard: React.FC<{ onAnyTap: () => void }> = ({ onAnyTap }) => (
+  <div
+    onClick={onAnyTap}
+    style={{ backgroundColor: '#1A1A1C', paddingBottom: 20, userSelect: 'none', flexShrink: 0 }}
+  >
+    {/* Top thin separator */}
+    <div style={{ height: 1, backgroundColor: '#3A3A3C', marginBottom: 8 }} />
+
+    {/* Letter rows */}
+    {ROWS.map((row, ri) => (
+      <div
+        key={ri}
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          gap: 6,
+          marginBottom: 10,
+          paddingLeft: ri === 1 ? 20 : ri === 2 ? 0 : 0,
+          paddingRight: ri === 1 ? 20 : ri === 2 ? 0 : 0,
+        }}
+      >
+        {row.map(key => {
+          const isSpecial = key === '⇧' || key === '⌫';
+          return (
+            <div
+              key={key}
+              style={{
+                width: isSpecial ? 44 : key === '⇧' && ri === 2 ? 44 : 32,
+                flex: isSpecial ? '0 0 44px' : '1',
+                maxWidth: isSpecial ? 44 : ri === 0 ? 36 : ri === 1 ? 38 : 36,
+                height: 44,
+                backgroundColor: isSpecial ? '#5A5A5C' : '#3A3A3C',
+                borderRadius: 6,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white',
+                fontSize: isSpecial ? 18 : 17,
+                fontWeight: 400,
+                boxShadow: '0 2px 0 #000',
+              }}
+            >
+              {key}
+            </div>
+          );
+        })}
+      </div>
+    ))}
+
+    {/* Bottom row: ABC | space | return */}
+    <div style={{ display: 'flex', gap: 6, paddingLeft: 4, paddingRight: 4, marginBottom: 4 }}>
+      <div style={{ width: 44, height: 44, flexShrink: 0, backgroundColor: '#5A5A5C', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: 14, boxShadow: '0 2px 0 #000' }}>
+        ABC
+      </div>
+      <div style={{ flex: 1, height: 44, backgroundColor: '#3A3A3C', borderRadius: 6, boxShadow: '0 2px 0 #000' }} />
+      <div style={{ width: 92, flexShrink: 0, height: 44, backgroundColor: '#007AFF', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: 15, fontWeight: 500, boxShadow: '0 2px 0 #003d80' }}>
+        return
+      </div>
+    </div>
+
+    {/* Emoji / mic bar */}
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingLeft: 12, paddingRight: 12, paddingTop: 6 }}>
+      <span style={{ fontSize: 24 }}>🙂</span>
+      <span style={{ fontSize: 20 }}>🎤</span>
+    </div>
+  </div>
+);
+
+// ── Chat screen ────────────────────────────────────────────────
 export const ChatScreen = () => {
   const { id, actionId } = useParams<{ id: string; actionId: string }>();
-  const { services, performAction, getServiceTheme } = useAura();
+  const { services, performAction } = useAura();
   const navigate = useNavigate();
-  const [inputText, setInputText] = useState('');
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [done, setDone] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const bottomRef = useRef<HTMLDivElement>(null);
 
   const service = services[id as ServiceId];
-  const starterMessage = ACTION_STARTERS[actionId!] ?? 'привет миш! ты как?';
-  const sTheme = service ? getServiceTheme(service.id) : { primary: '#5E5CE6' };
+  const rawStarter = ACTION_STARTERS[actionId!] ?? 'привет, саша!\nты как?';
 
-  useEffect(() => {
-    setMessages([{ id: 0, from: 'bot', text: starterMessage }]);
-  }, [starterMessage]);
+  // Format message: if >25 chars, try to split on punctuation / natural break
+  const messageText = rawStarter;
 
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
-
-  const handleSend = () => {
-    if (!inputText.trim() || done) return;
-    const text = inputText.trim();
-    setInputText('');
-    setDone(true);
-    setMessages(prev => [...prev, { id: prev.length, from: 'user', text }]);
-
-    // Complete the action after a short delay, then go back
-    setTimeout(() => {
-      performAction(id as ServiceId, actionId!);
-      navigate(-1);
-    }, 700);
+  const handleComplete = () => {
+    performAction(id as ServiceId, actionId!);
+    navigate(-1);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') handleSend();
-  };
+  const handleBack = () => navigate(-1);
 
   if (!service) return null;
 
-  const icon = serviceIconMap[service.id];
-
   return (
     <motion.div
-      initial={{ opacity: 0, x: 30 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.28, ease: [0.25, 0.1, 0.25, 1] }}
-      className="flex flex-col"
-      style={{ minHeight: 'calc(100vh - 65px)' }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.2 }}
+      style={{
+        position: 'fixed',
+        inset: 0,
+        backgroundColor: '#000000',
+        display: 'flex',
+        flexDirection: 'column',
+        zIndex: 100,
+        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+      }}
     >
-      {/* Service info bar */}
-      <div className="flex items-center gap-3 px-4 pt-4 pb-3">
-        <div className="relative">
-          <img
-            src={icon}
-            alt={service.name}
-            className="w-10 h-10 rounded-[12px] object-cover"
-          />
-          <div
-            className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-black"
-            style={{ backgroundColor: '#30D158' }}
-          />
-        </div>
-        <div>
-          <p className="text-[15px] text-white" style={{ fontWeight: 600 }}>{service.name}</p>
-          <p className="text-[12px] text-[#30D158]" style={{ fontWeight: 500 }}>онлайн</p>
-        </div>
-      </div>
-
-      {/* Divider */}
-      <div className="h-[0.5px] mx-4" style={{ backgroundColor: 'rgba(255,255,255,0.08)' }} />
-
-      {/* Messages */}
-      <div className="flex-1 px-4 py-4 flex flex-col gap-3 overflow-y-auto" style={{ paddingBottom: 80 }}>
-        <AnimatePresence initial={false}>
-          {messages.map(msg => (
-            <motion.div
-              key={msg.id}
-              initial={{ opacity: 0, y: 8, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.22, ease: [0.25, 0.1, 0.25, 1] }}
-              className={`flex items-end gap-2.5 ${msg.from === 'user' ? 'flex-row-reverse' : 'flex-row'}`}
-            >
-              {msg.from === 'bot' && (
-                <img
-                  src={icon}
-                  alt=""
-                  className="w-7 h-7 rounded-[8px] object-cover flex-shrink-0 mb-0.5"
-                />
-              )}
-              <div
-                className="max-w-[75%] px-4 py-2.5 rounded-[18px] text-[15px] leading-snug"
-                style={
-                  msg.from === 'bot'
-                    ? {
-                        backgroundColor: '#1C1C1E',
-                        color: '#FFFFFF',
-                        borderBottomLeftRadius: 4,
-                      }
-                    : {
-                        backgroundColor: sTheme.primary,
-                        color: '#FFFFFF',
-                        borderBottomRightRadius: 4,
-                      }
-                }
-              >
-                {msg.text}
-              </div>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-        <div ref={bottomRef} />
-      </div>
-
-      {/* Input bar */}
-      <div
-        className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md px-4 pb-6 pt-3"
-        style={{ backgroundColor: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(20px)' }}
-      >
-        <div
-          className="flex items-center gap-2 rounded-full px-4"
-          style={{ backgroundColor: '#1C1C1E', border: '1px solid rgba(255,255,255,0.08)' }}
+      {/* ── Top nav ── */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 16px 8px' }}>
+        {/* "до этого" pill */}
+        <button
+          onClick={handleBack}
+          style={{
+            backgroundColor: '#2C2C2E',
+            color: '#FFFFFF',
+            fontSize: 13,
+            fontWeight: 500,
+            padding: '6px 14px',
+            borderRadius: 20,
+            border: 'none',
+          }}
         >
-          <input
-            ref={inputRef}
-            type="text"
-            value={inputText}
-            onChange={e => setInputText(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="сообщение..."
-            disabled={done}
-            className="flex-1 bg-transparent text-white text-[15px] py-3 outline-none placeholder-[#636366]"
-            autoFocus
-          />
-          <button
-            onClick={handleSend}
-            disabled={!inputText.trim() || done}
-            className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all active:scale-90"
-            style={{
-              backgroundColor: inputText.trim() && !done ? sTheme.primary : '#3A3A3C',
-            }}
-          >
-            <Send className="w-3.5 h-3.5 text-white" strokeWidth={2} style={{ marginLeft: 2 }} />
-          </button>
+          до этого
+        </button>
+
+        {/* × circle */}
+        <button
+          onClick={handleBack}
+          style={{
+            width: 32,
+            height: 32,
+            borderRadius: '50%',
+            backgroundColor: '#2C2C2E',
+            border: 'none',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#FFFFFF',
+            fontSize: 18,
+            fontWeight: 300,
+            lineHeight: 1,
+          }}
+        >
+          ✕
+        </button>
+      </div>
+
+      {/* ── Main content ── */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 20, paddingBottom: 16, overflowY: 'hidden' }}>
+        {/* Creature */}
+        <motion.img
+          src={wolfImg}
+          alt=""
+          animate={{ y: [0, -8, 0] }}
+          transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ width: 200, height: 200, objectFit: 'contain', flexShrink: 0 }}
+        />
+
+        {/* Status badge */}
+        <div style={{
+          marginTop: 8,
+          backgroundColor: '#2C2C2E',
+          color: '#FFFFFF',
+          fontSize: 13,
+          fontWeight: 500,
+          padding: '4px 12px',
+          borderRadius: 20,
+          letterSpacing: 0.1,
+        }}>
+          радуется
+        </div>
+
+        {/* Message */}
+        <p style={{
+          marginTop: 20,
+          fontSize: 30,
+          fontWeight: 700,
+          color: '#A8FF3E',
+          textAlign: 'center',
+          lineHeight: 1.25,
+          padding: '0 24px',
+        }}>
+          {messageText}
+        </p>
+
+        {/* Input area */}
+        <div style={{ marginTop: 'auto', width: '100%', padding: '0 20px 0' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            {/* Blinking cursor */}
+            <motion.span
+              animate={{ opacity: [1, 0, 1] }}
+              transition={{ duration: 1, repeat: Infinity }}
+              style={{ color: '#007AFF', fontSize: 20, fontWeight: 300, lineHeight: 1 }}
+            >
+              |
+            </motion.span>
+            <span style={{ color: '#636366', fontSize: 17 }}>сказать что-то</span>
+          </div>
         </div>
       </div>
+
+      {/* ── Fake keyboard ── */}
+      <FakeKeyboard onAnyTap={handleComplete} />
     </motion.div>
   );
 };

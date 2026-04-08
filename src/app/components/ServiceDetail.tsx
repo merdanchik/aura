@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router';
 import { ServiceId, useAura } from '../context/AuraContext';
 import { AuraRings } from './AuraRings';
 import { motion, AnimatePresence } from 'motion/react';
-import { Check } from 'lucide-react';
 
 import iconMusic from "figma:asset/52729efb5574f608701f92848e1b348745677960.png";
 import iconKinopoisk from "figma:asset/b39f941bc25c3069b2f4719e19fdc535f4a56625.png";
@@ -34,7 +33,7 @@ const serviceIconMap: Record<string, string> = {
 export const ServiceDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { services, undoAction, getServiceTheme, globalTrustScore } = useAura();
+  const { services, getServiceTheme, globalTrustScore } = useAura();
 
   const service = services[id as ServiceId];
 
@@ -133,38 +132,25 @@ export const ServiceDetail = () => {
               return (
                 <motion.button
                   key={action.id}
-                  onClick={() => action.completed ? undoAction(service.id, action.id) : navigate(`/service/${service.id}/chat/${action.id}`)}
+                  onClick={() => !action.completed && navigate(`/service/${service.id}/chat/${action.id}`)}
                   className="w-full flex items-start gap-3.5 px-4 py-4 text-left transition-colors active:bg-white/[0.05]"
+                  style={{ cursor: action.completed ? 'default' : 'pointer' }}
                 >
-                  <div
-                    className="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5 border-2 transition-all"
-                    style={{
-                      backgroundColor: action.completed ? sTheme.primary : 'transparent',
-                      borderColor: action.completed ? sTheme.primary : '#48484A',
-                    }}
-                  >
-                    {action.completed && <Check className="w-3.5 h-3.5 text-white" strokeWidth={3} />}
-                  </div>
                   <div className={`flex-1 ${!isLast ? 'border-b border-white/[0.08] pb-4 -mb-4' : ''}`}>
-                    <p className={`text-[17px] ${action.completed ? 'line-through text-[#98989D]' : 'text-white'}`} style={{ fontWeight: 400 }}>
+                    <p
+                      className="text-[17px] leading-snug"
+                      style={{
+                        fontWeight: 400,
+                        color: action.completed ? '#48484A' : 'white',
+                        textDecoration: action.completed ? 'line-through' : 'none',
+                      }}
+                    >
                       {action.title}
                     </p>
-                    <p className="text-[13px] text-[#98989D] mt-0.5 leading-snug">
-                      {action.description}
-                    </p>
                     {!action.completed && (
-                      <div className="mt-2 flex flex-wrap gap-1.5">
-                        {action.knowledgeBoost && (
-                          <div className="inline-flex items-center text-[12px] px-2.5 py-1 rounded-full" style={{ fontWeight: 600, backgroundColor: sTheme.primary + '20', color: sTheme.primary }}>
-                            +{action.knowledgeBoost}% к знанию
-                          </div>
-                        )}
-                        {action.trustBoost && (
-                          <div className="inline-flex items-center text-[12px] px-2.5 py-1 rounded-full" style={{ fontWeight: 600, backgroundColor: 'rgba(48,209,88,0.15)', color: '#30D158' }}>
-                            +{action.trustBoost}% к доверию
-                          </div>
-                        )}
-                      </div>
+                      <p className="text-[13px] text-[#98989D] mt-0.5 leading-snug">
+                        {action.description}
+                      </p>
                     )}
                   </div>
                 </motion.button>

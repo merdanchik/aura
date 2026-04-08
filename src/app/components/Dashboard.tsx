@@ -19,6 +19,9 @@ import iconFood from "../../assets/food.png";
 import iconAfisha from "../../assets/afisha.png";
 import iconTravel from "../../assets/travel.png";
 import avatarImg from "../../assets/avatar.jpg";
+import iconLamoda from "../../assets/partner-lamoda.jpg";
+import iconIvi from "../../assets/partner-ivi.jpg";
+import iconMvideo from "../../assets/partner-mvideo.jpg";
 
 const serviceIconMap: Record<string, string> = {
   music: iconBooks,
@@ -157,21 +160,23 @@ const PartnersTab = () => {
         <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#1C1C1E' }}>
 
           {/* Lamoda */}
-          <div className="px-4 py-4 border-b border-white/[0.08]">
-            <div className="flex items-center justify-between mb-1">
+          <div className="flex items-center gap-3 px-4 py-3.5 border-b border-white/[0.08]">
+            <img src={iconLamoda} alt="Ламода" className="w-11 h-11 rounded-[12px] object-cover flex-shrink-0" />
+            <div className="flex-1 min-w-0">
               <p className="text-[17px] text-white" style={{ fontWeight: 500 }}>Ламода</p>
-              <span className="text-[12px] px-2.5 py-1 rounded-full" style={{ color: '#30D158', backgroundColor: 'rgba(48,209,88,0.1)', fontWeight: 500 }}>активен</span>
+              <p className="text-[13px] mt-0.5" style={{ color: '#636366' }}>доступ к: размер, стиль</p>
             </div>
-            <p className="text-[13px]" style={{ color: '#636366' }}>доступ к: размер, стиль</p>
+            <span className="text-[12px] px-2.5 py-1 rounded-full flex-shrink-0" style={{ color: '#30D158', backgroundColor: 'rgba(48,209,88,0.1)', fontWeight: 500 }}>активен</span>
           </div>
 
           {/* Ivi */}
-          <div className={`px-4 py-4 ${mvideoState === 'pending' ? 'border-b border-white/[0.08]' : ''}`}>
-            <div className="flex items-center justify-between mb-1">
+          <div className={`flex items-center gap-3 px-4 py-3.5 ${mvideoState === 'pending' ? 'border-b border-white/[0.08]' : ''}`}>
+            <img src={iconIvi} alt="Иви" className="w-11 h-11 rounded-[12px] object-cover flex-shrink-0" />
+            <div className="flex-1 min-w-0">
               <p className="text-[17px] text-white" style={{ fontWeight: 500 }}>Иви</p>
-              <span className="text-[12px] px-2.5 py-1 rounded-full" style={{ color: '#30D158', backgroundColor: 'rgba(48,209,88,0.1)', fontWeight: 500 }}>активен</span>
+              <p className="text-[13px] mt-0.5" style={{ color: '#636366' }}>доступ к: кино, жанры</p>
             </div>
-            <p className="text-[13px]" style={{ color: '#636366' }}>доступ к: кино, жанры</p>
+            <span className="text-[12px] px-2.5 py-1 rounded-full flex-shrink-0" style={{ color: '#30D158', backgroundColor: 'rgba(48,209,88,0.1)', fontWeight: 500 }}>активен</span>
           </div>
 
           {/* Mvideo */}
@@ -180,16 +185,19 @@ const PartnersTab = () => {
               <motion.div
                 initial={{ opacity: 1 }}
                 exit={{ opacity: 0, height: 0, overflow: 'hidden' }}
-                className="px-4 py-4"
+                className="px-4 py-3.5"
                 style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}
               >
-                <div className="flex items-center justify-between mb-1">
-                  <p className="text-[17px] text-white" style={{ fontWeight: 500 }}>Мвидео</p>
-                  <span className="text-[12px] px-2.5 py-1 rounded-full" style={{ color: '#FF9500', backgroundColor: 'rgba(255,149,0,0.1)', fontWeight: 500 }}>
-                    запрашивает доступ
-                  </span>
+                <div className="flex items-center gap-3 mb-3">
+                  <img src={iconMvideo} alt="М.Видео" className="w-11 h-11 rounded-[12px] object-cover flex-shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[17px] text-white" style={{ fontWeight: 500 }}>М.Видео</p>
+                    <span className="text-[12px] px-2.5 py-0.5 rounded-full inline-block mt-0.5" style={{ color: '#FF9500', backgroundColor: 'rgba(255,149,0,0.1)', fontWeight: 500 }}>
+                      запрашивает доступ
+                    </span>
+                  </div>
                 </div>
-                <div className="flex gap-2 mt-3">
+                <div className="flex gap-2">
                   <button
                     onClick={() => setMvideoState('granted')}
                     className="flex-1 py-2.5 rounded-xl text-[15px] text-white active:opacity-70 transition-opacity"
@@ -212,14 +220,15 @@ const PartnersTab = () => {
                 key="granted"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="px-4 py-4"
+                className="flex items-center gap-3 px-4 py-3.5"
                 style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}
               >
-                <div className="flex items-center justify-between mb-1">
-                  <p className="text-[17px] text-white" style={{ fontWeight: 500 }}>Мвидео</p>
-                  <span className="text-[12px] px-2.5 py-1 rounded-full" style={{ color: '#30D158', backgroundColor: 'rgba(48,209,88,0.1)', fontWeight: 500 }}>активен</span>
+                <img src={iconMvideo} alt="М.Видео" className="w-11 h-11 rounded-[12px] object-cover flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-[17px] text-white" style={{ fontWeight: 500 }}>М.Видео</p>
+                  <p className="text-[13px] mt-0.5" style={{ color: '#636366' }}>доступ выдан</p>
                 </div>
-                <p className="text-[13px]" style={{ color: '#636366' }}>доступ выдан</p>
+                <span className="text-[12px] px-2.5 py-1 rounded-full flex-shrink-0" style={{ color: '#30D158', backgroundColor: 'rgba(48,209,88,0.1)', fontWeight: 500 }}>активен</span>
               </motion.div>
             )}
           </AnimatePresence>

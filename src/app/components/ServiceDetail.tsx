@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { ServiceId, useAura } from '../context/AuraContext';
 import { AuraRings } from './AuraRings';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 
 import iconMusic from "figma:asset/52729efb5574f608701f92848e1b348745677960.png";
 import iconKinopoisk from "figma:asset/b39f941bc25c3069b2f4719e19fdc535f4a56625.png";
@@ -29,6 +29,15 @@ const serviceIconMap: Record<string, string> = {
   afisha: iconAfisha,
   travel: iconTravel,
 };
+
+function getStatusText(score: number): { title: string; subtitle: React.ReactNode } {
+  if (score >= 90) return { title: 'Идеальная персонализация',    subtitle: 'Вкусы полностью изучены.' };
+  if (score >= 70) return { title: 'Отличная персонализация',     subtitle: 'Рекомендации становятся очень точными.' };
+  if (score >= 50) return { title: 'Хорошая персонализация',      subtitle: 'Вкусы изучены, рекомендации точные.' };
+  if (score >= 35) return { title: 'Мы начинаем вас понимать',   subtitle: 'Продолжайте — алгоритм учится.' };
+  if (score >= 20) return { title: 'Мы мало знаем о вас',        subtitle: <>Выполните действия,<br />чтобы усилить ауру.</> };
+  return                  { title: 'Мы почти не знаем вас',      subtitle: <>Выполните действия,<br />чтобы усилить ауру.</> };
+}
 
 // Derive a dark gradient background from the service's brand color
 function heroGradient(hex: string): string {
@@ -57,11 +66,13 @@ export const ServiceDetail = () => {
   }
 
   const allDone = service.actions.length > 0 && service.actions.every(a => a.completed);
-  const isPale = service.knowledgeScore < 50 && !allDone;
   const displayKnowledge = allDone ? 100 : service.knowledgeScore;
   const displayTrust = allDone ? 100 : (service.trustScore ?? 0);
   const hasTrust = service.trustScore !== null;
   const trustColor = displayTrust < 40 ? '#FF3B30' : displayTrust < 70 ? '#FF9500' : '#30D158';
+
+  const scoreForStatus = hasTrust ? (displayKnowledge + displayTrust) / 2 : displayKnowledge;
+  const { title: statusTitle, subtitle: statusSubtitle } = getStatusText(scoreForStatus);
 
   const k = service.knowledgeScore;
   const t = service.trustScore ?? 0;
@@ -130,17 +141,33 @@ export const ServiceDetail = () => {
               {relLabel}
             </p>
 
-            {/* Status title */}
-            <p style={{ fontSize: 20, fontWeight: 700, color: 'white', lineHeight: 1.2, marginBottom: 6 }}>
-              {isPale ? 'Мы мало знаем о вас' : 'Хорошая персонализация'}
-            </p>
+            {/* Status title — animates on change */}
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={statusTitle}
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -5 }}
+                transition={{ duration: 0.22 }}
+                style={{ fontSize: 20, fontWeight: 700, color: 'white', lineHeight: 1.2, marginBottom: 6 }}
+              >
+                {statusTitle}
+              </motion.p>
+            </AnimatePresence>
 
             {/* Subtitle */}
-            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.46)', lineHeight: 1.45, marginBottom: 18 }}>
-              {isPale
-                ? <>Выполните действия<br />чтобы усилить ауру</>
-                : 'Вкусы изучены, рекомендации точные.'}
-            </p>
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={statusTitle + '-sub'}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.22, delay: 0.05 }}
+                style={{ fontSize: 13, color: 'rgba(255,255,255,0.46)', lineHeight: 1.45, marginBottom: 18 }}
+              >
+                {statusSubtitle}
+              </motion.p>
+            </AnimatePresence>
 
             {/* Scores */}
             <div style={{ display: 'flex', gap: 16 }}>

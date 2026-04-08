@@ -59,13 +59,21 @@ const HEART_PULSE: [number, number, number][] = [
   [1.03, 3.0, 0.9],
 ];
 
+// lub-dub cardiac keyframes: quick first beat → small valley → second beat → diastole rest
+const BEAT_SCALE  = [1, 1.11, 1.04, 1.09, 0.97, 1.0];
+const BEAT_TIMES  = [0, 0.14, 0.26, 0.40, 0.65, 1.0];
+const BEAT_DUR    = 0.58;   // seconds for active beat
+const BEAT_REST   = 0.30;   // seconds of rest between beats (~72 BPM)
+
 const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScore: number; globalTrustScore: number; size?: number }) => {
   const s = overallScore / 100;
   const isStrong = overallScore >= 60;
 
-  const hue = useMotionValue(0);
-  const clipRV = useMotionValue(0);
+  const hue      = useMotionValue(0);
+  const clipRV   = useMotionValue(0);
+  const beatGlow = useMotionValue(0);
 
+  // Hue cycling for strong aura
   React.useEffect(() => {
     if (!isStrong) {
       const a = motionAnimate(hue, 0, { duration: 1 });
@@ -76,25 +84,40 @@ const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScor
     return () => a.stop();
   }, [isStrong, s]);
 
+  // Clip radius animation
   React.useEffect(() => {
     const a = motionAnimate(clipRV, overallScore * 0.82, { duration: 1.2, ease: [0.22, 1, 0.36, 1] });
     return () => a.stop();
   }, [overallScore]);
+
+  // Heartbeat glow — active at ALL score levels, stronger when score is high
+  React.useEffect(() => {
+    const peak = 0.20 + s * 0.32; // min 0.20 even at score 0
+    const a = motionAnimate(
+      beatGlow,
+      [0, peak, peak * 0.35, peak * 0.80, 0],
+      { duration: BEAT_DUR, repeat: Infinity, repeatDelay: BEAT_REST }
+    );
+    return () => a.stop();
+  }, [s]);
 
   const colorBrightness = 0.85 + s * 0.15;
   const imgFilter = useTransform(hue, h =>
     `saturate(2.2) brightness(${colorBrightness.toFixed(2)}) hue-rotate(${h.toFixed(0)}deg)`
   );
 
-  const glowAlpha = 0.07 + s * 0.18;
-  const glow1Bg = useTransform(hue, h =>
-    `radial-gradient(ellipse at 55% 55%, hsla(${h + 20}, 80%, 55%, ${glowAlpha}) 0%, transparent 58%)`
+  // Glow driven by beat intensity + hue color
+  const glow1Bg = useTransform(
+    [hue, beatGlow] as const,
+    ([h, b]: number[]) =>
+      `radial-gradient(ellipse at 50% 48%, hsla(${h + 20}, 85%, 60%, ${b.toFixed(3)}) 0%, transparent 70%)`
   );
-  const glow2Bg = useTransform(hue, h =>
-    `radial-gradient(ellipse at 40% 42%, hsla(${(h + 150) % 360}, 70%, 50%, ${glowAlpha * 0.6}) 0%, transparent 52%)`
+  const glow2Bg = useTransform(
+    [hue, beatGlow] as const,
+    ([h, b]: number[]) =>
+      `radial-gradient(ellipse at 40% 42%, hsla(${(h + 150) % 360}, 75%, 55%, ${(b * 0.55).toFixed(3)}) 0%, transparent 58%)`
   );
 
-  // Soft feathered mask: colored zone solid in center, fades out over 28% at the edge
   const maskStyle = useTransform(clipRV, v => {
     const outer = v.toFixed(1);
     const inner = Math.max(0, v - 28).toFixed(1);
@@ -108,59 +131,47 @@ const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScor
       transition={{ delay: 0.05, duration: 0.5 }}
       style={{ width: size, height: size, margin: '0 auto', position: 'relative' }}
     >
-      {/* glow */}
-      <motion.div className="absolute pointer-events-none" style={{ inset: -20, background: glow1Bg, filter: 'blur(28px)' }} />
-      <motion.div className="absolute pointer-events-none" style={{ inset: -20, background: glow2Bg, filter: 'blur(20px)' }} />
+      {/* Heartbeat glow */}
+      <motion.div className="absolute pointer-events-none" style={{ inset: -40, background: glow1Bg, filter: 'blur(36px)' }} />
+      <motion.div className="absolute pointer-events-none" style={{ inset: -20, background: glow2Bg, filter: 'blur(22px)' }} />
 
-      {/* Grayscale base — always visible */}
+      {/* Grayscale base — subtle beat ripple */}
       {HEART_LAYERS.map((src, i) => (
-        <img
+        <motion.img
           key={`g${i}`}
           src={src}
           aria-hidden
+          animate={{ scale: BEAT_SCALE.map(v => 1 + (v - 1) * 0.45) }}
+          transition={{ duration: BEAT_DUR, repeat: Infinity, repeatDelay: BEAT_REST, times: BEAT_TIMES, delay: i * 0.028 }}
           style={{
-            position: 'absolute',
-            left: '50%', top: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: size, height: size,
-            objectFit: 'contain',
+            position: 'absolute', left: '50%', top: '50%',
+            x: '-50%' as any, y: '-50%' as any,
+            width: size, height: size, objectFit: 'contain',
             filter: 'saturate(0.08) brightness(0.45)',
             zIndex: i + 1,
           }}
         />
       ))}
 
-      {/* Colored layers — soft radial mask animated via MotionValue */}
-      <motion.div
-        style={{
-          position: 'absolute', inset: 0,
-          maskImage: maskStyle as any,
-          WebkitMaskImage: maskStyle as any,
-          zIndex: 10,
-        }}
-      >
-        {HEART_LAYERS.map((src, i) => {
-          const [scaleMax, duration, delay] = HEART_PULSE[i];
-          const wMax = size * scaleMax;
-          return (
-            <motion.img
-              key={`c${i}`}
-              src={src}
-              aria-hidden={i > 0}
-              alt={i === 0 ? 'Аура' : undefined}
-              animate={{ width: [size, wMax, size], height: [size, wMax, size] }}
-              transition={{ duration, repeat: Infinity, ease: 'easeInOut', delay, repeatType: 'loop' }}
-              style={{
-                position: 'absolute',
-                left: '50%', top: '50%',
-                transform: 'translate(-50%, -50%)',
-                objectFit: 'contain',
-                filter: imgFilter as any,
-                zIndex: i + 1,
-              }}
-            />
-          );
-        })}
+      {/* Colored layers — full heartbeat with center-outward ripple */}
+      <motion.div style={{ position: 'absolute', inset: 0, maskImage: maskStyle as any, WebkitMaskImage: maskStyle as any, zIndex: 10 }}>
+        {HEART_LAYERS.map((src, i) => (
+          <motion.img
+            key={`c${i}`}
+            src={src}
+            aria-hidden={i > 0}
+            alt={i === 0 ? 'Аура' : undefined}
+            animate={{ scale: BEAT_SCALE }}
+            transition={{ duration: BEAT_DUR, repeat: Infinity, repeatDelay: BEAT_REST, times: BEAT_TIMES, delay: i * 0.028 }}
+            style={{
+              position: 'absolute', left: '50%', top: '50%',
+              x: '-50%' as any, y: '-50%' as any,
+              width: size, height: size, objectFit: 'contain',
+              filter: imgFilter as any,
+              zIndex: i + 1,
+            }}
+          />
+        ))}
       </motion.div>
     </motion.div>
   );

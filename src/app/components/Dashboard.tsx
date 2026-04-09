@@ -622,40 +622,29 @@ export const Dashboard = () => {
         <HeartAura overallScore={overallScore} globalTrustScore={globalTrustScore} size={429} />
       </motion.div>
 
-      {/* Rings + Scores — card */}
+      {/* Rings + Scores — single row */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="rounded-2xl overflow-hidden mb-5"
-        style={{ backgroundColor: '#1C1C1E', position: 'relative' }}
+        className="rounded-2xl mb-5"
+        style={{ backgroundColor: '#1C1C1E', display: 'flex', alignItems: 'center', gap: 16, padding: '14px 20px' }}
       >
-        <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', background: 'radial-gradient(ellipse at 50% 0%, rgba(191,90,242,0.10) 0%, transparent 60%)' }} />
-        <div style={{ padding: '24px 20px 20px', position: 'relative', zIndex: 1 }}>
-          {/* Rings centered */}
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
-            <div style={{ position: 'relative' }}>
-              <AuraRings knowledge={globalKnowledgeScore} trust={globalTrustScore} size={128} />
-              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <p style={{ fontSize: 24, fontWeight: 700, color: 'white', lineHeight: 1 }}>{Math.round(overallScore)}</p>
-              </div>
-            </div>
+        <div style={{ position: 'relative', flexShrink: 0 }}>
+          <AuraRings knowledge={globalKnowledgeScore} trust={globalTrustScore} size={60} />
+          <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <p style={{ fontSize: 14, fontWeight: 700, color: 'white', lineHeight: 1 }}>{Math.round(overallScore)}</p>
           </div>
-          {/* Divider */}
-          <div style={{ height: '0.5px', backgroundColor: 'rgba(255,255,255,0.1)', marginBottom: 20 }} />
-          {/* Scores */}
-          <div style={{ display: 'flex' }}>
-            <div style={{ flex: 1, textAlign: 'center' }}>
-              <p style={{ fontSize: 11, color: '#636366', fontWeight: 600, letterSpacing: 1, textTransform: 'uppercase', marginBottom: 6 }}>Знания</p>
-              <p style={{ fontSize: 40, fontWeight: 700, color: '#BF5AF2', lineHeight: 1 }}>{Math.round(globalKnowledgeScore)}</p>
-              <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.18)', marginTop: 4 }}>/100</p>
-            </div>
-            <div style={{ width: '0.5px', backgroundColor: 'rgba(255,255,255,0.1)' }} />
-            <div style={{ flex: 1, textAlign: 'center' }}>
-              <p style={{ fontSize: 11, color: '#636366', fontWeight: 600, letterSpacing: 1, textTransform: 'uppercase', marginBottom: 6 }}>Доверие</p>
-              <p style={{ fontSize: 40, fontWeight: 700, lineHeight: 1, color: globalTrustScore < 40 ? '#FF3B30' : globalTrustScore < 70 ? '#FF9500' : '#30D158' }}>{Math.round(globalTrustScore)}</p>
-              <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.18)', marginTop: 4 }}>/100</p>
-            </div>
+        </div>
+        <div style={{ width: '0.5px', height: 32, backgroundColor: 'rgba(255,255,255,0.1)', flexShrink: 0 }} />
+        <div style={{ flex: 1, display: 'flex', justifyContent: 'space-around' }}>
+          <div>
+            <p style={{ fontSize: 11, color: '#636366', fontWeight: 500, marginBottom: 3 }}>Знания</p>
+            <p style={{ fontSize: 22, fontWeight: 700, color: '#BF5AF2', lineHeight: 1 }}>{Math.round(globalKnowledgeScore)}<span style={{ fontSize: 13, color: 'rgba(255,255,255,0.25)', fontWeight: 400 }}>/100</span></p>
+          </div>
+          <div>
+            <p style={{ fontSize: 11, color: '#636366', fontWeight: 500, marginBottom: 3 }}>Доверие</p>
+            <p style={{ fontSize: 22, fontWeight: 700, lineHeight: 1, color: globalTrustScore < 40 ? '#FF3B30' : globalTrustScore < 70 ? '#FF9500' : '#30D158' }}>{Math.round(globalTrustScore)}<span style={{ fontSize: 13, color: 'rgba(255,255,255,0.25)', fontWeight: 400 }}>/100</span></p>
           </div>
         </div>
       </motion.div>

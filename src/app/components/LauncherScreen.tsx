@@ -489,18 +489,19 @@ export const LauncherScreen = () => {
             transform: 'translate(-50%, -50%)',
             zIndex: 20,
           }}>
-            {/* Avatar — portal effect via radial mask */}
-            <img
-              src={avatarImg}
-              alt="Профиль"
-              style={{
-                width: 160, height: 160,
-                objectFit: 'cover',
-                borderRadius: '50%',
-                maskImage: 'radial-gradient(circle, black 38%, transparent 68%)',
-                WebkitMaskImage: 'radial-gradient(circle, black 38%, transparent 68%)',
-              }}
-            />
+            {/* Soft ambient ring */}
+            <div style={{
+              position: 'absolute', inset: -10, borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%)',
+              pointerEvents: 'none',
+            }} />
+            <div style={{
+              width: 110, height: 110, borderRadius: '50%',
+              boxShadow: '0 0 0 1.5px rgba(255,255,255,0.12), 0 0 28px rgba(255,255,255,0.07)',
+              overflow: 'hidden',
+            }}>
+              <img src={avatarImg} alt="Профиль" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            </div>
           </div>
         </div>
 

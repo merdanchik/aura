@@ -828,8 +828,20 @@ export const LauncherScreen = () => {
   const navigate = useNavigate();
 
   // State
-  const [periodIndex, setPeriodIndex] = useState(PERIODS.length - 1); // Apr '25
+  const [periodIndex, setPeriodIndex] = useState(() => {
+    const saved = sessionStorage.getItem('aura-period-index');
+    if (saved !== null) {
+      const n = parseInt(saved, 10);
+      if (n >= 0 && n < PERIODS.length) return n;
+    }
+    return PERIODS.length - 1; // default: Apr '25
+  });
   const period = PERIODS[periodIndex].id;
+
+  // Persist selected period across navigation
+  React.useEffect(() => {
+    sessionStorage.setItem('aura-period-index', String(periodIndex));
+  }, [periodIndex]);
   const [config] = useState<LayoutConfig>(DEFAULT_CONFIG);
 
   // Canvas size tracking

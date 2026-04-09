@@ -597,29 +597,29 @@ export const Dashboard = () => {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="flex items-center justify-center gap-7 px-1 mb-4"
-        style={{ transform: 'translateX(-10px)' }}
+        className="flex items-center justify-center gap-7 px-1 mb-7"
+        style={{ transform: 'translateX(-12px)' }}
       >
-        {/* Rings */}
+        {/* Rings — 77px; gap-7=28px ≈ 77/φ² */}
         <div className="relative flex-shrink-0">
           <AuraRings knowledge={globalKnowledgeScore} trust={globalTrustScore} size={77} />
           <div className="absolute inset-0 flex items-center justify-center">
-            <p className="text-[18px] text-white" style={{ fontWeight: 700, lineHeight: 1 }}>
+            <p className="text-[16px] text-white" style={{ fontWeight: 700, lineHeight: 1 }}>
               {Math.round(overallScore)}
             </p>
           </div>
         </div>
-        {/* Scores */}
-        <div className="flex gap-4">
+        {/* Scores — label 13px, number 21px: 13×φ=21.03 ✓; gap-3=12px ≈ 21/φ */}
+        <div className="flex gap-3">
           <div>
-            <p className="text-[11px] text-[#98989D]" style={{ fontWeight: 500 }}>Знания</p>
-            <p className="text-[24px]" style={{ fontWeight: 700, color: '#BF5AF2', lineHeight: 1.15 }}>
+            <p className="text-[13px] text-[#98989D]" style={{ fontWeight: 500 }}>Знания</p>
+            <p className="text-[21px]" style={{ fontWeight: 700, color: '#BF5AF2', lineHeight: 1.1 }}>
               {Math.round(globalKnowledgeScore)}/100
             </p>
           </div>
           <div>
-            <p className="text-[11px] text-[#98989D]" style={{ fontWeight: 500 }}>Доверие</p>
-            <p className="text-[24px]" style={{ fontWeight: 700, color: globalTrustScore < 40 ? '#FF3B30' : globalTrustScore < 70 ? '#FF9500' : '#30D158', lineHeight: 1.15 }}>
+            <p className="text-[13px] text-[#98989D]" style={{ fontWeight: 500 }}>Доверие</p>
+            <p className="text-[21px]" style={{ fontWeight: 700, color: globalTrustScore < 40 ? '#FF3B30' : globalTrustScore < 70 ? '#FF9500' : '#30D158', lineHeight: 1.1 }}>
               {Math.round(globalTrustScore)}/100
             </p>
           </div>

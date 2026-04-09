@@ -452,30 +452,31 @@ const TimelineSlider: React.FC<TimelineSliderProps> = ({ periods, selectedIndex,
       {/* Floating circle — appears on drag, disappears after release */}
       <AnimatePresence>
         {showCircle && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.85 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.85 }}
-            transition={{ duration: 0.15 }}
-            style={{ position: 'absolute', left: '50%', top: 8, transform: 'translateX(-50%)', pointerEvents: 'none', zIndex: 5 }}
-          >
-            {/* SVG 72px: circle visual spans y=10..62, so bottom at top+62=70 = LINE_TOP ✓ */}
-            <svg width={72} height={72} style={{ overflow: 'visible' }}>
-              <circle cx={36} cy={36} r={R} stroke="rgba(255,255,255,0.13)" strokeWidth={1.5} fill="none" />
-              {progress > 0 && (
-                <circle cx={36} cy={36} r={R}
-                  stroke={GOLD} strokeWidth={1.5} fill="none"
-                  strokeDasharray={`${arcLen} ${circum - arcLen}`}
-                  strokeLinecap="round"
-                  transform="rotate(-90 36 36)"
-                />
-              )}
-              <text x={36} y={33} textAnchor="middle" fontSize={12} fontWeight={600}
-                fill="white" fontFamily="Inter,-apple-system,sans-serif">{periods[selectedIndex].short}</text>
-              <text x={36} y={47} textAnchor="middle" fontSize={9}
-                fill="rgba(255,255,255,0.45)" fontFamily="Inter,-apple-system,sans-serif">{periods[selectedIndex].year}</text>
-            </svg>
-          </motion.div>
+          /* Outer div owns the CSS centering — motion.div only handles opacity/scale */
+          <div style={{ position: 'absolute', left: '50%', top: 8, transform: 'translateX(-50%)', pointerEvents: 'none', zIndex: 5 }}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.85 }}
+              transition={{ duration: 0.15 }}
+            >
+              <svg width={72} height={72} style={{ overflow: 'visible', display: 'block' }}>
+                <circle cx={36} cy={36} r={R} stroke="rgba(255,255,255,0.13)" strokeWidth={1.5} fill="none" />
+                {progress > 0 && (
+                  <circle cx={36} cy={36} r={R}
+                    stroke={GOLD} strokeWidth={1.5} fill="none"
+                    strokeDasharray={`${arcLen} ${circum - arcLen}`}
+                    strokeLinecap="round"
+                    transform="rotate(-90 36 36)"
+                  />
+                )}
+                <text x={36} y={33} textAnchor="middle" fontSize={12} fontWeight={600}
+                  fill="white" fontFamily="Inter,-apple-system,sans-serif">{periods[selectedIndex].short}</text>
+                <text x={36} y={47} textAnchor="middle" fontSize={9}
+                  fill="rgba(255,255,255,0.45)" fontFamily="Inter,-apple-system,sans-serif">{periods[selectedIndex].year}</text>
+              </svg>
+            </motion.div>
+          </div>
         )}
       </AnimatePresence>
 
@@ -656,7 +657,7 @@ export const LauncherScreen = () => {
         {/* ── TIMELINE SLIDER ── */}
         <TimelineSlider periods={PERIODS} selectedIndex={periodIndex} onChange={setPeriodIndex} />
 
-        <div style={{ height: 16, flexShrink: 0 }} />
+        <div style={{ height: 48, flexShrink: 0 }} />
 
       </div>
     </div>

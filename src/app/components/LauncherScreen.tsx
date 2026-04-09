@@ -1,7 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
-import { Heart } from 'lucide-react';
 import avatarImg from '../../assets/avatar.jpg';
 import portalRing from '../../assets/portal-ring.png';
 import launcherIcon from '../../assets/launcher-icon.svg';
@@ -420,18 +419,8 @@ export const LauncherScreen = () => {
     >
       <div className="w-full max-w-md mx-auto flex flex-col" style={{ height: '100%' }}>
 
-        {/* ── TOP BAR — Aura button. DO NOT TOUCH. ── */}
-        <div className="h-16 flex items-end pb-2 px-4 flex-shrink-0">
-          <motion.button
-            whileTap={{ scale: 0.88, opacity: 0.7 }}
-            transition={{ duration: 0.12 }}
-            onClick={() => navigate('/app')}
-            className="ml-auto active:opacity-70"
-            style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
-          >
-            <img src={launcherIcon} alt="Аура" style={{ width: 45, height: 45, objectFit: 'contain' }} />
-          </motion.button>
-        </div>
+        {/* ── TOP BAR — spacer ── */}
+        <div className="h-16 flex-shrink-0" />
 
         {/* ── CANVAS — interest map ── */}
         <div
@@ -514,13 +503,15 @@ export const LauncherScreen = () => {
           </div>
         </div>
 
-        {/* ── HEART BUTTON ── */}
-        <div style={{ flexShrink: 0, display: 'flex', justifyContent: 'center', paddingBottom: 10, paddingTop: 4 }}>
+        {/* ── LAUNCHER BUTTON ── */}
+        <div style={{ flexShrink: 0, display: 'flex', justifyContent: 'center', paddingBottom: 8, paddingTop: 4 }}>
           <motion.button
-            whileTap={{ scale: 0.88 }}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 8 }}
+            whileTap={{ scale: 0.88, opacity: 0.7 }}
+            transition={{ duration: 0.12 }}
+            onClick={() => navigate('/app')}
+            style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
           >
-            <Heart size={22} color="rgba(255,255,255,0.35)" strokeWidth={1.5} />
+            <img src={launcherIcon} alt="Аура" style={{ width: 40, height: 40, objectFit: 'contain' }} />
           </motion.button>
         </div>
 

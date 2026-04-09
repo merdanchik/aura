@@ -14,29 +14,15 @@ export const LauncherScreen = () => {
       backgroundColor: '#000',
       fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
     }}>
-      {/* Aura app icon — top right */}
-      <div style={{ position: 'absolute', top: 72, right: 24 }}>
-        <motion.button
-          whileTap={{ scale: 0.88, opacity: 0.7 }}
-          transition={{ duration: 0.12 }}
-          onClick={() => navigate('/app')}
-          style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}
-        >
-          <div style={{
-            width: 64,
-            height: 64,
-            borderRadius: 15,
-            backgroundColor: '#1C1C1E',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            overflow: 'hidden',
-          }}>
-            <img src={launcherIcon} alt="Аура" style={{ width: 50, height: 50, objectFit: 'contain' }} />
-          </div>
-          <span style={{ fontSize: 11, color: 'white', fontWeight: 400, letterSpacing: 0.2 }}>Аура</span>
-        </motion.button>
-      </div>
+      {/* Aura app icon — mirrors avatar position in Aura header */}
+      <motion.button
+        whileTap={{ scale: 0.88, opacity: 0.7 }}
+        transition={{ duration: 0.12 }}
+        onClick={() => navigate('/app')}
+        style={{ position: 'absolute', top: 18, right: 16, background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+      >
+        <img src={launcherIcon} alt="Аура" style={{ width: 45, height: 45, objectFit: 'contain' }} />
+      </motion.button>
 
       {/* Centered avatar */}
       <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

@@ -2,6 +2,8 @@ import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import avatarImg from '../../assets/avatar.jpg';
+import { useAura } from '../context/AuraContext';
+import { AuraRings } from './AuraRings';
 
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -522,6 +524,46 @@ const TimelineSlider: React.FC<TimelineSliderProps> = ({ periods, selectedIndex,
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
+// AURA HEADER — profile card, live from AuraContext
+// ═══════════════════════════════════════════════════════════════════════════
+
+const AuraHeader: React.FC = () => {
+  const { globalKnowledgeScore, globalTrustScore, overallScore } = useAura();
+  const score = Math.round(overallScore);
+
+  return (
+    <div style={{
+      flexShrink: 0,
+      display: 'flex', alignItems: 'center', gap: 14,
+      padding: '14px 16px 12px',
+    }}>
+      {/* Rings with score number in center */}
+      <div style={{ position: 'relative', flexShrink: 0 }}>
+        <AuraRings knowledge={globalKnowledgeScore} trust={globalTrustScore} size={82} />
+        <div style={{
+          position: 'absolute', inset: 0,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <span style={{ fontSize: 18, fontWeight: 700, color: 'white', letterSpacing: -0.5 }}>{score}</span>
+        </div>
+      </div>
+
+      {/* Name + handle */}
+      <div>
+        <p style={{ fontSize: 26, fontWeight: 700, color: 'white', lineHeight: 1.15, marginBottom: 5 }}>
+          Саша. Д.
+        </p>
+        <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.38)', lineHeight: 1 }}>
+          @englishcanal
+          <span style={{ margin: '0 5px', color: 'rgba(255,255,255,0.2)' }}>•</span>
+          публичный профиль
+        </p>
+      </div>
+    </div>
+  );
+};
+
+// ═══════════════════════════════════════════════════════════════════════════
 // MAIN SCREEN
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -567,8 +609,8 @@ export const LauncherScreen = () => {
     >
       <div className="w-full max-w-md mx-auto flex flex-col" style={{ height: '100%' }}>
 
-        {/* ── TOP BAR — spacer ── */}
-        <div className="h-16 flex-shrink-0" />
+        {/* ── TOP — profile card ── */}
+        <AuraHeader />
 
         {/* ── CANVAS — interest map ── */}
         <div

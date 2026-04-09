@@ -12,11 +12,7 @@ import { Switch } from './components/ui/switch';
 import avatarImg from "../assets/avatar.jpg";
 
 const Shell = () => {
-  return (
-    <AuraProvider>
-      <ShellInner />
-    </AuraProvider>
-  );
+  return <ShellInner />;
 };
 
 const ShellInner = () => {
@@ -139,6 +135,8 @@ const router = createBrowserRouter([
 
 export default function App() {
   return (
-    <RouterProvider router={router} />
+    <AuraProvider>
+      <RouterProvider router={router} />
+    </AuraProvider>
   );
 }

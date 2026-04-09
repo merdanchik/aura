@@ -354,6 +354,157 @@ const PartnersTab = () => {
   );
 };
 
+// ─── Know Cards (Что Яндекс знает) ──────────────────────────────────────────
+
+type KnowCard = {
+  category: string; sub: string; value: string; unit: string;
+  label: string; isNew: boolean; bg: string;
+};
+
+const KNOW_CARDS: KnowCard[] = [
+  {
+    category: 'Кино', sub: 'Кинопоиск',
+    value: '72', unit: '%', label: 'Исторические драмы',
+    isNew: true,
+    bg: 'radial-gradient(ellipse at 75% 28%, rgba(190,60,15,0.72) 0%, transparent 58%), radial-gradient(ellipse at 22% 78%, rgba(110,25,8,0.55) 0%, transparent 52%), #1C0804',
+  },
+  {
+    category: 'Еда', sub: 'Яндекс Еда · 67 заказов',
+    value: '91', unit: '%', label: 'Японская кухня',
+    isNew: false,
+    bg: 'radial-gradient(ellipse at 65% 28%, rgba(15,130,55,0.65) 0%, transparent 58%), radial-gradient(ellipse at 25% 72%, rgba(8,80,35,0.5) 0%, transparent 52%), #030F06',
+  },
+  {
+    category: 'Паттерн', sub: 'Все сервисы',
+    value: '94', unit: '%', label: 'Активен после 23:00',
+    isNew: false,
+    bg: 'radial-gradient(ellipse at 68% 25%, rgba(110,45,210,0.68) 0%, transparent 58%), radial-gradient(ellipse at 28% 72%, rgba(65,20,145,0.52) 0%, transparent 52%), #0A0418',
+  },
+  {
+    category: 'Паттерн', sub: 'Яндекс Такси',
+    value: '96', unit: '%', label: 'Утренние поездки',
+    isNew: false,
+    bg: 'radial-gradient(ellipse at 68% 28%, rgba(185,105,0,0.65) 0%, transparent 58%), radial-gradient(ellipse at 25% 72%, rgba(115,58,0,0.5) 0%, transparent 52%), #180C00',
+  },
+  {
+    category: 'Контекст', sub: 'Яндекс Такси · адреса',
+    value: '99', unit: '%', label: 'Живёт в Москве',
+    isNew: false,
+    bg: 'radial-gradient(ellipse at 68% 28%, rgba(12,125,125,0.65) 0%, transparent 58%), radial-gradient(ellipse at 25% 72%, rgba(8,75,75,0.5) 0%, transparent 52%), #021416',
+  },
+  {
+    category: 'Репутация', sub: 'Все сервисы',
+    value: 'топ 8', unit: '%', label: 'По надёжности',
+    isNew: false,
+    bg: 'radial-gradient(ellipse at 65% 25%, rgba(175,135,15,0.65) 0%, transparent 58%), radial-gradient(ellipse at 25% 72%, rgba(120,80,8,0.5) 0%, transparent 52%), #160E00',
+  },
+];
+
+const CARD_H = 245;
+const PEEK = 14;
+
+const SwipeCard = ({
+  card, stackDepth, isTop, onDismiss,
+}: {
+  card: KnowCard; stackDepth: number; isTop: boolean; onDismiss: () => void;
+}) => {
+  const x = useMotionValue(0);
+  const rotate = useTransform(x, [-220, 220], [-9, 9]);
+
+  const handleDragEnd = (_: unknown, info: { offset: { x: number }; velocity: { x: number } }) => {
+    if (Math.abs(info.offset.x) > 80 || Math.abs(info.velocity.x) > 400) {
+      motionAnimate(x, info.offset.x > 0 ? 650 : -650, { duration: 0.32, ease: [0.25, 1, 0.5, 1] } as any);
+      setTimeout(onDismiss, 290);
+    } else {
+      motionAnimate(x, 0, { type: 'spring', stiffness: 400, damping: 28 } as any);
+    }
+  };
+
+  return (
+    <motion.div
+      drag={isTop ? 'x' : false}
+      dragConstraints={{ left: 0, right: 0 }}
+      dragElastic={0.75}
+      onDragEnd={isTop ? handleDragEnd : undefined}
+      animate={{ y: stackDepth * PEEK, scale: 1 - stackDepth * 0.05 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 28 }}
+      style={{
+        position: 'absolute', top: 0, left: 0, right: 0,
+        x: isTop ? x : undefined,
+        rotate: isTop ? rotate : 0,
+        zIndex: 10 - stackDepth,
+        transformOrigin: 'top center',
+        cursor: isTop ? 'grab' : 'default',
+      }}
+    >
+      <div style={{
+        background: card.bg,
+        height: CARD_H,
+        borderRadius: 22,
+        overflow: 'hidden',
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        textAlign: 'center',
+        boxShadow: '0 10px 32px rgba(0,0,0,0.7)',
+      }}>
+        {/* top shine */}
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(255,255,255,0.09) 0%, transparent 38%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px 28px 18px', flex: 1, width: '100%', boxSizing: 'border-box' }}>
+          {/* category + badge */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+            <p style={{ fontSize: 11, fontWeight: 500, color: 'rgba(255,255,255,0.45)', letterSpacing: 0.5, textTransform: 'uppercase' }}>{card.category}</p>
+            {card.isNew && <span style={{ fontSize: 9, padding: '2px 7px', borderRadius: 10, backgroundColor: 'rgba(255,255,255,0.18)', color: 'white', fontWeight: 600 }}>NEW</span>}
+          </div>
+          {/* center: label above value */}
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            <p style={{ fontSize: 24, fontWeight: 700, color: 'white', lineHeight: 1.2, marginBottom: 14, textAlign: 'center' }}>{card.label}</p>
+            <p style={{ fontSize: 28, fontWeight: 300, color: 'rgba(255,255,255,0.52)', lineHeight: 1, letterSpacing: -0.5 }}>
+              {card.value}{card.unit}
+            </p>
+          </div>
+          {/* sub */}
+          <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.28)', textAlign: 'center', lineHeight: 1.3 }}>{card.sub}</p>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+const SwipeCardStack = () => {
+  const [topIdx, setTopIdx] = useState(0);
+  const remaining = KNOW_CARDS.slice(topIdx);
+  const visible = remaining.slice(0, 3);
+
+  const containerH = CARD_H + Math.min(visible.length - 1, 2) * PEEK + 6;
+
+  if (remaining.length === 0) {
+    return (
+      <div style={{ height: containerH, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <p style={{ color: '#636366', fontSize: 15 }}>Все факты изучены</p>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ position: 'relative', height: containerH }}>
+      {[...visible].reverse().map((card, reverseIdx) => {
+        const stackDepth = visible.length - 1 - reverseIdx;
+        return (
+          <SwipeCard
+            key={KNOW_CARDS.indexOf(card)}
+            card={card}
+            stackDepth={stackDepth}
+            isTop={stackDepth === 0}
+            onDismiss={() => setTopIdx(i => i + 1)}
+          />
+        );
+      })}
+    </div>
+  );
+};
+
 // ─── Tab Bar ──────────────────────────────────────────────────────────────────
 
 const TABS = ['Мой профиль', 'Друзья', 'Партнеры'] as const;
@@ -723,136 +874,46 @@ export const Dashboard = () => {
         </div>
       </motion.div>
 
-      {/* Что Яндекс знает обо мне — grid cards */}
+      {/* Что Яндекс знает обо мне — swipe stack */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
         className="mt-5"
       >
-        <div className="flex items-baseline justify-between px-1 mb-3">
+        <div className="flex items-baseline justify-between px-1 mb-4">
           <h2 className="text-[22px] text-white" style={{ fontWeight: 700 }}>Что Яндекс знает обо мне</h2>
           <p className="text-[15px] flex-shrink-0 ml-3" style={{ color: '#30D158', fontWeight: 600 }}>47 фактов</p>
         </div>
+        <SwipeCardStack />
+      </motion.div>
 
-        {(() => {
-          const cards = [
-            {
-              category: 'Кино', sub: 'Кинопоиск',
-              value: '72', unit: '%', label: 'Исторические драмы',
-              isNew: true, wide: false,
-              bg: 'radial-gradient(ellipse at 75% 28%, rgba(190,60,15,0.72) 0%, transparent 58%), radial-gradient(ellipse at 22% 78%, rgba(110,25,8,0.55) 0%, transparent 52%), #1C0804',
-            },
-            {
-              category: 'Еда', sub: 'Яндекс Еда · 67 заказов',
-              value: '91', unit: '%', label: 'Японская кухня',
-              isNew: false, wide: false,
-              bg: 'radial-gradient(ellipse at 65% 28%, rgba(15,130,55,0.65) 0%, transparent 58%), radial-gradient(ellipse at 25% 72%, rgba(8,80,35,0.5) 0%, transparent 52%), #030F06',
-            },
-            {
-              category: 'Паттерн', sub: 'Все сервисы',
-              value: '94', unit: '%', label: 'Активен после 23:00',
-              isNew: false, wide: false,
-              bg: 'radial-gradient(ellipse at 68% 25%, rgba(110,45,210,0.68) 0%, transparent 58%), radial-gradient(ellipse at 28% 72%, rgba(65,20,145,0.52) 0%, transparent 52%), #0A0418',
-            },
-            {
-              category: 'Паттерн', sub: 'Яндекс Такси',
-              value: '96', unit: '%', label: 'Утренние поездки',
-              isNew: false, wide: false,
-              bg: 'radial-gradient(ellipse at 68% 28%, rgba(185,105,0,0.65) 0%, transparent 58%), radial-gradient(ellipse at 25% 72%, rgba(115,58,0,0.5) 0%, transparent 52%), #180C00',
-            },
-            {
-              category: 'Контекст', sub: 'Яндекс Такси · адреса',
-              value: '99', unit: '%', label: 'Живёт в Москве',
-              isNew: false, wide: false,
-              bg: 'radial-gradient(ellipse at 68% 28%, rgba(12,125,125,0.65) 0%, transparent 58%), radial-gradient(ellipse at 25% 72%, rgba(8,75,75,0.5) 0%, transparent 52%), #021416',
-            },
-            {
-              category: 'Репутация', sub: 'Все сервисы',
-              value: 'топ\n8', unit: '%', label: 'По надёжности',
-              isNew: false, wide: false,
-              bg: 'radial-gradient(ellipse at 65% 25%, rgba(175,135,15,0.65) 0%, transparent 58%), radial-gradient(ellipse at 25% 72%, rgba(120,80,8,0.5) 0%, transparent 52%), #160E00',
-            },
-            {
-              category: 'Инцидент', sub: 'Яндекс Самокаты',
-              value: '!', unit: '', label: 'Незавершённая поездка на самокате',
-              isNew: true, wide: true,
-              bg: 'radial-gradient(ellipse at 38% 50%, rgba(195,30,30,0.7) 0%, transparent 55%), radial-gradient(ellipse at 72% 35%, rgba(115,10,10,0.5) 0%, transparent 50%), #1A0202',
-            },
-          ];
-
-          const cardTransforms = [
-            'rotate(-1.8deg) translate(-3px, 4px)',
-            'rotate(1.5deg) translate(2px, -3px)',
-            'rotate(-1.3deg) translate(-4px, 2px)',
-            'rotate(2.1deg) translate(3px, -5px)',
-            'rotate(-1.7deg) translate(-2px, 3px)',
-            'rotate(1.9deg) translate(4px, -2px)',
-            'rotate(-0.6deg) translate(1px, 2px)',
-          ];
-          const cardZ = [1, 3, 5, 7, 4, 6, 2];
-
-          return (
-            <div className="grid grid-cols-2 gap-3" style={{ padding: '8px 4px 6px', overflow: 'visible' }}>
-              {cards.map((card, i) => (
-                <div
-                  key={i}
-                  className={`rounded-[22px] relative overflow-hidden flex flex-col${card.wide ? ' col-span-2' : ''}`}
-                  style={{
-                    background: card.bg,
-                    minHeight: card.wide ? 104 : 200,
-                    transform: cardTransforms[i] ?? 'none',
-                    boxShadow: '0 8px 28px rgba(0,0,0,0.65)',
-                    zIndex: cardZ[i] ?? 1,
-                  }}
-                >
-                  {/* Top-edge shine */}
-                  <div className="absolute pointer-events-none" style={{
-                    inset: 0,
-                    background: 'linear-gradient(180deg, rgba(255,255,255,0.09) 0%, transparent 38%)',
-                  }} />
-
-                  {card.wide ? (
-                    /* ── Wide / alert card ── */
-                    <div className="relative z-10 flex items-center gap-4 px-5 py-5">
-                      <p style={{ fontSize: 38, lineHeight: 1 }}>⚠️</p>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <p style={{ fontSize: 13, fontWeight: 400, color: 'rgba(255,255,255,0.58)', letterSpacing: 0.2 }}>{card.category}</p>
-                          {card.isNew && <span style={{ fontSize: 9, padding: '2px 7px', borderRadius: 10, backgroundColor: 'rgba(255,255,255,0.18)', color: 'white', fontWeight: 600, letterSpacing: 0.5 }}>НОВОЕ</span>}
-                        </div>
-                        <p style={{ fontSize: 15, fontWeight: 500, color: 'white', lineHeight: 1.3 }}>{card.label}</p>
-                        <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.42)', marginTop: 3 }}>{card.sub}</p>
-                      </div>
-                    </div>
-                  ) : (
-                    /* ── Normal card ── */
-                    <div className="relative z-10 flex flex-col items-center text-center px-4 py-4" style={{ flex: 1, height: '100%' }}>
-                      {/* Top: category centered + badge */}
-                      <div className="flex items-center justify-center gap-1.5 w-full">
-                        <p style={{ fontSize: 11, fontWeight: 500, color: 'rgba(255,255,255,0.45)', letterSpacing: 0.4, textTransform: 'uppercase' }}>{card.category}</p>
-                        {card.isNew && (
-                          <span style={{ fontSize: 8, padding: '2px 6px', borderRadius: 8, backgroundColor: 'rgba(255,255,255,0.18)', color: 'white', fontWeight: 600 }}>NEW</span>
-                        )}
-                      </div>
-
-                      {/* Center: label (main) ABOVE value (secondary) */}
-                      <div className="flex flex-col items-center justify-center" style={{ flex: 1 }}>
-                        <p style={{ fontSize: 18, fontWeight: 700, color: 'white', lineHeight: 1.2, marginBottom: 10, textAlign: 'center' }}>{card.label}</p>
-                        <p style={{ fontSize: 22, fontWeight: 300, color: 'rgba(255,255,255,0.55)', lineHeight: 1, letterSpacing: -0.3, whiteSpace: 'pre-line' }}>
-                          {card.value}{card.unit}
-                        </p>
-                      </div>
-
-                      {/* Bottom: sub */}
-                      <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.30)', textAlign: 'center', lineHeight: 1.3 }}>{card.sub}</p>
-                    </div>
-                  )}
-                </div>
-              ))}
+      {/* Инциденты */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.32 }}
+        className="mt-6"
+      >
+        <p className="text-[13px] text-[#98989D] px-1 mb-3 tracking-widest font-semibold uppercase">
+          Инциденты
+        </p>
+        <div className="rounded-[22px] relative overflow-hidden" style={{
+          background: 'radial-gradient(ellipse at 38% 50%, rgba(195,30,30,0.7) 0%, transparent 55%), radial-gradient(ellipse at 72% 35%, rgba(115,10,10,0.5) 0%, transparent 50%), #1A0202',
+        }}>
+          <div className="absolute pointer-events-none" style={{ inset: 0, background: 'linear-gradient(180deg, rgba(255,255,255,0.09) 0%, transparent 38%)' }} />
+          <div className="relative z-10 flex items-center gap-4 px-5 py-5">
+            <p style={{ fontSize: 38, lineHeight: 1 }}>⚠️</p>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1">
+                <p style={{ fontSize: 13, fontWeight: 400, color: 'rgba(255,255,255,0.58)' }}>Инцидент</p>
+                <span style={{ fontSize: 9, padding: '2px 7px', borderRadius: 10, backgroundColor: 'rgba(255,255,255,0.18)', color: 'white', fontWeight: 600, letterSpacing: 0.5 }}>НОВОЕ</span>
+              </div>
+              <p style={{ fontSize: 15, fontWeight: 500, color: 'white', lineHeight: 1.3 }}>Незавершённая поездка на самокате</p>
+              <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.42)', marginTop: 3 }}>Яндекс Самокаты</p>
             </div>
-          );
-        })()}
+          </div>
+        </div>
       </motion.div>
 
     </div>

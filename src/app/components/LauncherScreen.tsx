@@ -495,13 +495,17 @@ export const LauncherScreen = () => {
               background: 'radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%)',
               pointerEvents: 'none',
             }} />
-            <div style={{
-              width: 110, height: 110, borderRadius: '50%',
-              overflow: 'hidden',
-              boxShadow: '0 0 10px 5px rgba(255,255,255,0.55), 0 0 28px 12px rgba(255,255,255,0.25)',
-            }}>
-              <img src={avatarImg} alt="Профиль" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            </div>
+            <img
+              src={avatarImg}
+              alt="Профиль"
+              style={{
+                width: 150, height: 150,
+                objectFit: 'cover',
+                borderRadius: '50%',
+                maskImage: 'radial-gradient(circle, black 52%, rgba(0,0,0,0.6) 65%, transparent 78%)',
+                WebkitMaskImage: 'radial-gradient(circle, black 52%, rgba(0,0,0,0.6) 65%, transparent 78%)',
+              }}
+            />
           </div>
         </div>
 

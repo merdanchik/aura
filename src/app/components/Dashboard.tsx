@@ -617,34 +617,39 @@ export const Dashboard = () => {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.05 }}
-        className="flex justify-center -mb-3"
+        className="flex justify-center -mb-5"
       >
         <HeartAura overallScore={overallScore} globalTrustScore={globalTrustScore} size={429} />
       </motion.div>
 
-      {/* Rings + Scores — single row */}
+      {/* Rings + Scores */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="rounded-2xl mb-5"
-        style={{ backgroundColor: '#1C1C1E', display: 'flex', alignItems: 'center', gap: 16, padding: '14px 20px' }}
+        className="flex items-center justify-center gap-7 px-1 mb-7"
+        style={{ transform: 'translateX(-12px)' }}
       >
-        <div style={{ position: 'relative', flexShrink: 0 }}>
-          <AuraRings knowledge={globalKnowledgeScore} trust={globalTrustScore} size={60} />
-          <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <p style={{ fontSize: 14, fontWeight: 700, color: 'white', lineHeight: 1 }}>{Math.round(overallScore)}</p>
+        <div className="relative flex-shrink-0">
+          <AuraRings knowledge={globalKnowledgeScore} trust={globalTrustScore} size={77} />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <p className="text-[16px] text-white" style={{ fontWeight: 700, lineHeight: 1 }}>
+              {Math.round(overallScore)}
+            </p>
           </div>
         </div>
-        <div style={{ width: '0.5px', height: 32, backgroundColor: 'rgba(255,255,255,0.1)', flexShrink: 0 }} />
-        <div style={{ flex: 1, display: 'flex', justifyContent: 'space-around' }}>
+        <div className="flex gap-3">
           <div>
-            <p style={{ fontSize: 11, color: '#636366', fontWeight: 500, marginBottom: 3 }}>Знания</p>
-            <p style={{ fontSize: 22, fontWeight: 700, color: '#BF5AF2', lineHeight: 1 }}>{Math.round(globalKnowledgeScore)}<span style={{ fontSize: 13, color: 'rgba(255,255,255,0.25)', fontWeight: 400 }}>/100</span></p>
+            <p className="text-[13px] text-[#98989D]" style={{ fontWeight: 500 }}>Знания</p>
+            <p className="text-[21px]" style={{ fontWeight: 700, color: '#BF5AF2', lineHeight: 1.1 }}>
+              {Math.round(globalKnowledgeScore)}/100
+            </p>
           </div>
           <div>
-            <p style={{ fontSize: 11, color: '#636366', fontWeight: 500, marginBottom: 3 }}>Доверие</p>
-            <p style={{ fontSize: 22, fontWeight: 700, lineHeight: 1, color: globalTrustScore < 40 ? '#FF3B30' : globalTrustScore < 70 ? '#FF9500' : '#30D158' }}>{Math.round(globalTrustScore)}<span style={{ fontSize: 13, color: 'rgba(255,255,255,0.25)', fontWeight: 400 }}>/100</span></p>
+            <p className="text-[13px] text-[#98989D]" style={{ fontWeight: 500 }}>Доверие</p>
+            <p className="text-[21px]" style={{ fontWeight: 700, color: globalTrustScore < 40 ? '#FF3B30' : globalTrustScore < 70 ? '#FF9500' : '#30D158', lineHeight: 1.1 }}>
+              {Math.round(globalTrustScore)}/100
+            </p>
           </div>
         </div>
       </motion.div>

@@ -550,6 +550,19 @@ export const Dashboard = () => {
     sessionStorage.setItem('servicesExpanded', String(v));
   };
 
+  React.useEffect(() => {
+    const saved = sessionStorage.getItem('dashboardScroll');
+    if (saved) {
+      requestAnimationFrame(() => window.scrollTo(0, parseInt(saved)));
+      sessionStorage.removeItem('dashboardScroll');
+    }
+  }, []);
+
+  const navigateToChat = (path: string) => {
+    sessionStorage.setItem('dashboardScroll', String(window.scrollY));
+    navigate(path);
+  };
+
   const trustDotGradient = globalTrustScore < 40
     ? 'linear-gradient(135deg, #FF3B30, #FF6961)'
     : globalTrustScore < 70
@@ -788,10 +801,62 @@ export const Dashboard = () => {
                 'inset 0 1px 20px 5px rgba(255,210,118,0.42)',
               ].join(', '),
             },
+            {
+              title: 'Суши в 2 ночи',
+              label: 'Яндекс Еда',
+              date: 'Август 2024',
+              contextId: 'mem-food',
+              bg: '#001512',
+              shadow: [
+                'inset 0 2px 42px 28px rgba(0,90,65,0.98)',
+                'inset 0 0 32px 18px rgba(0,180,130,0.82)',
+                'inset 0 6px 24px 8px rgba(20,240,170,0.60)',
+                'inset 0 1px 20px 5px rgba(150,255,220,0.40)',
+              ].join(', '),
+            },
+            {
+              title: 'Утро в городе',
+              label: 'Яндекс Такси',
+              date: 'Октябрь 2024',
+              contextId: 'mem-taxi',
+              bg: '#150C00',
+              shadow: [
+                'inset 0 2px 42px 28px rgba(110,70,0,0.98)',
+                'inset 0 0 32px 18px rgba(200,140,0,0.82)',
+                'inset 0 6px 24px 8px rgba(255,190,20,0.60)',
+                'inset 0 1px 20px 5px rgba(255,230,130,0.38)',
+              ].join(', '),
+            },
+            {
+              title: 'Чёрная пятница',
+              label: 'Яндекс Маркет',
+              date: 'Ноябрь 2024',
+              contextId: 'mem-blackfriday',
+              bg: '#080012',
+              shadow: [
+                'inset 0 2px 42px 28px rgba(50,10,120,0.98)',
+                'inset 0 0 32px 18px rgba(100,30,220,0.82)',
+                'inset 0 6px 24px 8px rgba(150,70,255,0.65)',
+                'inset 0 1px 20px 5px rgba(210,170,255,0.40)',
+              ].join(', '),
+            },
+            {
+              title: 'Выходные в Питере',
+              label: 'Путешествия',
+              date: 'Июль 2024',
+              contextId: 'mem-travel',
+              bg: '#000A18',
+              shadow: [
+                'inset 0 2px 42px 28px rgba(0,40,100,0.98)',
+                'inset 0 0 32px 18px rgba(0,95,210,0.82)',
+                'inset 0 6px 24px 8px rgba(30,145,255,0.62)',
+                'inset 0 1px 20px 5px rgba(120,200,255,0.40)',
+              ].join(', '),
+            },
           ].map((mem, i) => (
             <div
               key={i}
-              onClick={() => navigate(`/chat/${mem.contextId}`)}
+              onClick={() => navigateToChat(`/chat/${mem.contextId}`)}
               className="flex-shrink-0 w-[155px] h-[200px] rounded-2xl flex flex-col justify-between p-4 active:opacity-70 transition-opacity items-center text-center"
               style={{ backgroundColor: mem.bg, boxShadow: mem.shadow, cursor: 'pointer' }}
             >
@@ -857,7 +922,7 @@ export const Dashboard = () => {
           ].map((insight, i) => (
             <div
               key={i}
-              onClick={() => navigate(`/chat/${insight.contextId}`)}
+              onClick={() => navigateToChat(`/chat/${insight.contextId}`)}
               className="flex-shrink-0 w-[160px] rounded-2xl p-3.5 flex flex-col gap-2.5 active:opacity-70 transition-opacity"
               style={{ backgroundColor: '#1C1C1E', cursor: 'pointer' }}
             >
@@ -928,7 +993,7 @@ export const Dashboard = () => {
         <button
           className="w-full text-left rounded-[22px] overflow-hidden active:opacity-70 transition-opacity"
           style={{ backgroundColor: '#1C1C1E' }}
-          onClick={() => navigate('/chat/incident-scooters')}
+          onClick={() => navigateToChat('/chat/incident-scooters')}
         >
           <div className="flex items-center gap-4 px-5 py-4">
             <p style={{ fontSize: 34, lineHeight: 1 }}>⚠️</p>

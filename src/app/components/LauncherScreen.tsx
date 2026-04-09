@@ -240,11 +240,12 @@ const nodeSize = (w: number) => Math.round(12 + w * 20);
 const AVATAR_R = 55;
 const AVATAR_GAP = 16;
 
-// Radial bands: non-overlapping so nodes from different bands don't start adjacent
+// Radial bands — explicit gaps between zones create readable orbital structure
+// inner→mid gap 18px, mid→outer gap 7px
 const BANDS = {
-  inner: [108, 148] as const,
-  mid:   [155, 192] as const,
-  outer: [196, 228] as const,
+  inner: [92,  130] as const,   // top-3 nodes only, ew ≥ 0.78
+  mid:   [148, 195] as const,   // ew 0.42–0.78
+  outer: [202, 238] as const,   // background, ew < 0.42
 };
 
 function computeLayout(
@@ -282,7 +283,9 @@ function computeLayout(
   });
 
   const placed: PlacedNode[] = visible.map(({ node, ew }, i) => {
-    const band = ew > 0.75 ? BANDS.inner : ew > 0.45 ? BANDS.mid : BANDS.outer;
+    // Inner capped at 3 top nodes — prevents cluster of small nodes near avatar
+    const innerEligible = i < 3 && ew > 0.78;
+    const band = innerEligible ? BANDS.inner : ew > 0.42 ? BANDS.mid : BANDS.outer;
     const r = Math.min(band[0] + rng() * (band[1] - band[0]), maxR - nodeSize(node.weight));
     return {
       id: node.id,
@@ -365,8 +368,13 @@ const CapsuleNodeEl: React.FC<{
   const dur   = 5.5 + nodeSeed(node.id, 1) * 5;
   const delay = nodeSeed(node.id, 2) * 3.5;
   const fs    = Math.round(13 + placed.effectiveWeight * 8);
-  const glow  = `0 0 ${Math.round(12 + placed.effectiveWeight * 14)}px ${node.color}70,
-                 0 0 ${Math.round(28 + placed.effectiveWeight * 28)}px ${node.color}30`;
+  // 3-tier glow — no ambient layer, max radius 26px
+  const ew = placed.effectiveWeight;
+  const glow = ew > 0.75
+    ? `0 0 14px ${node.color}78, 0 0 26px ${node.color}32`
+    : ew > 0.42
+    ? `0 0 10px ${node.color}50, 0 0 20px ${node.color}18`
+    : `0 0 7px ${node.color}2E`;
 
   return (
     <motion.div
@@ -492,14 +500,14 @@ const OrbNodeEl: React.FC<{
     if (node.image) sampleImageColor(node.image, setGlowColor);
   }, [node.image]);
 
-  const glowInner = Math.round(8 + placed.effectiveWeight * 10);
-  const glowMid   = Math.round(18 + placed.effectiveWeight * 20);
-  const glowOuter = Math.round(32 + placed.effectiveWeight * 28);
-  const glowAmbient = Math.round(glowOuter * 2.2);
-  const glow = `0 0 ${glowInner}px  ${glowColor}86,
-                0 0 ${glowMid}px    ${glowColor}46,
-                0 0 ${glowOuter}px  ${glowColor}1C,
-                0 0 ${glowAmbient}px ${glowColor}0A`;
+  // 3-tier glow — no ambient layer (was 70–132px per node = main source of glow mud)
+  // Max outer radius 36px; avatar core at 74px always larger → avatar stays dominant
+  const ewG = placed.effectiveWeight;
+  const glow = ewG > 0.75
+    ? `0 0 10px 2px ${glowColor}88, 0 0 22px 4px ${glowColor}38, 0 0 36px 6px ${glowColor}14`
+    : ewG > 0.42
+    ? `0 0 7px 1px ${glowColor}60, 0 0 16px 3px ${glowColor}1E`
+    : `0 0 5px 1px ${glowColor}38, 0 0 10px 2px ${glowColor}0D`;
 
   const dx = (3 + intensity * 5) * (0.3 + nodeSeed(node.id, 12) * 0.7);
 

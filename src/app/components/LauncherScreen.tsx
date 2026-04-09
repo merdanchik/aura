@@ -365,10 +365,13 @@ const DEFAULT_CONFIG: LayoutConfig = {
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
-// TIMELINE SLIDER
+// TIMELINE SLIDER — scrollable ruler, fixed center line
 // ═══════════════════════════════════════════════════════════════════════════
 
 const GOLD = '#C9A227';
+const STEP = 36;   // px between months on the ruler
+const SUBS = 3;    // subtick count between months
+const EXTRA = 8;   // phantom month slots on each side for visual fill
 
 interface TimelineSliderProps {
   periods: typeof PERIODS;
@@ -379,7 +382,13 @@ interface TimelineSliderProps {
 const TimelineSlider: React.FC<TimelineSliderProps> = ({ periods, selectedIndex, onChange }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [cw, setCw] = useState(360);
-  const dragging = useRef(false);
+  // offset: ruler translation. -i*STEP puts month i under the center line.
+  const [offset, setOffset] = useState(-(periods.length - 1) * STEP);
+  const [isDragging, setIsDragging] = useState(false);
+  const [showCircle, setShowCircle] = useState(false);
+  const startX = useRef(0);
+  const startOffset = useRef(0);
+  const hideTimer = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
     const el = containerRef.current; if (!el) return;
@@ -387,91 +396,122 @@ const TimelineSlider: React.FC<TimelineSliderProps> = ({ periods, selectedIndex,
     ro.observe(el); return () => ro.disconnect();
   }, []);
 
-  const PAD = 32;
-  const trackW = cw - PAD * 2;
-  const step = trackW / (periods.length - 1);
-  const thumbX = PAD + selectedIndex * step;
-  const circleX = Math.max(36, Math.min(cw - 36, thumbX));
+  const MIN_OFFSET = -(periods.length - 1) * STEP;
+  const nearestIndex = Math.max(0, Math.min(periods.length - 1, Math.round(-offset / STEP)));
+  const snappedOffset = -nearestIndex * STEP;
 
-  const getIdx = (clientX: number) => {
-    const rect = containerRef.current!.getBoundingClientRect();
-    return Math.round(Math.max(0, Math.min(periods.length - 1,
-      (clientX - rect.left - PAD) / step)));
+  const onPointerDown = (e: React.PointerEvent) => {
+    clearTimeout(hideTimer.current);
+    containerRef.current?.setPointerCapture(e.pointerId);
+    setIsDragging(true);
+    setShowCircle(true);
+    startX.current = e.clientX;
+    startOffset.current = offset;
   };
+
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!isDragging) return;
+    const delta = e.clientX - startX.current;
+    const next = Math.max(MIN_OFFSET, Math.min(0, startOffset.current + delta));
+    setOffset(next);
+    const idx = Math.max(0, Math.min(periods.length - 1, Math.round(-next / STEP)));
+    if (idx !== selectedIndex) onChange(idx);
+  };
+
+  const onPointerUp = () => {
+    setIsDragging(false);
+    setOffset(snappedOffset);
+    onChange(nearestIndex);
+    hideTimer.current = setTimeout(() => setShowCircle(false), 700);
+  };
+
+  // Generate all tick marks (phantom + real months + subticks between)
+  const ticks: { f: number; isMonth: boolean; isActive: boolean }[] = [];
+  const totalSubSlots = (periods.length - 1 + 2 * EXTRA) * (SUBS + 1);
+  for (let t = 0; t <= totalSubSlots; t++) {
+    const f = -EXTRA + t / (SUBS + 1);
+    const rounded = Math.round(f);
+    const isMonth = Math.abs(f - rounded) < 0.001 && rounded >= 0 && rounded < periods.length;
+    ticks.push({ f, isMonth, isActive: isMonth && rounded === nearestIndex });
+  }
 
   const R = 26, circum = 2 * Math.PI * R;
   const progress = selectedIndex / (periods.length - 1);
   const arcLen = circum * progress;
 
-  // 3 subticks between each month tick
-  const SUBS = 3;
-  const totalTicks = (periods.length - 1) * (SUBS + 1) + 1;
-
   return (
     <div
       ref={containerRef}
-      style={{ position: 'relative', height: 96, userSelect: 'none', touchAction: 'none' }}
-      onPointerDown={e => {
-        dragging.current = true;
-        containerRef.current?.setPointerCapture(e.pointerId);
-        onChange(getIdx(e.clientX));
-      }}
-      onPointerMove={e => { if (dragging.current) onChange(getIdx(e.clientX)); }}
-      onPointerUp={() => { dragging.current = false; }}
+      style={{ position: 'relative', height: 100, userSelect: 'none', touchAction: 'none' }}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
     >
-      {/* Floating circle with arc */}
-      <div style={{ position: 'absolute', left: circleX, top: 0, transform: 'translateX(-50%)', pointerEvents: 'none' }}>
-        <svg width={72} height={72} style={{ overflow: 'visible' }}>
-          <circle cx={36} cy={36} r={R} stroke="rgba(255,255,255,0.13)" strokeWidth={1.5} fill="none" />
-          {progress > 0 && (
-            <circle cx={36} cy={36} r={R}
-              stroke={GOLD} strokeWidth={1.5} fill="none"
-              strokeDasharray={`${arcLen} ${circum - arcLen}`}
-              strokeDashoffset={circum * 0.25}
-              strokeLinecap="round"
-              transform="rotate(-90 36 36)"
-            />
-          )}
-          <text x={36} y={33} textAnchor="middle" fontSize={12} fontWeight={600}
-            fill="white" fontFamily="Inter,-apple-system,sans-serif">{periods[selectedIndex].short}</text>
-          <text x={36} y={47} textAnchor="middle" fontSize={9}
-            fill="rgba(255,255,255,0.45)" fontFamily="Inter,-apple-system,sans-serif">{periods[selectedIndex].year}</text>
-        </svg>
-      </div>
+      {/* Floating circle — appears on drag, disappears after release */}
+      <AnimatePresence>
+        {showCircle && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.85, y: 4 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.85, y: 4 }}
+            transition={{ duration: 0.15 }}
+            style={{ position: 'absolute', left: '50%', top: 0, transform: 'translateX(-50%)', pointerEvents: 'none', zIndex: 5 }}
+          >
+            <svg width={72} height={72} style={{ overflow: 'visible' }}>
+              <circle cx={36} cy={36} r={R} stroke="rgba(255,255,255,0.13)" strokeWidth={1.5} fill="none" />
+              {progress > 0 && (
+                <circle cx={36} cy={36} r={R}
+                  stroke={GOLD} strokeWidth={1.5} fill="none"
+                  strokeDasharray={`${arcLen} ${circum - arcLen}`}
+                  strokeDashoffset={circum * 0.25}
+                  strokeLinecap="round"
+                  transform="rotate(-90 36 36)"
+                />
+              )}
+              <text x={36} y={33} textAnchor="middle" fontSize={12} fontWeight={600}
+                fill="white" fontFamily="Inter,-apple-system,sans-serif">{periods[selectedIndex].short}</text>
+              <text x={36} y={47} textAnchor="middle" fontSize={9}
+                fill="rgba(255,255,255,0.45)" fontFamily="Inter,-apple-system,sans-serif">{periods[selectedIndex].year}</text>
+            </svg>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {/* Thumb dot */}
+      {/* Fixed golden center line */}
       <div style={{
-        position: 'absolute', left: thumbX, top: 70,
+        position: 'absolute', left: '50%', top: 70,
+        width: 1.5, height: 22, backgroundColor: GOLD,
+        transform: 'translateX(-50%)', pointerEvents: 'none', zIndex: 3,
+      }} />
+      {/* Fixed white dot */}
+      <div style={{
+        position: 'absolute', left: '50%', top: 70,
         width: 9, height: 9, borderRadius: '50%', backgroundColor: 'white',
-        transform: 'translate(-50%, -50%)', pointerEvents: 'none', zIndex: 2,
+        transform: 'translate(-50%, -50%)', pointerEvents: 'none', zIndex: 4,
       }} />
 
-      {/* Vertical connector line */}
-      <div style={{
-        position: 'absolute', left: thumbX, top: 70,
-        width: 1.5, height: 10, backgroundColor: GOLD,
-        transform: 'translateX(-50%)', pointerEvents: 'none',
-      }} />
-
-      {/* Ruler ticks */}
-      <div style={{ position: 'absolute', left: 0, right: 0, top: 76, bottom: 0 }}>
-        {Array.from({ length: totalTicks }).map((_, i) => {
-          const monthIdx = i / (SUBS + 1);
-          const isMonth = Number.isInteger(monthIdx);
-          const isActive = isMonth && Math.round(monthIdx) === selectedIndex;
-          const x = PAD + (i / (totalTicks - 1)) * trackW;
-          const h = isMonth ? (isActive ? 20 : 14) : 8;
-          const color = isActive ? GOLD
-            : isMonth ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.18)';
-          return (
-            <div key={i} style={{
-              position: 'absolute', left: x, bottom: 0,
-              width: isMonth ? 1.5 : 1, height: h,
-              backgroundColor: color,
-              transform: 'translateX(-50%)', borderRadius: 1,
-            }} />
-          );
-        })}
+      {/* Scrollable ruler — clipped, translates on drag */}
+      <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 28, overflow: 'hidden' }}>
+        <div style={{
+          position: 'absolute', inset: 0,
+          transform: `translateX(${offset}px)`,
+          transition: isDragging ? 'none' : 'transform 0.35s cubic-bezier(0.25, 1, 0.5, 1)',
+        }}>
+          {ticks.map((tick, i) => {
+            const h = tick.isMonth ? (tick.isActive ? 22 : 14) : 8;
+            const color = tick.isActive ? GOLD
+              : tick.isMonth ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.2)';
+            const x = cw / 2 + tick.f * STEP;
+            return (
+              <div key={i} style={{
+                position: 'absolute', left: x, bottom: 0,
+                width: tick.isMonth ? 1.5 : 1, height: h,
+                backgroundColor: color,
+                transform: 'translateX(-50%)', borderRadius: 1,
+              }} />
+            );
+          })}
+        </div>
       </div>
     </div>
   );

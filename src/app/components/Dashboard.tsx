@@ -406,15 +406,9 @@ const KNOW_CARDS: KnowCard[] = [
   },
   {
     category: 'Паттерн', sub: 'Яндекс Музыка',
-    value: '47', unit: '×', label: 'Одна песня на репите',
+    value: '47', unit: '×', label: 'Одна песня на репите 74 раза',
     isNew: false, tilt: -3.8,
     bg: 'radial-gradient(ellipse at 68% 28%, rgba(180,30,110,0.68) 0%, transparent 58%), radial-gradient(ellipse at 25% 70%, rgba(110,15,70,0.52) 0%, transparent 52%), #150008',
-  },
-  {
-    category: 'Корзина', sub: 'Яндекс Маркет',
-    value: '23', unit: '', label: 'Смотрит, но не покупает',
-    isNew: false, tilt: 3.1,
-    bg: 'radial-gradient(ellipse at 65% 28%, rgba(190,100,0,0.68) 0%, transparent 58%), radial-gradient(ellipse at 26% 72%, rgba(120,55,0,0.52) 0%, transparent 52%), #160900',
   },
   {
     category: 'Поведение', sub: 'Кинопоиск',

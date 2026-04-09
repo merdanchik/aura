@@ -61,78 +61,150 @@ const PERIODS = [
 const NODES: InterestNode[] = [
   // ── Text nodes ──────────────────────────────────────────────────────────
   {
-    id: 'jazz', label: 'Джаз', type: 'text', weight: 0.85, color: '#BF5AF2',
+    // Album discovered gradually → now obsession
+    id: 'jazz', label: 'Kind of Blue', type: 'text', weight: 0.85, color: '#BF5AF2',
     periods: ['*'],
     periodWeight: { '2024-07': 0.32, '2024-08': 0.4, '2024-09': 0.58, '2024-10': 0.78, '2024-11': 0.85, '2024-12': 0.88, '2025-01': 0.88, '2025-02': 0.85, '2025-03': 0.9, '2025-04': 0.95 },
   },
   {
-    id: 'tokyo', label: 'Токио', type: 'text', weight: 0.72, color: '#FF6633',
+    // Trip to Tokyo, peak October
+    id: 'tokyo', label: 'Shinjuku', type: 'text', weight: 0.72, color: '#FF6633',
     periods: ['2024-09', '2024-10', '2024-11', '2024-12'],
     periodWeight: { '2024-09': 0.38, '2024-10': 0.72, '2024-11': 0.64, '2024-12': 0.42 },
   },
   {
-    id: 'stoicism', label: 'Стоицизм', type: 'text', weight: 0.6, color: '#5E5CE6',
+    // Marcus Aurelius Meditations — new year reading
+    id: 'stoicism', label: 'Медитации', type: 'text', weight: 0.6, color: '#5E5CE6',
     periods: ['2025-01', '2025-02', '2025-03', '2025-04'],
     periodWeight: { '2025-01': 0.3, '2025-02': 0.46, '2025-03': 0.56, '2025-04': 0.6 },
   },
   {
-    id: 'night-drives', label: 'Ночные поездки', type: 'text', weight: 0.52, color: '#34C759',
+    // Specific memory: late-night drives
+    id: 'night-drives', label: 'МКАД в 3:00', type: 'text', weight: 0.52, color: '#34C759',
     periods: ['2024-11', '2024-12', '2025-01'],
     periodWeight: { '2024-11': 0.38, '2024-12': 0.52, '2025-01': 0.42 },
   },
   {
-    id: 'architecture', label: 'Архитектура', type: 'text', weight: 0.5, color: '#0A84FF',
+    // Melnikov — Russian constructivist architect obsession
+    id: 'architecture', label: 'Мельников', type: 'text', weight: 0.5, color: '#0A84FF',
     periods: ['2025-02', '2025-03', '2025-04'],
     periodWeight: { '2025-02': 0.32, '2025-03': 0.44, '2025-04': 0.5 },
   },
   {
-    id: 'cinema', label: 'Авторское кино', type: 'text', weight: 0.65, color: '#FF9F0A',
+    // Tarkovsky's Mirror — specific film
+    id: 'cinema', label: 'Зеркало', type: 'text', weight: 0.65, color: '#FF9F0A',
     periods: ['*'],
     periodWeight: { '2024-07': 0.65, '2024-08': 0.58, '2024-09': 0.6, '2024-10': 0.55, '2025-03': 0.5, '2025-04': 0.5 },
   },
 
-  // ── Blob → converted to text/symbol ─────────────────────────────────────
+  // ── Symbol nodes ─────────────────────────────────────────────────────────
   {
-    id: 'music-blob', label: 'Музыка', type: 'symbol', weight: 0.95,
+    // Specific artist — not just "music"
+    id: 'music-blob', label: 'Radiohead', type: 'symbol', weight: 0.95,
     color: '#FF375F', emoji: '🎵',
     periods: ['*'],
   },
   {
-    id: 'travel-blob', label: 'Путешествия', type: 'text', weight: 0.72,
+    // Osaka, not just "travel" — sub-trip from Tokyo
+    id: 'travel-blob', label: 'Осака', type: 'text', weight: 0.72,
     color: '#FF9F0A',
     periods: ['2024-09', '2024-10', '2024-11', '2024-12'],
     periodWeight: { '2024-09': 0.4, '2024-10': 0.72, '2024-11': 0.65, '2024-12': 0.4 },
   },
   {
-    id: 'tech-blob', label: 'Технологии', type: 'text', weight: 0.62,
+    // Specific product moment
+    id: 'tech-blob', label: 'Vision Pro', type: 'text', weight: 0.62,
     color: '#0A84FF',
     periods: ['2025-01', '2025-02', '2025-03', '2025-04'],
     periodWeight: { '2025-01': 0.32, '2025-02': 0.48, '2025-03': 0.58, '2025-04': 0.62 },
   },
-
-  // ── Symbol nodes ─────────────────────────────────────────────────────────
   {
-    id: 'basketball', label: 'Баскетбол', type: 'symbol', weight: 0.82, color: '#FF9500', emoji: '🏀',
+    // Nikola Jokić — specific player, not just "basketball"
+    id: 'basketball', label: 'Jokić', type: 'symbol', weight: 0.82, color: '#FF9500', emoji: '🏀',
     periods: ['*'],
   },
   {
-    id: 'f1', label: 'F1', type: 'symbol', weight: 0.78, color: '#FF3B30', emoji: '🏎️',
+    // Monaco GP peaks in summer — specific race
+    id: 'f1', label: 'Монако GP', type: 'symbol', weight: 0.78, color: '#FF3B30', emoji: '🏎️',
     periods: ['*'],
     periodWeight: { '2024-07': 0.92, '2024-08': 0.88, '2024-09': 0.72, '2024-10': 0.6, '2024-11': 0.55, '2024-12': 0.52, '2025-01': 0.55, '2025-02': 0.62, '2025-03': 0.72, '2025-04': 0.82 },
   },
   {
-    id: 'books', label: 'Книги', type: 'symbol', weight: 0.58, color: '#30D158', emoji: '📚',
+    // Hesse's Siddhartha — specific book
+    id: 'books', label: 'Сиддхартха', type: 'symbol', weight: 0.58, color: '#30D158', emoji: '📚',
     periods: ['2025-01', '2025-02', '2025-03', '2025-04'],
     periodWeight: { '2025-01': 0.38, '2025-02': 0.5, '2025-03': 0.55, '2025-04': 0.58 },
   },
   {
-    id: 'coffee', label: 'Кофе', type: 'symbol', weight: 0.42, color: '#C4945A', emoji: '☕',
+    // Specific ritual
+    id: 'coffee', label: 'Эспрессо в 6:00', type: 'symbol', weight: 0.42, color: '#C4945A', emoji: '☕',
     periods: ['*'],
   },
   {
-    id: 'sushi', label: 'Суши', type: 'symbol', weight: 0.48, color: '#FF6633', emoji: '🍣',
+    // Famous Tokyo sushi bar
+    id: 'sushi', label: 'Sukiyabashi', type: 'symbol', weight: 0.48, color: '#FF6633', emoji: '🍣',
     periods: ['2024-08', '2024-09', '2024-10', '2024-11'],
     periodWeight: { '2024-08': 0.38, '2024-09': 0.48, '2024-10': 0.44, '2024-11': 0.34 },
+  },
+
+  // ── Additional period-specific experiences ────────────────────────────────
+  {
+    // Summer trip, Lake Baikal
+    id: 'baikal', label: 'Байкал, июль', type: 'text', weight: 0.78, color: '#00C7BE',
+    periods: ['2024-07', '2024-08'],
+    periodWeight: { '2024-07': 0.82, '2024-08': 0.55 },
+  },
+  {
+    // Wimbledon 2024 final, July
+    id: 'wimbledon', label: 'Уимблдон', type: 'symbol', weight: 0.6, color: '#34C759', emoji: '🎾',
+    periods: ['2024-07'],
+  },
+  {
+    // Air — Moon Safari, the summer album
+    id: 'moon-safari', label: 'Moon Safari', type: 'text', weight: 0.7, color: '#FF9F0A',
+    periods: ['2024-07', '2024-08', '2024-09'],
+    periodWeight: { '2024-07': 0.75, '2024-08': 0.65, '2024-09': 0.42 },
+  },
+  {
+    // UEFA Euro 2024, final July 14
+    id: 'euro2024', label: 'Евро 2024', type: 'symbol', weight: 0.68, color: '#0A84FF', emoji: '⚽',
+    periods: ['2024-07'],
+  },
+  {
+    // Specific vinyl record found at a bar
+    id: 'vinyl', label: 'Blue Note 1568', type: 'text', weight: 0.5, color: '#BF5AF2',
+    periods: ['2024-08', '2024-09'],
+    periodWeight: { '2024-08': 0.5, '2024-09': 0.38 },
+  },
+  {
+    // Ichiran — solo ramen booth, Tokyo
+    id: 'ramen', label: 'Ichiran', type: 'symbol', weight: 0.65, color: '#FF6633', emoji: '🍜',
+    periods: ['2024-10', '2024-11'],
+    periodWeight: { '2024-10': 0.7, '2024-11': 0.52 },
+  },
+  {
+    // Japanese aesthetic philosophy, post-Tokyo
+    id: 'wabi-sabi', label: 'Wabi-sabi', type: 'text', weight: 0.55, color: '#C4945A',
+    periods: ['2024-10', '2024-11', '2024-12'],
+    periodWeight: { '2024-10': 0.48, '2024-11': 0.58, '2024-12': 0.42 },
+  },
+  {
+    // Joseph Brodsky — late autumn poetry phase
+    id: 'brodsky', label: 'Бродский', type: 'text', weight: 0.55, color: '#5E5CE6',
+    periods: ['2024-12', '2025-01', '2025-02'],
+    periodWeight: { '2024-12': 0.44, '2025-01': 0.58, '2025-02': 0.48 },
+  },
+  {
+    // Morning run habit, new year discipline
+    id: 'sunrise-run', label: '5:45 утра', type: 'symbol', weight: 0.58, color: '#34C759', emoji: '🏃',
+    periods: ['2025-02', '2025-03', '2025-04'],
+    periodWeight: { '2025-02': 0.38, '2025-03': 0.52, '2025-04': 0.6 },
+  },
+  {
+    // Garage Museum of Contemporary Art, Moscow
+    id: 'garage', label: 'Гараж', type: 'text', weight: 0.52, color: '#FF9F0A',
+    periods: ['2025-03', '2025-04'],
+    periodWeight: { '2025-03': 0.45, '2025-04': 0.55 },
   },
 ];
 
@@ -177,7 +249,7 @@ function computeLayout(
     .map(n => ({ node: n, ew: n.periodWeight?.[period] ?? n.weight }))
     .sort((a, b) => b.ew - a.ew);
 
-  const count = Math.max(4, Math.round(active.length * config.density));
+  const count = Math.max(8, Math.round(active.length * config.density));
   const visible = active.slice(0, count);
 
   const maxR = cW * 0.5;
@@ -413,7 +485,7 @@ const OrbNodeEl: React.FC<{
 
 const DEFAULT_CONFIG: LayoutConfig = {
   seed: 42,
-  density: 0.80,
+  density: 0.90,
   blurBlobs: 7,
   animIntensity: 0.7,
   collisions: true,
@@ -690,20 +762,26 @@ export const LauncherScreen = () => {
 
           {/* Ambient color hazes — large blurred clouds behind top nodes, dreamlike depth */}
           <AnimatePresence>
-            {layout.slice(0, 5).map(placed => {
+            {layout.slice(0, 5).map((placed, i) => {
               const node = nodeMap[placed.id];
               if (!node) return null;
               const sz = 160 + placed.effectiveWeight * 120;
+              const breatheLo = placed.effectiveWeight * 0.28;
+              const breatheHi = placed.effectiveWeight * 0.55;
               return (
                 <motion.div
                   key={`haze-${node.id}`}
                   initial={{ opacity: 0 }}
-                  animate={{ opacity: placed.effectiveWeight * 0.55, x: placed.x, y: placed.y }}
+                  animate={{
+                    opacity: [breatheLo, breatheHi, breatheLo],
+                    x: placed.x,
+                    y: placed.y,
+                  }}
                   exit={{ opacity: 0 }}
                   transition={{
                     x: { type: 'spring', stiffness: 55, damping: 20 },
                     y: { type: 'spring', stiffness: 55, damping: 20 },
-                    opacity: { duration: 1.6 },
+                    opacity: { duration: 5.5 + i * 1.1, repeat: Infinity, ease: 'easeInOut', delay: i * 0.85 },
                   }}
                   style={{
                     position: 'absolute',
@@ -773,32 +851,44 @@ export const LauncherScreen = () => {
             >
               <img src={avatarImg} alt="Профиль" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
-            {/* Glow layer 1: tight halo via box-shadow — no banding artifact */}
-            <div style={{
-              position: 'absolute', width: 110, height: 110,
-              top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-              borderRadius: '50%',
-              boxShadow: '0 0 0 1px rgba(255,255,255,0.10), 0 0 16px 5px rgba(255,255,255,0.22), 0 0 32px 8px rgba(180,160,255,0.18)',
-              pointerEvents: 'none',
-            }} />
+            {/* Glow layer 1: tight halo via box-shadow — breathes slowly */}
+            <motion.div
+              animate={{ opacity: [1, 0.52, 1] }}
+              transition={{ duration: 4.2, repeat: Infinity, ease: 'easeInOut', delay: 0 }}
+              style={{
+                position: 'absolute', width: 110, height: 110,
+                top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+                borderRadius: '50%',
+                boxShadow: '0 0 0 1px rgba(255,255,255,0.10), 0 0 16px 5px rgba(255,255,255,0.26), 0 0 32px 8px rgba(180,160,255,0.22)',
+                pointerEvents: 'none',
+              }}
+            />
             {/* Glow layer 2: soft mid bloom */}
-            <div style={{
-              position: 'absolute', width: 260, height: 260,
-              top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, transparent 32%, rgba(190,168,255,0.22) 50%, rgba(160,140,255,0.09) 65%, transparent 76%)',
-              filter: 'blur(22px)',
-              pointerEvents: 'none',
-            }} />
+            <motion.div
+              animate={{ opacity: [1, 0.46, 1] }}
+              transition={{ duration: 5.8, repeat: Infinity, ease: 'easeInOut', delay: 0.9 }}
+              style={{
+                position: 'absolute', width: 260, height: 260,
+                top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+                borderRadius: '50%',
+                background: 'radial-gradient(circle, transparent 32%, rgba(190,168,255,0.24) 50%, rgba(160,140,255,0.10) 65%, transparent 76%)',
+                filter: 'blur(22px)',
+                pointerEvents: 'none',
+              }}
+            />
             {/* Glow layer 3: outer ambient haze */}
-            <div style={{
-              position: 'absolute', width: 360, height: 360,
-              top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, transparent 30%, rgba(130,110,220,0.12) 50%, rgba(100,80,200,0.05) 65%, transparent 75%)',
-              filter: 'blur(44px)',
-              pointerEvents: 'none',
-            }} />
+            <motion.div
+              animate={{ opacity: [1, 0.38, 1] }}
+              transition={{ duration: 7.5, repeat: Infinity, ease: 'easeInOut', delay: 1.8 }}
+              style={{
+                position: 'absolute', width: 360, height: 360,
+                top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+                borderRadius: '50%',
+                background: 'radial-gradient(circle, transparent 30%, rgba(130,110,220,0.13) 50%, rgba(100,80,200,0.06) 65%, transparent 75%)',
+                filter: 'blur(44px)',
+                pointerEvents: 'none',
+              }}
+            />
           </div>
         </div>
 

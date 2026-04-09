@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
-import avatarImg from '../../assets/avatar.jpg';
+import avatarImg from '../../assets/avatar-portal.png';
 import launcherIcon from '../../assets/launcher-icon.svg';
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -489,38 +489,8 @@ export const LauncherScreen = () => {
             transform: 'translate(-50%, -50%)',
             zIndex: 20,
           }}>
-            {/* Avatar image */}
-            <div style={{
-              width: 110, height: 110, borderRadius: '50%',
-              overflow: 'hidden',
-              position: 'relative',
-            }}>
-              <img src={avatarImg} alt="Профиль" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            </div>
-            {/* Outline 2: 20px thick, blur 20 — outer soft ring */}
-            <div style={{
-              position: 'absolute',
-              width: 110, height: 110,
-              borderRadius: '50%',
-              border: '20px solid rgba(255,255,255,0.55)',
-              filter: 'blur(20px)',
-              top: '50%', left: '50%',
-              transform: 'translate(-50%, -50%)',
-              pointerEvents: 'none',
-              boxSizing: 'border-box',
-            }} />
-            {/* Outline 1: 10px thick, blur 10 — inner tight ring */}
-            <div style={{
-              position: 'absolute',
-              width: 110, height: 110,
-              borderRadius: '50%',
-              border: '10px solid rgba(255,255,255,0.8)',
-              filter: 'blur(10px)',
-              top: '50%', left: '50%',
-              transform: 'translate(-50%, -50%)',
-              pointerEvents: 'none',
-              boxSizing: 'border-box',
-            }} />
+            {/* Avatar with portal glow baked into PNG */}
+            <img src={avatarImg} alt="Профиль" style={{ width: 160, height: 160, objectFit: 'contain' }} />
           </div>
         </div>
 

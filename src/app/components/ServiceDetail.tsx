@@ -224,6 +224,30 @@ export const ServiceDetail = () => {
                     <p style={{ fontSize: 13, color: action.completed ? '#3A3A3C' : '#636366', marginTop: 3, lineHeight: 1.4 }}>
                       {action.description}
                     </p>
+                    {!action.completed && (action.knowledgeBoost || action.trustBoost) && (
+                      <div style={{ display: 'flex', gap: 6, marginTop: 8, flexWrap: 'wrap' }}>
+                        {action.knowledgeBoost && (
+                          <span style={{
+                            fontSize: 11, fontWeight: 600,
+                            padding: '3px 8px', borderRadius: 10,
+                            backgroundColor: 'rgba(191,90,242,0.14)',
+                            color: '#BF5AF2',
+                          }}>
+                            +{action.knowledgeBoost} знания
+                          </span>
+                        )}
+                        {action.trustBoost && (
+                          <span style={{
+                            fontSize: 11, fontWeight: 600,
+                            padding: '3px 8px', borderRadius: 10,
+                            backgroundColor: 'rgba(48,209,88,0.14)',
+                            color: '#30D158',
+                          }}>
+                            +{action.trustBoost} доверие
+                          </span>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </button>
               );

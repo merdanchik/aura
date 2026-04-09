@@ -929,13 +929,13 @@ export const LauncherScreen = () => {
             {/* ── Layer 1: BLOOM — barely-there atmospheric depth, not a spot ── */}
             {/* opacity 0.38 ceiling (was 0.65), alpha 0.13→0.05 (was 0.24→0.11), blur 52px (was 46) */}
             <motion.div
-              animate={{ opacity: [0.38, 0.16, 0.38] }}
+              animate={{ opacity: [0.42, 0.18, 0.42] }}
               transition={{ duration: 9.5, repeat: Infinity, ease: 'easeInOut', delay: 0 }}
               style={{
                 position: 'absolute', width: 400, height: 400,
                 top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
                 borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(158,128,238,0.13) 0%, rgba(128,102,218,0.05) 44%, transparent 70%)',
+                background: 'radial-gradient(circle, rgba(158,128,238,0.14) 0%, rgba(128,102,218,0.05) 44%, transparent 70%)',
                 filter: 'blur(52px)',
                 pointerEvents: 'none',
               }}
@@ -959,13 +959,13 @@ export const LauncherScreen = () => {
             {/* ── Layer 3: CORE GLOW — lavender, not white-hot; clean falloff behind photo ── */}
             {/* center rgba(186,168,252,0.42) was near-white rgba(242,232,255,0.60); opacity 0.80 (was 1.0) */}
             <motion.div
-              animate={{ opacity: [0.80, 0.40, 0.80] }}
+              animate={{ opacity: [0.90, 0.45, 0.90] }}
               transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut', delay: 0 }}
               style={{
                 position: 'absolute', width: 148, height: 148,
                 top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
                 borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(186,168,252,0.42) 0%, rgba(158,140,244,0.20) 44%, transparent 72%)',
+                background: 'radial-gradient(circle, rgba(186,168,252,0.48) 0%, rgba(158,140,244,0.23) 44%, transparent 72%)',
                 filter: 'blur(8px)',
                 pointerEvents: 'none',
               }}
@@ -986,17 +986,17 @@ export const LauncherScreen = () => {
             {/* ── Layer 5: EDGE RING — restrained; defines form without competing ── */}
             {/* stroke 0.18 (was 0.24), narrow glow 0.20 (was 0.32), falloff 0.09 (was 0.14) */}
             <motion.div
-              animate={{ opacity: [1, 0.55, 1] }}
+              animate={{ opacity: [1, 0.62, 1] }}
               transition={{ duration: 4.8, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
               style={{
                 position: 'absolute', width: 110, height: 110,
                 top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
                 borderRadius: '50%',
                 boxShadow: [
-                  'inset 0 0 0 1.5px rgba(255,255,255,0.18)',   // crisp inner stroke (was 0.24)
-                  '0 0 0 1px rgba(178,158,242,0.14)',            // thin outer separation (was 0.20)
-                  '0 0 10px 2px rgba(168,148,240,0.20)',         // narrow outer glow (was 0.32)
-                  '0 0 20px 4px rgba(148,128,228,0.09)',         // soft falloff (was 0.14)
+                  'inset 0 0 0 1.5px rgba(255,255,255,0.21)',   // crisp inner stroke
+                  '0 0 0 1px rgba(178,158,242,0.16)',            // thin outer separation
+                  '0 0 10px 2px rgba(168,148,240,0.23)',         // narrow outer glow
+                  '0 0 20px 4px rgba(148,128,228,0.10)',         // soft falloff
                 ].join(', '),
                 pointerEvents: 'none',
               }}

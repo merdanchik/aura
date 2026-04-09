@@ -489,31 +489,24 @@ export const LauncherScreen = () => {
             position: 'absolute', left: '50%', top: '50%',
             transform: 'translate(-50%, -50%)',
             zIndex: 20,
+            width: 110, height: 110,
           }}>
-            {/* Soft ambient ring */}
-            <div style={{
-              position: 'absolute', inset: -10, borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%)',
-              pointerEvents: 'none',
-            }} />
             {/* Avatar photo */}
-            <div style={{ position: 'relative', width: 110, height: 110 }}>
-              <div style={{ width: 110, height: 110, borderRadius: '50%', overflow: 'hidden' }}>
-                <img src={avatarImg} alt="Профиль" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              </div>
-              {/* Blurred ring overlay — sized so ring peak aligns with avatar edge */}
-              <img
-                src={portalRing}
-                alt=""
-                style={{
-                  position: 'absolute',
-                  width: 182, height: 182,
-                  top: '50%', left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  pointerEvents: 'none',
-                }}
-              />
+            <div style={{ width: 110, height: 110, borderRadius: '50%', overflow: 'hidden' }}>
+              <img src={avatarImg} alt="Профиль" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
+            {/* Portal ring — outside clip div, free to overflow */}
+            <img
+              src={portalRing}
+              alt=""
+              style={{
+                position: 'absolute',
+                width: 182, height: 182,
+                top: '50%', left: '50%',
+                transform: 'translate(-50%, -50%)',
+                pointerEvents: 'none',
+              }}
+            />
           </div>
         </div>
 

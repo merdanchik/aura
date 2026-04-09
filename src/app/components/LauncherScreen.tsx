@@ -374,7 +374,6 @@ export const LauncherScreen = () => {
   // State
   const [period, setPeriod] = useState('2025-04');
   const [config, setConfig] = useState<LayoutConfig>(DEFAULT_CONFIG);
-  const [showDebug, setShowDebug] = useState(false);
 
   // Canvas size tracking
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -404,9 +403,6 @@ export const LauncherScreen = () => {
   useEffect(() => {
     timelineRef.current?.scrollTo({ left: 9999, behavior: 'instant' });
   }, []);
-
-  const updateConfig = (patch: Partial<LayoutConfig>) =>
-    setConfig(c => ({ ...c, ...patch }));
 
   // ── Canvas center for positioning ──────────────────────────────────────
   const cx = canvasSize.w / 2;
@@ -503,23 +499,11 @@ export const LauncherScreen = () => {
           </div>
         </div>
 
-        {/* ── LAUNCHER BUTTON ── */}
-        <div style={{ flexShrink: 0, display: 'flex', justifyContent: 'center', paddingBottom: 8, paddingTop: 4 }}>
-          <motion.button
-            whileTap={{ scale: 0.88, opacity: 0.7 }}
-            transition={{ duration: 0.12 }}
-            onClick={() => navigate('/app')}
-            style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
-          >
-            <img src={launcherIcon} alt="Аура" style={{ width: 40, height: 40, objectFit: 'contain' }} />
-          </motion.button>
-        </div>
-
         {/* ── TIMELINE BAR ── */}
-        <div style={{ flexShrink: 0, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+        <div style={{ flexShrink: 0 }}>
           <div
             ref={timelineRef}
-            style={{ overflowX: 'auto', display: 'flex', padding: '10px 12px 4px', gap: 2, scrollbarWidth: 'none' }}
+            style={{ overflowX: 'auto', display: 'flex', padding: '10px 12px 6px', gap: 2, scrollbarWidth: 'none' }}
           >
             {PERIODS.map(p => {
               const active = p.id === period;
@@ -543,65 +527,18 @@ export const LauncherScreen = () => {
               );
             })}
           </div>
+        </div>
 
-          {/* Debug toggle row */}
-          <div style={{ display: 'flex', justifyContent: 'flex-start', padding: '4px 16px 10px' }}>
-            <button
-              onClick={() => setShowDebug(v => !v)}
-              style={{ fontSize: 10, color: 'rgba(255,255,255,0.22)', background: 'none', border: 'none', cursor: 'pointer', padding: 0, letterSpacing: 0.5 }}
-            >
-              {showDebug ? '▲ DEBUG' : '▼ DEBUG'}
-            </button>
-          </div>
-
-          {/* Debug panel */}
-          <AnimatePresence>
-            {showDebug && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                style={{ overflow: 'hidden', borderTop: '1px solid rgba(255,255,255,0.06)', padding: '12px 16px 14px' }}
-              >
-                {/* Numeric sliders */}
-                {([
-                  { key: 'seed'          as const, label: 'Seed',    min: 1,   max: 999, step: 1    },
-                  { key: 'density'       as const, label: 'Density', min: 0.3, max: 1,   step: 0.05 },
-                  { key: 'blurBlobs'     as const, label: 'Blur',    min: 0,   max: 22,  step: 1    },
-                  { key: 'animIntensity' as const, label: 'Anim',    min: 0,   max: 1,   step: 0.05 },
-                ]).map(({ key, label, min, max, step }) => (
-                  <div key={key} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 7 }}>
-                    <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', width: 46, flexShrink: 0 }}>{label}</span>
-                    <input
-                      type="range" min={min} max={max} step={step}
-                      value={config[key] as number}
-                      onChange={e => updateConfig({ [key]: key === 'seed' || key === 'blurBlobs' ? parseInt(e.target.value) : parseFloat(e.target.value) })}
-                      style={{ flex: 1, accentColor: '#BF5AF2', height: 2 }}
-                    />
-                    <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', width: 30, textAlign: 'right', flexShrink: 0 }}>
-                      {(config[key] as number).toFixed(key === 'seed' || key === 'blurBlobs' ? 0 : 2)}
-                    </span>
-                  </div>
-                ))}
-                {/* Collision toggle */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', width: 46, flexShrink: 0 }}>Collide</span>
-                  <button
-                    onClick={() => updateConfig({ collisions: !config.collisions })}
-                    style={{
-                      fontSize: 11, padding: '3px 12px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.14)',
-                      backgroundColor: config.collisions ? 'rgba(191,90,242,0.18)' : 'transparent',
-                      color: config.collisions ? '#BF5AF2' : 'rgba(255,255,255,0.35)',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    {config.collisions ? 'ON' : 'OFF'}
-                  </button>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+        {/* ── LAUNCHER BUTTON ── */}
+        <div style={{ flexShrink: 0, display: 'flex', justifyContent: 'center', paddingTop: 6, paddingBottom: 16 }}>
+          <motion.button
+            whileTap={{ scale: 0.88, opacity: 0.7 }}
+            transition={{ duration: 0.12 }}
+            onClick={() => navigate('/app')}
+            style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+          >
+            <img src={launcherIcon} alt="Аура" style={{ width: 48, height: 48, objectFit: 'contain' }} />
+          </motion.button>
         </div>
 
       </div>

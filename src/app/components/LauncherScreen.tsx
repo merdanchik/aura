@@ -149,11 +149,15 @@ function seededRng(seed: number) {
 // Stable node size based on base weight (never changes between periods)
 const nodeSize = (w: number) => Math.round(18 + w * 34);
 
-// Radial bands: [minPx, maxPx] from center
+// Avatar half-size + clearance gap for collision
+const AVATAR_R = 55;
+const AVATAR_GAP = 16;
+
+// Radial bands: [minPx, maxPx] from center — pushed out to avoid avatar overlap
 const BANDS = {
-  inner: [70, 112] as const,
-  mid:   [102, 158] as const,
-  outer: [148, 196] as const,
+  inner: [105, 145] as const,
+  mid:   [138, 178] as const,
+  outer: [168, 205] as const,
 };
 
 function computeLayout(
@@ -174,7 +178,7 @@ function computeLayout(
   const count = Math.max(4, Math.round(active.length * config.density));
   const visible = active.slice(0, count);
 
-  const maxR = Math.min(cW, cH) * 0.46;
+  const maxR = cW * 0.5;
 
   // Polar placement
   const placed: PlacedNode[] = visible.map(({ node, ew }) => {
@@ -213,6 +217,16 @@ function computeLayout(
       }
     }
   }
+
+  // Push nodes away from avatar (center = 0,0)
+  placed.forEach(n => {
+    const d = Math.hypot(n.x, n.y) || 0.01;
+    const minD = AVATAR_R + n.size + AVATAR_GAP;
+    if (d < minD) {
+      n.x = (n.x / d) * minD;
+      n.y = (n.y / d) * minD;
+    }
+  });
 
   // Clamp to safe canvas area
   const hw = cW / 2 - 18, hh = cH / 2 - 18;
@@ -475,16 +489,22 @@ export const LauncherScreen = () => {
             transform: 'translate(-50%, -50%)',
             zIndex: 20,
           }}>
-            {/* Soft ambient ring */}
+            {/* Blurred outline — sits behind avatar */}
             <div style={{
-              position: 'absolute', inset: -10, borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%)',
+              position: 'absolute',
+              width: 122, height: 122,
+              borderRadius: '50%',
+              border: '2.5px solid rgba(255,255,255,0.72)',
+              filter: 'blur(5px)',
+              top: '50%', left: '50%',
+              transform: 'translate(-50%, -50%)',
               pointerEvents: 'none',
             }} />
+            {/* Avatar image */}
             <div style={{
               width: 110, height: 110, borderRadius: '50%',
-              boxShadow: '0 0 0 1.5px rgba(255,255,255,0.12), 0 0 28px rgba(255,255,255,0.07)',
               overflow: 'hidden',
+              position: 'relative',
             }}>
               <img src={avatarImg} alt="Профиль" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>

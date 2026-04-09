@@ -425,24 +425,34 @@ const TimelineSlider: React.FC<TimelineSliderProps> = ({ periods, selectedIndex,
     hideTimer.current = setTimeout(() => setShowCircle(false), 700);
   };
 
-  // Generate all tick marks (phantom + real months + subticks between)
+  // Ticks only for real data range — no phantom months
   const ticks: { f: number; isMonth: boolean; isActive: boolean }[] = [];
-  const totalSubSlots = (periods.length - 1 + 2 * EXTRA) * (SUBS + 1);
-  for (let t = 0; t <= totalSubSlots; t++) {
-    const f = -EXTRA + t / (SUBS + 1);
-    const rounded = Math.round(f);
-    const isMonth = Math.abs(f - rounded) < 0.001 && rounded >= 0 && rounded < periods.length;
-    ticks.push({ f, isMonth, isActive: isMonth && rounded === nearestIndex });
+  for (let i = 0; i < periods.length; i++) {
+    ticks.push({ f: i, isMonth: true, isActive: i === nearestIndex });
+    if (i < periods.length - 1) {
+      for (let s = 1; s <= SUBS; s++) {
+        ticks.push({ f: i + s / (SUBS + 1), isMonth: false, isActive: false });
+      }
+    }
   }
 
   const R = 26, circum = 2 * Math.PI * R;
   const progress = selectedIndex / (periods.length - 1);
   const arcLen = circum * progress;
 
+  // Vertical layout (container = 110px):
+  // Circle SVG top=8 → visual circle bottom at 8+62=70
+  // Gold line: top=70, height=18 → bottom at 88
+  // White dot: centered at 88 (= ruler top)
+  // Ruler strip: bottom=0, height=22 → y=88..110
+  const RULER_H = 22;
+  const LINE_TOP = 70;
+  const DOT_Y = 88; // = LINE_TOP + 18 = 110 - RULER_H
+
   return (
     <div
       ref={containerRef}
-      style={{ position: 'relative', height: 100, userSelect: 'none', touchAction: 'none' }}
+      style={{ position: 'relative', height: 110, userSelect: 'none', touchAction: 'none' }}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
@@ -451,19 +461,19 @@ const TimelineSlider: React.FC<TimelineSliderProps> = ({ periods, selectedIndex,
       <AnimatePresence>
         {showCircle && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.85, y: 4 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.85, y: 4 }}
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.85 }}
             transition={{ duration: 0.15 }}
-            style={{ position: 'absolute', left: '50%', top: 0, transform: 'translateX(-50%)', pointerEvents: 'none', zIndex: 5 }}
+            style={{ position: 'absolute', left: '50%', top: 8, transform: 'translateX(-50%)', pointerEvents: 'none', zIndex: 5 }}
           >
+            {/* SVG 72px: circle visual spans y=10..62, so bottom at top+62=70 = LINE_TOP ✓ */}
             <svg width={72} height={72} style={{ overflow: 'visible' }}>
               <circle cx={36} cy={36} r={R} stroke="rgba(255,255,255,0.13)" strokeWidth={1.5} fill="none" />
               {progress > 0 && (
                 <circle cx={36} cy={36} r={R}
                   stroke={GOLD} strokeWidth={1.5} fill="none"
                   strokeDasharray={`${arcLen} ${circum - arcLen}`}
-                  strokeDashoffset={circum * 0.25}
                   strokeLinecap="round"
                   transform="rotate(-90 36 36)"
                 />
@@ -477,28 +487,28 @@ const TimelineSlider: React.FC<TimelineSliderProps> = ({ periods, selectedIndex,
         )}
       </AnimatePresence>
 
-      {/* Fixed golden center line */}
+      {/* Fixed golden center line — connects circle bottom to white dot */}
       <div style={{
-        position: 'absolute', left: '50%', top: 70,
-        width: 1.5, height: 22, backgroundColor: GOLD,
+        position: 'absolute', left: '50%', top: LINE_TOP,
+        width: 1.5, height: DOT_Y - LINE_TOP, backgroundColor: GOLD,
         transform: 'translateX(-50%)', pointerEvents: 'none', zIndex: 3,
       }} />
-      {/* Fixed white dot */}
+      {/* Fixed white dot at ruler top */}
       <div style={{
-        position: 'absolute', left: '50%', top: 70,
+        position: 'absolute', left: '50%', top: DOT_Y,
         width: 9, height: 9, borderRadius: '50%', backgroundColor: 'white',
         transform: 'translate(-50%, -50%)', pointerEvents: 'none', zIndex: 4,
       }} />
 
-      {/* Scrollable ruler — clipped, translates on drag */}
-      <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 28, overflow: 'hidden' }}>
+      {/* Scrollable ruler — only real months, no phantom ticks */}
+      <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: RULER_H, overflow: 'hidden' }}>
         <div style={{
           position: 'absolute', inset: 0,
           transform: `translateX(${offset}px)`,
           transition: isDragging ? 'none' : 'transform 0.35s cubic-bezier(0.25, 1, 0.5, 1)',
         }}>
           {ticks.map((tick, i) => {
-            const h = tick.isMonth ? (tick.isActive ? 22 : 14) : 8;
+            const h = tick.isMonth ? (tick.isActive ? 20 : 12) : 7;
             const color = tick.isActive ? GOLD
               : tick.isMonth ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.2)';
             const x = cw / 2 + tick.f * STEP;

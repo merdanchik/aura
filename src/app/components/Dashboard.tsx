@@ -498,10 +498,7 @@ const SwipeCard = ({
             {card.isNew && <span style={{ fontSize: 8, padding: '2px 6px', borderRadius: 8, backgroundColor: 'rgba(255,255,255,0.18)', color: 'white', fontWeight: 600 }}>NEW</span>}
           </div>
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-            <p style={{ fontSize: 19, fontWeight: 700, color: 'white', lineHeight: 1.2, marginBottom: 10, textAlign: 'center' }}>{card.label}</p>
-            <p style={{ fontSize: 22, fontWeight: 300, color: 'rgba(255,255,255,0.52)', lineHeight: 1, letterSpacing: -0.5 }}>
-              {card.value}{card.unit}
-            </p>
+            <p style={{ fontSize: 19, fontWeight: 700, color: 'white', lineHeight: 1.2, textAlign: 'center' }}>{card.label}</p>
           </div>
           <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.28)', textAlign: 'center', lineHeight: 1.3 }}>{card.sub}</p>
         </div>

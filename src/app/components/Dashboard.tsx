@@ -398,6 +398,36 @@ const KNOW_CARDS: KnowCard[] = [
     isNew: false, tilt: 4.6,
     bg: 'radial-gradient(ellipse at 65% 25%, rgba(175,135,15,0.65) 0%, transparent 58%), radial-gradient(ellipse at 25% 72%, rgba(120,80,8,0.5) 0%, transparent 52%), #160E00',
   },
+  {
+    category: 'Поведение', sub: 'Яндекс Еда',
+    value: '78', unit: '%', label: 'Заказов после 22:00',
+    isNew: false, tilt: -1.5,
+    bg: 'radial-gradient(ellipse at 62% 28%, rgba(30,40,160,0.7) 0%, transparent 58%), radial-gradient(ellipse at 28% 72%, rgba(15,20,100,0.55) 0%, transparent 52%), #040412',
+  },
+  {
+    category: 'Паттерн', sub: 'Яндекс Музыка',
+    value: '47', unit: '×', label: 'Одна песня за день',
+    isNew: false, tilt: -3.8,
+    bg: 'radial-gradient(ellipse at 68% 28%, rgba(180,30,110,0.68) 0%, transparent 58%), radial-gradient(ellipse at 25% 70%, rgba(110,15,70,0.52) 0%, transparent 52%), #150008',
+  },
+  {
+    category: 'Корзина', sub: 'Яндекс Маркет',
+    value: '23', unit: '', label: 'Товара не куплено',
+    isNew: false, tilt: 3.1,
+    bg: 'radial-gradient(ellipse at 65% 28%, rgba(190,100,0,0.68) 0%, transparent 58%), radial-gradient(ellipse at 26% 72%, rgba(120,55,0,0.52) 0%, transparent 52%), #160900',
+  },
+  {
+    category: 'Поведение', sub: 'Кинопоиск',
+    value: '8', unit: '', label: 'Трейлеров без фильма',
+    isNew: false, tilt: 1.3,
+    bg: 'radial-gradient(ellipse at 70% 28%, rgba(195,55,10,0.68) 0%, transparent 58%), radial-gradient(ellipse at 24% 72%, rgba(120,25,5,0.52) 0%, transparent 52%), #180300',
+  },
+  {
+    category: 'Привычка', sub: 'Яндекс Сплит',
+    value: '99', unit: '%', label: 'Платит в последний день',
+    isNew: false, tilt: 2.9,
+    bg: 'radial-gradient(ellipse at 65% 28%, rgba(200,40,40,0.68) 0%, transparent 58%), radial-gradient(ellipse at 26% 72%, rgba(130,15,15,0.52) 0%, transparent 52%), #1A0202',
+  },
 ];
 
 const CARD_W = 194;

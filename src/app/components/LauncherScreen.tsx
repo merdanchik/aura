@@ -355,20 +355,20 @@ const OrbNodeEl: React.FC<{
                 0 0 ${glowOuter}px  ${node.color}1C,
                 0 0 ${glowAmbient}px ${node.color}0A`;
 
+  const dx = (3 + intensity * 5) * (0.3 + nodeSeed(node.id, 12) * 0.7);
+
   return (
     <motion.div
-      animate={{ y: [0, -dy, 0] }}
+      animate={{ y: [0, -dy, 0], x: [0, dx * (nodeSeed(node.id, 13) > 0.5 ? 1 : -1), 0] }}
       transition={{ duration: dur, repeat: Infinity, ease: 'easeInOut', delay }}
-      // position: relative so label can hang below via absolute
       style={{ position: 'relative', width: sz, height: sz }}
     >
-      {/* Orb body — dark glass sphere */}
+      {/* Orb body — glow via box-shadow (no overflow:hidden — would clip shadow) */}
       <motion.div
         animate={{ scale: [1, 1 + 0.028 * nodeSeed(node.id, 11), 1] }}
         transition={{ duration: breathe, repeat: Infinity, ease: 'easeInOut', delay: delay * 0.5 }}
         style={{
           width: sz, height: sz, borderRadius: '50%',
-          // richer base: dark center with color tint, not fully transparent
           background: `radial-gradient(circle at 36% 30%,
             ${node.color}3A 0%,
             ${node.color}18 45%,
@@ -376,7 +376,6 @@ const OrbNodeEl: React.FC<{
             transparent 100%)`,
           boxShadow: glow,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          position: 'relative', overflow: 'hidden',
         }}
       >
         <span style={{ fontSize: fs, lineHeight: 1, userSelect: 'none' }}>
@@ -741,7 +740,7 @@ export const LauncherScreen = () => {
               position: 'absolute', width: 110, height: 110,
               top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
               borderRadius: '50%',
-              boxShadow: '0 0 0 1.5px rgba(255,255,255,0.14), 0 0 18px 6px rgba(255,255,255,0.26), 0 0 36px 10px rgba(200,182,255,0.15)',
+              boxShadow: '0 0 0 1px rgba(255,255,255,0.10), 0 0 16px 5px rgba(255,255,255,0.22), 0 0 32px 8px rgba(180,160,255,0.18)',
               pointerEvents: 'none',
             }} />
             {/* Glow layer 2: soft mid bloom */}

@@ -321,7 +321,8 @@ function computeLayout(
   // Push nodes away from avatar (center = 0,0)
   placed.forEach(n => {
     const d = Math.hypot(n.x, n.y) || 0.01;
-    const minD = AVATAR_R + n.size + AVATAR_GAP;
+    const extra = n.type === 'text' ? 70 : n.type === 'symbol' ? 14 : 0;
+    const minD = AVATAR_R + n.size + AVATAR_GAP + extra;
     if (d < minD) {
       n.x = (n.x / d) * minD;
       n.y = (n.y / d) * minD;

@@ -497,8 +497,8 @@ export const LauncherScreen = () => {
             }} />
             <div style={{
               width: 110, height: 110, borderRadius: '50%',
-              boxShadow: '0 0 0 1.5px rgba(255,255,255,0.12), 0 0 28px rgba(255,255,255,0.07)',
               overflow: 'hidden',
+              boxShadow: '0 0 10px 5px rgba(255,255,255,0.55), 0 0 28px 12px rgba(255,255,255,0.25)',
             }}>
               <img src={avatarImg} alt="Профиль" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>

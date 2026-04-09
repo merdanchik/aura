@@ -926,44 +926,47 @@ export const LauncherScreen = () => {
             transform: 'translate(-50%, -50%)',
             zIndex: 20,
           }}>
-            {/* ── Layer 1: BLOOM — far atmospheric haze, full-circle, barely visible ── */}
+            {/* ── Layer 1: BLOOM — barely-there atmospheric depth, not a spot ── */}
+            {/* opacity 0.38 ceiling (was 0.65), alpha 0.13→0.05 (was 0.24→0.11), blur 52px (was 46) */}
             <motion.div
-              animate={{ opacity: [0.65, 0.30, 0.65] }}
+              animate={{ opacity: [0.38, 0.16, 0.38] }}
               transition={{ duration: 9.5, repeat: Infinity, ease: 'easeInOut', delay: 0 }}
               style={{
-                position: 'absolute', width: 420, height: 420,
+                position: 'absolute', width: 400, height: 400,
                 top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
                 borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(140,105,230,0.24) 0%, rgba(110,78,200,0.11) 42%, transparent 70%)',
-                filter: 'blur(46px)',
+                background: 'radial-gradient(circle, rgba(158,128,238,0.13) 0%, rgba(128,102,218,0.05) 44%, transparent 70%)',
+                filter: 'blur(52px)',
                 pointerEvents: 'none',
               }}
             />
 
-            {/* ── Layer 2: AMBIENT HAZE — annular corona, hollow center, medium falloff ── */}
+            {/* ── Layer 2: AMBIENT HAZE — only readable on black, not a distinct shape ── */}
+            {/* opacity 0.55 ceiling (was 1.0), alpha 0.16→0.08 (was 0.32→0.16), blur 18px (was 14) */}
             <motion.div
-              animate={{ opacity: [1, 0.48, 1] }}
+              animate={{ opacity: [0.55, 0.22, 0.55] }}
               transition={{ duration: 6.4, repeat: Infinity, ease: 'easeInOut', delay: 1.1 }}
               style={{
-                position: 'absolute', width: 256, height: 256,
+                position: 'absolute', width: 248, height: 248,
                 top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
                 borderRadius: '50%',
-                background: 'radial-gradient(circle, transparent 26%, rgba(168,138,255,0.32) 44%, rgba(138,108,228,0.16) 58%, transparent 73%)',
-                filter: 'blur(14px)',
+                background: 'radial-gradient(circle, transparent 30%, rgba(158,138,248,0.16) 46%, rgba(138,118,235,0.08) 60%, transparent 74%)',
+                filter: 'blur(18px)',
                 pointerEvents: 'none',
               }}
             />
 
-            {/* ── Layer 3: CORE GLOW — warm, tight, sits BEHIND photo — light from source ── */}
+            {/* ── Layer 3: CORE GLOW — lavender, not white-hot; clean falloff behind photo ── */}
+            {/* center rgba(186,168,252,0.42) was near-white rgba(242,232,255,0.60); opacity 0.80 (was 1.0) */}
             <motion.div
-              animate={{ opacity: [1, 0.52, 1] }}
+              animate={{ opacity: [0.80, 0.40, 0.80] }}
               transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut', delay: 0 }}
               style={{
-                position: 'absolute', width: 156, height: 156,
+                position: 'absolute', width: 148, height: 148,
                 top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
                 borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(242,232,255,0.60) 0%, rgba(204,178,255,0.32) 42%, transparent 70%)',
-                filter: 'blur(9px)',
+                background: 'radial-gradient(circle, rgba(186,168,252,0.42) 0%, rgba(158,140,244,0.20) 44%, transparent 72%)',
+                filter: 'blur(8px)',
                 pointerEvents: 'none',
               }}
             />
@@ -980,19 +983,20 @@ export const LauncherScreen = () => {
               <img src={avatarImg} alt="Профиль" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
 
-            {/* ── Layer 5: EDGE RING — crisp stroke defines avatar shape, slim colored glow ── */}
+            {/* ── Layer 5: EDGE RING — restrained; defines form without competing ── */}
+            {/* stroke 0.18 (was 0.24), narrow glow 0.20 (was 0.32), falloff 0.09 (was 0.14) */}
             <motion.div
-              animate={{ opacity: [1, 0.58, 1] }}
+              animate={{ opacity: [1, 0.55, 1] }}
               transition={{ duration: 4.8, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
               style={{
                 position: 'absolute', width: 110, height: 110,
                 top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
                 borderRadius: '50%',
                 boxShadow: [
-                  'inset 0 0 0 1.5px rgba(255,255,255,0.24)',   // crisp inner stroke
-                  '0 0 0 1px rgba(200,178,255,0.20)',            // thin outer separation
-                  '0 0 10px 2px rgba(188,158,255,0.32)',         // narrow outer glow
-                  '0 0 22px 4px rgba(160,128,240,0.14)',         // soft falloff
+                  'inset 0 0 0 1.5px rgba(255,255,255,0.18)',   // crisp inner stroke (was 0.24)
+                  '0 0 0 1px rgba(178,158,242,0.14)',            // thin outer separation (was 0.20)
+                  '0 0 10px 2px rgba(168,148,240,0.20)',         // narrow outer glow (was 0.32)
+                  '0 0 20px 4px rgba(148,128,228,0.09)',         // soft falloff (was 0.14)
                 ].join(', '),
                 pointerEvents: 'none',
               }}

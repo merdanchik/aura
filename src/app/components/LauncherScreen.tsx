@@ -277,8 +277,8 @@ const CapsuleNodeEl: React.FC<{
       <div style={{
         paddingLeft: 13, paddingRight: 13, paddingTop: 7, paddingBottom: 7,
         borderRadius: 24,
-        // no hard border — subtle glow edge only
-        background: `radial-gradient(ellipse at 40% 35%, ${node.color}22 0%, ${node.color}0A 100%)`,
+        border: `1px solid ${node.color}28`,
+        background: `radial-gradient(ellipse at 40% 35%, ${node.color}28 0%, ${node.color}0C 100%)`,
         boxShadow: glow,
         whiteSpace: 'nowrap',
         backdropFilter: 'blur(6px)',
@@ -334,20 +334,20 @@ const BlobNodeEl: React.FC<{
   );
 };
 
-// Orb: media/symbol orb — глубокий layered glow, emoji крупнее, label снизу как шёпот
+// Orb: media/symbol orb — glass sphere feel, layered glow, label absolutely below
 const OrbNodeEl: React.FC<{
   node: InterestNode; placed: PlacedNode; intensity: number;
 }> = ({ node, placed, intensity }) => {
-  const sz     = placed.size * 2;
-  const fs     = Math.round(sz * 0.52);
-  const dy     = (5 + intensity * 8) * (0.4 + nodeSeed(node.id, 7) * 0.9);
-  const dur    = 5.5 + nodeSeed(node.id, 8) * 5;
-  const delay  = nodeSeed(node.id, 9) * 4;
-  const labelFs = Math.round(8 + placed.effectiveWeight * 4);
-  // 3-layer glow: tight ring → soft bloom → ambient haze
-  const glowInner = Math.round(6 + placed.effectiveWeight * 8);
-  const glowMid   = Math.round(14 + placed.effectiveWeight * 18);
-  const glowOuter = Math.round(28 + placed.effectiveWeight * 24);
+  const sz      = placed.size * 2;
+  const fs      = Math.round(sz * 0.50);
+  const dy      = (5 + intensity * 8) * (0.4 + nodeSeed(node.id, 7) * 0.9);
+  const breathe = 3 + nodeSeed(node.id, 10) * 2.5; // slow scale pulse period
+  const dur     = 5.5 + nodeSeed(node.id, 8) * 5;
+  const delay   = nodeSeed(node.id, 9) * 4;
+  const labelFs = Math.round(9 + placed.effectiveWeight * 4);
+  const glowInner = Math.round(8 + placed.effectiveWeight * 10);
+  const glowMid   = Math.round(18 + placed.effectiveWeight * 20);
+  const glowOuter = Math.round(32 + placed.effectiveWeight * 28);
   const glow = `0 0 ${glowInner}px ${node.color}86,
                 0 0 ${glowMid}px   ${node.color}46,
                 0 0 ${glowOuter}px ${node.color}1C`;
@@ -356,24 +356,47 @@ const OrbNodeEl: React.FC<{
     <motion.div
       animate={{ y: [0, -dy, 0] }}
       transition={{ duration: dur, repeat: Infinity, ease: 'easeInOut', delay }}
-      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5 }}
+      // position: relative so label can hang below via absolute
+      style={{ position: 'relative', width: sz, height: sz }}
     >
-      {/* Orb body */}
-      <div style={{
-        width: sz, height: sz, borderRadius: '50%',
-        background: `radial-gradient(circle at 38% 32%, ${node.color}2A 0%, ${node.color}0D 60%, transparent 100%)`,
-        boxShadow: glow,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        flexShrink: 0,
-      }}>
-        <span style={{ fontSize: fs, lineHeight: 1, userSelect: 'none' }}>{node.emoji}</span>
-      </div>
-      {/* Whisper label */}
+      {/* Orb body — dark glass sphere */}
+      <motion.div
+        animate={{ scale: [1, 1 + 0.028 * nodeSeed(node.id, 11), 1] }}
+        transition={{ duration: breathe, repeat: Infinity, ease: 'easeInOut', delay: delay * 0.5 }}
+        style={{
+          width: sz, height: sz, borderRadius: '50%',
+          // richer base: dark center with color tint, not fully transparent
+          background: `radial-gradient(circle at 36% 30%,
+            ${node.color}3A 0%,
+            ${node.color}18 45%,
+            ${node.color}08 75%,
+            transparent 100%)`,
+          boxShadow: glow,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          position: 'relative', overflow: 'hidden',
+        }}
+      >
+        {/* Glass inner highlight — top-left bright spot */}
+        <div style={{
+          position: 'absolute', top: '8%', left: '10%',
+          width: '42%', height: '38%', borderRadius: '50%',
+          background: 'radial-gradient(ellipse at 30% 30%, rgba(255,255,255,0.18) 0%, transparent 70%)',
+          pointerEvents: 'none',
+        }} />
+        <span style={{ fontSize: fs, lineHeight: 1, userSelect: 'none', position: 'relative' }}>
+          {node.emoji}
+        </span>
+      </motion.div>
+
+      {/* Whisper label — anchored below orb, outside its box */}
       <span style={{
+        position: 'absolute',
+        top: sz + 5,
+        left: '50%', transform: 'translateX(-50%)',
         fontSize: labelFs,
         fontWeight: 400,
-        color: `${node.color}99`,
-        letterSpacing: 0.3,
+        color: `${node.color}A0`,
+        letterSpacing: 0.4,
         whiteSpace: 'nowrap',
         userSelect: 'none',
       }}>
@@ -669,7 +692,7 @@ export const LauncherScreen = () => {
                   key={node.id}
                   initial={{ opacity: 0, scale: 0.25, x: 0, y: 0 }}
                   animate={{
-                    opacity: 0.55 + placed.effectiveWeight * 0.45,
+                    opacity: 0.28 + placed.effectiveWeight * 0.72,
                     scale: 0.82 + placed.effectiveWeight * 0.22,
                     x: placed.x,
                     y: placed.y,

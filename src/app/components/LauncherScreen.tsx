@@ -256,14 +256,17 @@ function nodeSeed(id: string, offset = 0): number {
 // NODE RENDERERS — render + motion layer, each type isolated
 // ═══════════════════════════════════════════════════════════════════════════
 
-const TextNodeEl: React.FC<{
+// Capsule: softer, atmospheric — не neon pill, а "мысль в пространстве"
+const CapsuleNodeEl: React.FC<{
   node: InterestNode; placed: PlacedNode; intensity: number;
 }> = ({ node, placed, intensity }) => {
-  const dy    = (8 + intensity * 11) * (0.5 + nodeSeed(node.id, 0) * 0.8);
-  const dur   = 4.2 + nodeSeed(node.id, 1) * 4.5;
-  const delay = nodeSeed(node.id, 2) * 3;
-  const fs    = Math.round(10 + placed.effectiveWeight * 6);
-  const glow  = Math.round(4 + placed.effectiveWeight * 12);
+  const dy    = (7 + intensity * 9) * (0.4 + nodeSeed(node.id, 0) * 0.8);
+  const dur   = 5 + nodeSeed(node.id, 1) * 5;
+  const delay = nodeSeed(node.id, 2) * 3.5;
+  const fs    = Math.round(11 + placed.effectiveWeight * 7);
+  // layered glow: inner tight + outer soft
+  const glow  = `0 0 ${Math.round(6 + placed.effectiveWeight * 10)}px ${node.color}50,
+                 0 0 ${Math.round(18 + placed.effectiveWeight * 22)}px ${node.color}22`;
 
   return (
     <motion.div
@@ -272,15 +275,20 @@ const TextNodeEl: React.FC<{
       style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}
     >
       <div style={{
-        paddingLeft: 10, paddingRight: 10, paddingTop: 5, paddingBottom: 5,
-        borderRadius: 20,
-        backgroundColor: `${node.color}16`,
-        border: `1px solid ${node.color}48`,
-        boxShadow: `0 0 ${glow}px ${node.color}38`,
+        paddingLeft: 13, paddingRight: 13, paddingTop: 7, paddingBottom: 7,
+        borderRadius: 24,
+        // no hard border — subtle glow edge only
+        background: `radial-gradient(ellipse at 40% 35%, ${node.color}22 0%, ${node.color}0A 100%)`,
+        boxShadow: glow,
         whiteSpace: 'nowrap',
-        backdropFilter: 'blur(4px)',
+        backdropFilter: 'blur(6px)',
       }}>
-        <span style={{ fontSize: fs, fontWeight: placed.effectiveWeight > 0.7 ? 600 : 500, color: node.color, letterSpacing: 0.3 }}>
+        <span style={{
+          fontSize: fs,
+          fontWeight: placed.effectiveWeight > 0.65 ? 500 : 400,
+          color: `${node.color}EE`,
+          letterSpacing: 0.2,
+        }}>
           {node.label}
         </span>
       </div>
@@ -326,29 +334,51 @@ const BlobNodeEl: React.FC<{
   );
 };
 
-const SymbolNodeEl: React.FC<{
+// Orb: media/symbol orb — глубокий layered glow, emoji крупнее, label снизу как шёпот
+const OrbNodeEl: React.FC<{
   node: InterestNode; placed: PlacedNode; intensity: number;
 }> = ({ node, placed, intensity }) => {
-  const sz    = placed.size * 2;
-  const fs    = Math.round(sz * 0.46);
-  const dy    = (6 + intensity * 9) * (0.5 + nodeSeed(node.id, 7) * 0.8);
-  const dur   = 4.8 + nodeSeed(node.id, 8) * 4.5;
-  const delay = nodeSeed(node.id, 9) * 3.5;
-  const glow  = Math.round(5 + placed.effectiveWeight * 11);
+  const sz     = placed.size * 2;
+  const fs     = Math.round(sz * 0.52);
+  const dy     = (5 + intensity * 8) * (0.4 + nodeSeed(node.id, 7) * 0.9);
+  const dur    = 5.5 + nodeSeed(node.id, 8) * 5;
+  const delay  = nodeSeed(node.id, 9) * 4;
+  const labelFs = Math.round(8 + placed.effectiveWeight * 4);
+  // 3-layer glow: tight ring → soft bloom → ambient haze
+  const glowInner = Math.round(6 + placed.effectiveWeight * 8);
+  const glowMid   = Math.round(14 + placed.effectiveWeight * 18);
+  const glowOuter = Math.round(28 + placed.effectiveWeight * 24);
+  const glow = `0 0 ${glowInner}px ${node.color}70,
+                0 0 ${glowMid}px   ${node.color}38,
+                0 0 ${glowOuter}px ${node.color}16`;
 
   return (
     <motion.div
       animate={{ y: [0, -dy, 0] }}
       transition={{ duration: dur, repeat: Infinity, ease: 'easeInOut', delay }}
-      style={{
-        width: sz, height: sz, borderRadius: '50%',
-        backgroundColor: `${node.color}16`,
-        border: `1.5px solid ${node.color}3A`,
-        boxShadow: `0 0 ${glow}px ${node.color}30`,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-      }}
+      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5 }}
     >
-      <span style={{ fontSize: fs, lineHeight: 1, userSelect: 'none' }}>{node.emoji}</span>
+      {/* Orb body */}
+      <div style={{
+        width: sz, height: sz, borderRadius: '50%',
+        background: `radial-gradient(circle at 38% 32%, ${node.color}2A 0%, ${node.color}0D 60%, transparent 100%)`,
+        boxShadow: glow,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        flexShrink: 0,
+      }}>
+        <span style={{ fontSize: fs, lineHeight: 1, userSelect: 'none' }}>{node.emoji}</span>
+      </div>
+      {/* Whisper label */}
+      <span style={{
+        fontSize: labelFs,
+        fontWeight: 400,
+        color: `${node.color}99`,
+        letterSpacing: 0.3,
+        whiteSpace: 'nowrap',
+        userSelect: 'none',
+      }}>
+        {node.label}
+      </span>
     </motion.div>
   );
 };
@@ -623,10 +653,10 @@ export const LauncherScreen = () => {
           className="flex-1 relative overflow-hidden"
           style={{ minHeight: 0 }}
         >
-          {/* Stage lighting: soft radial glow at center */}
+          {/* Stage lighting: layered depth — warm center, cool falloff */}
           <div style={{
             position: 'absolute', inset: 0, pointerEvents: 'none',
-            background: 'radial-gradient(ellipse at 50% 48%, rgba(255,255,255,0.032) 0%, transparent 62%)',
+            background: 'radial-gradient(ellipse at 50% 46%, rgba(255,255,255,0.055) 0%, rgba(140,120,255,0.018) 38%, transparent 65%)',
           }} />
 
           {/* Interest nodes */}
@@ -661,9 +691,9 @@ export const LauncherScreen = () => {
                     pointerEvents: 'none',
                   }}
                 >
-                  {node.type === 'text'   && <TextNodeEl   node={node} placed={placed} intensity={config.animIntensity} />}
-                  {node.type === 'blob'   && <BlobNodeEl   node={node} placed={placed} blurPx={config.blurBlobs} intensity={config.animIntensity} />}
-                  {node.type === 'symbol' && <SymbolNodeEl node={node} placed={placed} intensity={config.animIntensity} />}
+                  {node.type === 'text'   && <CapsuleNodeEl node={node} placed={placed} intensity={config.animIntensity} />}
+                  {node.type === 'blob'   && <BlobNodeEl    node={node} placed={placed} blurPx={config.blurBlobs} intensity={config.animIntensity} />}
+                  {node.type === 'symbol' && <OrbNodeEl     node={node} placed={placed} intensity={config.animIntensity} />}
                 </motion.div>
               );
             })}
@@ -682,20 +712,31 @@ export const LauncherScreen = () => {
             >
               <img src={avatarImg} alt="Профиль" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
-            {/* Glowing ring — transparent band via radial-gradient + blur */}
+            {/* Glow layer 1: tight inner ring */}
             <div style={{
-              position: 'absolute',
-              width: 180, height: 180,
-              top: '50%', left: '50%',
-              transform: 'translate(-50%, -50%)',
-              background: `radial-gradient(
-                circle,
-                transparent 54%,
-                rgba(255,255,255,0.7) 59%,
-                rgba(255,255,255,0.4) 64%,
-                transparent 68%
-              )`,
-              filter: 'blur(10px)',
+              position: 'absolute', width: 148, height: 148,
+              top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, transparent 56%, rgba(255,255,255,0.55) 62%, rgba(255,255,255,0.18) 68%, transparent 74%)',
+              filter: 'blur(5px)',
+              pointerEvents: 'none',
+            }} />
+            {/* Glow layer 2: soft mid bloom */}
+            <div style={{
+              position: 'absolute', width: 230, height: 230,
+              top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, transparent 42%, rgba(200,190,255,0.22) 52%, rgba(180,160,255,0.10) 62%, transparent 72%)',
+              filter: 'blur(18px)',
+              pointerEvents: 'none',
+            }} />
+            {/* Glow layer 3: outer ambient haze */}
+            <div style={{
+              position: 'absolute', width: 330, height: 330,
+              top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, transparent 38%, rgba(150,130,255,0.10) 50%, rgba(100,90,200,0.05) 62%, transparent 72%)',
+              filter: 'blur(36px)',
               pointerEvents: 'none',
             }} />
           </div>

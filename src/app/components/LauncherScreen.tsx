@@ -247,6 +247,7 @@ const TextNodeEl: React.FC<{
   const dur   = 4.2 + nodeSeed(node.id, 1) * 4.5;
   const delay = nodeSeed(node.id, 2) * 3;
   const fs    = Math.round(10 + placed.effectiveWeight * 6);
+  const glow  = Math.round(4 + placed.effectiveWeight * 12);
 
   return (
     <motion.div
@@ -259,6 +260,7 @@ const TextNodeEl: React.FC<{
         borderRadius: 20,
         backgroundColor: `${node.color}16`,
         border: `1px solid ${node.color}48`,
+        boxShadow: `0 0 ${glow}px ${node.color}38`,
         whiteSpace: 'nowrap',
         backdropFilter: 'blur(4px)',
       }}>
@@ -457,29 +459,11 @@ export const LauncherScreen = () => {
                     height: placed.size * 2,
                     zIndex: Math.round(placed.effectiveWeight * 10),
                     pointerEvents: 'none',
-                    overflow: 'visible',
                   }}
                 >
-                  {/* Atmospheric blur halo — overflows node bounds */}
-                  <div style={{
-                    position: 'absolute',
-                    left: '50%', top: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    width:  placed.size * 7,
-                    height: placed.size * 7,
-                    borderRadius: '50%',
-                    backgroundColor: node.color,
-                    opacity: 0.06 + placed.effectiveWeight * 0.18,
-                    filter: `blur(${Math.round(32 + placed.effectiveWeight * 56)}px)`,
-                    pointerEvents: 'none',
-                    zIndex: 0,
-                  }} />
-                  {/* Node content sits above the halo */}
-                  <div style={{ position: 'relative', zIndex: 1, width: '100%', height: '100%' }}>
-                    {node.type === 'text'   && <TextNodeEl   node={node} placed={placed} intensity={config.animIntensity} />}
-                    {node.type === 'blob'   && <BlobNodeEl   node={node} placed={placed} blurPx={config.blurBlobs} intensity={config.animIntensity} />}
-                    {node.type === 'symbol' && <SymbolNodeEl node={node} placed={placed} intensity={config.animIntensity} />}
-                  </div>
+                  {node.type === 'text'   && <TextNodeEl   node={node} placed={placed} intensity={config.animIntensity} />}
+                  {node.type === 'blob'   && <BlobNodeEl   node={node} placed={placed} blurPx={config.blurBlobs} intensity={config.animIntensity} />}
+                  {node.type === 'symbol' && <SymbolNodeEl node={node} placed={placed} intensity={config.animIntensity} />}
                 </motion.div>
               );
             })}

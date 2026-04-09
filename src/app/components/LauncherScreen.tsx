@@ -489,22 +489,16 @@ export const LauncherScreen = () => {
             position: 'absolute', left: '50%', top: '50%',
             transform: 'translate(-50%, -50%)',
             zIndex: 20,
-            width: 110, height: 110,
           }}>
-            {/* Avatar photo */}
-            <div style={{ width: 110, height: 110, borderRadius: '50%', overflow: 'hidden' }}>
-              <img src={avatarImg} alt="Профиль" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            </div>
-            {/* Portal ring — outside clip div, free to overflow */}
             <img
-              src={portalRing}
-              alt=""
+              src={avatarImg}
+              alt="Профиль"
               style={{
-                position: 'absolute',
-                width: 182, height: 182,
-                top: '50%', left: '50%',
-                transform: 'translate(-50%, -50%)',
-                pointerEvents: 'none',
+                width: 160, height: 160,
+                objectFit: 'cover',
+                display: 'block',
+                maskImage: 'radial-gradient(circle closest-side, black 62%, transparent 88%)',
+                WebkitMaskImage: 'radial-gradient(circle closest-side, black 62%, transparent 88%)',
               }}
             />
           </div>

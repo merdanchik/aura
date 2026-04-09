@@ -501,13 +501,13 @@ export const LauncherScreen = () => {
               <div style={{ width: 110, height: 110, borderRadius: '50%', overflow: 'hidden' }}>
                 <img src={avatarImg} alt="Профиль" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
-              {/* Blurred ring overlay — transparent PNG */}
+              {/* Blurred ring overlay — sized so ring peak aligns with avatar edge */}
               <img
                 src={portalRing}
                 alt=""
                 style={{
                   position: 'absolute',
-                  width: 200, height: 200,
+                  width: 182, height: 182,
                   top: '50%', left: '50%',
                   transform: 'translate(-50%, -50%)',
                   pointerEvents: 'none',

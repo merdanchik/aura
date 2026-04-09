@@ -86,7 +86,8 @@ const CONTEXT_CHATS: Record<string, ContextChat> = {
   'ins-kinopoisk':  { message: 'аниме тебя удивило? что посмотрел в итоге?',          color: '#FF6600' },
   'ins-market':     { message: 'воскресные покупки — что обычно берёшь?',             color: '#FFCC00' },
   'ins-split':      { message: 'с оплатами всё окей, саша?',                          color: '#00C853' },
-  'ins-books':      { message: 'утренний нон-фикшн — что читаешь сейчас?',            color: '#0077FF' },
+  'ins-books':          { message: 'утренний нон-фикшн — что читаешь сейчас?',     color: '#0077FF' },
+  'incident-scooters':  { message: 'я сейчас разберусь, не переживай',              color: '#FF3B30' },
 };
 
 // Lighten a hex color by mixing with white

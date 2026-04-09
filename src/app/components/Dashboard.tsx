@@ -897,22 +897,22 @@ export const Dashboard = () => {
         <p className="text-[13px] text-[#98989D] px-1 mb-3 tracking-widest font-semibold uppercase">
           Инциденты
         </p>
-        <div className="rounded-[22px] relative overflow-hidden" style={{
-          background: 'radial-gradient(ellipse at 38% 50%, rgba(195,30,30,0.7) 0%, transparent 55%), radial-gradient(ellipse at 72% 35%, rgba(115,10,10,0.5) 0%, transparent 50%), #1A0202',
-        }}>
-          <div className="absolute pointer-events-none" style={{ inset: 0, background: 'linear-gradient(180deg, rgba(255,255,255,0.09) 0%, transparent 38%)' }} />
-          <div className="relative z-10 flex items-center gap-4 px-5 py-5">
-            <p style={{ fontSize: 38, lineHeight: 1 }}>⚠️</p>
+        <button
+          className="w-full text-left rounded-[22px] overflow-hidden active:opacity-70 transition-opacity"
+          style={{ backgroundColor: '#1C1C1E' }}
+          onClick={() => navigate('/chat/incident-scooters')}
+        >
+          <div className="flex items-center gap-4 px-5 py-4">
+            <p style={{ fontSize: 34, lineHeight: 1 }}>⚠️</p>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
-                <p style={{ fontSize: 13, fontWeight: 400, color: 'rgba(255,255,255,0.58)' }}>Инцидент</p>
-                <span style={{ fontSize: 9, padding: '2px 7px', borderRadius: 10, backgroundColor: 'rgba(255,255,255,0.18)', color: 'white', fontWeight: 600, letterSpacing: 0.5 }}>НОВОЕ</span>
+                <p style={{ fontSize: 13, fontWeight: 400, color: 'rgba(255,255,255,0.45)' }}>Яндекс Самокаты</p>
+                <span style={{ fontSize: 9, padding: '2px 7px', borderRadius: 10, backgroundColor: 'rgba(255,59,48,0.25)', color: '#FF3B30', fontWeight: 600, letterSpacing: 0.5 }}>НОВОЕ</span>
               </div>
               <p style={{ fontSize: 15, fontWeight: 500, color: 'white', lineHeight: 1.3 }}>Незавершённая поездка на самокате</p>
-              <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.42)', marginTop: 3 }}>Яндекс Самокаты</p>
             </div>
           </div>
-        </div>
+        </button>
       </motion.div>
 
     </div>

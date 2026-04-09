@@ -265,8 +265,8 @@ const CapsuleNodeEl: React.FC<{
   const delay = nodeSeed(node.id, 2) * 3.5;
   const fs    = Math.round(11 + placed.effectiveWeight * 7);
   // layered glow: inner tight + outer soft
-  const glow  = `0 0 ${Math.round(6 + placed.effectiveWeight * 10)}px ${node.color}50,
-                 0 0 ${Math.round(18 + placed.effectiveWeight * 22)}px ${node.color}22`;
+  const glow  = `0 0 ${Math.round(6 + placed.effectiveWeight * 10)}px ${node.color}60,
+                 0 0 ${Math.round(18 + placed.effectiveWeight * 22)}px ${node.color}2A`;
 
   return (
     <motion.div
@@ -348,9 +348,9 @@ const OrbNodeEl: React.FC<{
   const glowInner = Math.round(6 + placed.effectiveWeight * 8);
   const glowMid   = Math.round(14 + placed.effectiveWeight * 18);
   const glowOuter = Math.round(28 + placed.effectiveWeight * 24);
-  const glow = `0 0 ${glowInner}px ${node.color}70,
-                0 0 ${glowMid}px   ${node.color}38,
-                0 0 ${glowOuter}px ${node.color}16`;
+  const glow = `0 0 ${glowInner}px ${node.color}86,
+                0 0 ${glowMid}px   ${node.color}46,
+                0 0 ${glowOuter}px ${node.color}1C`;
 
   return (
     <motion.div
@@ -656,7 +656,7 @@ export const LauncherScreen = () => {
           {/* Stage lighting: layered depth — warm center, cool falloff */}
           <div style={{
             position: 'absolute', inset: 0, pointerEvents: 'none',
-            background: 'radial-gradient(ellipse at 50% 46%, rgba(255,255,255,0.055) 0%, rgba(140,120,255,0.018) 38%, transparent 65%)',
+            background: 'radial-gradient(ellipse at 50% 46%, rgba(255,255,255,0.066) 0%, rgba(140,120,255,0.022) 38%, transparent 65%)',
           }} />
 
           {/* Interest nodes */}
@@ -712,31 +712,30 @@ export const LauncherScreen = () => {
             >
               <img src={avatarImg} alt="Профиль" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
-            {/* Glow layer 1: tight inner ring */}
+            {/* Glow layer 1: tight halo via box-shadow — no banding artifact */}
             <div style={{
-              position: 'absolute', width: 148, height: 148,
+              position: 'absolute', width: 110, height: 110,
               top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
               borderRadius: '50%',
-              background: 'radial-gradient(circle, transparent 56%, rgba(255,255,255,0.55) 62%, rgba(255,255,255,0.18) 68%, transparent 74%)',
-              filter: 'blur(5px)',
+              boxShadow: '0 0 0 1.5px rgba(255,255,255,0.14), 0 0 18px 6px rgba(255,255,255,0.26), 0 0 36px 10px rgba(200,182,255,0.15)',
               pointerEvents: 'none',
             }} />
             {/* Glow layer 2: soft mid bloom */}
             <div style={{
-              position: 'absolute', width: 230, height: 230,
+              position: 'absolute', width: 260, height: 260,
               top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
               borderRadius: '50%',
-              background: 'radial-gradient(circle, transparent 42%, rgba(200,190,255,0.22) 52%, rgba(180,160,255,0.10) 62%, transparent 72%)',
-              filter: 'blur(18px)',
+              background: 'radial-gradient(circle, transparent 32%, rgba(190,168,255,0.22) 50%, rgba(160,140,255,0.09) 65%, transparent 76%)',
+              filter: 'blur(22px)',
               pointerEvents: 'none',
             }} />
             {/* Glow layer 3: outer ambient haze */}
             <div style={{
-              position: 'absolute', width: 330, height: 330,
+              position: 'absolute', width: 360, height: 360,
               top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
               borderRadius: '50%',
-              background: 'radial-gradient(circle, transparent 38%, rgba(150,130,255,0.10) 50%, rgba(100,90,200,0.05) 62%, transparent 72%)',
-              filter: 'blur(36px)',
+              background: 'radial-gradient(circle, transparent 30%, rgba(130,110,220,0.12) 50%, rgba(100,80,200,0.05) 65%, transparent 75%)',
+              filter: 'blur(44px)',
               pointerEvents: 'none',
             }} />
           </div>

@@ -2,6 +2,7 @@ import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import avatarImg from '../../assets/avatar.jpg';
+import portalRing from '../../assets/portal-ring.png';
 import launcherIcon from '../../assets/launcher-icon.svg';
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -495,17 +496,24 @@ export const LauncherScreen = () => {
               background: 'radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%)',
               pointerEvents: 'none',
             }} />
-            <img
-              src={avatarImg}
-              alt="Профиль"
-              style={{
-                width: 160, height: 160,
-                objectFit: 'cover',
-                display: 'block',
-                maskImage: 'radial-gradient(circle, black 55%, transparent 80%)',
-                WebkitMaskImage: 'radial-gradient(circle, black 55%, transparent 80%)',
-              }}
-            />
+            {/* Avatar photo */}
+            <div style={{ position: 'relative', width: 110, height: 110 }}>
+              <div style={{ width: 110, height: 110, borderRadius: '50%', overflow: 'hidden' }}>
+                <img src={avatarImg} alt="Профиль" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              </div>
+              {/* Blurred ring overlay — transparent PNG */}
+              <img
+                src={portalRing}
+                alt=""
+                style={{
+                  position: 'absolute',
+                  width: 200, height: 200,
+                  top: '50%', left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  pointerEvents: 'none',
+                }}
+              />
+            </div>
           </div>
         </div>
 

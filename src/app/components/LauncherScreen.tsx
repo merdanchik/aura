@@ -265,8 +265,9 @@ const CapsuleNodeEl: React.FC<{
   const delay = nodeSeed(node.id, 2) * 3.5;
   const fs    = Math.round(11 + placed.effectiveWeight * 7);
   // layered glow: inner tight + outer soft
-  const glow  = `0 0 ${Math.round(6 + placed.effectiveWeight * 10)}px ${node.color}60,
-                 0 0 ${Math.round(18 + placed.effectiveWeight * 22)}px ${node.color}2A`;
+  const glow  = `0 0 ${Math.round(6 + placed.effectiveWeight * 10)}px  ${node.color}60,
+                 0 0 ${Math.round(18 + placed.effectiveWeight * 22)}px ${node.color}2A,
+                 0 0 ${Math.round(40 + placed.effectiveWeight * 36)}px ${node.color}10`;
 
   return (
     <motion.div
@@ -348,9 +349,11 @@ const OrbNodeEl: React.FC<{
   const glowInner = Math.round(8 + placed.effectiveWeight * 10);
   const glowMid   = Math.round(18 + placed.effectiveWeight * 20);
   const glowOuter = Math.round(32 + placed.effectiveWeight * 28);
-  const glow = `0 0 ${glowInner}px ${node.color}86,
-                0 0 ${glowMid}px   ${node.color}46,
-                0 0 ${glowOuter}px ${node.color}1C`;
+  const glowAmbient = Math.round(glowOuter * 2.2);
+  const glow = `0 0 ${glowInner}px  ${node.color}86,
+                0 0 ${glowMid}px    ${node.color}46,
+                0 0 ${glowOuter}px  ${node.color}1C,
+                0 0 ${glowAmbient}px ${node.color}0A`;
 
   return (
     <motion.div
@@ -669,10 +672,15 @@ export const LauncherScreen = () => {
           className="flex-1 relative overflow-hidden"
           style={{ minHeight: 0 }}
         >
-          {/* Stage lighting: layered depth — warm center, cool falloff */}
+          {/* Stage lighting: warm center glow */}
           <div style={{
             position: 'absolute', inset: 0, pointerEvents: 'none',
             background: 'radial-gradient(ellipse at 50% 46%, rgba(255,255,255,0.066) 0%, rgba(140,120,255,0.022) 38%, transparent 65%)',
+          }} />
+          {/* Vignette: darkens edges, focuses eye on center */}
+          <div style={{
+            position: 'absolute', inset: 0, pointerEvents: 'none',
+            background: 'radial-gradient(ellipse at 50% 50%, transparent 42%, rgba(3,3,6,0.45) 75%, rgba(3,3,6,0.82) 100%)',
           }} />
 
           {/* Interest nodes */}

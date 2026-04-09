@@ -490,17 +490,9 @@ export const LauncherScreen = () => {
             transform: 'translate(-50%, -50%)',
             zIndex: 20,
           }}>
-            <img
-              src={avatarImg}
-              alt="Профиль"
-              style={{
-                width: 160, height: 160,
-                objectFit: 'cover',
-                display: 'block',
-                maskImage: 'radial-gradient(circle closest-side, black 62%, transparent 88%)',
-                WebkitMaskImage: 'radial-gradient(circle closest-side, black 62%, transparent 88%)',
-              }}
-            />
+            <div style={{ width: 110, height: 110, borderRadius: '50%', overflow: 'hidden' }}>
+              <img src={avatarImg} alt="Профиль" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            </div>
           </div>
         </div>
 

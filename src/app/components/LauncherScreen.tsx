@@ -155,11 +155,11 @@ const nodeSize = (w: number) => Math.round(18 + w * 34);
 const AVATAR_R = 55;
 const AVATAR_GAP = 16;
 
-// Radial bands: [minPx, maxPx] from center — pushed out to avoid avatar overlap
+// Radial bands: non-overlapping so nodes from different bands don't start adjacent
 const BANDS = {
-  inner: [105, 145] as const,
-  mid:   [138, 178] as const,
-  outer: [168, 205] as const,
+  inner: [108, 148] as const,
+  mid:   [155, 192] as const,
+  outer: [196, 228] as const,
 };
 
 function computeLayout(
@@ -199,15 +199,15 @@ function computeLayout(
 
   // Collision repulsion (heavy nodes move less)
   if (config.collisions) {
-    for (let k = 0; k < 7; k++) {
+    for (let k = 0; k < 16; k++) {
       for (let i = 0; i < placed.length; i++) {
         for (let j = i + 1; j < placed.length; j++) {
           const a = placed[i], b = placed[j];
           const dx = b.x - a.x, dy = b.y - a.y;
           const d = Math.hypot(dx, dy) || 0.01;
-          const minD = a.size + b.size + 12;
+          const minD = a.size + b.size + 26;
           if (d < minD) {
-            const push = (minD - d) * 0.38;
+            const push = (minD - d) * 0.52;
             const nx = dx / d, ny = dy / d;
             const tot = a.effectiveWeight + b.effectiveWeight || 1;
             placed[i].x -= nx * push * (b.effectiveWeight / tot);

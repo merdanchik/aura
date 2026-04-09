@@ -364,13 +364,13 @@ type KnowCard = {
 const KNOW_CARDS: KnowCard[] = [
   {
     category: 'Кино', sub: 'Кинопоиск',
-    value: '72', unit: '%', label: 'Исторические драмы',
+    value: '72', unit: '%', label: 'Смотрит исторические драмы',
     isNew: true, tilt: -2.1,
     bg: 'radial-gradient(ellipse at 75% 28%, rgba(190,60,15,0.72) 0%, transparent 58%), radial-gradient(ellipse at 22% 78%, rgba(110,25,8,0.55) 0%, transparent 52%), #1C0804',
   },
   {
     category: 'Еда', sub: 'Яндекс Еда · 67 заказов',
-    value: '91', unit: '%', label: 'Японская кухня',
+    value: '91', unit: '%', label: 'Любит японскую кухню',
     isNew: false, tilt: 3.7,
     bg: 'radial-gradient(ellipse at 65% 28%, rgba(15,130,55,0.65) 0%, transparent 58%), radial-gradient(ellipse at 25% 72%, rgba(8,80,35,0.5) 0%, transparent 52%), #030F06',
   },
@@ -382,7 +382,7 @@ const KNOW_CARDS: KnowCard[] = [
   },
   {
     category: 'Паттерн', sub: 'Яндекс Такси',
-    value: '96', unit: '%', label: 'Утренние поездки',
+    value: '96', unit: '%', label: 'Едет рано утром',
     isNew: false, tilt: 1.8,
     bg: 'radial-gradient(ellipse at 68% 28%, rgba(185,105,0,0.65) 0%, transparent 58%), radial-gradient(ellipse at 25% 72%, rgba(115,58,0,0.5) 0%, transparent 52%), #180C00',
   },
@@ -394,31 +394,31 @@ const KNOW_CARDS: KnowCard[] = [
   },
   {
     category: 'Репутация', sub: 'Все сервисы',
-    value: 'топ 8', unit: '%', label: 'По надёжности',
+    value: 'топ 8', unit: '%', label: 'Надёжный пассажир',
     isNew: false, tilt: 4.6,
     bg: 'radial-gradient(ellipse at 65% 25%, rgba(175,135,15,0.65) 0%, transparent 58%), radial-gradient(ellipse at 25% 72%, rgba(120,80,8,0.5) 0%, transparent 52%), #160E00',
   },
   {
     category: 'Поведение', sub: 'Яндекс Еда',
-    value: '78', unit: '%', label: 'Заказов после 22:00',
+    value: '78', unit: '%', label: 'Ужинает после десяти',
     isNew: false, tilt: -1.5,
     bg: 'radial-gradient(ellipse at 62% 28%, rgba(30,40,160,0.7) 0%, transparent 58%), radial-gradient(ellipse at 28% 72%, rgba(15,20,100,0.55) 0%, transparent 52%), #040412',
   },
   {
     category: 'Паттерн', sub: 'Яндекс Музыка',
-    value: '47', unit: '×', label: 'Одна песня за день',
+    value: '47', unit: '×', label: 'Одна песня на репите',
     isNew: false, tilt: -3.8,
     bg: 'radial-gradient(ellipse at 68% 28%, rgba(180,30,110,0.68) 0%, transparent 58%), radial-gradient(ellipse at 25% 70%, rgba(110,15,70,0.52) 0%, transparent 52%), #150008',
   },
   {
     category: 'Корзина', sub: 'Яндекс Маркет',
-    value: '23', unit: '', label: 'Товара не куплено',
+    value: '23', unit: '', label: 'Смотрит, но не покупает',
     isNew: false, tilt: 3.1,
     bg: 'radial-gradient(ellipse at 65% 28%, rgba(190,100,0,0.68) 0%, transparent 58%), radial-gradient(ellipse at 26% 72%, rgba(120,55,0,0.52) 0%, transparent 52%), #160900',
   },
   {
     category: 'Поведение', sub: 'Кинопоиск',
-    value: '8', unit: '', label: 'Трейлеров без фильма',
+    value: '8', unit: '', label: 'Смотрит трейлеры без фильма',
     isNew: false, tilt: 1.3,
     bg: 'radial-gradient(ellipse at 70% 28%, rgba(195,55,10,0.68) 0%, transparent 58%), radial-gradient(ellipse at 24% 72%, rgba(120,25,5,0.52) 0%, transparent 52%), #180300',
   },

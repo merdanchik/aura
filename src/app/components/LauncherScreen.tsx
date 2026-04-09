@@ -217,7 +217,8 @@ function computeLayout(
           const a = placed[i], b = placed[j];
           const dx = b.x - a.x, dy = b.y - a.y;
           const d = Math.hypot(dx, dy) || 0.01;
-          const minD = a.size + b.size + 26;
+          const textExtra = (a.type === 'text' ? 40 : 0) + (b.type === 'text' ? 40 : 0);
+          const minD = a.size + b.size + 28 + textExtra;
           if (d < minD) {
             const push = (minD - d) * 0.52;
             const nx = dx / d, ny = dy / d;
@@ -242,10 +243,11 @@ function computeLayout(
     }
   });
 
-  // Clamp to safe canvas area
-  const hw = cW / 2 - 18, hh = cH / 2 - 18;
+  // Clamp — extra margin for text nodes (label wider than placed.size)
+  const hw = cW / 2 - 24, hh = cH / 2 - 24;
   placed.forEach(n => {
-    n.x = Math.max(-(hw - n.size), Math.min(hw - n.size, n.x));
+    const extra = n.type === 'text' ? 48 : 0;
+    n.x = Math.max(-(hw - n.size - extra), Math.min(hw - n.size - extra, n.x));
     n.y = Math.max(-(hh - n.size), Math.min(hh - n.size, n.y));
   });
 

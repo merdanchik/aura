@@ -376,14 +376,7 @@ const OrbNodeEl: React.FC<{
           position: 'relative', overflow: 'hidden',
         }}
       >
-        {/* Glass inner highlight — top-left bright spot */}
-        <div style={{
-          position: 'absolute', top: '8%', left: '10%',
-          width: '42%', height: '38%', borderRadius: '50%',
-          background: 'radial-gradient(ellipse at 30% 30%, rgba(255,255,255,0.18) 0%, transparent 70%)',
-          pointerEvents: 'none',
-        }} />
-        <span style={{ fontSize: fs, lineHeight: 1, userSelect: 'none', position: 'relative' }}>
+        <span style={{ fontSize: fs, lineHeight: 1, userSelect: 'none' }}>
           {node.emoji}
         </span>
       </motion.div>

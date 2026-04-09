@@ -529,14 +529,19 @@ const TimelineSlider: React.FC<TimelineSliderProps> = ({ periods, selectedIndex,
 
 const AuraHeader: React.FC = () => {
   const { globalKnowledgeScore, globalTrustScore, overallScore } = useAura();
+  const navigate = useNavigate();
   const score = Math.round(overallScore);
 
   return (
-    <div style={{
-      flexShrink: 0,
-      display: 'flex', alignItems: 'center', gap: 14,
-      padding: '14px 16px 12px',
-    }}>
+    <div
+      onClick={() => navigate('/app')}
+      style={{
+        flexShrink: 0,
+        display: 'flex', alignItems: 'center', gap: 14,
+        padding: '14px 16px 12px',
+        cursor: 'pointer',
+      }}
+    >
       {/* Rings with score number in center */}
       <div style={{ position: 'relative', flexShrink: 0 }}>
         <AuraRings knowledge={globalKnowledgeScore} trust={globalTrustScore} size={82} />
@@ -604,8 +609,8 @@ export const LauncherScreen = () => {
 
   return (
     <div
-      className="flex flex-col items-center overflow-x-hidden"
-      style={{ backgroundColor: '#050508', fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", height: '100dvh' }}
+      className="flex flex-col items-center"
+      style={{ backgroundColor: '#050508', fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", height: '100dvh', overflow: 'hidden' }}
     >
       <div className="w-full max-w-md mx-auto flex flex-col" style={{ height: '100%' }}>
 

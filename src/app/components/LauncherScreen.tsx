@@ -89,21 +89,21 @@ const NODES: InterestNode[] = [
     periodWeight: { '2024-07': 0.65, '2024-08': 0.58, '2024-09': 0.6, '2024-10': 0.55, '2025-03': 0.5, '2025-04': 0.5 },
   },
 
-  // ── Blob nodes ──────────────────────────────────────────────────────────
+  // ── Blob → converted to text/symbol ─────────────────────────────────────
   {
-    id: 'music-blob', label: 'Музыка', type: 'blob', weight: 0.95,
-    color: '#FF375F', gradient: ['#FF375F', '#BF5AF2'],
+    id: 'music-blob', label: 'Музыка', type: 'symbol', weight: 0.95,
+    color: '#FF375F', emoji: '🎵',
     periods: ['*'],
   },
   {
-    id: 'travel-blob', label: 'Путешествия', type: 'blob', weight: 0.72,
-    color: '#FF9F0A', gradient: ['#FF9F0A', '#FF6633'],
+    id: 'travel-blob', label: 'Путешествия', type: 'text', weight: 0.72,
+    color: '#FF9F0A',
     periods: ['2024-09', '2024-10', '2024-11', '2024-12'],
     periodWeight: { '2024-09': 0.4, '2024-10': 0.72, '2024-11': 0.65, '2024-12': 0.4 },
   },
   {
-    id: 'tech-blob', label: 'Технологии', type: 'blob', weight: 0.62,
-    color: '#0A84FF', gradient: ['#0A84FF', '#5E5CE6'],
+    id: 'tech-blob', label: 'Технологии', type: 'text', weight: 0.62,
+    color: '#0A84FF',
     periods: ['2025-01', '2025-02', '2025-03', '2025-04'],
     periodWeight: { '2025-01': 0.32, '2025-02': 0.48, '2025-03': 0.58, '2025-04': 0.62 },
   },

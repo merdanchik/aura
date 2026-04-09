@@ -365,37 +365,37 @@ const KNOW_CARDS: KnowCard[] = [
   {
     category: 'Кино', sub: 'Кинопоиск',
     value: '72', unit: '%', label: 'Исторические драмы',
-    isNew: true, tilt: -3.5,
+    isNew: true, tilt: -2.1,
     bg: 'radial-gradient(ellipse at 75% 28%, rgba(190,60,15,0.72) 0%, transparent 58%), radial-gradient(ellipse at 22% 78%, rgba(110,25,8,0.55) 0%, transparent 52%), #1C0804',
   },
   {
     category: 'Еда', sub: 'Яндекс Еда · 67 заказов',
     value: '91', unit: '%', label: 'Японская кухня',
-    isNew: false, tilt: 6.8,
+    isNew: false, tilt: 3.7,
     bg: 'radial-gradient(ellipse at 65% 28%, rgba(15,130,55,0.65) 0%, transparent 58%), radial-gradient(ellipse at 25% 72%, rgba(8,80,35,0.5) 0%, transparent 52%), #030F06',
   },
   {
     category: 'Паттерн', sub: 'Все сервисы',
     value: '94', unit: '%', label: 'Активен после 23:00',
-    isNew: false, tilt: -8.1,
+    isNew: false, tilt: -4.4,
     bg: 'radial-gradient(ellipse at 68% 25%, rgba(110,45,210,0.68) 0%, transparent 58%), radial-gradient(ellipse at 28% 72%, rgba(65,20,145,0.52) 0%, transparent 52%), #0A0418',
   },
   {
     category: 'Паттерн', sub: 'Яндекс Такси',
     value: '96', unit: '%', label: 'Утренние поездки',
-    isNew: false, tilt: 4.2,
+    isNew: false, tilt: 1.8,
     bg: 'radial-gradient(ellipse at 68% 28%, rgba(185,105,0,0.65) 0%, transparent 58%), radial-gradient(ellipse at 25% 72%, rgba(115,58,0,0.5) 0%, transparent 52%), #180C00',
   },
   {
     category: 'Контекст', sub: 'Яндекс Такси · адреса',
     value: '99', unit: '%', label: 'Живёт в Москве',
-    isNew: false, tilt: -5.6,
+    isNew: false, tilt: -3.2,
     bg: 'radial-gradient(ellipse at 68% 28%, rgba(12,125,125,0.65) 0%, transparent 58%), radial-gradient(ellipse at 25% 72%, rgba(8,75,75,0.5) 0%, transparent 52%), #021416',
   },
   {
     category: 'Репутация', sub: 'Все сервисы',
     value: 'топ 8', unit: '%', label: 'По надёжности',
-    isNew: false, tilt: 9.3,
+    isNew: false, tilt: 4.6,
     bg: 'radial-gradient(ellipse at 65% 25%, rgba(175,135,15,0.65) 0%, transparent 58%), radial-gradient(ellipse at 25% 72%, rgba(120,80,8,0.5) 0%, transparent 52%), #160E00',
   },
 ];
@@ -410,7 +410,7 @@ const SwipeCard = ({
   card: KnowCard; stackDepth: number; isTop: boolean; onDismiss: () => void;
 }) => {
   const x = useMotionValue(0);
-  const rotate = useTransform(x, [-200, 200], [card.tilt - 8, card.tilt + 8]);
+  const rotate = useTransform(x, [-200, 200], [card.tilt - 5, card.tilt + 5]);
 
   const handleDragEnd = (_: unknown, info: { offset: { x: number }; velocity: { x: number } }) => {
     if (Math.abs(info.offset.x) > 80 || Math.abs(info.velocity.x) > 400) {

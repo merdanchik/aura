@@ -270,43 +270,35 @@ function nodeSeed(id: string, offset = 0): number {
 // NODE RENDERERS — render + motion layer, each type isolated
 // ═══════════════════════════════════════════════════════════════════════════
 
-// Capsule: softer, atmospheric — не neon pill, а "мысль в пространстве"
+// Capsule → pure floating text: мысль в пространстве, не кнопка
 const CapsuleNodeEl: React.FC<{
   node: InterestNode; placed: PlacedNode; intensity: number;
 }> = ({ node, placed, intensity }) => {
   const dy    = (7 + intensity * 9) * (0.4 + nodeSeed(node.id, 0) * 0.8);
-  const dur   = 5 + nodeSeed(node.id, 1) * 5;
+  const dx    = (3 + intensity * 4) * (nodeSeed(node.id, 13) > 0.5 ? 1 : -1) * (0.3 + nodeSeed(node.id, 14) * 0.7);
+  const dur   = 5.5 + nodeSeed(node.id, 1) * 5;
   const delay = nodeSeed(node.id, 2) * 3.5;
-  const fs    = Math.round(11 + placed.effectiveWeight * 7);
-  // layered glow: inner tight + outer soft
-  const glow  = `0 0 ${Math.round(6 + placed.effectiveWeight * 10)}px  ${node.color}60,
-                 0 0 ${Math.round(18 + placed.effectiveWeight * 22)}px ${node.color}2A,
-                 0 0 ${Math.round(40 + placed.effectiveWeight * 36)}px ${node.color}10`;
+  const fs    = Math.round(13 + placed.effectiveWeight * 8);
+  const glow  = `0 0 ${Math.round(12 + placed.effectiveWeight * 14)}px ${node.color}70,
+                 0 0 ${Math.round(28 + placed.effectiveWeight * 28)}px ${node.color}30`;
 
   return (
     <motion.div
-      animate={{ y: [0, -dy, 0] }}
+      animate={{ y: [0, -dy, 0], x: [0, dx, 0] }}
       transition={{ duration: dur, repeat: Infinity, ease: 'easeInOut', delay }}
       style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}
     >
-      <div style={{
-        paddingLeft: 13, paddingRight: 13, paddingTop: 7, paddingBottom: 7,
-        borderRadius: 24,
-        border: `1px solid ${node.color}28`,
-        background: `radial-gradient(ellipse at 40% 35%, ${node.color}28 0%, ${node.color}0C 100%)`,
-        boxShadow: glow,
+      <span style={{
+        fontSize: fs,
+        fontWeight: placed.effectiveWeight > 0.65 ? 600 : 500,
+        color: node.color,
+        letterSpacing: 0.4,
         whiteSpace: 'nowrap',
-        backdropFilter: 'blur(6px)',
+        userSelect: 'none',
+        textShadow: glow,
       }}>
-        <span style={{
-          fontSize: fs,
-          fontWeight: placed.effectiveWeight > 0.65 ? 500 : 400,
-          color: `${node.color}EE`,
-          letterSpacing: 0.2,
-        }}>
-          {node.label}
-        </span>
-      </div>
+        {node.label}
+      </span>
     </motion.div>
   );
 };
@@ -693,7 +685,7 @@ export const LauncherScreen = () => {
           {/* Vignette: darkens edges, focuses eye on center */}
           <div style={{
             position: 'absolute', inset: 0, pointerEvents: 'none',
-            background: 'radial-gradient(ellipse at 50% 50%, transparent 42%, rgba(3,3,6,0.45) 75%, rgba(3,3,6,0.82) 100%)',
+            background: 'radial-gradient(ellipse at 50% 50%, transparent 48%, rgba(3,3,6,0.35) 72%, rgba(3,3,6,0.70) 100%)',
           }} />
 
           {/* Ambient color hazes — large blurred clouds behind top nodes, dreamlike depth */}

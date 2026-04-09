@@ -820,6 +820,7 @@ export const LauncherScreen = () => {
                     opacity: { duration: 0.55 },
                     scale:   { type: 'spring', stiffness: 130, damping: 22 },
                   }}
+                  onClick={() => navigate('/app/chat/' + node.id)}
                   style={{
                     position: 'absolute',
                     left: cx - placed.size,
@@ -827,7 +828,8 @@ export const LauncherScreen = () => {
                     width:  placed.size * 2,
                     height: placed.size * 2,
                     zIndex: Math.round(placed.effectiveWeight * 10),
-                    pointerEvents: 'none',
+                    pointerEvents: 'auto',
+                    cursor: 'pointer',
                   }}
                 >
                   {node.type === 'text'   && <CapsuleNodeEl node={node} placed={placed} intensity={config.animIntensity} />}

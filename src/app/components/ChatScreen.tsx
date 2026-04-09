@@ -78,6 +78,33 @@ const ACTION_STARTERS: Record<string, string> = {
 // Context chats (memories / insights) — no performAction needed
 interface ContextChat { message: string; color: string }
 const CONTEXT_CHATS: Record<string, ContextChat> = {
+  // ── Launcher experience nodes ─────────────────────────────────────────────
+  'jazz':         { color: '#BF5AF2', message: 'Kind of Blue. Запускаешь — и комната меняется.\nMiles Davis записал это за два дня. Ты слушаешь уже третий месяц.' },
+  'tokyo':        { color: '#FF6633', message: 'Shinjuku в 23:00. Три этажа баров в одном переулке.\nДождь, но никто не уходит.' },
+  'stoicism':     { color: '#5E5CE6', message: 'Марк Аврелий писал это для себя — не собирался публиковать.\nДве тысячи лет спустя ты читаешь в метро.' },
+  'night-drives': { color: '#34C759', message: 'МКАД в три ночи. Почти пусто. Подкаст уже кончился.\nЕдешь в тишине. Это тоже хорошо.' },
+  'architecture': { color: '#0A84FF', message: 'Клуб Русакова, 1929. Мельников строил так, будто знал, что архитектура умрёт вместе с ним.\nОна не умерла.' },
+  'cinema':       { color: '#FF9F0A', message: 'Зеркало, Тарковский. Смотришь — не понимаешь.\nЧерез неделю понимаешь. Через год смотришь снова.' },
+  'music-blob':   { color: '#FF375F', message: 'OK Computer. Creep. Paranoid Android.\nТри альбома — и они звучат иначе каждый год.' },
+  'travel-blob':  { color: '#FF9F0A', message: 'Осака не притворяется. Токио — фасад. Осака — кухня.\nГромкая, жирная, честная.' },
+  'tech-blob':    { color: '#0A84FF', message: 'Vision Pro. Надеваешь — мир раздваивается.\nСнимаешь — мир уже немного другой. $3499.' },
+  'basketball':   { color: '#FF9500', message: 'Йокич получил мяч спиной к кольцу.\nОбернулся. Три секунды. Бросил. Попал. Как всегда.' },
+  'f1':           { color: '#FF3B30', message: 'Монако, 26 мая 2024. Леклер — местный, гонялся здесь с детства.\nПервая победа на домашней трассе. Папа плакал на трибуне.' },
+  'books':        { color: '#30D158', message: 'Герман Гессе. 1922. Сиддхартха уходит от отца искать себя.\nНаходит реку. Реку слушает.' },
+  'coffee':       { color: '#C4945A', message: '6:00. Город ещё не проснулся. Ты уже у машины.\nЭспрессо — чтобы было не так тихо.' },
+  'sushi':        { color: '#FF6633', message: 'Sukiyabashi Jiro. Очередь месяцами. Суши подают один за другим. Молча.\nДевяносто лет мастеру. Он до сих пор за стойкой.' },
+  'baikal':       { color: '#00C7BE', message: 'Байкал в июле. Вода — четыре градуса. Заходишь всё равно.\nБерег каменистый. Горизонт без конца.' },
+  'wimbledon':    { color: '#34C759', message: 'Центральный корт. Земляника со сливками.\nТишина перед подачей. Потом — аплодисменты.' },
+  'moon-safari':  { color: '#FF9F0A', message: 'Air, Moon Safari. 1998. Французы сделали альбом про космос и летние вечера.\nДо сих пор работает.' },
+  'euro2024':     { color: '#0A84FF', message: 'Финал. Испания — Англия, 2:1.\n86-я минута. Ояр Сабал. Свисток. Испания — чемпион Европы.' },
+  'vinyl':        { color: '#BF5AF2', message: 'Blue Note 1568 — каталожный номер.\nArt Blakey & The Jazz Messengers, 1960. Нашёл в маленьком баре. Взял домой.' },
+  'ramen':        { color: '#FF6633', message: 'Ichiran. Сидишь один в деревянной кабинке. Занавеска.\nНикаких разговоров. Только рамен.' },
+  'wabi-sabi':    { color: '#C4945A', message: 'Wabi-sabi. Японская эстетика несовершенства.\nТреснувший стакан красивее нового. Почти веришь.' },
+  'brodsky':      { color: '#5E5CE6', message: '«Ни страны, ни погоста не хочу выбирать».\nБродский написал это в двадцать два. Ты перечитываешь в тридцать.' },
+  'sunrise-run':  { color: '#34C759', message: '5:45. Темно. Пробежка по набережной.\nНикто не видит — это только твоё.' },
+  'garage':       { color: '#FF9F0A', message: 'Гараж. Парк Горького. Выставка о чём-то тяжёлом.\nВыходишь — и Москва кажется другой.' },
+
+  // ── Legacy context chats ───────────────────────────────────────────────────
   'mem-kinopoisk':  { message: 'о, сейчас расскажу — тут как раз несколько новинок', color: '#FF6600' },
   'mem-music':      { message: 'помню этот плейлист — хочешь послушать снова?',       color: '#E03366' },
   'mem-electronic': { message: 'ночная электроника — это твоя тема, саша',            color: '#8C3FED' },
@@ -251,11 +278,12 @@ export const ChatScreen = () => {
         {/* Gradient message */}
         <p style={{
           marginTop: 16,
-          fontSize: 28,
+          fontSize: 24,
           fontWeight: 700,
-          lineHeight: 1.3,
+          lineHeight: 1.4,
           textAlign: 'center',
           padding: '0 28px',
+          whiteSpace: 'pre-line',
           background: `linear-gradient(150deg, ${c1} 0%, ${c2} 100%)`,
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',

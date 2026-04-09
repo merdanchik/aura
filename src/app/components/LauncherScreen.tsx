@@ -489,6 +489,14 @@ export const LauncherScreen = () => {
             transform: 'translate(-50%, -50%)',
             zIndex: 20,
           }}>
+            {/* Avatar image */}
+            <div style={{
+              width: 110, height: 110, borderRadius: '50%',
+              overflow: 'hidden',
+              position: 'relative',
+            }}>
+              <img src={avatarImg} alt="Профиль" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            </div>
             {/* Outline 2: 20px thick, blur 20 — outer soft ring */}
             <div style={{
               position: 'absolute',
@@ -513,14 +521,6 @@ export const LauncherScreen = () => {
               pointerEvents: 'none',
               boxSizing: 'border-box',
             }} />
-            {/* Avatar image */}
-            <div style={{
-              width: 110, height: 110, borderRadius: '50%',
-              overflow: 'hidden',
-              position: 'relative',
-            }}>
-              <img src={avatarImg} alt="Профиль" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            </div>
           </div>
         </div>
 

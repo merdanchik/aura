@@ -920,54 +920,80 @@ export const LauncherScreen = () => {
             })}
           </AnimatePresence>
 
-          {/* Central user node */}
+          {/* Central user node — 5-layer avatar rendering system */}
           <div style={{
             position: 'absolute', left: '50%', top: '50%',
             transform: 'translate(-50%, -50%)',
             zIndex: 20,
           }}>
-            {/* Avatar — tap to open Aura */}
+            {/* ── Layer 1: BLOOM — far atmospheric haze, full-circle, barely visible ── */}
+            <motion.div
+              animate={{ opacity: [0.65, 0.30, 0.65] }}
+              transition={{ duration: 9.5, repeat: Infinity, ease: 'easeInOut', delay: 0 }}
+              style={{
+                position: 'absolute', width: 420, height: 420,
+                top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+                borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(140,105,230,0.24) 0%, rgba(110,78,200,0.11) 42%, transparent 70%)',
+                filter: 'blur(46px)',
+                pointerEvents: 'none',
+              }}
+            />
+
+            {/* ── Layer 2: AMBIENT HAZE — annular corona, hollow center, medium falloff ── */}
+            <motion.div
+              animate={{ opacity: [1, 0.48, 1] }}
+              transition={{ duration: 6.4, repeat: Infinity, ease: 'easeInOut', delay: 1.1 }}
+              style={{
+                position: 'absolute', width: 256, height: 256,
+                top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+                borderRadius: '50%',
+                background: 'radial-gradient(circle, transparent 26%, rgba(168,138,255,0.32) 44%, rgba(138,108,228,0.16) 58%, transparent 73%)',
+                filter: 'blur(14px)',
+                pointerEvents: 'none',
+              }}
+            />
+
+            {/* ── Layer 3: CORE GLOW — warm, tight, sits BEHIND photo — light from source ── */}
+            <motion.div
+              animate={{ opacity: [1, 0.52, 1] }}
+              transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut', delay: 0 }}
+              style={{
+                position: 'absolute', width: 156, height: 156,
+                top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+                borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(242,232,255,0.60) 0%, rgba(204,178,255,0.32) 42%, transparent 70%)',
+                filter: 'blur(9px)',
+                pointerEvents: 'none',
+              }}
+            />
+
+            {/* ── Layer 4: PHOTO — clean, no shadow ── */}
             <div
               onClick={() => navigate('/app')}
-              style={{ width: 110, height: 110, borderRadius: '50%', overflow: 'hidden', cursor: 'pointer' }}
+              style={{
+                position: 'relative',
+                width: 110, height: 110, borderRadius: '50%',
+                overflow: 'hidden', cursor: 'pointer',
+              }}
             >
               <img src={avatarImg} alt="Профиль" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
-            {/* Glow layer 1: tight halo via box-shadow — breathes slowly */}
+
+            {/* ── Layer 5: EDGE RING — crisp stroke defines avatar shape, slim colored glow ── */}
             <motion.div
-              animate={{ opacity: [1, 0.52, 1] }}
-              transition={{ duration: 4.2, repeat: Infinity, ease: 'easeInOut', delay: 0 }}
+              animate={{ opacity: [1, 0.58, 1] }}
+              transition={{ duration: 4.8, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
               style={{
                 position: 'absolute', width: 110, height: 110,
                 top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
                 borderRadius: '50%',
-                boxShadow: '0 0 0 1px rgba(255,255,255,0.10), 0 0 16px 5px rgba(255,255,255,0.26), 0 0 32px 8px rgba(180,160,255,0.22)',
-                pointerEvents: 'none',
-              }}
-            />
-            {/* Glow layer 2: soft mid bloom */}
-            <motion.div
-              animate={{ opacity: [1, 0.46, 1] }}
-              transition={{ duration: 5.8, repeat: Infinity, ease: 'easeInOut', delay: 0.9 }}
-              style={{
-                position: 'absolute', width: 260, height: 260,
-                top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-                borderRadius: '50%',
-                background: 'radial-gradient(circle, transparent 32%, rgba(190,168,255,0.24) 50%, rgba(160,140,255,0.10) 65%, transparent 76%)',
-                filter: 'blur(22px)',
-                pointerEvents: 'none',
-              }}
-            />
-            {/* Glow layer 3: outer ambient haze */}
-            <motion.div
-              animate={{ opacity: [1, 0.38, 1] }}
-              transition={{ duration: 7.5, repeat: Infinity, ease: 'easeInOut', delay: 1.8 }}
-              style={{
-                position: 'absolute', width: 360, height: 360,
-                top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-                borderRadius: '50%',
-                background: 'radial-gradient(circle, transparent 30%, rgba(130,110,220,0.13) 50%, rgba(100,80,200,0.06) 65%, transparent 75%)',
-                filter: 'blur(44px)',
+                boxShadow: [
+                  'inset 0 0 0 1.5px rgba(255,255,255,0.24)',   // crisp inner stroke
+                  '0 0 0 1px rgba(200,178,255,0.20)',            // thin outer separation
+                  '0 0 10px 2px rgba(188,158,255,0.32)',         // narrow outer glow
+                  '0 0 22px 4px rgba(160,128,240,0.14)',         // soft falloff
+                ].join(', '),
                 pointerEvents: 'none',
               }}
             />

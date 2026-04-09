@@ -2,8 +2,7 @@ import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import avatarImg from '../../assets/avatar.jpg';
-import portalRing from '../../assets/portal-ring.png';
-import launcherIcon from '../../assets/launcher-icon.svg';
+
 
 // ═══════════════════════════════════════════════════════════════════════════
 // TYPES — data model
@@ -381,7 +380,6 @@ interface TimelineSliderProps {
 
 const TimelineSlider: React.FC<TimelineSliderProps> = ({ periods, selectedIndex, onChange }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [cw, setCw] = useState(360);
   // offset: ruler translation. -i*STEP puts month i under the center line.
   const [offset, setOffset] = useState(-(periods.length - 1) * STEP);
   const [isDragging, setIsDragging] = useState(false);
@@ -389,12 +387,6 @@ const TimelineSlider: React.FC<TimelineSliderProps> = ({ periods, selectedIndex,
   const startX = useRef(0);
   const startOffset = useRef(0);
   const hideTimer = useRef<ReturnType<typeof setTimeout>>();
-
-  useEffect(() => {
-    const el = containerRef.current; if (!el) return;
-    const ro = new ResizeObserver(([e]) => setCw(e.contentRect.width));
-    ro.observe(el); return () => ro.disconnect();
-  }, []);
 
   const MIN_OFFSET = -(periods.length - 1) * STEP;
   const nearestIndex = Math.max(0, Math.min(periods.length - 1, Math.round(-offset / STEP)));
@@ -500,10 +492,11 @@ const TimelineSlider: React.FC<TimelineSliderProps> = ({ periods, selectedIndex,
         transform: 'translate(-50%, -50%)', pointerEvents: 'none', zIndex: 4,
       }} />
 
-      {/* Scrollable ruler — only real months, no phantom ticks */}
+      {/* Scrollable ruler — anchored at CSS 50% so it always aligns with gold line */}
       <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: RULER_H, overflow: 'hidden' }}>
+        {/* Inner div starts at CSS 50% of container, then translated by offset */}
         <div style={{
-          position: 'absolute', inset: 0,
+          position: 'absolute', left: '50%', top: 0, bottom: 0,
           transform: `translateX(${offset}px)`,
           transition: isDragging ? 'none' : 'transform 0.35s cubic-bezier(0.25, 1, 0.5, 1)',
         }}>
@@ -511,7 +504,7 @@ const TimelineSlider: React.FC<TimelineSliderProps> = ({ periods, selectedIndex,
             const h = tick.isMonth ? (tick.isActive ? 20 : 12) : 7;
             const color = tick.isActive ? GOLD
               : tick.isMonth ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.2)';
-            const x = cw / 2 + tick.f * STEP;
+            const x = tick.f * STEP; // relative to the 50% anchor
             return (
               <div key={i} style={{
                 position: 'absolute', left: x, bottom: 0,
@@ -634,8 +627,11 @@ export const LauncherScreen = () => {
             transform: 'translate(-50%, -50%)',
             zIndex: 20,
           }}>
-            {/* Avatar */}
-            <div style={{ width: 110, height: 110, borderRadius: '50%', overflow: 'hidden' }}>
+            {/* Avatar — tap to open Aura */}
+            <div
+              onClick={() => navigate('/app')}
+              style={{ width: 110, height: 110, borderRadius: '50%', overflow: 'hidden', cursor: 'pointer' }}
+            >
               <img src={avatarImg} alt="Профиль" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
             {/* Glowing ring — transparent band via radial-gradient + blur */}
@@ -660,17 +656,7 @@ export const LauncherScreen = () => {
         {/* ── TIMELINE SLIDER ── */}
         <TimelineSlider periods={PERIODS} selectedIndex={periodIndex} onChange={setPeriodIndex} />
 
-        {/* ── LAUNCHER BUTTON ── */}
-        <div style={{ flexShrink: 0, display: 'flex', justifyContent: 'center', paddingTop: 6, paddingBottom: 16 }}>
-          <motion.button
-            whileTap={{ scale: 0.88, opacity: 0.7 }}
-            transition={{ duration: 0.12 }}
-            onClick={() => navigate('/app')}
-            style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
-          >
-            <img src={launcherIcon} alt="Аура" style={{ width: 48, height: 48, objectFit: 'contain' }} />
-          </motion.button>
-        </div>
+        <div style={{ height: 16, flexShrink: 0 }} />
 
       </div>
     </div>

@@ -5,6 +5,18 @@ import avatarImg from '../../assets/avatar.jpg';
 import { useAura } from '../context/AuraContext';
 import { AuraRings } from './AuraRings';
 
+// Node images
+import imgRadiohead from '../../assets/node-radiohead.jpg';
+import imgJokic     from '../../assets/node-jokic.jpg';
+import imgLeclerc   from '../../assets/node-leclerc.jpg';
+import imgBooks     from '../../assets/node-books.jpg';
+import imgCoffee    from '../../assets/node-coffee.jpg';
+import imgSushi     from '../../assets/node-sushi.jpg';
+import imgWimbledon from '../../assets/node-wimbledon.jpg';
+import imgRamen     from '../../assets/node-ramen.jpg';
+import imgRunning   from '../../assets/node-running.jpg';
+import imgEuro      from '../../assets/node-euro.jpg';
+
 
 // ═══════════════════════════════════════════════════════════════════════════
 // TYPES — data model
@@ -18,7 +30,8 @@ interface InterestNode {
   type: NodeType;
   weight: number;                          // 0–1 base weight → stable size
   color: string;
-  emoji?: string;                          // symbol nodes
+  emoji?: string;                          // symbol nodes fallback
+  image?: string;                          // symbol nodes — photo instead of emoji
   gradient?: [string, string];             // blob nodes
   periods: string[];                       // '*' = always active
   periodWeight?: Record<string, number>;   // per-period weight override
@@ -101,7 +114,7 @@ const NODES: InterestNode[] = [
   {
     // Specific artist — not just "music"
     id: 'music-blob', label: 'Radiohead', type: 'symbol', weight: 0.95,
-    color: '#FF375F', emoji: '🎵',
+    color: '#FF375F', image: imgRadiohead,
     periods: ['*'],
   },
   {
@@ -120,29 +133,29 @@ const NODES: InterestNode[] = [
   },
   {
     // Nikola Jokić — specific player, not just "basketball"
-    id: 'basketball', label: 'Jokić', type: 'symbol', weight: 0.82, color: '#FF9500', emoji: '🏀',
+    id: 'basketball', label: 'Jokić', type: 'symbol', weight: 0.82, color: '#FF9500', image: imgJokic,
     periods: ['*'],
   },
   {
     // Monaco GP peaks in summer — specific race
-    id: 'f1', label: 'Монако GP', type: 'symbol', weight: 0.78, color: '#FF3B30', emoji: '🏎️',
+    id: 'f1', label: 'Монако GP', type: 'symbol', weight: 0.78, color: '#FF3B30', image: imgLeclerc,
     periods: ['*'],
     periodWeight: { '2024-07': 0.92, '2024-08': 0.88, '2024-09': 0.72, '2024-10': 0.6, '2024-11': 0.55, '2024-12': 0.52, '2025-01': 0.55, '2025-02': 0.62, '2025-03': 0.72, '2025-04': 0.82 },
   },
   {
     // Hesse's Siddhartha — specific book
-    id: 'books', label: 'Сиддхартха', type: 'symbol', weight: 0.58, color: '#30D158', emoji: '📚',
+    id: 'books', label: 'Сиддхартха', type: 'symbol', weight: 0.58, color: '#30D158', image: imgBooks,
     periods: ['2025-01', '2025-02', '2025-03', '2025-04'],
     periodWeight: { '2025-01': 0.38, '2025-02': 0.5, '2025-03': 0.55, '2025-04': 0.58 },
   },
   {
     // Specific ritual
-    id: 'coffee', label: 'Эспрессо в 6:00', type: 'symbol', weight: 0.42, color: '#C4945A', emoji: '☕',
+    id: 'coffee', label: 'Эспрессо в 6:00', type: 'symbol', weight: 0.42, color: '#C4945A', image: imgCoffee,
     periods: ['*'],
   },
   {
     // Famous Tokyo sushi bar
-    id: 'sushi', label: 'Sukiyabashi', type: 'symbol', weight: 0.48, color: '#FF6633', emoji: '🍣',
+    id: 'sushi', label: 'Sukiyabashi', type: 'symbol', weight: 0.48, color: '#FF6633', image: imgSushi,
     periods: ['2024-08', '2024-09', '2024-10', '2024-11'],
     periodWeight: { '2024-08': 0.38, '2024-09': 0.48, '2024-10': 0.44, '2024-11': 0.34 },
   },
@@ -156,7 +169,7 @@ const NODES: InterestNode[] = [
   },
   {
     // Wimbledon 2024 final, July
-    id: 'wimbledon', label: 'Уимблдон', type: 'symbol', weight: 0.6, color: '#34C759', emoji: '🎾',
+    id: 'wimbledon', label: 'Уимблдон', type: 'symbol', weight: 0.6, color: '#34C759', image: imgWimbledon,
     periods: ['2024-07'],
   },
   {
@@ -167,7 +180,7 @@ const NODES: InterestNode[] = [
   },
   {
     // UEFA Euro 2024, final July 14
-    id: 'euro2024', label: 'Евро 2024', type: 'symbol', weight: 0.68, color: '#0A84FF', emoji: '⚽',
+    id: 'euro2024', label: 'Евро 2024', type: 'symbol', weight: 0.68, color: '#0A84FF', image: imgEuro,
     periods: ['2024-07'],
   },
   {
@@ -178,7 +191,7 @@ const NODES: InterestNode[] = [
   },
   {
     // Ichiran — solo ramen booth, Tokyo
-    id: 'ramen', label: 'Ichiran', type: 'symbol', weight: 0.65, color: '#FF6633', emoji: '🍜',
+    id: 'ramen', label: 'Ichiran', type: 'symbol', weight: 0.65, color: '#FF6633', image: imgRamen,
     periods: ['2024-10', '2024-11'],
     periodWeight: { '2024-10': 0.7, '2024-11': 0.52 },
   },
@@ -196,7 +209,7 @@ const NODES: InterestNode[] = [
   },
   {
     // Morning run habit, new year discipline
-    id: 'sunrise-run', label: '5:45 утра', type: 'symbol', weight: 0.58, color: '#34C759', emoji: '🏃',
+    id: 'sunrise-run', label: '5:45 утра', type: 'symbol', weight: 0.58, color: '#34C759', image: imgRunning,
     periods: ['2025-02', '2025-03', '2025-04'],
     periodWeight: { '2025-02': 0.38, '2025-03': 0.52, '2025-04': 0.6 },
   },
@@ -454,11 +467,28 @@ const OrbNodeEl: React.FC<{
             transparent 100%)`,
           boxShadow: glow,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
+          position: 'relative',
         }}
       >
-        <span style={{ fontSize: fs, lineHeight: 1, userSelect: 'none' }}>
-          {node.emoji}
-        </span>
+        {node.image ? (
+          /* Photo — clipped to circle via separate inner div (overflow:hidden OK here, glow is on parent) */
+          <div style={{
+            width: sz * 0.72, height: sz * 0.72,
+            borderRadius: '50%',
+            overflow: 'hidden',
+            flexShrink: 0,
+          }}>
+            <img
+              src={node.image}
+              alt={node.label}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+            />
+          </div>
+        ) : (
+          <span style={{ fontSize: fs, lineHeight: 1, userSelect: 'none' }}>
+            {node.emoji}
+          </span>
+        )}
       </motion.div>
 
       {/* Whisper label — anchored below orb, outside its box */}

@@ -747,37 +747,24 @@ export const Dashboard = () => {
         <div className="flex gap-3 overflow-x-auto -mx-4 px-4 scrollbar-hide pb-1">
           {[
             {
-              title: 'Вечер с Кинопоиском',
-              label: 'Кинопоиск',
-              date: 'Сегодня',
+              label: 'АВГУСТ · КИНОПОИСК',
+              title: 'Неделя, когда ты не спал',
+              subtitle: 'Семь фильмов за семь ночей. Самый длинный — «Братья Блюз», 2 ч 13 мин',
               contextId: 'mem-kinopoisk',
-              bg: '#150400',
+              bg: '#07101A',
               shadow: [
-                'inset 0 2px 42px 28px rgba(100,15,0,0.98)',
-                'inset 0 0 32px 18px rgba(200,50,0,0.82)',
-                'inset 0 6px 24px 8px rgba(255,85,20,0.62)',
-                'inset 0 1px 20px 5px rgba(255,175,100,0.42)',
+                'inset 0 2px 42px 28px rgba(5,25,60,0.98)',
+                'inset 0 0 32px 18px rgba(10,55,130,0.82)',
+                'inset 0 6px 24px 8px rgba(30,90,200,0.55)',
+                'inset 0 1px 20px 5px rgba(100,160,255,0.35)',
               ].join(', '),
             },
             {
-              title: 'Дождливые пятницы',
-              label: 'Музыка',
-              date: 'Октябрь 2024',
+              label: 'СЕНТЯБРЬ · МУЗЫКА',
+              title: 'Один трек на repeat',
+              subtitle: 'Nils Frahm — Says. 41 раз за месяц. Почти всегда после полуночи',
               contextId: 'mem-music',
-              bg: '#001508',
-              shadow: [
-                'inset 0 2px 42px 28px rgba(0,70,20,0.98)',
-                'inset 0 0 32px 18px rgba(0,155,55,0.82)',
-                'inset 0 6px 24px 8px rgba(20,220,80,0.60)',
-                'inset 0 1px 20px 5px rgba(160,255,195,0.40)',
-              ].join(', '),
-            },
-            {
-              title: 'Ночные сессии',
-              label: 'Электроника',
-              date: 'Ноябрь 2024',
-              contextId: 'mem-electronic',
-              bg: '#060018',
+              bg: '#0A0320',
               shadow: [
                 'inset 0 2px 42px 28px rgba(38,8,98,0.98)',
                 'inset 0 0 32px 18px rgba(98,28,218,0.82)',
@@ -786,84 +773,86 @@ export const Dashboard = () => {
               ].join(', '),
             },
             {
-              title: 'Осенний марафон',
-              label: 'Книги',
-              date: 'Сентябрь 2024',
-              contextId: 'mem-books',
-              bg: '#150900',
-              shadow: [
-                'inset 0 2px 42px 28px rgba(98,42,0,0.98)',
-                'inset 0 0 32px 18px rgba(178,88,0,0.82)',
-                'inset 0 6px 24px 8px rgba(228,138,10,0.62)',
-                'inset 0 1px 20px 5px rgba(255,210,118,0.42)',
-              ].join(', '),
-            },
-            {
-              title: 'Суши в 2 ночи',
-              label: 'Яндекс Еда',
-              date: 'Август 2024',
+              label: 'НОЯБРЬ · ЕДА',
+              title: 'Дождливые пятницы',
+              subtitle: 'Три пятницы подряд — один и тот же заказ из «Мареа». Всегда около девяти вечера',
               contextId: 'mem-food',
-              bg: '#001512',
+              bg: '#120800',
               shadow: [
-                'inset 0 2px 42px 28px rgba(0,90,65,0.98)',
-                'inset 0 0 32px 18px rgba(0,180,130,0.82)',
-                'inset 0 6px 24px 8px rgba(20,240,170,0.60)',
-                'inset 0 1px 20px 5px rgba(150,255,220,0.40)',
+                'inset 0 2px 42px 28px rgba(80,35,0,0.98)',
+                'inset 0 0 32px 18px rgba(160,75,0,0.82)',
+                'inset 0 6px 24px 8px rgba(210,110,10,0.62)',
+                'inset 0 1px 20px 5px rgba(255,185,80,0.38)',
               ].join(', '),
             },
             {
-              title: 'Утро в городе',
-              label: 'Яндекс Такси',
-              date: 'Октябрь 2024',
-              contextId: 'mem-taxi',
-              bg: '#150C00',
-              shadow: [
-                'inset 0 2px 42px 28px rgba(110,70,0,0.98)',
-                'inset 0 0 32px 18px rgba(200,140,0,0.82)',
-                'inset 0 6px 24px 8px rgba(255,190,20,0.60)',
-                'inset 0 1px 20px 5px rgba(255,230,130,0.38)',
-              ].join(', '),
-            },
-            {
-              title: 'Чёрная пятница',
-              label: 'Яндекс Маркет',
-              date: 'Ноябрь 2024',
+              label: 'ЭТОЙ ОСЕНЬЮ · МАРКЕТ',
+              title: 'Шесть книг про Рим',
+              subtitle: 'Всё началось с «SPQR» Мэри Бирд. Последняя пришла вчера',
               contextId: 'mem-blackfriday',
-              bg: '#080012',
+              bg: '#0E0800',
               shadow: [
-                'inset 0 2px 42px 28px rgba(50,10,120,0.98)',
-                'inset 0 0 32px 18px rgba(100,30,220,0.82)',
-                'inset 0 6px 24px 8px rgba(150,70,255,0.65)',
-                'inset 0 1px 20px 5px rgba(210,170,255,0.40)',
+                'inset 0 2px 42px 28px rgba(70,30,0,0.98)',
+                'inset 0 0 32px 18px rgba(140,65,0,0.82)',
+                'inset 0 6px 24px 8px rgba(195,100,5,0.60)',
+                'inset 0 1px 20px 5px rgba(255,168,60,0.36)',
               ].join(', '),
             },
             {
-              title: 'Выходные в Питере',
-              label: 'Путешествия',
-              date: 'Июль 2024',
-              contextId: 'mem-travel',
-              bg: '#000A18',
+              label: 'БУДНИ · ТАКСИ',
+              title: 'Утро понедельника',
+              subtitle: 'В 9:14 — всегда один адрес. Льва Толстого, 16',
+              contextId: 'mem-taxi',
+              bg: '#060C18',
               shadow: [
-                'inset 0 2px 42px 28px rgba(0,40,100,0.98)',
-                'inset 0 0 32px 18px rgba(0,95,210,0.82)',
-                'inset 0 6px 24px 8px rgba(30,145,255,0.62)',
-                'inset 0 1px 20px 5px rgba(120,200,255,0.40)',
+                'inset 0 2px 42px 28px rgba(8,28,70,0.98)',
+                'inset 0 0 32px 18px rgba(15,60,145,0.82)',
+                'inset 0 6px 24px 8px rgba(25,95,210,0.58)',
+                'inset 0 1px 20px 5px rgba(90,155,255,0.36)',
+              ].join(', '),
+            },
+            {
+              label: 'ЭТОТ ГОД · КИНОПОИСК',
+              title: 'Фильм, к которому ты вернулся',
+              subtitle: '«Трудности перевода» — третий раз за год. Всегда один, всегда поздно',
+              contextId: 'mem-electronic',
+              bg: '#150300',
+              shadow: [
+                'inset 0 2px 42px 28px rgba(90,12,0,0.98)',
+                'inset 0 0 32px 18px rgba(175,35,5,0.82)',
+                'inset 0 6px 24px 8px rgba(225,65,15,0.60)',
+                'inset 0 1px 20px 5px rgba(255,140,80,0.38)',
+              ].join(', '),
+            },
+            {
+              label: 'ЛЕТО · ЕДА',
+              title: 'Девять завтраков на двоих',
+              subtitle: 'Сырники и два капучино. Всегда по субботам, до десяти утра',
+              contextId: 'mem-travel',
+              bg: '#110900',
+              shadow: [
+                'inset 0 2px 42px 28px rgba(85,42,0,0.98)',
+                'inset 0 0 32px 18px rgba(170,88,0,0.82)',
+                'inset 0 6px 24px 8px rgba(220,130,10,0.60)',
+                'inset 0 1px 20px 5px rgba(255,200,90,0.36)',
               ].join(', '),
             },
           ].map((mem, i) => (
             <div
               key={i}
               onClick={() => navigateToChat(`/app/chat/${mem.contextId}`)}
-              className="flex-shrink-0 w-[155px] h-[200px] rounded-2xl flex flex-col justify-between p-4 active:opacity-70 transition-opacity items-center text-center"
+              className="flex-shrink-0 w-[155px] h-[210px] rounded-2xl flex flex-col p-4 active:opacity-70 transition-opacity"
               style={{ backgroundColor: mem.bg, boxShadow: mem.shadow, cursor: 'pointer' }}
             >
-              <p className="text-[11px] text-white/60 font-semibold tracking-widest uppercase w-full">
+              <p className="text-[10px] text-white/50 font-semibold tracking-widest uppercase mb-3">
                 {mem.label}
               </p>
-              <div className="flex flex-col items-center justify-center flex-1">
-                <p className="text-[15px] text-white leading-tight" style={{ fontWeight: 700 }}>{mem.title}</p>
-                <p className="text-[12px] text-white/50 mt-1">{mem.date}</p>
-              </div>
+              <p className="text-[15px] text-white leading-[1.22]" style={{ fontWeight: 700, marginBottom: 'auto' }}>
+                {mem.title}
+              </p>
+              <p className="text-[11px] text-white/50 leading-[1.4] mt-3">
+                {mem.subtitle}
+              </p>
             </div>
           ))}
         </div>

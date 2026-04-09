@@ -400,9 +400,9 @@ const KNOW_CARDS: KnowCard[] = [
   },
 ];
 
-const CARD_W = 232;
-const CARD_H = 300;
-const PEEK = 16;
+const CARD_W = 162;
+const CARD_H = 210;
+const PEEK = 14;
 
 const SwipeCard = ({
   card, stackDepth, isTop, onDismiss,
@@ -410,12 +410,13 @@ const SwipeCard = ({
   card: KnowCard; stackDepth: number; isTop: boolean; onDismiss: () => void;
 }) => {
   const x = useMotionValue(0);
+  const exitX = React.useRef(650);
   const rotate = useTransform(x, [-220, 220], [-9, 9]);
 
   const handleDragEnd = (_: unknown, info: { offset: { x: number }; velocity: { x: number } }) => {
     if (Math.abs(info.offset.x) > 80 || Math.abs(info.velocity.x) > 400) {
-      motionAnimate(x, info.offset.x > 0 ? 650 : -650, { duration: 0.32, ease: [0.25, 1, 0.5, 1] } as any);
-      setTimeout(onDismiss, 290);
+      exitX.current = info.offset.x > 0 ? 650 : -650;
+      onDismiss(); // immediately — so cards below start moving right away
     } else {
       motionAnimate(x, 0, { type: 'spring', stiffness: 400, damping: 28 } as any);
     }
@@ -427,7 +428,9 @@ const SwipeCard = ({
       dragConstraints={{ left: 0, right: 0 }}
       dragElastic={0.75}
       onDragEnd={isTop ? handleDragEnd : undefined}
+      initial={{ y: stackDepth * PEEK, scale: 1 - stackDepth * 0.06 }}
       animate={{ y: stackDepth * PEEK, scale: 1 - stackDepth * 0.06 }}
+      exit={{ x: exitX.current, opacity: 0, transition: { duration: 0.3, ease: [0.25, 1, 0.5, 1] } }}
       transition={{ type: 'spring', stiffness: 300, damping: 28 }}
       style={{
         position: 'absolute', top: 0,
@@ -486,18 +489,20 @@ const SwipeCardStack = () => {
 
   return (
     <div style={{ position: 'relative', height: containerH }}>
-      {[...visible].reverse().map((cardIdx, reverseIdx) => {
-        const stackDepth = visible.length - 1 - reverseIdx;
-        return (
-          <SwipeCard
-            key={cardIdx}
-            card={KNOW_CARDS[cardIdx]}
-            stackDepth={stackDepth}
-            isTop={stackDepth === 0}
-            onDismiss={handleDismiss}
-          />
-        );
-      })}
+      <AnimatePresence>
+        {[...visible].reverse().map((cardIdx, reverseIdx) => {
+          const stackDepth = visible.length - 1 - reverseIdx;
+          return (
+            <SwipeCard
+              key={cardIdx}
+              card={KNOW_CARDS[cardIdx]}
+              stackDepth={stackDepth}
+              isTop={stackDepth === 0}
+              onDismiss={handleDismiss}
+            />
+          );
+        })}
+      </AnimatePresence>
     </div>
   );
 };
@@ -878,7 +883,7 @@ export const Dashboard = () => {
         transition={{ delay: 0.3 }}
         className="mt-5"
       >
-        <div className="flex items-center justify-between px-1 mb-3">
+        <div className="flex items-center justify-between px-1 mb-5">
           <p className="text-[13px] text-[#98989D] tracking-widest font-semibold uppercase">Что Яндекс знает обо мне</p>
           <p className="text-[13px] flex-shrink-0" style={{ color: '#30D158', fontWeight: 600 }}>47 фактов</p>
         </div>

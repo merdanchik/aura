@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
-import avatarImg from '../../assets/avatar-portal.png';
+import avatarImg from '../../assets/avatar.jpg';
 import launcherIcon from '../../assets/launcher-icon.svg';
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -489,8 +489,18 @@ export const LauncherScreen = () => {
             transform: 'translate(-50%, -50%)',
             zIndex: 20,
           }}>
-            {/* Avatar with portal glow baked into PNG */}
-            <img src={avatarImg} alt="Профиль" style={{ width: 160, height: 160, objectFit: 'contain' }} />
+            {/* Avatar — portal effect via radial mask */}
+            <img
+              src={avatarImg}
+              alt="Профиль"
+              style={{
+                width: 160, height: 160,
+                objectFit: 'cover',
+                borderRadius: '50%',
+                maskImage: 'radial-gradient(circle, black 38%, transparent 68%)',
+                WebkitMaskImage: 'radial-gradient(circle, black 38%, transparent 68%)',
+              }}
+            />
           </div>
         </div>
 

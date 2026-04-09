@@ -476,31 +476,25 @@ const SwipeCard = ({
 };
 
 const SwipeCardStack = () => {
-  const [topIdx, setTopIdx] = useState(0);
-  const remaining = KNOW_CARDS.slice(topIdx);
-  const visible = remaining.slice(0, 3);
+  const [order, setOrder] = useState(() => KNOW_CARDS.map((_, i) => i));
+  const visible = order.slice(0, 3);
+  const containerH = CARD_H + 2 * PEEK + 8;
 
-  const containerH = CARD_H + Math.min(visible.length - 1, 2) * PEEK + 8;
-
-  if (remaining.length === 0) {
-    return (
-      <div style={{ height: containerH, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <p style={{ color: '#636366', fontSize: 15 }}>Все факты изучены</p>
-      </div>
-    );
-  }
+  const handleDismiss = () => {
+    setOrder(prev => [...prev.slice(1), prev[0]]);
+  };
 
   return (
     <div style={{ position: 'relative', height: containerH }}>
-      {[...visible].reverse().map((card, reverseIdx) => {
+      {[...visible].reverse().map((cardIdx, reverseIdx) => {
         const stackDepth = visible.length - 1 - reverseIdx;
         return (
           <SwipeCard
-            key={KNOW_CARDS.indexOf(card)}
-            card={card}
+            key={cardIdx}
+            card={KNOW_CARDS[cardIdx]}
             stackDepth={stackDepth}
             isTop={stackDepth === 0}
-            onDismiss={() => setTopIdx(i => i + 1)}
+            onDismiss={handleDismiss}
           />
         );
       })}
@@ -884,9 +878,9 @@ export const Dashboard = () => {
         transition={{ delay: 0.3 }}
         className="mt-5"
       >
-        <div className="flex items-baseline justify-between px-1 mb-4">
-          <h2 className="text-[22px] text-white" style={{ fontWeight: 700 }}>Что Яндекс знает обо мне</h2>
-          <p className="text-[15px] flex-shrink-0 ml-3" style={{ color: '#30D158', fontWeight: 600 }}>47 фактов</p>
+        <div className="flex items-center justify-between px-1 mb-3">
+          <p className="text-[13px] text-[#98989D] tracking-widest font-semibold uppercase">Что Яндекс знает обо мне</p>
+          <p className="text-[13px] flex-shrink-0" style={{ color: '#30D158', fontWeight: 600 }}>47 фактов</p>
         </div>
         <SwipeCardStack />
       </motion.div>

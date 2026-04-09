@@ -400,8 +400,9 @@ const KNOW_CARDS: KnowCard[] = [
   },
 ];
 
-const CARD_H = 245;
-const PEEK = 14;
+const CARD_W = 232;
+const CARD_H = 300;
+const PEEK = 16;
 
 const SwipeCard = ({
   card, stackDepth, isTop, onDismiss,
@@ -426,14 +427,16 @@ const SwipeCard = ({
       dragConstraints={{ left: 0, right: 0 }}
       dragElastic={0.75}
       onDragEnd={isTop ? handleDragEnd : undefined}
-      animate={{ y: stackDepth * PEEK, scale: 1 - stackDepth * 0.05 }}
+      animate={{ y: stackDepth * PEEK, scale: 1 - stackDepth * 0.06 }}
       transition={{ type: 'spring', stiffness: 300, damping: 28 }}
       style={{
-        position: 'absolute', top: 0, left: 0, right: 0,
+        position: 'absolute', top: 0,
+        left: `calc(50% - ${CARD_W / 2}px)`,
+        width: CARD_W,
         x: isTop ? x : undefined,
         rotate: isTop ? rotate : 0,
         zIndex: 10 - stackDepth,
-        transformOrigin: 'top center',
+        transformOrigin: 'bottom center',
         cursor: isTop ? 'grab' : 'default',
       }}
     >
@@ -477,7 +480,7 @@ const SwipeCardStack = () => {
   const remaining = KNOW_CARDS.slice(topIdx);
   const visible = remaining.slice(0, 3);
 
-  const containerH = CARD_H + Math.min(visible.length - 1, 2) * PEEK + 6;
+  const containerH = CARD_H + Math.min(visible.length - 1, 2) * PEEK + 8;
 
   if (remaining.length === 0) {
     return (

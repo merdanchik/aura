@@ -149,7 +149,7 @@ function seededRng(seed: number) {
 }
 
 // Stable node size based on base weight (never changes between periods)
-const nodeSize = (w: number) => Math.round(18 + w * 34);
+const nodeSize = (w: number) => Math.round(12 + w * 20);
 
 // Avatar half-size + clearance gap for collision
 const AVATAR_R = 55;
@@ -182,15 +182,27 @@ function computeLayout(
 
   const maxR = cW * 0.5;
 
-  // Polar placement
-  const placed: PlacedNode[] = visible.map(({ node, ew }) => {
+  // Distribute angles evenly around circle (then shuffle assignment + jitter)
+  // This ensures no two nodes start in the same angular zone
+  const n = visible.length;
+  const angleSlot = (Math.PI * 2) / n;
+  const slots = Array.from({ length: n }, (_, i) => i);
+  for (let i = n - 1; i > 0; i--) {          // Fisher-Yates with seeded RNG
+    const j = Math.floor(rng() * (i + 1));
+    [slots[i], slots[j]] = [slots[j], slots[i]];
+  }
+  const angles: number[] = new Array(n);
+  slots.forEach((originalIdx, slotIdx) => {
+    angles[originalIdx] = slotIdx * angleSlot + (rng() - 0.5) * angleSlot * 0.55;
+  });
+
+  const placed: PlacedNode[] = visible.map(({ node, ew }, i) => {
     const band = ew > 0.75 ? BANDS.inner : ew > 0.45 ? BANDS.mid : BANDS.outer;
     const r = Math.min(band[0] + rng() * (band[1] - band[0]), maxR - nodeSize(node.weight));
-    const angle = rng() * Math.PI * 2;
     return {
       id: node.id,
-      x: Math.cos(angle) * r,
-      y: Math.sin(angle) * r,
+      x: Math.cos(angles[i]) * r,
+      y: Math.sin(angles[i]) * r,
       size: nodeSize(node.weight),
       effectiveWeight: ew,
       type: node.type,
@@ -407,7 +419,7 @@ const OrbNodeEl: React.FC<{
 
 const DEFAULT_CONFIG: LayoutConfig = {
   seed: 42,
-  density: 1.0,
+  density: 0.80,
   blurBlobs: 7,
   animIntensity: 0.7,
   collisions: true,

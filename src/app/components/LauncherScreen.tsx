@@ -365,6 +365,119 @@ const DEFAULT_CONFIG: LayoutConfig = {
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
+// TIMELINE SLIDER
+// ═══════════════════════════════════════════════════════════════════════════
+
+const GOLD = '#C9A227';
+
+interface TimelineSliderProps {
+  periods: typeof PERIODS;
+  selectedIndex: number;
+  onChange: (i: number) => void;
+}
+
+const TimelineSlider: React.FC<TimelineSliderProps> = ({ periods, selectedIndex, onChange }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [cw, setCw] = useState(360);
+  const dragging = useRef(false);
+
+  useEffect(() => {
+    const el = containerRef.current; if (!el) return;
+    const ro = new ResizeObserver(([e]) => setCw(e.contentRect.width));
+    ro.observe(el); return () => ro.disconnect();
+  }, []);
+
+  const PAD = 32;
+  const trackW = cw - PAD * 2;
+  const step = trackW / (periods.length - 1);
+  const thumbX = PAD + selectedIndex * step;
+  const circleX = Math.max(36, Math.min(cw - 36, thumbX));
+
+  const getIdx = (clientX: number) => {
+    const rect = containerRef.current!.getBoundingClientRect();
+    return Math.round(Math.max(0, Math.min(periods.length - 1,
+      (clientX - rect.left - PAD) / step)));
+  };
+
+  const R = 26, circum = 2 * Math.PI * R;
+  const progress = selectedIndex / (periods.length - 1);
+  const arcLen = circum * progress;
+
+  // 3 subticks between each month tick
+  const SUBS = 3;
+  const totalTicks = (periods.length - 1) * (SUBS + 1) + 1;
+
+  return (
+    <div
+      ref={containerRef}
+      style={{ position: 'relative', height: 96, userSelect: 'none', touchAction: 'none' }}
+      onPointerDown={e => {
+        dragging.current = true;
+        containerRef.current?.setPointerCapture(e.pointerId);
+        onChange(getIdx(e.clientX));
+      }}
+      onPointerMove={e => { if (dragging.current) onChange(getIdx(e.clientX)); }}
+      onPointerUp={() => { dragging.current = false; }}
+    >
+      {/* Floating circle with arc */}
+      <div style={{ position: 'absolute', left: circleX, top: 0, transform: 'translateX(-50%)', pointerEvents: 'none' }}>
+        <svg width={72} height={72} style={{ overflow: 'visible' }}>
+          <circle cx={36} cy={36} r={R} stroke="rgba(255,255,255,0.13)" strokeWidth={1.5} fill="none" />
+          {progress > 0 && (
+            <circle cx={36} cy={36} r={R}
+              stroke={GOLD} strokeWidth={1.5} fill="none"
+              strokeDasharray={`${arcLen} ${circum - arcLen}`}
+              strokeDashoffset={circum * 0.25}
+              strokeLinecap="round"
+              transform="rotate(-90 36 36)"
+            />
+          )}
+          <text x={36} y={33} textAnchor="middle" fontSize={12} fontWeight={600}
+            fill="white" fontFamily="Inter,-apple-system,sans-serif">{periods[selectedIndex].short}</text>
+          <text x={36} y={47} textAnchor="middle" fontSize={9}
+            fill="rgba(255,255,255,0.45)" fontFamily="Inter,-apple-system,sans-serif">{periods[selectedIndex].year}</text>
+        </svg>
+      </div>
+
+      {/* Thumb dot */}
+      <div style={{
+        position: 'absolute', left: thumbX, top: 70,
+        width: 9, height: 9, borderRadius: '50%', backgroundColor: 'white',
+        transform: 'translate(-50%, -50%)', pointerEvents: 'none', zIndex: 2,
+      }} />
+
+      {/* Vertical connector line */}
+      <div style={{
+        position: 'absolute', left: thumbX, top: 70,
+        width: 1.5, height: 10, backgroundColor: GOLD,
+        transform: 'translateX(-50%)', pointerEvents: 'none',
+      }} />
+
+      {/* Ruler ticks */}
+      <div style={{ position: 'absolute', left: 0, right: 0, top: 76, bottom: 0 }}>
+        {Array.from({ length: totalTicks }).map((_, i) => {
+          const monthIdx = i / (SUBS + 1);
+          const isMonth = Number.isInteger(monthIdx);
+          const isActive = isMonth && Math.round(monthIdx) === selectedIndex;
+          const x = PAD + (i / (totalTicks - 1)) * trackW;
+          const h = isMonth ? (isActive ? 20 : 14) : 8;
+          const color = isActive ? GOLD
+            : isMonth ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.18)';
+          return (
+            <div key={i} style={{
+              position: 'absolute', left: x, bottom: 0,
+              width: isMonth ? 1.5 : 1, height: h,
+              backgroundColor: color,
+              transform: 'translateX(-50%)', borderRadius: 1,
+            }} />
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+// ═══════════════════════════════════════════════════════════════════════════
 // MAIN SCREEN
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -372,8 +485,9 @@ export const LauncherScreen = () => {
   const navigate = useNavigate();
 
   // State
-  const [period, setPeriod] = useState('2025-04');
-  const [config, setConfig] = useState<LayoutConfig>(DEFAULT_CONFIG);
+  const [periodIndex, setPeriodIndex] = useState(PERIODS.length - 1); // Apr '25
+  const period = PERIODS[periodIndex].id;
+  const [config] = useState<LayoutConfig>(DEFAULT_CONFIG);
 
   // Canvas size tracking
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -397,12 +511,6 @@ export const LauncherScreen = () => {
   );
 
   const nodeMap = useMemo(() => Object.fromEntries(NODES.map(n => [n.id, n])), []);
-
-  // Timeline scroll to present on mount
-  const timelineRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    timelineRef.current?.scrollTo({ left: 9999, behavior: 'instant' });
-  }, []);
 
   // ── Canvas center for positioning ──────────────────────────────────────
   const cx = canvasSize.w / 2;
@@ -499,35 +607,8 @@ export const LauncherScreen = () => {
           </div>
         </div>
 
-        {/* ── TIMELINE BAR ── */}
-        <div style={{ flexShrink: 0 }}>
-          <div
-            ref={timelineRef}
-            style={{ overflowX: 'auto', display: 'flex', padding: '10px 12px 6px', gap: 2, scrollbarWidth: 'none' }}
-          >
-            {PERIODS.map(p => {
-              const active = p.id === period;
-              return (
-                <button
-                  key={p.id}
-                  onClick={() => setPeriod(p.id)}
-                  style={{
-                    flexShrink: 0, padding: '6px 11px', borderRadius: 10, border: 'none', cursor: 'pointer',
-                    backgroundColor: active ? 'rgba(191,90,242,0.18)' : 'transparent',
-                    transition: 'background-color 0.18s',
-                  }}
-                >
-                  <p style={{ fontSize: 13, fontWeight: active ? 600 : 400, color: active ? '#BF5AF2' : 'rgba(255,255,255,0.35)', lineHeight: 1.2, margin: 0 }}>
-                    {p.short}
-                  </p>
-                  <p style={{ fontSize: 9, color: active ? 'rgba(191,90,242,0.7)' : 'rgba(255,255,255,0.2)', margin: 0, marginTop: 1 }}>
-                    {p.year}
-                  </p>
-                </button>
-              );
-            })}
-          </div>
-        </div>
+        {/* ── TIMELINE SLIDER ── */}
+        <TimelineSlider periods={PERIODS} selectedIndex={periodIndex} onChange={setPeriodIndex} />
 
         {/* ── LAUNCHER BUTTON ── */}
         <div style={{ flexShrink: 0, display: 'flex', justifyContent: 'center', paddingTop: 6, paddingBottom: 16 }}>

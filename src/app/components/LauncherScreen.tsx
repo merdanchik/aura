@@ -377,7 +377,7 @@ const OrbNodeEl: React.FC<{
     >
       {/* Orb body — glow via box-shadow (no overflow:hidden — would clip shadow) */}
       <motion.div
-        animate={{ scale: [1, 1 + 0.028 * nodeSeed(node.id, 11), 1] }}
+        animate={{ opacity: [1, 0.72 + nodeSeed(node.id, 11) * 0.2, 1] }}
         transition={{ duration: breathe, repeat: Infinity, ease: 'easeInOut', delay: delay * 0.5 }}
         style={{
           width: sz, height: sz, borderRadius: '50%',
@@ -693,6 +693,38 @@ export const LauncherScreen = () => {
             position: 'absolute', inset: 0, pointerEvents: 'none',
             background: 'radial-gradient(ellipse at 50% 50%, transparent 42%, rgba(3,3,6,0.45) 75%, rgba(3,3,6,0.82) 100%)',
           }} />
+
+          {/* Ambient color hazes — large blurred clouds behind top nodes, dreamlike depth */}
+          <AnimatePresence>
+            {layout.slice(0, 5).map(placed => {
+              const node = nodeMap[placed.id];
+              if (!node) return null;
+              const sz = 160 + placed.effectiveWeight * 120;
+              return (
+                <motion.div
+                  key={`haze-${node.id}`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: placed.effectiveWeight * 0.55, x: placed.x, y: placed.y }}
+                  exit={{ opacity: 0 }}
+                  transition={{
+                    x: { type: 'spring', stiffness: 55, damping: 20 },
+                    y: { type: 'spring', stiffness: 55, damping: 20 },
+                    opacity: { duration: 1.6 },
+                  }}
+                  style={{
+                    position: 'absolute',
+                    left: cx - sz / 2, top: cy - sz / 2,
+                    width: sz, height: sz,
+                    borderRadius: '50%',
+                    background: `radial-gradient(circle, ${node.color}1A 0%, ${node.color}0A 50%, transparent 72%)`,
+                    filter: 'blur(38px)',
+                    pointerEvents: 'none',
+                    zIndex: 0,
+                  }}
+                />
+              );
+            })}
+          </AnimatePresence>
 
           {/* Interest nodes */}
           <AnimatePresence>

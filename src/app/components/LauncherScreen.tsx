@@ -699,7 +699,7 @@ export const LauncherScreen = () => {
         {/* ── TIMELINE SLIDER ── */}
         <TimelineSlider periods={PERIODS} selectedIndex={periodIndex} onChange={setPeriodIndex} />
 
-        <div style={{ height: 88, flexShrink: 0 }} />
+        <div style={{ height: 68, flexShrink: 0 }} />
 
       </div>
     </div>

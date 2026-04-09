@@ -499,11 +499,11 @@ export const LauncherScreen = () => {
               src={avatarImg}
               alt="Профиль"
               style={{
-                width: 150, height: 150,
+                width: 160, height: 160,
                 objectFit: 'cover',
-                borderRadius: '50%',
-                maskImage: 'radial-gradient(circle, black 52%, rgba(0,0,0,0.6) 65%, transparent 78%)',
-                WebkitMaskImage: 'radial-gradient(circle, black 52%, rgba(0,0,0,0.6) 65%, transparent 78%)',
+                display: 'block',
+                maskImage: 'radial-gradient(circle, black 55%, transparent 80%)',
+                WebkitMaskImage: 'radial-gradient(circle, black 55%, transparent 80%)',
               }}
             />
           </div>

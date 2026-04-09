@@ -400,8 +400,8 @@ const KNOW_CARDS: KnowCard[] = [
   },
 ];
 
-const CARD_W = 162;
-const CARD_H = 210;
+const CARD_W = 194;
+const CARD_H = 252;
 const PEEK = 14;
 
 const SwipeCard = ({
@@ -410,17 +410,21 @@ const SwipeCard = ({
   card: KnowCard; stackDepth: number; isTop: boolean; onDismiss: () => void;
 }) => {
   const x = useMotionValue(0);
-  const exitX = React.useRef(650);
-  const rotate = useTransform(x, [-220, 220], [-9, 9]);
+  const rotate = useTransform(x, [-200, 200], [-8, 8]);
 
   const handleDragEnd = (_: unknown, info: { offset: { x: number }; velocity: { x: number } }) => {
     if (Math.abs(info.offset.x) > 80 || Math.abs(info.velocity.x) > 400) {
-      exitX.current = info.offset.x > 0 ? 650 : -650;
-      onDismiss(); // immediately — so cards below start moving right away
+      // snap x back, then cycle card to bottom — it shrinks/fades into stack
+      motionAnimate(x, 0, { duration: 0.25, ease: [0.25, 1, 0.5, 1] } as any);
+      onDismiss();
     } else {
       motionAnimate(x, 0, { type: 'spring', stiffness: 400, damping: 28 } as any);
     }
   };
+
+  // depth capped at 2 for position; cards beyond depth 2 are invisible behind the stack
+  const vDepth = Math.min(stackDepth, 2);
+  const isHidden = stackDepth > 2;
 
   return (
     <motion.div
@@ -428,17 +432,19 @@ const SwipeCard = ({
       dragConstraints={{ left: 0, right: 0 }}
       dragElastic={0.75}
       onDragEnd={isTop ? handleDragEnd : undefined}
-      initial={{ y: stackDepth * PEEK, scale: 1 - stackDepth * 0.06 }}
-      animate={{ y: stackDepth * PEEK, scale: 1 - stackDepth * 0.06 }}
-      exit={{ x: exitX.current, opacity: 0, transition: { duration: 0.3, ease: [0.25, 1, 0.5, 1] } }}
+      animate={{
+        y: vDepth * PEEK,
+        scale: 1 - vDepth * 0.06,
+        opacity: isHidden ? 0 : 1,
+      }}
       transition={{ type: 'spring', stiffness: 300, damping: 28 }}
       style={{
         position: 'absolute', top: 0,
         left: `calc(50% - ${CARD_W / 2}px)`,
         width: CARD_W,
-        x: isTop ? x : undefined,
-        rotate: isTop ? rotate : 0,
-        zIndex: 10 - stackDepth,
+        x,
+        rotate,
+        zIndex: 20 - stackDepth,
         transformOrigin: 'bottom center',
         cursor: isTop ? 'grab' : 'default',
       }}
@@ -446,7 +452,7 @@ const SwipeCard = ({
       <div style={{
         background: card.bg,
         height: CARD_H,
-        borderRadius: 22,
+        borderRadius: 20,
         overflow: 'hidden',
         position: 'relative',
         display: 'flex',
@@ -455,23 +461,19 @@ const SwipeCard = ({
         textAlign: 'center',
         boxShadow: '0 10px 32px rgba(0,0,0,0.7)',
       }}>
-        {/* top shine */}
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(255,255,255,0.09) 0%, transparent 38%)', pointerEvents: 'none' }} />
-        <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px 28px 18px', flex: 1, width: '100%', boxSizing: 'border-box' }}>
-          {/* category + badge */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
-            <p style={{ fontSize: 11, fontWeight: 500, color: 'rgba(255,255,255,0.45)', letterSpacing: 0.5, textTransform: 'uppercase' }}>{card.category}</p>
-            {card.isNew && <span style={{ fontSize: 9, padding: '2px 7px', borderRadius: 10, backgroundColor: 'rgba(255,255,255,0.18)', color: 'white', fontWeight: 600 }}>NEW</span>}
+        <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '16px 20px 14px', flex: 1, width: '100%', boxSizing: 'border-box' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5 }}>
+            <p style={{ fontSize: 10, fontWeight: 500, color: 'rgba(255,255,255,0.45)', letterSpacing: 0.5, textTransform: 'uppercase' }}>{card.category}</p>
+            {card.isNew && <span style={{ fontSize: 8, padding: '2px 6px', borderRadius: 8, backgroundColor: 'rgba(255,255,255,0.18)', color: 'white', fontWeight: 600 }}>NEW</span>}
           </div>
-          {/* center: label above value */}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-            <p style={{ fontSize: 24, fontWeight: 700, color: 'white', lineHeight: 1.2, marginBottom: 14, textAlign: 'center' }}>{card.label}</p>
-            <p style={{ fontSize: 28, fontWeight: 300, color: 'rgba(255,255,255,0.52)', lineHeight: 1, letterSpacing: -0.5 }}>
+            <p style={{ fontSize: 19, fontWeight: 700, color: 'white', lineHeight: 1.2, marginBottom: 10, textAlign: 'center' }}>{card.label}</p>
+            <p style={{ fontSize: 22, fontWeight: 300, color: 'rgba(255,255,255,0.52)', lineHeight: 1, letterSpacing: -0.5 }}>
               {card.value}{card.unit}
             </p>
           </div>
-          {/* sub */}
-          <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.28)', textAlign: 'center', lineHeight: 1.3 }}>{card.sub}</p>
+          <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.28)', textAlign: 'center', lineHeight: 1.3 }}>{card.sub}</p>
         </div>
       </div>
     </motion.div>
@@ -480,29 +482,24 @@ const SwipeCard = ({
 
 const SwipeCardStack = () => {
   const [order, setOrder] = useState(() => KNOW_CARDS.map((_, i) => i));
-  const visible = order.slice(0, 3);
   const containerH = CARD_H + 2 * PEEK + 8;
 
-  const handleDismiss = () => {
-    setOrder(prev => [...prev.slice(1), prev[0]]);
-  };
+  const handleDismiss = () => setOrder(prev => [...prev.slice(1), prev[0]]);
 
   return (
     <div style={{ position: 'relative', height: containerH }}>
-      <AnimatePresence>
-        {[...visible].reverse().map((cardIdx, reverseIdx) => {
-          const stackDepth = visible.length - 1 - reverseIdx;
-          return (
-            <SwipeCard
-              key={cardIdx}
-              card={KNOW_CARDS[cardIdx]}
-              stackDepth={stackDepth}
-              isTop={stackDepth === 0}
-              onDismiss={handleDismiss}
-            />
-          );
-        })}
-      </AnimatePresence>
+      {[...order].reverse().map((cardIdx, reverseIdx) => {
+        const stackDepth = order.length - 1 - reverseIdx;
+        return (
+          <SwipeCard
+            key={cardIdx}
+            card={KNOW_CARDS[cardIdx]}
+            stackDepth={stackDepth}
+            isTop={stackDepth === 0}
+            onDismiss={handleDismiss}
+          />
+        );
+      })}
     </div>
   );
 };
@@ -883,7 +880,7 @@ export const Dashboard = () => {
         transition={{ delay: 0.3 }}
         className="mt-5"
       >
-        <div className="flex items-center justify-between px-1 mb-5">
+        <div className="flex items-center justify-between px-1 mb-7">
           <p className="text-[13px] text-[#98989D] tracking-widest font-semibold uppercase">Что Яндекс знает обо мне</p>
           <p className="text-[13px] flex-shrink-0" style={{ color: '#30D158', fontWeight: 600 }}>47 фактов</p>
         </div>

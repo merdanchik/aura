@@ -702,7 +702,7 @@ export const Dashboard = () => {
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.25 }}
-                  onClick={() => navigate(`/service/${service.id}`)}
+                  onClick={() => navigate(`/app/service/${service.id}`)}
                   className="w-full flex items-center gap-3 px-4 py-3.5 active:bg-white/[0.05] transition-colors text-left"
                 >
                   <img
@@ -856,7 +856,7 @@ export const Dashboard = () => {
           ].map((mem, i) => (
             <div
               key={i}
-              onClick={() => navigateToChat(`/chat/${mem.contextId}`)}
+              onClick={() => navigateToChat(`/app/chat/${mem.contextId}`)}
               className="flex-shrink-0 w-[155px] h-[200px] rounded-2xl flex flex-col justify-between p-4 active:opacity-70 transition-opacity items-center text-center"
               style={{ backgroundColor: mem.bg, boxShadow: mem.shadow, cursor: 'pointer' }}
             >
@@ -922,7 +922,7 @@ export const Dashboard = () => {
           ].map((insight, i) => (
             <div
               key={i}
-              onClick={() => navigateToChat(`/chat/${insight.contextId}`)}
+              onClick={() => navigateToChat(`/app/chat/${insight.contextId}`)}
               className="flex-shrink-0 w-[160px] rounded-2xl p-3.5 flex flex-col gap-2.5 active:opacity-70 transition-opacity"
               style={{ backgroundColor: '#1C1C1E', cursor: 'pointer' }}
             >
@@ -993,7 +993,7 @@ export const Dashboard = () => {
         <button
           className="w-full text-left rounded-[22px] overflow-hidden active:opacity-70 transition-opacity"
           style={{ backgroundColor: '#1C1C1E' }}
-          onClick={() => navigateToChat('/chat/incident-scooters')}
+          onClick={() => navigateToChat('/app/chat/incident-scooters')}
         >
           <div className="flex items-center gap-4 px-5 py-4">
             <p style={{ fontSize: 34, lineHeight: 1 }}>⚠️</p>

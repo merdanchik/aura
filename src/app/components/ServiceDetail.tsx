@@ -203,7 +203,7 @@ export const ServiceDetail = () => {
               return (
                 <button
                   key={action.id}
-                  onClick={() => !action.completed && navigate(`/service/${service.id}/chat/${action.id}`)}
+                  onClick={() => !action.completed && navigate(`/app/service/${service.id}/chat/${action.id}`)}
                   className="w-full text-left active:opacity-60 transition-opacity"
                   style={{ cursor: action.completed ? 'default' : 'pointer' }}
                 >

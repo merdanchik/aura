@@ -4,11 +4,13 @@ import { AuraProvider } from './context/AuraContext';
 import { Dashboard } from './components/Dashboard';
 import { ServiceDetail } from './components/ServiceDetail';
 import { ChatScreen } from './components/ChatScreen';
+import { LauncherScreen } from './components/LauncherScreen';
 import { ChevronLeft } from 'lucide-react';
 import { useAura, ServiceId } from './context/AuraContext';
 import { motion, AnimatePresence } from 'motion/react';
 import { Switch } from './components/ui/switch';
 import avatarImg from "../assets/avatar.jpg";
+
 const Shell = () => {
   return (
     <AuraProvider>
@@ -23,11 +25,11 @@ const ShellInner = () => {
   const { theme, services, strongAura, toggleStrongAura } = useAura();
   const [showMenu, setShowMenu] = React.useState(false);
 
-  const isRoot = location.pathname === '/';
+  const isRoot = location.pathname === '/app';
   const isChatRoute = /\/chat\//.test(location.pathname);
 
   // Extract service name from path
-  const serviceMatch = location.pathname.match(/^\/service\/([^/]+)/);
+  const serviceMatch = location.pathname.match(/^\/app\/service\/([^/]+)/);
   const serviceName = serviceMatch ? services[serviceMatch[1] as ServiceId]?.name : null;
   const isServiceRoute = !!serviceMatch;
 
@@ -39,7 +41,16 @@ const ShellInner = () => {
       {!isChatRoute && <header className={`w-full max-w-md mx-auto sticky top-0 z-50${!isServiceRoute ? ' backdrop-blur-2xl' : ''}`} style={{ backgroundColor: isServiceRoute ? 'transparent' : 'rgba(0,0,0,0.6)' }}>
         <div className="h-16 flex items-end pb-2 px-4 relative">
           {isRoot && (
-            <span className="text-[28px] text-white leading-tight" style={{ fontWeight: 700 }}>Аура</span>
+            <div className="flex items-center gap-0.5">
+              <button
+                onClick={() => navigate('/')}
+                className="flex items-center active:opacity-50 transition-opacity -ml-1.5"
+                style={{ color: theme.primary }}
+              >
+                <ChevronLeft className="w-7 h-7" strokeWidth={2.5} />
+              </button>
+              <span className="text-[28px] text-white leading-tight" style={{ fontWeight: 700 }}>Аура</span>
+            </div>
           )}
           {!isRoot && (
             <button
@@ -113,8 +124,9 @@ const ShellInner = () => {
 };
 
 const router = createBrowserRouter([
+  { index: true, Component: LauncherScreen },
   {
-    path: "/",
+    path: "app",
     Component: Shell,
     children: [
       { index: true, Component: Dashboard },

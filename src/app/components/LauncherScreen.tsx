@@ -359,7 +359,7 @@ function nodeSeed(id: string, offset = 0): number {
 // NODE RENDERERS — render + motion layer, each type isolated
 // ═══════════════════════════════════════════════════════════════════════════
 
-// Capsule → pure floating text: мысль в пространстве, не кнопка
+// Text-led node — text is the object, presence field gives it body in space
 const CapsuleNodeEl: React.FC<{
   node: InterestNode; placed: PlacedNode; intensity: number;
 }> = ({ node, placed, intensity }) => {
@@ -368,13 +368,22 @@ const CapsuleNodeEl: React.FC<{
   const dur   = 5.5 + nodeSeed(node.id, 1) * 5;
   const delay = nodeSeed(node.id, 2) * 3.5;
   const fs    = Math.round(13 + placed.effectiveWeight * 8);
-  // 3-tier glow — no ambient layer, max radius 26px
-  const ew = placed.effectiveWeight;
+  const ew    = placed.effectiveWeight;
+
+  // 3-tier glow on text
   const glow = ew > 0.75
     ? `0 0 14px ${node.color}78, 0 0 26px ${node.color}32`
     : ew > 0.42
     ? `0 0 10px ${node.color}50, 0 0 20px ${node.color}18`
     : `0 0 7px ${node.color}2E`;
+
+  // Presence field — tier-based container that gives text a physical body
+  // HIGH: colored tint + defined border → reads as a real object
+  // MED:  very faint tint + soft border → present but quiet
+  // LOW:  just a breath of tint, no border
+  const fieldBg     = ew > 0.75 ? `${node.color}10` : ew > 0.42 ? `${node.color}09` : `${node.color}06`;
+  const fieldBorder = ew > 0.75 ? `1px solid ${node.color}22` : ew > 0.42 ? `1px solid ${node.color}16` : 'none';
+  const fieldPad    = ew > 0.75 ? '5px 12px' : ew > 0.42 ? '4px 10px' : '3px 9px';
 
   return (
     <motion.div
@@ -382,17 +391,25 @@ const CapsuleNodeEl: React.FC<{
       transition={{ duration: dur, repeat: Infinity, ease: 'easeInOut', delay }}
       style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}
     >
-      <span style={{
-        fontSize: fs,
-        fontWeight: placed.effectiveWeight > 0.65 ? 600 : 500,
-        color: node.color,
-        letterSpacing: 0.4,
-        whiteSpace: 'nowrap',
-        userSelect: 'none',
-        textShadow: glow,
+      <div style={{
+        background: fieldBg,
+        border: fieldBorder,
+        borderRadius: 8,
+        padding: fieldPad,
       }}>
-        {node.label}
-      </span>
+        <span style={{
+          fontSize: fs,
+          fontWeight: ew > 0.65 ? 600 : 500,
+          color: node.color,
+          letterSpacing: 0.4,
+          whiteSpace: 'nowrap',
+          userSelect: 'none',
+          textShadow: glow,
+          display: 'block',
+        }}>
+          {node.label}
+        </span>
+      </div>
     </motion.div>
   );
 };
@@ -549,17 +566,28 @@ const OrbNodeEl: React.FC<{
         )}
       </motion.div>
 
-      {/* Whisper label — anchored below orb, outside its box */}
+      {/* Connector dot — visual pin between orb and label */}
+      <div style={{
+        position: 'absolute',
+        top: sz + 3,
+        left: '50%', transform: 'translateX(-50%)',
+        width: 2, height: 2, borderRadius: '50%',
+        background: `${node.color}55`,
+        pointerEvents: 'none',
+      }} />
+
+      {/* Label — anchored below orb as attached satellite */}
       <span style={{
         position: 'absolute',
-        top: sz + 5,
+        top: sz + 9,
         left: '50%', transform: 'translateX(-50%)',
-        fontSize: labelFs,
+        fontSize: Math.round(10 + placed.effectiveWeight * 5),
         fontWeight: 400,
-        color: `${node.color}A0`,
-        letterSpacing: 0.4,
+        color: `${node.color}B8`,
+        letterSpacing: 0.3,
         whiteSpace: 'nowrap',
         userSelect: 'none',
+        textShadow: '0 1px 5px rgba(0,0,0,0.75)',
       }}>
         {node.label}
       </span>

@@ -426,6 +426,53 @@ const BlobNodeEl: React.FC<{
   );
 };
 
+// ── Color sampling utilities ─────────────────────────────────────────────────
+function rgbToHsl(r: number, g: number, b: number): [number, number, number] {
+  const rf = r/255, gf = g/255, bf = b/255;
+  const max = Math.max(rf, gf, bf), min = Math.min(rf, gf, bf);
+  const l = (max + min) / 2;
+  const d = max - min;
+  if (d === 0) return [0, 0, l];
+  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+  let h = 0;
+  if (max === rf)      h = ((gf - bf) / d + (gf < bf ? 6 : 0)) / 6;
+  else if (max === gf) h = ((bf - rf) / d + 2) / 6;
+  else                 h = ((rf - gf) / d + 4) / 6;
+  return [h * 360, s, l];
+}
+function hslToHex(h: number, s: number, l: number): string {
+  h /= 360;
+  const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+  const p = 2 * l - q;
+  const hue2 = (t: number) => {
+    if (t < 0) t += 1; if (t > 1) t -= 1;
+    if (t < 1/6) return p + (q - p) * 6 * t;
+    if (t < 1/2) return q;
+    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+    return p;
+  };
+  return '#' + [hue2(h + 1/3), hue2(h), hue2(h - 1/3)]
+    .map(v => Math.round(v * 255).toString(16).padStart(2, '0')).join('');
+}
+function sampleImageColor(src: string, cb: (hex: string) => void) {
+  const img = new Image();
+  img.onload = () => {
+    const c = document.createElement('canvas');
+    c.width = c.height = 12;
+    const ctx = c.getContext('2d');
+    if (!ctx) return;
+    ctx.drawImage(img, 0, 0, 12, 12);
+    const d = ctx.getImageData(0, 0, 12, 12).data;
+    let r = 0, g = 0, b = 0, n = d.length / 4;
+    for (let i = 0; i < d.length; i += 4) { r += d[i]; g += d[i+1]; b += d[i+2]; }
+    r = r/n; g = g/n; b = b/n;
+    const [h, s, l] = rgbToHsl(r, g, b);
+    // Boost saturation heavily, normalise lightness to mid-range so glow pops
+    cb(hslToHex(h, Math.min(1, s * 3 + 0.25), Math.max(0.42, Math.min(0.60, l))));
+  };
+  img.src = src;
+}
+
 // Orb: media/symbol orb — glass sphere feel, layered glow, label absolutely below
 const OrbNodeEl: React.FC<{
   node: InterestNode; placed: PlacedNode; intensity: number;
@@ -433,18 +480,25 @@ const OrbNodeEl: React.FC<{
   const sz      = placed.size * 2;
   const fs      = Math.round(sz * 0.50);
   const dy      = (5 + intensity * 8) * (0.4 + nodeSeed(node.id, 7) * 0.9);
-  const breathe = 3 + nodeSeed(node.id, 10) * 2.5; // slow scale pulse period
+  const breathe = 3 + nodeSeed(node.id, 10) * 2.5;
   const dur     = 5.5 + nodeSeed(node.id, 8) * 5;
   const delay   = nodeSeed(node.id, 9) * 4;
   const labelFs = Math.round(9 + placed.effectiveWeight * 4);
+
+  // Sample dominant color from image for glow
+  const [glowColor, setGlowColor] = React.useState(node.color);
+  React.useEffect(() => {
+    if (node.image) sampleImageColor(node.image, setGlowColor);
+  }, [node.image]);
+
   const glowInner = Math.round(8 + placed.effectiveWeight * 10);
   const glowMid   = Math.round(18 + placed.effectiveWeight * 20);
   const glowOuter = Math.round(32 + placed.effectiveWeight * 28);
   const glowAmbient = Math.round(glowOuter * 2.2);
-  const glow = `0 0 ${glowInner}px  ${node.color}86,
-                0 0 ${glowMid}px    ${node.color}46,
-                0 0 ${glowOuter}px  ${node.color}1C,
-                0 0 ${glowAmbient}px ${node.color}0A`;
+  const glow = `0 0 ${glowInner}px  ${glowColor}86,
+                0 0 ${glowMid}px    ${glowColor}46,
+                0 0 ${glowOuter}px  ${glowColor}1C,
+                0 0 ${glowAmbient}px ${glowColor}0A`;
 
   const dx = (3 + intensity * 5) * (0.3 + nodeSeed(node.id, 12) * 0.7);
 
@@ -454,36 +508,31 @@ const OrbNodeEl: React.FC<{
       transition={{ duration: dur, repeat: Infinity, ease: 'easeInOut', delay }}
       style={{ position: 'relative', width: sz, height: sz }}
     >
-      {/* Orb body — glow via box-shadow (no overflow:hidden — would clip shadow) */}
+      {/* Glow ring — separate from image so overflow:hidden on image-clip can't cut it */}
+      <div style={{
+        position: 'absolute', inset: 0, borderRadius: '50%',
+        boxShadow: glow,
+        pointerEvents: 'none',
+      }} />
+
+      {/* Orb body */}
       <motion.div
         animate={{ opacity: [1, 0.72 + nodeSeed(node.id, 11) * 0.2, 1] }}
         transition={{ duration: breathe, repeat: Infinity, ease: 'easeInOut', delay: delay * 0.5 }}
         style={{
-          width: sz, height: sz, borderRadius: '50%',
-          background: `radial-gradient(circle at 36% 30%,
-            ${node.color}3A 0%,
-            ${node.color}18 45%,
-            ${node.color}08 75%,
-            transparent 100%)`,
-          boxShadow: glow,
+          position: 'absolute', inset: 0, borderRadius: '50%',
+          overflow: 'hidden',   // safe here — glow is on sibling div above
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          position: 'relative',
+          background: node.image ? 'none'
+            : `radial-gradient(circle at 36% 30%, ${glowColor}3A 0%, ${glowColor}08 75%, transparent 100%)`,
         }}
       >
         {node.image ? (
-          /* Photo — clipped to circle via separate inner div (overflow:hidden OK here, glow is on parent) */
-          <div style={{
-            width: sz * 0.72, height: sz * 0.72,
-            borderRadius: '50%',
-            overflow: 'hidden',
-            flexShrink: 0,
-          }}>
-            <img
-              src={node.image}
-              alt={node.label}
-              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-            />
-          </div>
+          <img
+            src={node.image}
+            alt={node.label}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+          />
         ) : (
           <span style={{ fontSize: fs, lineHeight: 1, userSelect: 'none' }}>
             {node.emoji}

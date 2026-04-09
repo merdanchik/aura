@@ -377,13 +377,12 @@ const CapsuleNodeEl: React.FC<{
     ? `0 0 10px ${node.color}50, 0 0 20px ${node.color}18`
     : `0 0 7px ${node.color}2E`;
 
-  // Presence field — tier-based container that gives text a physical body
-  // HIGH: colored tint + defined border → reads as a real object
-  // MED:  very faint tint + soft border → present but quiet
-  // LOW:  just a breath of tint, no border
-  const fieldBg     = ew > 0.75 ? `${node.color}10` : ew > 0.42 ? `${node.color}09` : `${node.color}06`;
-  const fieldBorder = ew > 0.75 ? `1px solid ${node.color}22` : ew > 0.42 ? `1px solid ${node.color}16` : 'none';
-  const fieldPad    = ew > 0.75 ? '5px 12px' : ew > 0.42 ? '4px 10px' : '3px 9px';
+  // Soft oval bloom — only for HIGH/MED; LOW stays as pure text
+  // No rect, no border, no hard geometry — blurred ellipse pools light around text
+  const hasBloom   = ew > 0.42;
+  const bloomCtr   = ew > 0.75 ? '1E' : '12';   // hex alpha at ellipse center
+  const bloomEdge  = ew > 0.75 ? '08' : '04';   // hex alpha at ellipse edge
+  const bloomBlur  = ew > 0.75 ? 12 : 8;        // blur — more for inner-orbit nodes
 
   return (
     <motion.div
@@ -391,13 +390,24 @@ const CapsuleNodeEl: React.FC<{
       transition={{ duration: dur, repeat: Infinity, ease: 'easeInOut', delay }}
       style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}
     >
-      <div style={{
-        background: fieldBg,
-        border: fieldBorder,
-        borderRadius: 8,
-        padding: fieldPad,
-      }}>
+      {/* inline-block wrapper so % dimensions reference text width */}
+      <div style={{ position: 'relative', display: 'inline-block' }}>
+        {/* Soft oval bloom — sits behind text, no hard edge */}
+        {hasBloom && (
+          <div style={{
+            position: 'absolute',
+            top: '50%', left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width:  'calc(100% + 44px)',   // extends ~22px each side
+            height: 'calc(100% + 28px)',   // extends ~14px above/below
+            borderRadius: '50%',           // rect → oval, proportional to text shape
+            background: `radial-gradient(ellipse at center, ${node.color}${bloomCtr} 0%, ${node.color}${bloomEdge} 55%, transparent 80%)`,
+            filter: `blur(${bloomBlur}px)`,
+            pointerEvents: 'none',
+          }} />
+        )}
         <span style={{
+          position: 'relative',            // above bloom in stacking order
           fontSize: fs,
           fontWeight: ew > 0.65 ? 600 : 500,
           color: node.color,

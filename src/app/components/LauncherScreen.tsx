@@ -489,13 +489,12 @@ export const LauncherScreen = () => {
             transform: 'translate(-50%, -50%)',
             zIndex: 20,
           }}>
-            {/* Blurred outline — sits behind avatar */}
+            {/* Portal glow — large radial behind the photo */}
             <div style={{
               position: 'absolute',
-              width: 122, height: 122,
+              width: 290, height: 290,
               borderRadius: '50%',
-              border: '2.5px solid rgba(255,255,255,0.72)',
-              filter: 'blur(5px)',
+              background: 'radial-gradient(circle, rgba(255,255,255,0.26) 18%, rgba(255,255,255,0.13) 38%, rgba(255,255,255,0.04) 58%, transparent 70%)',
               top: '50%', left: '50%',
               transform: 'translate(-50%, -50%)',
               pointerEvents: 'none',
@@ -505,6 +504,7 @@ export const LauncherScreen = () => {
               width: 110, height: 110, borderRadius: '50%',
               overflow: 'hidden',
               position: 'relative',
+              boxShadow: '0 0 0 1px rgba(255,255,255,0.55), 0 0 28px 10px rgba(255,255,255,0.28)',
             }}>
               <img src={avatarImg} alt="Профиль" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>

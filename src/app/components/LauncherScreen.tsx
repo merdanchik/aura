@@ -635,7 +635,7 @@ interface TimelineSliderProps {
 const TimelineSlider: React.FC<TimelineSliderProps> = ({ periods, selectedIndex, onChange }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   // offset: ruler translation. -i*STEP puts month i under the center line.
-  const [offset, setOffset] = useState(-(periods.length - 1) * STEP);
+  const [offset, setOffset] = useState(() => -selectedIndex * STEP);
   const [isDragging, setIsDragging] = useState(false);
   const [showCircle, setShowCircle] = useState(false);
   const startX = useRef(0);

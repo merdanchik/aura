@@ -490,9 +490,26 @@ export const LauncherScreen = () => {
             transform: 'translate(-50%, -50%)',
             zIndex: 20,
           }}>
+            {/* Avatar */}
             <div style={{ width: 110, height: 110, borderRadius: '50%', overflow: 'hidden' }}>
               <img src={avatarImg} alt="Профиль" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
+            {/* Glowing ring — transparent band via radial-gradient + blur */}
+            <div style={{
+              position: 'absolute',
+              width: 180, height: 180,
+              top: '50%', left: '50%',
+              transform: 'translate(-50%, -50%)',
+              background: `radial-gradient(
+                circle,
+                transparent 54%,
+                rgba(255,255,255,0.7) 59%,
+                rgba(255,255,255,0.4) 64%,
+                transparent 68%
+              )`,
+              filter: 'blur(10px)',
+              pointerEvents: 'none',
+            }} />
           </div>
         </div>
 

@@ -1281,42 +1281,42 @@ export const LauncherScreen = () => {
               animate={{ filter: 'hue-rotate(360deg)' }}
               transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
             >
-              {/* ── Layer 1: BLOOM (+30%) ── */}
+              {/* ── Layer 1: BLOOM ── */}
               <motion.div
-                animate={{ opacity: [0.55, 0.23, 0.55] }}
+                animate={{ opacity: [0.38, 0.14, 0.38] }}
                 transition={{ duration: 9.5, repeat: Infinity, ease: 'easeInOut', delay: 0 }}
                 style={{
-                  position: 'absolute', width: 400, height: 400,
+                  position: 'absolute', width: 200, height: 200,
                   top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
                   borderRadius: '50%',
                   background: 'radial-gradient(circle, rgba(158,128,238,0.18) 0%, rgba(128,102,218,0.07) 44%, transparent 70%)',
-                  filter: 'blur(52px)',
+                  filter: 'blur(24px)',
                 }}
               />
 
-              {/* ── Layer 2: AMBIENT HAZE (+30%) ── */}
+              {/* ── Layer 2: AMBIENT HAZE ── */}
               <motion.div
-                animate={{ opacity: [0.72, 0.29, 0.72] }}
+                animate={{ opacity: [0.55, 0.22, 0.55] }}
                 transition={{ duration: 6.4, repeat: Infinity, ease: 'easeInOut', delay: 1.1 }}
                 style={{
-                  position: 'absolute', width: 248, height: 248,
+                  position: 'absolute', width: 150, height: 150,
                   top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
                   borderRadius: '50%',
                   background: 'radial-gradient(circle, transparent 30%, rgba(158,138,248,0.21) 46%, rgba(138,118,235,0.10) 60%, transparent 74%)',
-                  filter: 'blur(18px)',
+                  filter: 'blur(8px)',
                 }}
               />
 
-              {/* ── Layer 3: CORE GLOW (+30%) ── */}
+              {/* ── Layer 3: CORE GLOW ── */}
               <motion.div
-                animate={{ opacity: [1.0, 0.59, 1.0] }}
+                animate={{ opacity: [0.85, 0.48, 0.85] }}
                 transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut', delay: 0 }}
                 style={{
-                  position: 'absolute', width: 148, height: 148,
+                  position: 'absolute', width: 124, height: 124,
                   top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
                   borderRadius: '50%',
-                  background: 'radial-gradient(circle, rgba(186,168,252,0.62) 0%, rgba(158,140,244,0.30) 44%, transparent 72%)',
-                  filter: 'blur(8px)',
+                  background: 'radial-gradient(circle, rgba(186,168,252,0.55) 0%, rgba(158,140,244,0.22) 44%, transparent 72%)',
+                  filter: 'blur(5px)',
                 }}
               />
             </motion.div>

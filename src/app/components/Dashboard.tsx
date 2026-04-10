@@ -989,7 +989,7 @@ export const Dashboard = () => {
           ].map((mem, i) => (
             <div
               key={i}
-              onClick={() => navigateToChat(`/app/chat/${mem.contextId}`)}
+              onClick={() => navigateToChat(`/chat/${mem.contextId}`)}
               className="flex-shrink-0 w-[155px] h-[210px] rounded-2xl flex flex-col p-4 active:opacity-70 transition-opacity"
               style={{ backgroundColor: mem.bg, boxShadow: mem.shadow, cursor: 'pointer' }}
             >
@@ -1057,7 +1057,7 @@ export const Dashboard = () => {
           ].map((insight, i) => (
             <div
               key={i}
-              onClick={() => navigateToChat(`/app/chat/${insight.contextId}`)}
+              onClick={() => navigateToChat(`/chat/${insight.contextId}`)}
               className="flex-shrink-0 w-[160px] rounded-2xl p-3.5 flex flex-col gap-2.5 active:opacity-70 transition-opacity"
               style={{ backgroundColor: '#1C1C1E', cursor: 'pointer' }}
             >
@@ -1128,7 +1128,7 @@ export const Dashboard = () => {
         <button
           className="w-full text-left rounded-[22px] overflow-hidden active:opacity-70 transition-opacity"
           style={{ backgroundColor: '#1C1C1E' }}
-          onClick={() => navigateToChat('/app/chat/incident-scooters')}
+          onClick={() => navigateToChat('/chat/incident-scooters')}
         >
           <div className="flex items-center gap-4 px-5 py-4">
             <p style={{ fontSize: 34, lineHeight: 1 }}>⚠️</p>

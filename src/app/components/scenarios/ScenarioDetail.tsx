@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import { ChevronLeft } from 'lucide-react';
 import { SCENARIOS } from './types';
 import { ContentWorldDetail } from './ContentWorldDetail';
+import { TravelWorldDetail } from './TravelWorldDetail';
 
 // ── Placeholder block ────────────────────────────────────────────────────────
 const Block: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
@@ -39,6 +40,7 @@ export const ScenarioDetail: React.FC = () => {
 
   // Content world has its own rich detail screen
   if (id === 'content') return <ContentWorldDetail />;
+  if (id === 'travel')  return <TravelWorldDetail />;
 
   const scenario = SCENARIOS.find(s => s.id === id) ?? SCENARIOS[0];
   const currentIndex = SCENARIOS.indexOf(scenario);

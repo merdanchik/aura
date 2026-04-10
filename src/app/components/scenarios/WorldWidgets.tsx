@@ -209,7 +209,7 @@ export const WorldWidgets: React.FC<Props> = ({ onClose }) => {
                 key={w.id}
                 onClick={() => {
                   onClose();
-                  navigate(`/scenarios/${w.id}`, { state: { fromWorlds: true } });
+                  navigate(`/${w.id}`, { state: { fromWorlds: true } });
                 }}
                 style={worldCard}
               >

@@ -67,7 +67,7 @@ export const ScenarioDetail: React.FC = () => {
       const nextIndex = dx < 0
         ? (currentIndex + 1) % SCENARIOS.length          // swipe left → next
         : (currentIndex - 1 + SCENARIOS.length) % SCENARIOS.length; // swipe right → prev
-      navigate(`/scenarios/${SCENARIOS[nextIndex].id}`, { replace: true });
+      navigate(`/${SCENARIOS[nextIndex].id}`, { replace: true });
     }
   };
 
@@ -124,7 +124,7 @@ export const ScenarioDetail: React.FC = () => {
         {SCENARIOS.map((s, i) => (
           <div
             key={s.id}
-            onClick={() => navigate(`/scenarios/${s.id}`, { replace: true })}
+            onClick={() => navigate(`/${s.id}`, { replace: true })}
             style={{
               width: i === currentIndex ? 18 : 6,
               height: 6, borderRadius: 3,

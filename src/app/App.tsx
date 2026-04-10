@@ -7,7 +7,7 @@ import { ChatScreen } from './components/ChatScreen';
 
 const router = createBrowserRouter([
   { index: true,              Component: LauncherScreen },
-  { path: 'scenarios/:id',    Component: ScenarioDetail },
+  { path: ':id',              Component: ScenarioDetail },
   { path: 'chat/:contextId',  Component: ChatScreen },
   { path: 'heart',            Component: HeartPage },
 ], { basename: import.meta.env.BASE_URL });

@@ -1354,7 +1354,7 @@ export const LauncherScreen = () => {
         </div>
 
         {/* ── TIMELINE SLIDER ── */}
-        <div style={{ flexShrink: 0, marginTop: 12 }}>
+        <div style={{ flexShrink: 0, marginTop: 36 }}>
           <TimelineSlider periods={PERIODS} selectedIndex={periodIndex} onChange={setPeriodIndex} onActiveChange={setTimelineActive} />
         </div>
 
@@ -1364,7 +1364,7 @@ export const LauncherScreen = () => {
             display: 'flex', gap: 10,
             overflowX: 'auto', overflowY: 'hidden',
             paddingLeft: 16, paddingRight: 16,
-            paddingTop: 12, paddingBottom: 16,
+            paddingTop: 36, paddingBottom: 16,
             WebkitOverflowScrolling: 'touch' as any,
           }}>
             {[

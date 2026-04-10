@@ -1,8 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router';
-import { motion, AnimatePresence } from 'motion/react';
+import { useNavigate } from 'react-router';
+import { motion } from 'motion/react';
 import avatarImg from '../../assets/avatar.jpg';
-import { WorldWidgets } from './scenarios/WorldWidgets';
 import { C } from '../styles/auraTokens';
 
 // Node images
@@ -1047,24 +1046,13 @@ const TimelineSlider: React.FC<TimelineSliderProps> = ({ periods, selectedIndex,
 
 export const LauncherScreen = () => {
   const navigate = useNavigate();
-  const location = useLocation();
 
   // State
   const [periodIndex, setPeriodIndex] = useState(() =>
     _sessionPeriodIndex !== null ? _sessionPeriodIndex : PERIODS.length - 1
   );
   const [timelineActive, setTimelineActive] = useState(false);
-  const [showWidgets, setShowWidgets] = useState(
-    () => !!(location.state as any)?.showWorlds
-  );
   const period = PERIODS[periodIndex].id;
-
-  // Clear showWorlds from history immediately so browser back/forward doesn't re-open the sheet
-  React.useEffect(() => {
-    if ((location.state as any)?.showWorlds) {
-      window.history.replaceState({}, '', window.location.href);
-    }
-  }, []);
 
   // Persist selected period across SPA navigation (not across page reloads)
   React.useEffect(() => {
@@ -1333,7 +1321,7 @@ export const LauncherScreen = () => {
 
             {/* ── Layer 4: PHOTO — color-neutral, outside hue-rotate wrapper ── */}
             <div
-              onClick={() => setShowWidgets(true)}
+              onClick={() => navigate('/worlds')}
               style={{
                 position: 'relative',
                 width: 110, height: 110, borderRadius: '50%',
@@ -1369,11 +1357,6 @@ export const LauncherScreen = () => {
         <div style={{ height: 68, flexShrink: 0 }} />
 
       </div>
-
-      {/* ── WorldWidgets overlay ── */}
-      <AnimatePresence>
-        {showWidgets && <WorldWidgets onClose={() => setShowWidgets(false)} />}
-      </AnimatePresence>
 
     </div>
   );

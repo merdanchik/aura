@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, useLocation } from 'react-router';
+import { useNavigate } from 'react-router';
 import { ChevronLeft } from 'lucide-react';
 import svcTravel from '../../../assets/travel.png';
 import svcYMaps  from '../../../assets/yandex-maps.png';
@@ -50,17 +50,13 @@ const EXT_SOURCES = ['Авиасейлс', 'Booking', 'Airbnb'];
 
 export const TravelWorldDetail: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const fromWorlds = (location.state as any)?.fromWorlds;
-
-  const goBack = () => navigate('/', fromWorlds ? { state: { showWorlds: true } } : undefined);
 
   return (
     <div style={screenBg}>
 
       {/* Header */}
       <div style={detailHeader}>
-        <button onClick={goBack} style={backBtn}>
+        <button onClick={() => navigate(-1)} style={backBtn}>
           <ChevronLeft size={18} />
         </button>
         <div style={{ flex: 1, minWidth: 0 }}>

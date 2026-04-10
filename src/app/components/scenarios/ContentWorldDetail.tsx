@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, useLocation } from 'react-router';
+import { useNavigate } from 'react-router';
 import { ChevronLeft } from 'lucide-react';
 import svcMusic from '../../../assets/52729efb5574f608701f92848e1b348745677960.png';
 import svcKino  from '../../../assets/b39f941bc25c3069b2f4719e19fdc535f4a56625.png';
@@ -57,17 +57,13 @@ const EXT_SOURCES = ['Spotify', 'YouTube', 'Bookmate'];
 
 export const ContentWorldDetail: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const fromWorlds = (location.state as any)?.fromWorlds;
-
-  const goBack = () => navigate('/', fromWorlds ? { state: { showWorlds: true } } : undefined);
 
   return (
     <div style={screenBg}>
 
       {/* Header */}
       <div style={detailHeader}>
-        <button onClick={goBack} style={backBtn}>
+        <button onClick={() => navigate(-1)} style={backBtn}>
           <ChevronLeft size={18} />
         </button>
         <div style={{ flex: 1, minWidth: 0 }}>

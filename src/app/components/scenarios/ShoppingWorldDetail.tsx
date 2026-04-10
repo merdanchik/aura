@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, useLocation } from 'react-router';
+import { useNavigate } from 'react-router';
 import { ChevronLeft } from 'lucide-react';
 import svcMarket from '../../../assets/873668dc7d9e7bd9c16444667bc68a762e2b3499.png';
 import { C } from '../../styles/auraTokens';
@@ -42,17 +42,13 @@ const EXT_SOURCES = ['Wildberries', 'Ozon'];
 
 export const ShoppingWorldDetail: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const fromWorlds = (location.state as any)?.fromWorlds;
-
-  const goBack = () => navigate('/', fromWorlds ? { state: { showWorlds: true } } : undefined);
 
   return (
     <div style={screenBg}>
 
       {/* Header */}
       <div style={detailHeader}>
-        <button onClick={goBack} style={backBtn}>
+        <button onClick={() => navigate(-1)} style={backBtn}>
           <ChevronLeft size={18} />
         </button>
         <div style={{ flex: 1, minWidth: 0 }}>

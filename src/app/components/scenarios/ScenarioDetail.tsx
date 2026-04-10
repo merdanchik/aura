@@ -95,7 +95,7 @@ export const ScenarioDetail: React.FC = () => {
         }}
       >
         <button
-          onClick={() => navigate('/')}
+          onClick={() => navigate(-1)}
           style={{
             width: 32, height: 32, borderRadius: '50%',
             background: 'rgba(255,255,255,0.08)',

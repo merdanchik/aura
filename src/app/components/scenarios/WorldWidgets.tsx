@@ -128,50 +128,23 @@ const WORLDS: WorldWidget[] = [
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-interface Props { onClose: () => void }
-
-export const WorldWidgets: React.FC<Props> = ({ onClose }) => {
+export const WorldWidgets: React.FC = () => {
   const navigate = useNavigate();
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
       transition={{ duration: 0.18 }}
       style={{
-        position: 'fixed', inset: 0, zIndex: 50,
+        position: 'fixed', inset: 0,
+        background: C.appBg,
+        display: 'flex', flexDirection: 'column',
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
       }}
     >
-      {/* Backdrop */}
-      <div
-        onClick={onClose}
-        style={{
-          position: 'absolute', inset: 0,
-          background: C.backdropBg,
-          WebkitBackdropFilter: 'blur(14px)',
-          backdropFilter: 'blur(14px)',
-        }}
-      />
-
-      {/* Bottom sheet */}
-      <motion.div
-        initial={{ y: '100%' }}
-        animate={{ y: 0 }}
-        exit={{ y: '100%' }}
-        transition={{ type: 'spring', damping: 36, stiffness: 420 }}
-        style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0,
-          background: C.appBg,
-          borderRadius: `${R.sheet}px ${R.sheet}px 0 0`,
-          maxHeight: '91vh',
-          display: 'flex', flexDirection: 'column',
-          boxShadow: '0 -2px 32px rgba(0,0,0,0.6)',
-        }}
-      >
         {/* Drag handle */}
-        <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 10 }}>
+        <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 14 }}>
           <div style={{ width: 30, height: 3, borderRadius: 2, background: C.handleBar }} />
         </div>
 
@@ -184,7 +157,7 @@ export const WorldWidgets: React.FC<Props> = ({ onClose }) => {
             Жизненные миры
           </p>
           <button
-            onClick={onClose}
+            onClick={() => navigate(-1)}
             style={{
               width: 30, height: 30, borderRadius: '50%', flexShrink: 0,
               background: C.borderLight,
@@ -207,10 +180,7 @@ export const WorldWidgets: React.FC<Props> = ({ onClose }) => {
             return (
               <div
                 key={w.id}
-                onClick={() => {
-                  onClose();
-                  navigate(`/${w.id}`, { state: { fromWorlds: true } });
-                }}
+                onClick={() => navigate(`/${w.id}`)}
                 style={worldCard}
               >
                 {/* Row 1: title + status */}
@@ -276,7 +246,6 @@ export const WorldWidgets: React.FC<Props> = ({ onClose }) => {
             );
           })}
         </div>
-      </motion.div>
     </motion.div>
   );
 };

@@ -2,12 +2,19 @@ import React from 'react';
 import { useNavigate } from 'react-router';
 import { motion } from 'motion/react';
 
-import svcMusic  from '../../../assets/52729efb5574f608701f92848e1b348745677960.png';
-import svcKino   from '../../../assets/b39f941bc25c3069b2f4719e19fdc535f4a56625.png';
-import svcBooks  from '../../../assets/94e2bb438930a86c21d001934a49869c8425f73a.png';
-import svcMarket from '../../../assets/873668dc7d9e7bd9c16444667bc68a762e2b3499.png';
-import svcAfisha from '../../../assets/afisha.png';
-import svcTravel from '../../../assets/travel.png';
+import svcMusic      from '../../../assets/52729efb5574f608701f92848e1b348745677960.png';
+import svcKino       from '../../../assets/b39f941bc25c3069b2f4719e19fdc535f4a56625.png';
+import svcBooks      from '../../../assets/94e2bb438930a86c21d001934a49869c8425f73a.png';
+import svcMarket     from '../../../assets/873668dc7d9e7bd9c16444667bc68a762e2b3499.png';
+import svcAfisha     from '../../../assets/afisha.png';
+import svcTravel     from '../../../assets/travel.png';
+import svcSpotify    from '../../../assets/spotify.png';
+import svcIvi        from '../../../assets/ivi.png';
+import svcKion       from '../../../assets/kion.png';
+import svcWildberries from '../../../assets/wildberries.png';
+import svcOzon       from '../../../assets/ozon.png';
+import svcYMaps      from '../../../assets/yandex-maps.png';
+import svcYWeather   from '../../../assets/yandex-weather.png';
 
 import { C, S, R } from '../../styles/auraTokens';
 import { worldCard, chipStyle } from '../../styles/auraPrimitives';
@@ -37,13 +44,13 @@ const SERVICES: Record<string, ServiceDef> = {
   'Яндекс Маркет':      { icon: svcMarket,  initials: 'МК', color: '#FF6633' },
   'Яндекс Афиша':       { icon: svcAfisha,  initials: 'АФ', color: '#FF9F0A' },
   'Яндекс Путешествия': { icon: svcTravel,  initials: 'ПТ', color: '#00C7BE' },
-  'Spotify':     { initials: 'Sp', color: '#1DB954' },
-  'ivi':         { initials: 'iv', color: '#E8273E' },
-  'KION':        { initials: 'Ki', color: '#7B61FF' },
-  'Wildberries': { initials: 'WB', color: '#CB11AB' },
-  'Ozon':        { initials: 'Oz', color: '#005BFF' },
-  'Яндекс Карты':   { initials: 'КА', color: '#FF6633' },
-  'Яндекс Погода':  { initials: 'ПГ', color: '#5AC8F5' },
+  'Spotify':        { icon: svcSpotify,     initials: 'Sp', color: '#1DB954' },
+  'ivi':            { icon: svcIvi,         initials: 'iv', color: '#E8273E' },
+  'KION':           { icon: svcKion,        initials: 'Ki', color: '#7B61FF' },
+  'Wildberries':    { icon: svcWildberries, initials: 'WB', color: '#CB11AB' },
+  'Ozon':           { icon: svcOzon,        initials: 'Oz', color: '#005BFF' },
+  'Яндекс Карты':   { icon: svcYMaps,       initials: 'КА', color: '#FF6633' },
+  'Яндекс Погода':  { icon: svcYWeather,    initials: 'ПГ', color: '#5AC8F5' },
 };
 
 const ServiceBadge: React.FC<{ name: string }> = ({ name }) => {
@@ -180,8 +187,8 @@ export const WorldWidgets: React.FC<Props> = ({ onClose }) => {
             onClick={onClose}
             style={{
               width: 30, height: 30, borderRadius: '50%', flexShrink: 0,
-              background: 'rgba(255,255,255,0.08)',
-              color: 'rgba(255,255,255,0.55)', cursor: 'pointer',
+              background: C.borderLight,
+              color: C.textSecondary, cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontSize: 13, fontWeight: 600,
               WebkitTapHighlightColor: 'transparent',
@@ -236,7 +243,7 @@ export const WorldWidgets: React.FC<Props> = ({ onClose }) => {
 
                 {/* Row 3: insight */}
                 <p style={{
-                  color: 'rgba(255,255,255,0.90)', fontSize: 17,
+                  color: C.textHighEmphasis, fontSize: 17,
                   lineHeight: 1.3, marginBottom: 18,
                 }}>
                   {w.insight}
@@ -256,8 +263,8 @@ export const WorldWidgets: React.FC<Props> = ({ onClose }) => {
                     onClick={e => e.stopPropagation()}
                     style={{
                       width: S.serviceIconSize, height: S.serviceIconSize, borderRadius: R.pill,
-                      background: 'rgba(255,255,255,0.07)',
-                      color: 'rgba(255,255,255,0.50)',
+                      background: C.bgLight,
+                      color: C.textSecondary,
                       fontSize: 16, lineHeight: 1,
                       cursor: 'pointer', flexShrink: 0,
                       display: 'flex', alignItems: 'center', justifyContent: 'center',

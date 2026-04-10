@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import avatarImg from '../../assets/avatar.jpg';
 import { WorldWidgets } from './scenarios/WorldWidgets';
+import { C } from '../styles/auraTokens';
 
 // Node images
 import imgRadiohead from '../../assets/node-radiohead.jpg';
@@ -848,7 +849,7 @@ const OrbNodeEl: React.FC<{
               <span style={{
                 fontSize: sFs,
                 fontWeight: 400,
-                color: 'rgba(255,255,255,0.44)',
+                color: C.textSecondary,
                 whiteSpace: 'nowrap',
                 overflow: 'hidden', textOverflow: 'ellipsis',
                 maxWidth: maxW,
@@ -992,7 +993,7 @@ const TimelineSlider: React.FC<TimelineSliderProps> = ({ periods, selectedIndex,
                 <text x={36} y={33} textAnchor="middle" fontSize={12} fontWeight={600}
                   fill="white" fontFamily="Inter,-apple-system,sans-serif">{periods[selectedIndex].short}</text>
                 <text x={36} y={47} textAnchor="middle" fontSize={9}
-                  fill="rgba(255,255,255,0.45)" fontFamily="Inter,-apple-system,sans-serif">{periods[selectedIndex].year}</text>
+                  fill={C.textQuiet} fontFamily="Inter,-apple-system,sans-serif">{periods[selectedIndex].year}</text>
               </svg>
             </motion.div>
           </div>
@@ -1023,7 +1024,7 @@ const TimelineSlider: React.FC<TimelineSliderProps> = ({ periods, selectedIndex,
           {ticks.map((tick, i) => {
             const h = tick.isMonth ? (tick.isActive ? 20 : 12) : 7;
             const color = tick.isActive ? GOLD
-              : tick.isMonth ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.2)';
+              : tick.isMonth ? C.textQuiet : C.textQuaternary;
             const x = tick.f * STEP; // relative to the 50% anchor
             return (
               <div key={i} style={{
@@ -1094,7 +1095,7 @@ export const LauncherScreen = () => {
   return (
     <div
       className="flex flex-col items-center"
-      style={{ backgroundColor: '#050508', fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", height: '100dvh', overflow: 'hidden', position: 'relative' }}
+      style={{ backgroundColor: C.appBg, fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", height: '100dvh', overflow: 'hidden', position: 'relative' }}
     >
       {/* Timeline edge glow — warm amber vignette on scroll */}
       <motion.div

@@ -21,7 +21,7 @@ export const detailHeader: CSSProperties = {
 
 export const backBtn: CSSProperties = {
   width: 32, height: 32, borderRadius: R.dot,
-  background: 'rgba(255,255,255,0.08)', border: 'none',
+  background: C.borderLight, border: 'none',
   display: 'flex', alignItems: 'center', justifyContent: 'center',
   color: C.textPrimary, cursor: 'pointer', flexShrink: 0,
   WebkitTapHighlightColor: 'transparent',
@@ -121,7 +121,7 @@ export const sourceNameStyle: CSSProperties = {
 };
 
 export const sourceFactsStyle: CSSProperties = {
-  color: 'rgba(255,255,255,0.50)',
+  color: C.textSecondary,
   ...T.meta,
   marginBottom: 7,
 };
@@ -134,7 +134,7 @@ export const chipStyle: CSSProperties = {
   borderRadius: R.pill,
   padding: `0 ${S.chipPaddingH}px`,
   background: C.chipBg,
-  color: 'rgba(255,255,255,0.60)',
+  color: C.textMediumEmphasis,
   ...T.chip,
   whiteSpace: 'nowrap',
 };

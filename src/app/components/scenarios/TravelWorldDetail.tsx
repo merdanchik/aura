@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import { ChevronLeft } from 'lucide-react';
 import svcTravel from '../../../assets/travel.png';
+import svcYMaps  from '../../../assets/yandex-maps.png';
 import { C } from '../../styles/auraTokens';
 import {
   screenBg, detailHeader, backBtn, chatBtnBase,
@@ -37,11 +38,11 @@ const SOURCES: Source[] = [
     accent:  COLOR,
   },
   {
-    initials: 'КА',
-    name:     'Яндекс Карты',
-    facts:    '7 сохранённых мест в новом городе',
-    meaning:  'Проработка деталей на месте',
-    accent:   '#FF9F0A',
+    iconSrc: svcYMaps,
+    name:    'Яндекс Карты',
+    facts:   '7 сохранённых мест в новом городе',
+    meaning: 'Проработка деталей на месте',
+    accent:  '#FF9F0A',
   },
 ];
 

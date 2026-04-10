@@ -9,17 +9,24 @@ export const C = {
   surfaceSecondary:'#1B1E25',
   chipBg:          '#25262B',
 
-  textPrimary:     '#FFFFFF',
-  textSecondary:   'rgba(255,255,255,0.58)',
-  textTertiary:    'rgba(255,255,255,0.34)',
-  textQuiet:       'rgba(255,255,255,0.38)',
+  // Text emphasis scale
+  textPrimary:          '#FFFFFF',
+  textHighEmphasis:     'rgba(255,255,255,0.90)',
+  textMediumEmphasis:   'rgba(255,255,255,0.60)',
+  textSecondary:        'rgba(255,255,255,0.58)',
+  textTertiary:         'rgba(255,255,255,0.34)',
+  textQuiet:            'rgba(255,255,255,0.38)',
+  textQuaternary:       'rgba(255,255,255,0.18)',
 
   active:          '#30D158',   // green pulse
   cooling:         '#E7A93B',   // amber
   quiet:           'rgba(255,255,255,0.38)',
 
   border:          'rgba(255,255,255,0.06)',
+  borderLight:     'rgba(255,255,255,0.08)',
   handleBar:       'rgba(255,255,255,0.10)',
+
+  bgLight:         'rgba(255,255,255,0.05)',
 
   backdropBg:      'rgba(0,0,0,0.72)',
 } as const;

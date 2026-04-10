@@ -107,11 +107,11 @@ export const MusicWorldDetail: React.FC = () => {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-            <p style={{ color: 'rgba(255,255,255,0.28)', fontSize: 13 }}>Также подключены:</p>
+            <p style={{ color: C.textTertiary, fontSize: 13 }}>Также подключены:</p>
             {EXT_SOURCES.map((name, i) => (
               <React.Fragment key={name}>
-                <p style={{ color: 'rgba(255,255,255,0.42)', fontSize: 13, fontWeight: 500 }}>{name}</p>
-                {i < EXT_SOURCES.length - 1 && <p style={{ color: 'rgba(255,255,255,0.18)', fontSize: 13 }}>·</p>}
+                <p style={{ color: C.textSecondary, fontSize: 13, fontWeight: 500 }}>{name}</p>
+                {i < EXT_SOURCES.length - 1 && <p style={{ color: C.textQuaternary, fontSize: 13 }}>·</p>}
               </React.Fragment>
             ))}
           </div>

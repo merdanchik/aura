@@ -2,6 +2,9 @@ import React from 'react';
 import { useNavigate } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronLeft } from 'lucide-react';
+import svcMusic from '../../../assets/52729efb5574f608701f92848e1b348745677960.png';
+import svcKino  from '../../../assets/b39f941bc25c3069b2f4719e19fdc535f4a56625.png';
+import svcBooks from '../../../assets/94e2bb438930a86c21d001934a49869c8425f73a.png';
 
 const COLOR = '#5AC8F5';
 
@@ -13,7 +16,6 @@ interface StatusConfig {
   dotColor: string;
   dotGlow:  string;
   label:    string;
-  recency:  string;
 }
 
 interface DomainBar {
@@ -23,9 +25,9 @@ interface DomainBar {
 }
 
 interface HeroConfig {
-  headline:  string;
-  body:      string;
-  bars:      DomainBar[];
+  headline: string;
+  body:     string;
+  bars:     DomainBar[];
 }
 
 interface Experience {
@@ -56,7 +58,6 @@ const STATE_DATA: Record<WorldState, StateData> = {
       dotColor: '#30D158',
       dotGlow:  '0 0 6px 1px #30D15888',
       label:    'активен сейчас',
-      recency:  '2 ч назад',
     },
     hero: {
       headline: 'Исследователь историй',
@@ -68,18 +69,18 @@ const STATE_DATA: Record<WorldState, StateData> = {
       ],
     },
     experiences: [
-      { emoji: '🎵', title: 'Всё ещё на повторе',        desc: 'Kind of Blue — третий день подряд',              time: '2 ч назад',    svc: 'Яндекс Музыка', svcColor: '#BF5AF2' },
-      { emoji: '🎬', title: 'Добавил в «Буду смотреть»', desc: 'Anatomie d\'une chute (2023)',                    time: 'вчера',        svc: 'Кинопоиск',     svcColor: '#FF9F0A' },
-      { emoji: '📖', title: 'Вернулся к книге',           desc: 'Братья Карамазовы — после паузы три недели',     time: '3 дня назад',  svc: 'Яндекс Книги',  svcColor: '#5E5CE6' },
-      { emoji: '🎬', title: 'Досмотрел до конца',         desc: 'The Bear — сезон 3, последние две серии сразу',  time: '5 дней назад', svc: 'Кинопоиск',     svcColor: '#FF9F0A' },
-      { emoji: '🎵', title: 'Собрал плейлист',            desc: '«Для долгой поездки» — 14 треков, джаз+ambient', time: 'неделю назад', svc: 'Яндекс Музыка', svcColor: '#BF5AF2' },
+      { emoji: '🎵', title: 'Всё ещё на повторе',        desc: 'Kind of Blue — третий день подряд',             time: '2 ч назад',    svc: 'Яндекс Музыка', svcColor: '#BF5AF2' },
+      { emoji: '🎬', title: 'Добавил в «Буду смотреть»', desc: 'Anatomie d\'une chute (2023)',                   time: 'вчера',        svc: 'Кинопоиск',     svcColor: '#FF9F0A' },
+      { emoji: '📖', title: 'Вернулся к книге',           desc: 'Братья Карамазовы — после паузы три недели',    time: '3 дня назад',  svc: 'Яндекс Книги',  svcColor: '#5E5CE6' },
+      { emoji: '🎬', title: 'Досмотрел до конца',         desc: 'The Bear — сезон 3, последние две серии сразу', time: '5 дней назад', svc: 'Кинопоиск',     svcColor: '#FF9F0A' },
+      { emoji: '🎵', title: 'Собрал плейлист',            desc: '«Для долгой поездки» — 14 треков, джаз+ambient',time: 'неделю назад', svc: 'Яндекс Музыка', svcColor: '#BF5AF2' },
     ],
     signals: [
-      { emoji: '🎵', text: '127 прослушиваний',        sub: 'за последние 2 недели' },
-      { emoji: '❤️', text: '14 лайков и сохранений',   sub: 'треки, фильмы, главы книг' },
-      { emoji: '👁️', text: '3 досмотра до финала',     sub: 'полные просмотры без пауз' },
-      { emoji: '📌', text: '5 добавлений в списки',     sub: '«Буду смотреть», «Хочу прочитать»' },
-      { emoji: '🔄', text: 'Повторное слушание',        sub: '2 альбома — вернулся сам, без рекомендации' },
+      { emoji: '🎵', text: '127 прослушиваний',       sub: 'за последние 2 недели' },
+      { emoji: '❤️', text: '14 лайков и сохранений',  sub: 'треки, фильмы, главы книг' },
+      { emoji: '👁️', text: '3 досмотра до финала',    sub: 'полные просмотры без пауз' },
+      { emoji: '📌', text: '5 добавлений в списки',    sub: '«Буду смотреть», «Хочу прочитать»' },
+      { emoji: '🔄', text: 'Повторное слушание',       sub: '2 альбома — вернулся сам, без рекомендации' },
     ],
   },
 
@@ -88,7 +89,6 @@ const STATE_DATA: Record<WorldState, StateData> = {
       dotColor: '#FF9F0A',
       dotGlow:  '0 0 6px 1px #FF9F0A88',
       label:    'остывает',
-      recency:  '4 дня назад',
     },
     hero: {
       headline: 'Замедление после волны',
@@ -100,16 +100,16 @@ const STATE_DATA: Record<WorldState, StateData> = {
       ],
     },
     experiences: [
-      { emoji: '🎵', title: 'Слушал в фоне',            desc: 'Ambient mix — без фокуса, скорее привычка',       time: '4 дня назад',  svc: 'Яндекс Музыка', svcColor: '#BF5AF2' },
-      { emoji: '🎬', title: 'Прервал на середине',       desc: 'Oppenheimer — поставил на паузу, не вернулся',    time: '5 дней назад', svc: 'Кинопоиск',     svcColor: '#FF9F0A' },
-      { emoji: '🎵', title: 'Запустил старый плейлист',  desc: '«Рабочее» — ничего нового не искал',             time: 'неделю назад', svc: 'Яндекс Музыка', svcColor: '#BF5AF2' },
-      { emoji: '📖', title: 'Книга на паузе',            desc: 'Братья Карамазовы — не открывал 10 дней',        time: '10 дней назад',svc: 'Яндекс Книги',  svcColor: '#5E5CE6' },
+      { emoji: '🎵', title: 'Слушал в фоне',           desc: 'Ambient mix — без фокуса, скорее привычка',      time: '4 дня назад',   svc: 'Яндекс Музыка', svcColor: '#BF5AF2' },
+      { emoji: '🎬', title: 'Прервал на середине',      desc: 'Oppenheimer — поставил на паузу, не вернулся',   time: '5 дней назад',  svc: 'Кинопоиск',     svcColor: '#FF9F0A' },
+      { emoji: '🎵', title: 'Запустил старый плейлист', desc: '«Рабочее» — ничего нового не искал',             time: 'неделю назад',  svc: 'Яндекс Музыка', svcColor: '#BF5AF2' },
+      { emoji: '📖', title: 'Книга на паузе',           desc: 'Братья Карамазовы — не открывал 10 дней',        time: '10 дней назад', svc: 'Яндекс Книги',  svcColor: '#5E5CE6' },
     ],
     signals: [
-      { emoji: '🎵', text: '31 прослушивание',          sub: 'за последние 2 недели' },
-      { emoji: '👁️', text: '1 брошенный просмотр',      sub: 'менее 50% фильма' },
-      { emoji: '📌', text: '0 новых добавлений',        sub: 'списки не пополнялись' },
-      { emoji: '⏱️', text: 'Средняя сессия 14 мин',     sub: 'vs 47 мин в активной фазе' },
+      { emoji: '🎵', text: '31 прослушивание',        sub: 'за последние 2 недели' },
+      { emoji: '👁️', text: '1 брошенный просмотр',   sub: 'менее 50% фильма' },
+      { emoji: '📌', text: '0 новых добавлений',      sub: 'списки не пополнялись' },
+      { emoji: '⏱️', text: 'Средняя сессия 14 мин',  sub: 'vs 47 мин в активной фазе' },
     ],
   },
 
@@ -118,7 +118,6 @@ const STATE_DATA: Record<WorldState, StateData> = {
       dotColor: '#636366',
       dotGlow:  '0 0 4px 1px #63636666',
       label:    'в спячке',
-      recency:  '3 нед. назад',
     },
     hero: {
       headline: 'Мир на паузе',
@@ -130,16 +129,16 @@ const STATE_DATA: Record<WorldState, StateData> = {
       ],
     },
     experiences: [
-      { emoji: '🎵', title: 'Случайный трек',           desc: 'Авторадио в машине — не Яндекс',                 time: '3 нед. назад', svc: 'Яндекс Музыка', svcColor: '#BF5AF2' },
-      { emoji: '🎬', title: 'Ничего не смотрел',         desc: 'Вишлист не менялся',                             time: '3 нед. назад', svc: 'Кинопоиск',     svcColor: '#FF9F0A' },
-      { emoji: '📖', title: 'Книга закрыта',             desc: 'Братья Карамазовы — страница 214, не двигается', time: '3 нед. назад', svc: 'Яндекс Книги',  svcColor: '#5E5CE6' },
-      { emoji: '💤', title: 'Сигналов нет',              desc: 'Лайков, сохранений, добавлений — ноль',          time: '3 нед. назад', svc: 'Aura',          svcColor: '#636366' },
+      { emoji: '🎵', title: 'Случайный трек',   desc: 'Авторадио в машине — не Яндекс',                 time: '3 нед. назад', svc: 'Яндекс Музыка', svcColor: '#BF5AF2' },
+      { emoji: '🎬', title: 'Ничего не смотрел', desc: 'Вишлист не менялся',                             time: '3 нед. назад', svc: 'Кинопоиск',     svcColor: '#FF9F0A' },
+      { emoji: '📖', title: 'Книга закрыта',     desc: 'Братья Карамазовы — страница 214, не двигается', time: '3 нед. назад', svc: 'Яндекс Книги',  svcColor: '#5E5CE6' },
+      { emoji: '💤', title: 'Сигналов нет',      desc: 'Лайков, сохранений, добавлений — ноль',          time: '3 нед. назад', svc: 'Aura',          svcColor: '#636366' },
     ],
     signals: [
-      { emoji: '😶', text: '3 прослушивания',           sub: 'за последние 2 недели' },
-      { emoji: '🚫', text: 'Нет лайков',                sub: 'ни одного за 3 недели' },
+      { emoji: '😶', text: '3 прослушивания',              sub: 'за последние 2 недели' },
+      { emoji: '🚫', text: 'Нет лайков',                   sub: 'ни одного за 3 недели' },
       { emoji: '🔕', text: 'Рекомендации проигнорированы', sub: 'показаны, не нажаты' },
-      { emoji: '📉', text: 'Активность −94%',           sub: 'относительно пика 4 нед. назад' },
+      { emoji: '📉', text: 'Активность −94%',              sub: 'относительно пика 4 нед. назад' },
     ],
   },
 };
@@ -158,19 +157,15 @@ const STATE_COLORS: Record<WorldState, string> = {
   quiet:   '#636366',
 };
 
-// ── Static data (unchanged across states) ────────────────────────────────────
+// ── Static sources ────────────────────────────────────────────────────────────
 
-const YANDEX_CONTRIBUTORS = [
-  { name: 'Яндекс Музыка', role: 'прослушивания, лайки, плейлисты' },
-  { name: 'Кинопоиск',     role: 'просмотры, вишлист, рейтинги' },
-  { name: 'Яндекс Книги',  role: 'чтение, прогресс, закладки' },
+const SOURCE_SERVICES = [
+  { icon: svcMusic, name: 'Яндекс Музыка' },
+  { icon: svcKino,  name: 'Кинопоиск' },
+  { icon: svcBooks, name: 'Яндекс Книги' },
 ];
 
-const EXT_CONTRIBUTORS = [
-  { name: 'Spotify',  role: 'треки, плейлисты' },
-  { name: 'YouTube',  role: 'видео, подписки' },
-  { name: 'Bookmate', role: 'книги, прогресс' },
-];
+const EXT_SOURCES = ['Spotify', 'YouTube', 'Bookmate'];
 
 const BENEFITS = [
   { icon: '🎯', title: 'Рекомендации знают контекст',  desc: 'Видит, что ты сейчас в медленной волне — не предложит попсу' },
@@ -197,8 +192,8 @@ export const ContentWorldDetail: React.FC = () => {
   const navigate = useNavigate();
   const [worldState, setWorldState] = React.useState<WorldState>('active');
 
-  const data      = STATE_DATA[worldState];
-  const stColor   = STATE_COLORS[worldState];
+  const data    = STATE_DATA[worldState];
+  const stColor = STATE_COLORS[worldState];
 
   return (
     <div style={{
@@ -280,7 +275,7 @@ export const ContentWorldDetail: React.FC = () => {
               transition={{ duration: 0.22 }}
               style={{
                 borderRadius: 18,
-                background: `linear-gradient(140deg, ${stColor}12 0%, rgba(28,28,30,0.9) 65%)`,
+                background: `linear-gradient(140deg, ${stColor}12 0%, rgba(22,22,24,0.96) 60%)`,
                 border: `1px solid ${stColor}28`,
                 padding: '18px 18px 16px',
                 marginBottom: 24,
@@ -319,16 +314,12 @@ export const ContentWorldDetail: React.FC = () => {
                       key={s}
                       onClick={() => setWorldState(s)}
                       style={{
-                        flex: 1,
-                        height: 28,
-                        borderRadius: 8,
+                        flex: 1, height: 28, borderRadius: 8,
                         border: active ? `1px solid ${c}66` : '1px solid rgba(255,255,255,0.08)',
                         background: active ? `${c}1E` : 'rgba(255,255,255,0.04)',
                         color: active ? c : 'rgba(255,255,255,0.32)',
-                        fontSize: 11,
-                        fontWeight: active ? 600 : 500,
-                        cursor: 'pointer',
-                        WebkitTapHighlightColor: 'transparent',
+                        fontSize: 11, fontWeight: active ? 600 : 500,
+                        cursor: 'pointer', WebkitTapHighlightColor: 'transparent',
                         transition: 'background 0.18s, border-color 0.18s, color 0.18s',
                       }}
                     >
@@ -390,8 +381,20 @@ export const ContentWorldDetail: React.FC = () => {
 
           <Divider />
 
-          {/* ── D. Signals ── */}
-          <SecLabel>Откуда Aura это знает</SecLabel>
+          {/* ── D. Unified sources block ── */}
+          <SecLabel>Источники</SecLabel>
+
+          {/* Static service icon strip */}
+          <div style={{ display: 'flex', gap: 14, marginBottom: 16 }}>
+            {SOURCE_SERVICES.map(s => (
+              <div key={s.name} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5 }}>
+                <img src={s.icon} style={{ width: 42, height: 42, borderRadius: 11, objectFit: 'cover' }} />
+                <p style={{ color: 'rgba(255,255,255,0.34)', fontSize: 9.5, fontWeight: 500, textAlign: 'center', maxWidth: 60 }}>{s.name}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Animated signals — per state */}
           <AnimatePresence mode="wait">
             <motion.div
               key={`sig-${worldState}`}
@@ -404,7 +407,7 @@ export const ContentWorldDetail: React.FC = () => {
                 background: '#1C1C1E',
                 border: '1px solid rgba(255,255,255,0.06)',
                 overflow: 'hidden',
-                marginBottom: 4,
+                marginBottom: 10,
               }}
             >
               {data.signals.map((s, i) => (
@@ -423,49 +426,20 @@ export const ContentWorldDetail: React.FC = () => {
             </motion.div>
           </AnimatePresence>
 
-          <Divider />
-
-          {/* ── E. Service contributors (static) ── */}
-          <SecLabel>Кто подпитывает этот мир</SecLabel>
-
-          <p style={{ color: 'rgba(255,255,255,0.26)', fontSize: 11, fontWeight: 500, marginBottom: 8, textTransform: 'uppercase', letterSpacing: 0.5 }}>
-            Яндекс
-          </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
-            {YANDEX_CONTRIBUTORS.map((c, i) => (
-              <div key={i} style={{
-                display: 'flex', alignItems: 'center', gap: 12,
-                background: '#1C1C1E', borderRadius: 12, padding: '11px 14px',
-                border: '1px solid rgba(255,255,255,0.06)',
-              }}>
-                <div style={{ width: 7, height: 7, borderRadius: '50%', background: COLOR, flexShrink: 0 }} />
-                <div>
-                  <p style={{ color: '#fff', fontSize: 13, fontWeight: 500 }}>{c.name}</p>
-                  <p style={{ color: 'rgba(255,255,255,0.34)', fontSize: 11 }}>{c.role}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <p style={{ color: 'rgba(255,255,255,0.26)', fontSize: 11, fontWeight: 500, marginBottom: 8, textTransform: 'uppercase', letterSpacing: 0.5 }}>
-            Внешние сервисы
-          </p>
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 4 }}>
-            {EXT_CONTRIBUTORS.map((c, i) => (
-              <div key={i} style={{
-                background: 'rgba(255,255,255,0.05)',
-                border: '1px solid rgba(255,255,255,0.09)',
-                borderRadius: 11, padding: '8px 13px',
-              }}>
-                <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 12.5, fontWeight: 500 }}>{c.name}</p>
-                <p style={{ color: 'rgba(255,255,255,0.28)', fontSize: 10.5, marginTop: 1 }}>{c.role}</p>
-              </div>
+          {/* External services */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+            <p style={{ color: 'rgba(255,255,255,0.26)', fontSize: 11 }}>Также подключены:</p>
+            {EXT_SOURCES.map((name, i) => (
+              <React.Fragment key={name}>
+                <p style={{ color: 'rgba(255,255,255,0.42)', fontSize: 11, fontWeight: 500 }}>{name}</p>
+                {i < EXT_SOURCES.length - 1 && <p style={{ color: 'rgba(255,255,255,0.18)', fontSize: 11 }}>·</p>}
+              </React.Fragment>
             ))}
           </div>
 
           <Divider />
 
-          {/* ── F. Benefits (static) ── */}
+          {/* ── E. Benefits (static) ── */}
           <SecLabel>Что это даёт</SecLabel>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {BENEFITS.map((b, i) => (

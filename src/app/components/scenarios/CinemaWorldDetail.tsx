@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
 import { ChevronLeft } from 'lucide-react';
+import svcKino from '../../../assets/b39f941bc25c3069b2f4719e19fdc535f4a56625.png';
 
 const COLOR = '#FF9F0A';
 
@@ -8,8 +9,8 @@ const COLOR = '#FF9F0A';
 
 const COMMITMENT_STATS = [
   { label: 'В вишлисте', value: '27', sub: 'фильмов' },
-  { label: 'Досмотрел', value: '3',  sub: 'за месяц' },
-  { label: 'Бросил',    value: '2',  sub: 'до конца' },
+  { label: 'Досмотрел',  value: '3',  sub: 'за месяц' },
+  { label: 'Бросил',     value: '2',  sub: 'до конца' },
 ];
 
 const EXPERIENCES = [
@@ -35,22 +36,25 @@ const EXPERIENCES = [
   },
 ];
 
-const SIGNALS = [
-  { emoji: '📋', text: '27 фильмов в вишлисте',         sub: 'растёт быстрее, чем смотрит' },
-  { emoji: '✅', text: 'Когда смотрит — досматривает',   sub: 'высокий commitment: 3 из 3 просмотров завершены' },
-  { emoji: '⏸️', text: '2 брошенных просмотра',         sub: 'уходил раньше середины — не то настроение' },
-  { emoji: '🕐', text: '10 дней без нового просмотра',   sub: 'пауза, но список продолжает пополняться' },
+const SOURCES = [
+  {
+    iconSrc: svcKino, name: 'Кинопоиск', accentColor: COLOR,
+    signals: [
+      { emoji: '📋', text: '27 фильмов в вишлисте',       sub: 'растёт быстрее, чем смотрит' },
+      { emoji: '✅', text: 'Когда смотрит — досматривает', sub: 'высокий commitment: 3 из 3 просмотров завершены' },
+      { emoji: '⏸️', text: '2 брошенных просмотра',        sub: 'уходил раньше середины — не то настроение' },
+      { emoji: '🕐', text: '10 дней без нового просмотра', sub: 'пауза, но список продолжает пополняться' },
+    ],
+  },
+  {
+    iconEmoji: '📺', name: 'Яндекс ТВ', accentColor: 'rgba(255,255,255,0.3)',
+    signals: [
+      { emoji: '📡', text: 'Трансляции и прямой эфир', sub: 'пассивный просмотр, не вишлист' },
+    ],
+  },
 ];
 
-const YANDEX_CONTRIBUTORS = [
-  { name: 'Кинопоиск',   role: 'просмотры, вишлист, рейтинги' },
-  { name: 'Яндекс ТВ',   role: 'трансляции, прямой эфир' },
-];
-
-const EXT_CONTRIBUTORS = [
-  { name: 'Netflix', role: 'параллельные просмотры' },
-  { name: 'IMDb',    role: 'оценки, исследование' },
-];
+const EXT_SOURCES = ['Netflix', 'IMDb'];
 
 const BENEFITS = [
   {
@@ -61,7 +65,7 @@ const BENEFITS = [
   {
     icon: '📋',
     title: 'Вишлист становится умным',
-    desc: 'Не просто список — понимает, что из него ты реально посмотришь, а что просто отложил "на потом"',
+    desc: 'Не просто список — понимает, что из него ты реально посмотришь, а что просто отложил «на потом»',
   },
   {
     icon: '🔗',
@@ -144,8 +148,8 @@ export const CinemaWorldDetail: React.FC = () => {
           {/* ── Hero ── */}
           <div style={{
             borderRadius: 18,
-            background: `linear-gradient(140deg, ${COLOR}14 0%, rgba(28,28,30,0.9) 65%)`,
-            border: `1px solid ${COLOR}28`,
+            background: `linear-gradient(140deg, ${COLOR}14 0%, rgba(22,22,24,0.96) 60%)`,
+            border: `1px solid ${COLOR}30`,
             padding: '18px 18px 16px',
             marginBottom: 24,
           }}>
@@ -166,7 +170,7 @@ export const CinemaWorldDetail: React.FC = () => {
                   borderRadius: 10, padding: '10px 0',
                   textAlign: 'center',
                 }}>
-                  <p style={{ color: '#fff', fontSize: 20, fontWeight: 700, lineHeight: 1 }}>{s.value}</p>
+                  <p style={{ color: '#fff', fontSize: 22, fontWeight: 700, lineHeight: 1 }}>{s.value}</p>
                   <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: 10, marginTop: 3 }}>{s.sub}</p>
                   <p style={{ color: 'rgba(255,255,255,0.22)', fontSize: 9.5, marginTop: 1 }}>{s.label}</p>
                 </div>
@@ -209,58 +213,59 @@ export const CinemaWorldDetail: React.FC = () => {
 
           <Divider />
 
-          {/* ── Signals ── */}
-          <SecLabel>Откуда Aura это знает</SecLabel>
-          <div style={{
-            borderRadius: 16, background: '#1C1C1E',
-            border: '1px solid rgba(255,255,255,0.06)', overflow: 'hidden', marginBottom: 4,
-          }}>
-            {SIGNALS.map((s, i) => (
-              <div key={i} style={{
-                display: 'flex', alignItems: 'center', gap: 14, padding: '13px 16px',
-                borderBottom: i < SIGNALS.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none',
+          {/* ── Unified sources block ── */}
+          <SecLabel>Источники</SecLabel>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 10 }}>
+            {SOURCES.map(src => (
+              <div key={src.name} style={{
+                borderRadius: 16, background: '#1C1C1E',
+                border: '1px solid rgba(255,255,255,0.07)', overflow: 'hidden',
               }}>
-                <span style={{ fontSize: 20, flexShrink: 0, lineHeight: 1 }}>{s.emoji}</span>
-                <div>
-                  <p style={{ color: '#fff', fontSize: 13, fontWeight: 500 }}>{s.text}</p>
-                  <p style={{ color: 'rgba(255,255,255,0.34)', fontSize: 11, marginTop: 1 }}>{s.sub}</p>
+                {/* Service header */}
+                <div style={{
+                  display: 'flex', alignItems: 'center', gap: 10, padding: '12px 14px',
+                  background: 'rgba(255,255,255,0.03)',
+                  borderBottom: '1px solid rgba(255,255,255,0.05)',
+                }}>
+                  {'iconSrc' in src ? (
+                    <img src={src.iconSrc as string} style={{ width: 32, height: 32, borderRadius: 8, objectFit: 'cover', flexShrink: 0 }} />
+                  ) : (
+                    <div style={{
+                      width: 32, height: 32, borderRadius: 8, flexShrink: 0,
+                      background: 'rgba(255,255,255,0.07)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: 17,
+                    }}>{src.iconEmoji as string}</div>
+                  )}
+                  <p style={{ color: '#fff', fontSize: 13, fontWeight: 600, flex: 1 }}>{src.name}</p>
+                  <p style={{ color: src.accentColor, fontSize: 10, fontWeight: 600 }}>
+                    {src.signals.length} {src.signals.length === 1 ? 'сигнал' : 'сигнала'}
+                  </p>
                 </div>
+                {/* Signals */}
+                {src.signals.map((sig, i) => (
+                  <div key={i} style={{
+                    display: 'flex', alignItems: 'flex-start', gap: 12, padding: '10px 14px',
+                    borderBottom: i < src.signals.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
+                  }}>
+                    <span style={{ fontSize: 16, lineHeight: 1.5, flexShrink: 0 }}>{sig.emoji}</span>
+                    <div>
+                      <p style={{ color: '#fff', fontSize: 12.5, fontWeight: 500, lineHeight: 1.3 }}>{sig.text}</p>
+                      <p style={{ color: 'rgba(255,255,255,0.34)', fontSize: 11, marginTop: 2 }}>{sig.sub}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             ))}
           </div>
-
-          <Divider />
-
-          {/* ── Contributors ── */}
-          <SecLabel>Кто подпитывает этот мир</SecLabel>
-
-          <p style={{ color: 'rgba(255,255,255,0.26)', fontSize: 11, fontWeight: 500, marginBottom: 8, textTransform: 'uppercase', letterSpacing: 0.5 }}>Яндекс</p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
-            {YANDEX_CONTRIBUTORS.map((c, i) => (
-              <div key={i} style={{
-                display: 'flex', alignItems: 'center', gap: 12,
-                background: '#1C1C1E', borderRadius: 12, padding: '11px 14px',
-                border: '1px solid rgba(255,255,255,0.06)',
-              }}>
-                <div style={{ width: 7, height: 7, borderRadius: '50%', background: COLOR, flexShrink: 0 }} />
-                <div>
-                  <p style={{ color: '#fff', fontSize: 13, fontWeight: 500 }}>{c.name}</p>
-                  <p style={{ color: 'rgba(255,255,255,0.34)', fontSize: 11 }}>{c.role}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <p style={{ color: 'rgba(255,255,255,0.26)', fontSize: 11, fontWeight: 500, marginBottom: 8, textTransform: 'uppercase', letterSpacing: 0.5 }}>Внешние сервисы</p>
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 4 }}>
-            {EXT_CONTRIBUTORS.map((c, i) => (
-              <div key={i} style={{
-                background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.09)',
-                borderRadius: 11, padding: '8px 13px',
-              }}>
-                <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 12.5, fontWeight: 500 }}>{c.name}</p>
-                <p style={{ color: 'rgba(255,255,255,0.28)', fontSize: 10.5, marginTop: 1 }}>{c.role}</p>
-              </div>
+          {/* External services */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+            <p style={{ color: 'rgba(255,255,255,0.26)', fontSize: 11 }}>Также подключены:</p>
+            {EXT_SOURCES.map((name, i) => (
+              <React.Fragment key={name}>
+                <p style={{ color: 'rgba(255,255,255,0.42)', fontSize: 11, fontWeight: 500 }}>{name}</p>
+                {i < EXT_SOURCES.length - 1 && <p style={{ color: 'rgba(255,255,255,0.18)', fontSize: 11 }}>·</p>}
+              </React.Fragment>
             ))}
           </div>
 

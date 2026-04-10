@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
 import { ChevronLeft } from 'lucide-react';
+import svcTravel from '../../../assets/travel.png';
+import svcTaxi   from '../../../assets/taxi.png';
 
 const COLOR = '#00C7BE';
 
@@ -10,7 +12,7 @@ const EXPERIENCES = [
   {
     emoji: '✈️', title: 'Ищет билеты',
     desc: 'Москва → Тбилиси, июнь — смотрел уже 4 раза за неделю',
-    time: '3 ч назад', svc: 'Авиасейлс', svcColor: '#FF6633',
+    time: '3 ч назад', svc: 'Яндекс Путешествия', svcColor: COLOR,
   },
   {
     emoji: '🏨', title: 'Сохранил отель',
@@ -34,26 +36,36 @@ const EXPERIENCES = [
   },
 ];
 
-const SIGNALS = [
-  { emoji: '🔍', text: '11 поисков направлений',    sub: 'за последние 2 недели' },
-  { emoji: '🏨', text: '3 отеля в избранном',        sub: 'Тбилиси, июнь' },
-  { emoji: '✈️', text: 'Билеты проверены 4 раза',   sub: 'одно направление, разные даты' },
-  { emoji: '📍', text: '7 мест сохранено на карте',  sub: 'рестораны, районы, маршруты' },
-  { emoji: '🌤️', text: '3 просмотра погоды',        sub: 'одна и та же поездка — сигнал намерения' },
+const SOURCES = [
+  {
+    iconSrc: svcTravel, name: 'Яндекс Путешествия', accentColor: COLOR,
+    signals: [
+      { emoji: '🔍', text: '11 поисков направлений', sub: 'за последние 2 недели' },
+      { emoji: '🏨', text: '3 отеля в избранном',    sub: 'Тбилиси, июнь' },
+      { emoji: '✈️', text: 'Билеты проверены 4 раза', sub: 'одно направление, разные даты' },
+    ],
+  },
+  {
+    iconEmoji: '🗺️', name: 'Яндекс Карты', accentColor: '#FF9F0A',
+    signals: [
+      { emoji: '📍', text: '7 мест сохранено на карте', sub: 'рестораны, районы, маршруты' },
+    ],
+  },
+  {
+    iconEmoji: '☁️', name: 'Яндекс Погода', accentColor: '#5AC8F5',
+    signals: [
+      { emoji: '🌤️', text: '3 просмотра погоды', sub: 'одна и та же поездка — сигнал намерения' },
+    ],
+  },
+  {
+    iconSrc: svcTaxi, name: 'Яндекс Такси', accentColor: '#FFCC00',
+    signals: [
+      { emoji: '🚕', text: 'Маршрут до аэропорта', sub: 'проверял стоимость поездки' },
+    ],
+  },
 ];
 
-const YANDEX_CONTRIBUTORS = [
-  { name: 'Яндекс Путешествия', role: 'отели, авиа, подборки' },
-  { name: 'Яндекс Карты',       role: 'маршруты, места, избранное' },
-  { name: 'Яндекс Погода',      role: 'прогнозы, просмотры по дате' },
-  { name: 'Яндекс Такси',       role: 'поездки, аэропорт' },
-];
-
-const EXT_CONTRIBUTORS = [
-  { name: 'Авиасейлс', role: 'поиск билетов' },
-  { name: 'Booking',   role: 'отели, отзывы' },
-  { name: 'Airbnb',    role: 'апартаменты' },
-];
+const EXT_SOURCES = ['Авиасейлс', 'Booking', 'Airbnb'];
 
 const BENEFITS = [
   {
@@ -128,7 +140,6 @@ export const TravelWorldDetail: React.FC = () => {
           <p style={{ color: 'rgba(255,255,255,0.38)', fontSize: 12, marginTop: 2 }}>Маршруты · Места · Логистика</p>
         </div>
 
-        {/* Phase badge */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexShrink: 0 }}>
           <div style={{
             width: 6, height: 6, borderRadius: '50%',
@@ -156,8 +167,8 @@ export const TravelWorldDetail: React.FC = () => {
           {/* ── Hero summary ── */}
           <div style={{
             borderRadius: 18,
-            background: `linear-gradient(140deg, ${COLOR}14 0%, rgba(28,28,30,0.9) 65%)`,
-            border: `1px solid ${COLOR}28`,
+            background: `linear-gradient(140deg, ${COLOR}14 0%, rgba(22,22,24,0.96) 60%)`,
+            border: `1px solid ${COLOR}30`,
             padding: '18px 18px 16px',
             marginBottom: 24,
           }}>
@@ -171,10 +182,10 @@ export const TravelWorldDetail: React.FC = () => {
             {/* Phase progress */}
             <div style={{ display: 'flex', gap: 6 }}>
               {[
-                { label: 'Мечта',       fill: 1.0 },
+                { label: 'Мечта',        fill: 1.0  },
                 { label: 'Планирование', fill: 0.65 },
                 { label: 'Бронирование', fill: 0.20 },
-                { label: 'Поездка',      fill: 0.0 },
+                { label: 'Поездка',      fill: 0.0  },
               ].map((phase, i) => (
                 <div key={i} style={{ flex: 1 }}>
                   <div style={{ height: 3, borderRadius: 2, background: 'rgba(255,255,255,0.08)', overflow: 'hidden', marginBottom: 5 }}>
@@ -229,67 +240,59 @@ export const TravelWorldDetail: React.FC = () => {
 
           <Divider />
 
-          {/* ── Signals ── */}
-          <SecLabel>Откуда Aura это знает</SecLabel>
-          <div style={{
-            borderRadius: 16,
-            background: '#1C1C1E',
-            border: '1px solid rgba(255,255,255,0.06)',
-            overflow: 'hidden',
-            marginBottom: 4,
-          }}>
-            {SIGNALS.map((s, i) => (
-              <div key={i} style={{
-                display: 'flex', alignItems: 'center', gap: 14,
-                padding: '13px 16px',
-                borderBottom: i < SIGNALS.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none',
+          {/* ── Unified sources block ── */}
+          <SecLabel>Источники</SecLabel>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 10 }}>
+            {SOURCES.map(src => (
+              <div key={src.name} style={{
+                borderRadius: 16, background: '#1C1C1E',
+                border: '1px solid rgba(255,255,255,0.07)', overflow: 'hidden',
               }}>
-                <span style={{ fontSize: 20, flexShrink: 0, lineHeight: 1 }}>{s.emoji}</span>
-                <div>
-                  <p style={{ color: '#fff', fontSize: 13, fontWeight: 500 }}>{s.text}</p>
-                  <p style={{ color: 'rgba(255,255,255,0.34)', fontSize: 11, marginTop: 1 }}>{s.sub}</p>
+                {/* Service header */}
+                <div style={{
+                  display: 'flex', alignItems: 'center', gap: 10, padding: '12px 14px',
+                  background: 'rgba(255,255,255,0.03)',
+                  borderBottom: '1px solid rgba(255,255,255,0.05)',
+                }}>
+                  {'iconSrc' in src ? (
+                    <img src={src.iconSrc as string} style={{ width: 32, height: 32, borderRadius: 8, objectFit: 'cover', flexShrink: 0 }} />
+                  ) : (
+                    <div style={{
+                      width: 32, height: 32, borderRadius: 8, flexShrink: 0,
+                      background: 'rgba(255,255,255,0.07)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: 17,
+                    }}>{src.iconEmoji as string}</div>
+                  )}
+                  <p style={{ color: '#fff', fontSize: 13, fontWeight: 600, flex: 1 }}>{src.name}</p>
+                  <p style={{ color: src.accentColor, fontSize: 10, fontWeight: 600 }}>
+                    {src.signals.length} {src.signals.length === 1 ? 'сигнал' : 'сигнала'}
+                  </p>
                 </div>
+                {/* Signals */}
+                {src.signals.map((sig, i) => (
+                  <div key={i} style={{
+                    display: 'flex', alignItems: 'flex-start', gap: 12, padding: '10px 14px',
+                    borderBottom: i < src.signals.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
+                  }}>
+                    <span style={{ fontSize: 16, lineHeight: 1.5, flexShrink: 0 }}>{sig.emoji}</span>
+                    <div>
+                      <p style={{ color: '#fff', fontSize: 12.5, fontWeight: 500, lineHeight: 1.3 }}>{sig.text}</p>
+                      <p style={{ color: 'rgba(255,255,255,0.34)', fontSize: 11, marginTop: 2 }}>{sig.sub}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             ))}
           </div>
-
-          <Divider />
-
-          {/* ── Contributors ── */}
-          <SecLabel>Кто подпитывает этот мир</SecLabel>
-
-          <p style={{ color: 'rgba(255,255,255,0.26)', fontSize: 11, fontWeight: 500, marginBottom: 8, textTransform: 'uppercase', letterSpacing: 0.5 }}>
-            Яндекс
-          </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
-            {YANDEX_CONTRIBUTORS.map((c, i) => (
-              <div key={i} style={{
-                display: 'flex', alignItems: 'center', gap: 12,
-                background: '#1C1C1E', borderRadius: 12, padding: '11px 14px',
-                border: '1px solid rgba(255,255,255,0.06)',
-              }}>
-                <div style={{ width: 7, height: 7, borderRadius: '50%', background: COLOR, flexShrink: 0 }} />
-                <div>
-                  <p style={{ color: '#fff', fontSize: 13, fontWeight: 500 }}>{c.name}</p>
-                  <p style={{ color: 'rgba(255,255,255,0.34)', fontSize: 11 }}>{c.role}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <p style={{ color: 'rgba(255,255,255,0.26)', fontSize: 11, fontWeight: 500, marginBottom: 8, textTransform: 'uppercase', letterSpacing: 0.5 }}>
-            Внешние сервисы
-          </p>
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 4 }}>
-            {EXT_CONTRIBUTORS.map((c, i) => (
-              <div key={i} style={{
-                background: 'rgba(255,255,255,0.05)',
-                border: '1px solid rgba(255,255,255,0.09)',
-                borderRadius: 11, padding: '8px 13px',
-              }}>
-                <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 12.5, fontWeight: 500 }}>{c.name}</p>
-                <p style={{ color: 'rgba(255,255,255,0.28)', fontSize: 10.5, marginTop: 1 }}>{c.role}</p>
-              </div>
+          {/* External services */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+            <p style={{ color: 'rgba(255,255,255,0.26)', fontSize: 11 }}>Также подключены:</p>
+            {EXT_SOURCES.map((name, i) => (
+              <React.Fragment key={name}>
+                <p style={{ color: 'rgba(255,255,255,0.42)', fontSize: 11, fontWeight: 500 }}>{name}</p>
+                {i < EXT_SOURCES.length - 1 && <p style={{ color: 'rgba(255,255,255,0.18)', fontSize: 11 }}>·</p>}
+              </React.Fragment>
             ))}
           </div>
 

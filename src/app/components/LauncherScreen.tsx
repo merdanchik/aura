@@ -23,11 +23,13 @@ import imgNilsFrahm  from '../../assets/node-nils-frahm.jpg';
 import imgAusOpen    from '../../assets/node-aus-open.jpg';
 import imgVerstappen from '../../assets/node-verstappen.jpg';
 
-// Yandex service icons (used as orb images for service-linked text nodes)
-import svcMusic     from '../../assets/badge-music.svg';
-import svcKino      from '../../assets/badge-kinopoisk.svg';
-import svcBooks     from '../../assets/badge-books.svg';
+// Yandex service icons — same as used in Dashboard services section
+import svcMusic     from 'figma:asset/52729efb5574f608701f92848e1b348745677960.png';
+import svcKino      from 'figma:asset/b39f941bc25c3069b2f4719e19fdc535f4a56625.png';
+import svcBooks     from 'figma:asset/94e2bb438930a86c21d001934a49869c8425f73a.png';
 import svcAfisha    from '../../assets/afisha.png';
+import svcTravel    from '../../assets/travel.png';
+import svcFood      from '../../assets/food.png';
 
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -96,7 +98,7 @@ const NODES: InterestNode[] = [
   },
   {
     // Trip to Tokyo, peak October
-    id: 'tokyo', label: 'Shinjuku', type: 'text', weight: 0.72, color: '#FF6633',
+    id: 'tokyo', label: 'Shinjuku', type: 'symbol', weight: 0.72, color: '#FF6633', image: svcTravel,
     periods: ['2024-09', '2024-10', '2024-11', '2024-12'],
     periodWeight: { '2024-09': 0.38, '2024-10': 0.72, '2024-11': 0.64, '2024-12': 0.42 },
   },
@@ -114,7 +116,7 @@ const NODES: InterestNode[] = [
   },
   {
     // Melnikov — Russian constructivist architect obsession
-    id: 'architecture', label: 'Мельников', type: 'text', weight: 0.5, color: '#0A84FF',
+    id: 'architecture', label: 'Мельников', type: 'symbol', weight: 0.5, color: '#0A84FF', image: svcAfisha,
     periods: ['2025-02', '2025-03', '2025-04'],
     periodWeight: { '2025-02': 0.32, '2025-03': 0.44, '2025-04': 0.5 },
   },
@@ -134,7 +136,7 @@ const NODES: InterestNode[] = [
   },
   {
     // Osaka, not just "travel" — sub-trip from Tokyo
-    id: 'travel-blob', label: 'Осака', type: 'text', weight: 0.72,
+    id: 'travel-blob', label: 'Осака', type: 'symbol', weight: 0.72, image: svcTravel,
     color: '#FF9F0A',
     periods: ['2024-09', '2024-10', '2024-11', '2024-12'],
     periodWeight: { '2024-09': 0.4, '2024-10': 0.72, '2024-11': 0.65, '2024-12': 0.4 },
@@ -185,7 +187,7 @@ const NODES: InterestNode[] = [
   // ── Additional period-specific experiences ────────────────────────────────
   {
     // Summer trip, Lake Baikal
-    id: 'baikal', label: 'Байкал, июль', type: 'text', weight: 0.78, color: '#00C7BE',
+    id: 'baikal', label: 'Байкал, июль', type: 'symbol', weight: 0.78, color: '#00C7BE', image: svcTravel,
     periods: ['2024-07', '2024-08'],
     periodWeight: { '2024-07': 0.82, '2024-08': 0.55 },
   },
@@ -219,7 +221,7 @@ const NODES: InterestNode[] = [
   },
   {
     // Japanese aesthetic philosophy, post-Tokyo
-    id: 'wabi-sabi', label: 'Wabi-sabi', type: 'text', weight: 0.55, color: '#C4945A',
+    id: 'wabi-sabi', label: 'Wabi-sabi', type: 'symbol', weight: 0.55, color: '#C4945A', image: svcBooks,
     periods: ['2024-10', '2024-11', '2024-12'],
     periodWeight: { '2024-10': 0.48, '2024-11': 0.58, '2024-12': 0.42 },
   },

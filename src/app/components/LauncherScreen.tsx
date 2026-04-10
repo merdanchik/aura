@@ -23,6 +23,14 @@ import imgNilsFrahm  from '../../assets/node-nils-frahm.jpg';
 import imgAusOpen    from '../../assets/node-aus-open.jpg';
 import imgVerstappen from '../../assets/node-verstappen.jpg';
 
+// Service badge icons
+import badgeMusic     from '../../assets/badge-music.svg';
+import badgeKinopoisk from '../../assets/badge-kinopoisk.svg';
+import badgeBooks     from '../../assets/badge-books.svg';
+import badgeAfisha    from '../../assets/afisha.png';
+import badgeFood      from '../../assets/food.png';
+import badgeTravel    from '../../assets/travel.png';
+
 
 // ═══════════════════════════════════════════════════════════════════════════
 // TYPES — data model
@@ -39,6 +47,7 @@ interface InterestNode {
   emoji?: string;                          // symbol nodes fallback
   image?: string;                          // symbol nodes — photo instead of emoji
   gradient?: [string, string];             // blob nodes
+  badge?: string;                          // service icon overlay (small corner badge)
   periods: string[];                       // '*' = always active
   periodWeight?: Record<string, number>;   // per-period weight override
 }
@@ -96,7 +105,7 @@ const NODES: InterestNode[] = [
   },
   {
     // Marcus Aurelius Meditations — new year reading
-    id: 'stoicism', label: 'Медитации', type: 'text', weight: 0.6, color: '#5E5CE6',
+    id: 'stoicism', label: 'Медитации', type: 'text', weight: 0.6, color: '#5E5CE6', badge: badgeBooks,
     periods: ['2025-01', '2025-02', '2025-03', '2025-04'],
     periodWeight: { '2025-01': 0.3, '2025-02': 0.46, '2025-03': 0.56, '2025-04': 0.6 },
   },
@@ -114,7 +123,7 @@ const NODES: InterestNode[] = [
   },
   {
     // Tarkovsky's Mirror — specific film
-    id: 'cinema', label: 'Зеркало', type: 'text', weight: 0.65, color: '#FF9F0A',
+    id: 'cinema', label: 'Зеркало', type: 'text', weight: 0.65, color: '#FF9F0A', badge: badgeKinopoisk,
     periods: ['*'],
     periodWeight: { '2024-07': 0.65, '2024-08': 0.58, '2024-09': 0.6, '2024-10': 0.55, '2025-03': 0.5, '2025-04': 0.5 },
   },
@@ -185,12 +194,12 @@ const NODES: InterestNode[] = [
   },
   {
     // Wimbledon 2024 final, July
-    id: 'wimbledon', label: 'Уимблдон', type: 'symbol', weight: 0.6, color: '#34C759', image: imgWimbledon,
+    id: 'wimbledon', label: 'Уимблдон', type: 'symbol', weight: 0.6, color: '#34C759', image: imgWimbledon, badge: badgeAfisha,
     periods: ['2024-07'],
   },
   {
     // Air — Moon Safari, the summer album
-    id: 'moon-safari', label: 'Moon Safari', type: 'text', weight: 0.7, color: '#FF9F0A',
+    id: 'moon-safari', label: 'Moon Safari', type: 'text', weight: 0.7, color: '#FF9F0A', badge: badgeMusic,
     periods: ['2024-07', '2024-08', '2024-09'],
     periodWeight: { '2024-07': 0.75, '2024-08': 0.65, '2024-09': 0.42 },
   },
@@ -201,13 +210,13 @@ const NODES: InterestNode[] = [
   },
   {
     // Specific vinyl record found at a bar
-    id: 'vinyl', label: 'Blue Note 1568', type: 'text', weight: 0.5, color: '#BF5AF2',
+    id: 'vinyl', label: 'Blue Note 1568', type: 'text', weight: 0.5, color: '#BF5AF2', badge: badgeMusic,
     periods: ['2024-08', '2024-09'],
     periodWeight: { '2024-08': 0.5, '2024-09': 0.38 },
   },
   {
     // Ichiran — solo ramen booth, Tokyo
-    id: 'ramen', label: 'Ichiran', type: 'symbol', weight: 0.65, color: '#FF6633', image: imgRamen,
+    id: 'ramen', label: 'Ichiran', type: 'symbol', weight: 0.65, color: '#FF6633', image: imgRamen, badge: badgeFood,
     periods: ['2024-10', '2024-11'],
     periodWeight: { '2024-10': 0.7, '2024-11': 0.52 },
   },
@@ -231,7 +240,7 @@ const NODES: InterestNode[] = [
   },
   {
     // Garage Museum of Contemporary Art, Moscow
-    id: 'garage', label: 'Гараж', type: 'text', weight: 0.52, color: '#FF9F0A',
+    id: 'garage', label: 'Гараж', type: 'text', weight: 0.52, color: '#FF9F0A', badge: badgeAfisha,
     periods: ['2025-03', '2025-04'],
     periodWeight: { '2025-03': 0.45, '2025-04': 0.55 },
   },
@@ -239,31 +248,31 @@ const NODES: InterestNode[] = [
   // ── New diverse experiences ───────────────────────────────────────────────
   {
     // Istanbul summer trip — Bosphorus, Aug–Sep
-    id: 'istanbul', label: 'Стамбул', type: 'symbol', weight: 0.74, color: '#FF6633', image: imgIstanbul,
+    id: 'istanbul', label: 'Стамбул', type: 'symbol', weight: 0.74, color: '#FF6633', image: imgIstanbul, badge: badgeTravel,
     periods: ['2024-08', '2024-09'],
     periodWeight: { '2024-08': 0.68, '2024-09': 0.78 },
   },
   {
     // Nabokov — The Gift, autumn reading
-    id: 'nabokov', label: 'Дар', type: 'text', weight: 0.56, color: '#5E5CE6',
+    id: 'nabokov', label: 'Дар', type: 'text', weight: 0.56, color: '#5E5CE6', badge: badgeBooks,
     periods: ['2024-10', '2024-11'],
     periodWeight: { '2024-10': 0.44, '2024-11': 0.58 },
   },
   {
     // Nick Cave concert — dark autumn
-    id: 'nick-cave', label: 'Nick Cave', type: 'symbol', weight: 0.7, color: '#FF375F', image: imgNickCave,
+    id: 'nick-cave', label: 'Nick Cave', type: 'symbol', weight: 0.7, color: '#FF375F', image: imgNickCave, badge: badgeAfisha,
     periods: ['2024-11', '2024-12'],
     periodWeight: { '2024-11': 0.72, '2024-12': 0.52 },
   },
   {
     // Bach Goldberg Variations — winter listening ritual
-    id: 'bach-goldberg', label: 'Гольдберг', type: 'text', weight: 0.58, color: '#BF5AF2',
+    id: 'bach-goldberg', label: 'Гольдберг', type: 'text', weight: 0.58, color: '#BF5AF2', badge: badgeMusic,
     periods: ['2024-12', '2025-01'],
     periodWeight: { '2024-12': 0.62, '2025-01': 0.52 },
   },
   {
     // Rome trip, Trastevere — late autumn November-December
-    id: 'rome', label: 'Рим', type: 'symbol', weight: 0.76, color: '#FF9F0A', image: imgRome,
+    id: 'rome', label: 'Рим', type: 'symbol', weight: 0.76, color: '#FF9F0A', image: imgRome, badge: badgeTravel,
     periods: ['2024-11', '2024-12'],
     periodWeight: { '2024-11': 0.68, '2024-12': 0.82 },
   },
@@ -281,19 +290,19 @@ const NODES: InterestNode[] = [
   },
   {
     // Severance S2 — winter watch
-    id: 'severance', label: 'Severance', type: 'text', weight: 0.62, color: '#0A84FF',
+    id: 'severance', label: 'Severance', type: 'text', weight: 0.62, color: '#0A84FF', badge: badgeKinopoisk,
     periods: ['2025-01', '2025-02'],
     periodWeight: { '2025-01': 0.65, '2025-02': 0.55 },
   },
   {
     // Australian Open — January tennis
-    id: 'aus-open', label: 'Australian Open', type: 'symbol', weight: 0.66, color: '#34C759', image: imgAusOpen,
+    id: 'aus-open', label: 'Australian Open', type: 'symbol', weight: 0.66, color: '#34C759', image: imgAusOpen, badge: badgeAfisha,
     periods: ['2025-01'],
     periodWeight: { '2025-01': 0.74 },
   },
   {
     // Nils Frahm — winter/spring piano
-    id: 'nils-frahm', label: 'Nils Frahm', type: 'symbol', weight: 0.64, color: '#BF5AF2', image: imgNilsFrahm,
+    id: 'nils-frahm', label: 'Nils Frahm', type: 'symbol', weight: 0.64, color: '#BF5AF2', image: imgNilsFrahm, badge: badgeMusic,
     periods: ['2025-02', '2025-03'],
     periodWeight: { '2025-02': 0.68, '2025-03': 0.55 },
   },
@@ -596,6 +605,20 @@ const CapsuleNodeEl: React.FC<{
         }}>
           {node.label}
         </span>
+
+        {/* Service badge — floats top-right of text */}
+        {node.badge && (
+          <div style={{
+            position: 'absolute', top: -7, right: -9,
+            width: 14, height: 14, borderRadius: '50%',
+            background: '#1C1C1E',
+            border: '1px solid rgba(255,255,255,0.10)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            overflow: 'hidden', pointerEvents: 'none',
+          }}>
+            <img src={node.badge} alt="" style={{ width: 10, height: 10, objectFit: 'contain' }} />
+          </div>
+        )}
       </div>
     </motion.div>
   );
@@ -752,6 +775,20 @@ const OrbNodeEl: React.FC<{
           </span>
         )}
       </motion.div>
+
+      {/* Service badge — small icon bottom-right corner */}
+      {node.badge && (
+        <div style={{
+          position: 'absolute', bottom: -3, right: -3,
+          width: 16, height: 16, borderRadius: '50%',
+          background: '#1C1C1E',
+          border: '1px solid rgba(255,255,255,0.10)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          overflow: 'hidden', pointerEvents: 'none', zIndex: 3,
+        }}>
+          <img src={node.badge} alt="" style={{ width: 12, height: 12, objectFit: 'contain' }} />
+        </div>
+      )}
 
       {/* Connector dot — visual pin between orb and label */}
       <div style={{

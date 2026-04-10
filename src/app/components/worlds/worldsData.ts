@@ -12,6 +12,8 @@ import svcImdb       from '../../../assets/imdb.png';
 import svcWildberries from '../../../assets/wildberries.png';
 import svcOzon       from '../../../assets/ozon.png';
 import svcAviasales  from '../../../assets/aviasales.png';
+import imgF1App      from '../../../assets/f1-app.png';
+import imgNbaApp     from '../../../assets/nba-app.png';
 import svcBooking    from '../../../assets/booking.png';
 import svcAirbnb     from '../../../assets/airbnb.png';
 
@@ -62,8 +64,8 @@ export const WORLD_DATA: Record<string, WorldDetailData> = {
     ],
     sources: [
       { iconSrc: svcAfisha,    name: 'Яндекс Афиша',  facts: '8 спортивных событий за месяц, 3 напоминания', meaning: 'Активное отслеживание расписания', accent: '#5AC8F5' },
-      { initials: 'F1',        name: 'Formula 1',      facts: '6 гонок просмотрено полностью, 2 в записи',    meaning: 'Глубокий интерес к сезону',       accent: '#FF3B30' },
-      { initials: 'NBA',       name: 'NBA',             facts: '12 матчей, фокус на плей-офф',                 meaning: 'Устойчивый интерес к командному спорту', accent: '#FF9F0A' },
+      { iconSrc: imgF1App,     name: 'Formula 1',      facts: '6 гонок просмотрено полностью, 2 в записи',    meaning: 'Глубокий интерес к сезону',       accent: '#FF3B30' },
+      { iconSrc: imgNbaApp,   name: 'NBA',             facts: '12 матчей, фокус на плей-офф',                 meaning: 'Устойчивый интерес к командному спорту', accent: '#FF9F0A' },
     ],
     insights: [
       { icon: '🏎️', category: 'ПАТТЕРН · F1',      text: 'Смотрит гонки в прямом эфире — без записи',    accent: '#FF3B30', contextId: 'ins-sports-f1'    },

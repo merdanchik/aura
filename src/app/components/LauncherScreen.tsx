@@ -1061,7 +1061,7 @@ export const LauncherScreen = () => {
         style={{
           position: 'absolute', inset: 0,
           pointerEvents: 'none', zIndex: 50,
-          boxShadow: 'inset 0 0 90px 40px rgba(201, 162, 39, 0.16)',
+          boxShadow: 'inset 0 0 50px 40px rgba(201, 162, 39, 0.25)',
         }}
       />
       <div className="w-full max-w-md mx-auto flex flex-col" style={{ height: '100%' }}>

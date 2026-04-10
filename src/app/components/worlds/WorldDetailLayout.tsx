@@ -124,11 +124,11 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
                   cursor: 'pointer',
                 }}
               >
-                <div style={{ fontSize: 24, lineHeight: 1 }}>{ins.icon}</div>
-                <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.07em', color: ins.accent, textTransform: 'uppercase', lineHeight: 1.3 }}>
+                <div style={{ fontSize: 24, lineHeight: 1, textAlign: 'center' }}>{ins.icon}</div>
+                <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.07em', color: ins.accent, textTransform: 'uppercase', lineHeight: 1.3, textAlign: 'center' }}>
                   {ins.category}
                 </p>
-                <p style={{ fontSize: 14, fontWeight: 600, color: '#FFFFFF', lineHeight: 1.35 }}>
+                <p style={{ fontSize: 14, fontWeight: 600, color: '#FFFFFF', lineHeight: 1.35, textAlign: 'center' }}>
                   {ins.text}
                 </p>
               </div>

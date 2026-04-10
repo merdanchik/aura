@@ -1251,7 +1251,7 @@ export const LauncherScreen = () => {
                     opacity: { duration: 0.55 },
                     scale:   { type: 'spring', stiffness: 130, damping: 22 },
                   }}
-                  onClick={() => navigate('/app/chat/' + node.id)}
+                  onClick={() => navigate('/chat/' + node.id)}
                   style={{
                     position: 'absolute',
                     left: cx - placed.size,

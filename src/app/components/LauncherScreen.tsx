@@ -1387,14 +1387,15 @@ export const LauncherScreen = () => {
                   backgroundColor: mem.bg,
                   boxShadow: mem.shadow,
                   padding: '12px 14px',
-                  display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+                  display: 'flex', flexDirection: 'column', justifyContent: 'center',
+                  alignItems: 'center', gap: 6,
                   cursor: 'pointer',
                 }}
               >
-                <p style={{ fontSize: 8, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)', lineHeight: 1.3 }}>
+                <p style={{ fontSize: 8, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)', lineHeight: 1.3, textAlign: 'center' }}>
                   {mem.label}
                 </p>
-                <p style={{ fontSize: 13, fontWeight: 700, color: '#FFFFFF', lineHeight: 1.25 }}>
+                <p style={{ fontSize: 13, fontWeight: 700, color: '#FFFFFF', lineHeight: 1.25, textAlign: 'center' }}>
                   {mem.title}
                 </p>
               </div>

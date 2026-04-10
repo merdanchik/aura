@@ -1144,7 +1144,7 @@ export const LauncherScreen = () => {
             <defs>
               {layout.map(placed => {
                 const ew  = placed.effectiveWeight;
-                const alpha = ew > 0.75 ? 0.22 : ew > 0.42 ? 0.12 : 0.05;
+                const alpha = ew > 0.75 ? 0.55 : ew > 0.42 ? 0.30 : 0.12;
                 return (
                   <linearGradient
                     key={`grad-${placed.id}`}
@@ -1155,7 +1155,7 @@ export const LauncherScreen = () => {
                   >
                     <stop offset="0%"   stopColor="rgb(200,185,255)" stopOpacity={0} />
                     <stop offset="22%"  stopColor="rgb(200,185,255)" stopOpacity={alpha} />
-                    <stop offset="75%"  stopColor="rgb(200,185,255)" stopOpacity={alpha * 0.35} />
+                    <stop offset="75%"  stopColor="rgb(200,185,255)" stopOpacity={alpha * 0.45} />
                     <stop offset="100%" stopColor="rgb(200,185,255)" stopOpacity={0} />
                   </linearGradient>
                 );
@@ -1169,7 +1169,7 @@ export const LauncherScreen = () => {
             >
               {layout.map(placed => {
                 const ew      = placed.effectiveWeight;
-                const strokeW = ew > 0.75 ? 0.8 : ew > 0.42 ? 0.55 : 0.4;
+                const strokeW = ew > 0.75 ? 1.5 : ew > 0.42 ? 1.0 : 0.6;
                 // Gentle arc: control point offset perpendicular to radial direction
                 const r   = Math.hypot(placed.x, placed.y) || 1;
                 const cur = 14; // px perpendicular offset at midpoint

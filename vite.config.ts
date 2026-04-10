@@ -1,25 +1,11 @@
-import { defineConfig, Plugin } from 'vite'
+import { defineConfig } from 'vite'
 import path from 'path'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 
-// Resolve figma:asset/xxx.png → src/assets/xxx.png
-function figmaAssets(): Plugin {
-  return {
-    name: 'figma-assets',
-    resolveId(id) {
-      if (id.startsWith('figma:asset/')) {
-        const file = id.replace('figma:asset/', '');
-        return path.resolve(__dirname, 'src/assets', file);
-      }
-    },
-  };
-}
-
 export default defineConfig({
   base: '/aura/',
   plugins: [
-    figmaAssets(),
     react(),
     tailwindcss(),
   ],

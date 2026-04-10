@@ -19,6 +19,14 @@ export const detailHeader: CSSProperties = {
   flexShrink: 0,
 };
 
+export const detailHeaderTitle: CSSProperties = {
+  color: C.textPrimary, fontSize: 18, fontWeight: 700, lineHeight: 1.1,
+};
+
+export const detailHeaderSubtitle: CSSProperties = {
+  color: C.textQuiet, fontSize: 13, marginTop: 2,
+};
+
 export const backBtn: CSSProperties = {
   width: 32, height: 32, borderRadius: R.dot,
   background: C.borderLight, border: 'none',

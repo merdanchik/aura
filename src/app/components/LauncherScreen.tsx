@@ -1392,7 +1392,7 @@ export const LauncherScreen = () => {
               >
                 {/* Month — fixed at top */}
                 <p style={{
-                  position: 'absolute', top: 20, left: 0, right: 0,
+                  position: 'absolute', top: 25, left: 0, right: 0,
                   fontSize: 8, fontWeight: 600, letterSpacing: '0.08em',
                   textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)',
                   lineHeight: 1, textAlign: 'center',

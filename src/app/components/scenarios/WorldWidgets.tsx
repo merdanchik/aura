@@ -9,7 +9,7 @@ type Freshness = 'active' | 'cooling' | 'quiet';
 const FRESHNESS: Record<Freshness, { color: string; label: string }> = {
   active:  { color: '#63D46B',                label: 'активно'  },
   cooling: { color: '#E7A93B',                label: 'остывает' },
-  quiet:   { color: 'rgba(255,255,255,0.38)', label: 'тихо'     },
+  quiet:   { color: 'rgba(255,255,255,0.40)', label: 'тихо'     },
 };
 
 // ── Data ──────────────────────────────────────────────────────────────────────
@@ -18,7 +18,6 @@ interface WorldWidget {
   id:        string;
   label:     string;
   sub:       string;
-  color:     string;
   freshness: Freshness;
   insight:   string;
   chips:     string[];
@@ -27,31 +26,31 @@ interface WorldWidget {
 const WORLDS: WorldWidget[] = [
   {
     id: 'content', label: 'Контент', sub: 'Музыка · Кино · Книги',
-    color: '#5AC8F5', freshness: 'active',
+    freshness: 'active',
     insight: 'Доминируют музыка и кино, книги в фоне',
     chips: ['127 прослушиваний', '3 досмотра', '14 лайков'],
   },
   {
     id: 'music', label: 'Музыка', sub: 'Слушает · Открывает · Собирает',
-    color: '#BF5AF2', freshness: 'active',
+    freshness: 'active',
     insight: 'Не просто слушает — уходит в длинные сессии',
     chips: ['3 возврата к альбому', 'сессии 50+ мин', '7 лайков'],
   },
   {
     id: 'cinema', label: 'Кино', sub: 'Фильмы · Сериалы · Список',
-    color: '#FF9F0A', freshness: 'cooling',
-    insight: 'Интерес копится быстрее, чем доходит до просмотра',
+    freshness: 'cooling',
+    insight: 'Список растёт быстрее, чем успевает смотреть',
     chips: ['3 досмотра до конца', '2 брошено', '10 дней пауза'],
   },
   {
     id: 'shopping', label: 'Шопинг', sub: 'Поиск · Сравнение · Решение',
-    color: '#FF6633', freshness: 'cooling',
+    freshness: 'cooling',
     insight: 'Решение почти созрело, но ещё сравнивает',
     chips: ['8 возвратов к товару', '3 в корзине', '12 сравнений'],
   },
   {
     id: 'travel', label: 'Путешествия', sub: 'Маршруты · Места · Логистика',
-    color: '#00C7BE', freshness: 'active',
+    freshness: 'active',
     insight: 'План уже движется к конкретной поездке',
     chips: ['3 отеля в избранном', '4 проверки билетов', '7 мест'],
   },
@@ -102,26 +101,27 @@ export const WorldWidgets: React.FC<Props> = ({ onClose }) => {
         }}
       >
         {/* Drag handle */}
-        <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 10, paddingBottom: 0 }}>
-          <div style={{ width: 32, height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.12)' }} />
+        <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 10 }}>
+          <div style={{ width: 30, height: 3, borderRadius: 2, background: 'rgba(255,255,255,0.10)' }} />
         </div>
 
         {/* Header */}
         <div style={{
-          display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between',
-          padding: '18px 20px 20px',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '14px 20px 18px',
         }}>
-          <p style={{ color: '#fff', fontSize: 34, fontWeight: 700, lineHeight: 1.05 }}>
+          <p style={{ color: '#fff', fontSize: 28, fontWeight: 700, lineHeight: 1.05 }}>
             Жизненные миры
           </p>
           <button
             onClick={onClose}
             style={{
-              width: 30, height: 30, borderRadius: '50%', flexShrink: 0, marginTop: 6,
-              background: 'rgba(255,255,255,0.08)', border: 'none',
-              color: 'rgba(255,255,255,0.45)', cursor: 'pointer',
+              width: 30, height: 30, borderRadius: '50%', flexShrink: 0,
+              background: 'rgba(255,255,255,0.06)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              color: 'rgba(255,255,255,0.55)', cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 14, fontWeight: 600,
+              fontSize: 13, fontWeight: 600,
               WebkitTapHighlightColor: 'transparent',
             }}
           >✕</button>
@@ -141,89 +141,71 @@ export const WorldWidgets: React.FC<Props> = ({ onClose }) => {
                 onClick={() => { onClose(); navigate(`/scenarios/${w.id}`); }}
                 style={{
                   borderRadius: 26,
-                  marginBottom: 14,
-                  minHeight: 148,
+                  marginBottom: 16,
+                  minHeight: 156,
                   background: '#15161A',
                   border: '1px solid rgba(255,255,255,0.08)',
+                  padding: '22px',
                   cursor: 'pointer',
                   WebkitTapHighlightColor: 'transparent',
-                  display: 'flex',
-                  overflow: 'hidden',
                 }}
               >
-                {/* Left accent — 3px, very subtle */}
+                {/* Row 1: title + status */}
                 <div style={{
-                  width: 3, flexShrink: 0,
-                  background: w.color,
-                  opacity: 0.22,
-                }} />
-
-                {/* Content */}
-                <div style={{ flex: 1, padding: '20px 20px 20px 18px' }}>
-
-                  {/* Row 1: title + status */}
+                  display: 'flex', alignItems: 'flex-start',
+                  justifyContent: 'space-between',
+                  marginBottom: 5,
+                }}>
+                  <span style={{ color: '#fff', fontSize: 28, fontWeight: 700, lineHeight: 1.0 }}>
+                    {w.label}
+                  </span>
                   <div style={{
-                    display: 'flex', alignItems: 'flex-start',
-                    justifyContent: 'space-between',
-                    marginBottom: 4,
+                    display: 'flex', alignItems: 'center', gap: 6,
+                    flexShrink: 0, marginLeft: 12, marginTop: 6,
                   }}>
-                    <span style={{
-                      color: '#fff', fontSize: 28, fontWeight: 700, lineHeight: 1.0,
-                    }}>
-                      {w.label}
-                    </span>
                     <div style={{
-                      display: 'flex', alignItems: 'center', gap: 6,
-                      flexShrink: 0, marginLeft: 12, marginTop: 5,
+                      width: 8, height: 8, borderRadius: '50%',
+                      background: fr.color, flexShrink: 0,
+                    }} />
+                    <span style={{ color: fr.color, fontSize: 15, fontWeight: 600, lineHeight: 1 }}>
+                      {fr.label}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Row 2: subtitle */}
+                <p style={{
+                  color: 'rgba(255,255,255,0.26)', fontSize: 15, fontWeight: 400,
+                  lineHeight: 1.3, marginBottom: 14,
+                }}>
+                  {w.sub}
+                </p>
+
+                {/* Row 3: insight */}
+                <p style={{
+                  color: 'rgba(255,255,255,0.92)', fontSize: 18, fontWeight: 400,
+                  lineHeight: 1.28, marginBottom: 20,
+                }}>
+                  {w.insight}
+                </p>
+
+                {/* Row 4: chips */}
+                <div style={{ display: 'flex', gap: 7, flexWrap: 'wrap' }}>
+                  {w.chips.map((chip, i) => (
+                    <span key={i} style={{
+                      display: 'inline-flex', alignItems: 'center',
+                      height: 30,
+                      borderRadius: 999,
+                      padding: '0 12px',
+                      background: 'rgba(255,255,255,0.04)',
+                      border: '1px solid rgba(255,255,255,0.06)',
+                      color: 'rgba(255,255,255,0.64)',
+                      fontSize: 13, fontWeight: 500,
+                      whiteSpace: 'nowrap',
                     }}>
-                      <div style={{
-                        width: 8, height: 8, borderRadius: '50%',
-                        background: fr.color, flexShrink: 0,
-                      }} />
-                      <span style={{
-                        color: fr.color, fontSize: 15, fontWeight: 600,
-                        lineHeight: 1,
-                      }}>
-                        {fr.label}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Row 2: subtitle */}
-                  <p style={{
-                    color: 'rgba(255,255,255,0.32)', fontSize: 15, fontWeight: 400,
-                    lineHeight: 1.3, marginBottom: 16,
-                  }}>
-                    {w.sub}
-                  </p>
-
-                  {/* Row 3: insight */}
-                  <p style={{
-                    color: 'rgba(255,255,255,0.90)', fontSize: 17, fontWeight: 400,
-                    lineHeight: 1.3, marginBottom: 16,
-                  }}>
-                    {w.insight}
-                  </p>
-
-                  {/* Row 4: chips */}
-                  <div style={{ display: 'flex', gap: 7, flexWrap: 'wrap' }}>
-                    {w.chips.map((chip, i) => (
-                      <span key={i} style={{
-                        display: 'inline-flex', alignItems: 'center',
-                        height: 30,
-                        borderRadius: 999,
-                        padding: '0 12px',
-                        background: 'rgba(255,255,255,0.05)',
-                        border: '1px solid rgba(255,255,255,0.07)',
-                        color: 'rgba(255,255,255,0.72)',
-                        fontSize: 13, fontWeight: 500,
-                        whiteSpace: 'nowrap',
-                      }}>
-                        {chip}
-                      </span>
-                    ))}
-                  </div>
-
+                      {chip}
+                    </span>
+                  ))}
                 </div>
               </div>
             );

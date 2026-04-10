@@ -1370,13 +1370,13 @@ export const LauncherScreen = () => {
             WebkitOverflowScrolling: 'touch' as any,
           }}>
             {[
-              { label: 'АВГУСТ · КИНОПОИСК',  title: 'Неделя, когда ты не спал',        bg: '#07101A', shadow: 'inset 0 2px 17px 11px rgba(5,25,60,0.98), inset 0 0 13px 7px rgba(10,55,130,0.82)', contextId: 'mem-kinopoisk'  },
-              { label: 'СЕНТЯБРЬ · МУЗЫКА',   title: 'Один трек на repeat',              bg: '#0A0320', shadow: 'inset 0 2px 17px 11px rgba(38,8,98,0.98), inset 0 0 13px 7px rgba(98,28,218,0.82)',   contextId: 'mem-music'       },
-              { label: 'НОЯБРЬ · ЕДА',        title: 'Дождливые пятницы',               bg: '#120800', shadow: 'inset 0 2px 17px 11px rgba(80,35,0,0.98), inset 0 0 13px 7px rgba(160,75,0,0.82)',    contextId: 'mem-food'        },
-              { label: 'ЯНВАРЬ · СПОРТ',       title: '+40 на корте',                    bg: '#001408', shadow: 'inset 0 2px 17px 11px rgba(0,55,20,0.98), inset 0 0 13px 7px rgba(0,120,45,0.82)',    contextId: 'aus-open'        },
-              { label: 'МАРТ · ГОНКИ',         title: 'Сзади никого',                    bg: '#00081A', shadow: 'inset 0 2px 17px 11px rgba(0,20,80,0.98), inset 0 0 13px 7px rgba(15,55,175,0.82)',   contextId: 'f1-2025'         },
-              { label: 'НОЯБРЬ · ПУТЕШЕСТВИЕ', title: 'Трастевере без туристов',         bg: '#110800', shadow: 'inset 0 2px 17px 11px rgba(80,38,0,0.98), inset 0 0 13px 7px rgba(155,75,0,0.82)',    contextId: 'rome'            },
-              { label: 'ДЕКАБРЬ · МУЗЫКА',     title: 'Гульд мурлыкал под запись',       bg: '#0D0218', shadow: 'inset 0 2px 17px 11px rgba(48,5,90,0.98), inset 0 0 13px 7px rgba(110,20,190,0.82)',  contextId: 'bach-goldberg'   },
+              { month: 'АВГУСТ',   title: 'Неделя, когда ты не спал',  bg: '#07101A', shadow: 'inset 0 2px 17px 11px rgba(5,25,60,0.98), inset 0 0 13px 7px rgba(10,55,130,0.82)',  contextId: 'mem-kinopoisk'  },
+              { month: 'СЕНТЯБРЬ', title: 'Один трек на repeat',        bg: '#0A0320', shadow: 'inset 0 2px 17px 11px rgba(38,8,98,0.98), inset 0 0 13px 7px rgba(98,28,218,0.82)', contextId: 'mem-music'       },
+              { month: 'НОЯБРЬ',   title: 'Дождливые пятницы',         bg: '#120800', shadow: 'inset 0 2px 17px 11px rgba(80,35,0,0.98), inset 0 0 13px 7px rgba(160,75,0,0.82)',   contextId: 'mem-food'        },
+              { month: 'ЯНВАРЬ',   title: '+40 на корте',               bg: '#001408', shadow: 'inset 0 2px 17px 11px rgba(0,55,20,0.98), inset 0 0 13px 7px rgba(0,120,45,0.82)',   contextId: 'aus-open'        },
+              { month: 'МАРТ',     title: 'Сзади никого',               bg: '#00081A', shadow: 'inset 0 2px 17px 11px rgba(0,20,80,0.98), inset 0 0 13px 7px rgba(15,55,175,0.82)',  contextId: 'f1-2025'         },
+              { month: 'НОЯБРЬ',   title: 'Трастевере без туристов',    bg: '#110800', shadow: 'inset 0 2px 17px 11px rgba(80,38,0,0.98), inset 0 0 13px 7px rgba(155,75,0,0.82)',   contextId: 'rome'            },
+              { month: 'ДЕКАБРЬ',  title: 'Гульд мурлыкал под запись', bg: '#0D0218', shadow: 'inset 0 2px 17px 11px rgba(48,5,90,0.98), inset 0 0 13px 7px rgba(110,20,190,0.82)', contextId: 'bach-goldberg'   },
             ].map((mem, i) => (
               <div
                 key={i}
@@ -1386,16 +1386,27 @@ export const LauncherScreen = () => {
                   borderRadius: 16,
                   backgroundColor: mem.bg,
                   boxShadow: mem.shadow,
-                  padding: '12px 14px',
-                  display: 'flex', flexDirection: 'column', justifyContent: 'center',
-                  alignItems: 'center', gap: 6,
+                  position: 'relative',
                   cursor: 'pointer',
                 }}
               >
-                <p style={{ fontSize: 8, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)', lineHeight: 1.3, textAlign: 'center' }}>
-                  {mem.label}
+                {/* Month — fixed at top */}
+                <p style={{
+                  position: 'absolute', top: 10, left: 0, right: 0,
+                  fontSize: 8, fontWeight: 600, letterSpacing: '0.08em',
+                  textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)',
+                  lineHeight: 1, textAlign: 'center',
+                }}>
+                  {mem.month}
                 </p>
-                <p style={{ fontSize: 13, fontWeight: 700, color: '#FFFFFF', lineHeight: 1.25, textAlign: 'center' }}>
+                {/* Title — centered both axes */}
+                <p style={{
+                  position: 'absolute', top: '50%', left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: 'calc(100% - 24px)',
+                  fontSize: 13, fontWeight: 700, color: '#FFFFFF',
+                  lineHeight: 1.25, textAlign: 'center',
+                }}>
                   {mem.title}
                 </p>
               </div>

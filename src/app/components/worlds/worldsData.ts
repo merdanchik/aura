@@ -12,8 +12,8 @@ import svcImdb       from '../../../assets/imdb.png';
 import svcWildberries from '../../../assets/wildberries.png';
 import svcOzon       from '../../../assets/ozon.png';
 import svcAviasales  from '../../../assets/aviasales.png';
-import imgF1App      from '../../../assets/f1-app.png';
-import imgNbaApp     from '../../../assets/nba-app.png';
+import imgF1App      from '../../../assets/f1-app.jpg';
+import imgNbaApp     from '../../../assets/nba-app.jpg';
 import svcBooking    from '../../../assets/booking.png';
 import svcAirbnb     from '../../../assets/airbnb.png';
 

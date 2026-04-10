@@ -1174,7 +1174,7 @@ export const LauncherScreen = () => {
           }}>
             {/* ── Layers 1–3: color-cycling glow wrapper (hue rotates slowly, photo untouched) ── */}
             <motion.div
-              style={{ position: 'absolute', pointerEvents: 'none' }}
+              style={{ position: 'absolute', top: '50%', left: '50%', pointerEvents: 'none' }}
               initial={{ filter: 'hue-rotate(0deg)' }}
               animate={{ filter: 'hue-rotate(360deg)' }}
               transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}

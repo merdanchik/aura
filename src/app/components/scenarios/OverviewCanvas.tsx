@@ -89,24 +89,24 @@ export const OverviewCanvas: React.FC = () => {
       {/* Title + orientation */}
       <div style={{ position: 'absolute', top: 56, left: 0, right: 0, textAlign: 'center', pointerEvents: 'none' }}>
         <p style={{ color: 'rgba(255,255,255,0.20)', fontSize: 11, letterSpacing: 1.2, fontWeight: 700 }}>
-          AURA · СЦЕНАРИИ
+          СЦЕНАРИИ
         </p>
-        <p style={{ color: 'rgba(255,255,255,0.12)', fontSize: 11, marginTop: 4, letterSpacing: 0.2 }}>
-          твои жизненные миры
+        <p style={{ color: 'rgba(255,255,255,0.10)', fontSize: 11, marginTop: 4, letterSpacing: 0.2 }}>
+          жизненные миры вокруг тебя
         </p>
       </div>
 
-      {/* Bottom hint */}
+      {/* Bottom hint — pulses 3 times then fades out */}
       <motion.div
-        animate={{ opacity: [0.0, 0.55, 0.0] }}
-        transition={{ duration: 3.5, delay: 1.2, repeat: 2, ease: 'easeInOut' }}
+        animate={{ opacity: [0.0, 0.50, 0.0] }}
+        transition={{ duration: 3.5, delay: 1.0, repeat: 2, ease: 'easeInOut' }}
         style={{
           position: 'absolute', bottom: 44, left: 0, right: 0,
           textAlign: 'center', pointerEvents: 'none',
         }}
       >
         <p style={{ color: 'rgba(255,255,255,0.38)', fontSize: 12, letterSpacing: 0.3 }}>
-          нажми на мир чтобы войти
+          нажми на мир, чтобы войти
         </p>
       </motion.div>
 
@@ -272,7 +272,7 @@ export const OverviewCanvas: React.FC = () => {
                       {s.label}
                     </p>
                     <p style={{ fontSize: 8, color: `${s.color}88`, marginTop: 3, lineHeight: 1 }}>
-                      сигнал слабый
+                      слабый сигнал
                     </p>
                   </motion.div>
                 ) : (

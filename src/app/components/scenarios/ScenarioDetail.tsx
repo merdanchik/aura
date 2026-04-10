@@ -106,9 +106,8 @@ export const ScenarioDetail: React.FC = () => {
           <p style={{ color: scenario.color, fontSize: 20, fontWeight: 700, lineHeight: 1 }}>
             {scenario.label}
           </p>
-          {/* Actuality indicator placeholder */}
           <p style={{ color: 'rgba(255,255,255,0.28)', fontSize: 12, marginTop: 2 }}>
-            актуальность · placeholder
+            скоро
           </p>
         </div>
 
@@ -149,7 +148,7 @@ export const ScenarioDetail: React.FC = () => {
       <div style={{ flex: 1, overflowY: 'auto', padding: '0 16px 32px' }}>
 
         {/* Summary */}
-        <Block title="Summary мира">
+        <Block title="Обзор">
           <SkeletonLine width="92%" />
           <SkeletonLine width="78%" />
           <SkeletonLine width="85%" />
@@ -157,7 +156,7 @@ export const ScenarioDetail: React.FC = () => {
         </Block>
 
         {/* Timeline */}
-        <Block title="Timeline experiences">
+        <Block title="События">
           {[1, 2, 3].map(n => (
             <div key={n} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 14 }}>
               <div style={{ width: 2, alignSelf: 'stretch', background: `${scenario.color}30`, borderRadius: 1, flexShrink: 0, marginTop: 4 }} />
@@ -170,14 +169,14 @@ export const ScenarioDetail: React.FC = () => {
         </Block>
 
         {/* Service contributors */}
-        <Block title="Service contributors">
+        <Block title="Сервисы">
           <div style={{ display: 'flex', gap: 10 }}>
             {[1, 2, 3, 4].map(n => <SkeletonCircle key={n} />)}
           </div>
         </Block>
 
         {/* Benefits */}
-        <Block title="Benefits">
+        <Block title="Польза">
           {[1, 2].map(n => (
             <div key={n} style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 10 }}>
               <SkeletonCircle size={28} />

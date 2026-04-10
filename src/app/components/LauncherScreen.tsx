@@ -55,6 +55,9 @@ interface PlacedNode {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
+// Module-level var: persists across SPA navigation, resets on full page reload
+let _sessionPeriodIndex: number | null = null;
+
 // STATIC DATA
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -828,19 +831,14 @@ export const LauncherScreen = () => {
   const navigate = useNavigate();
 
   // State
-  const [periodIndex, setPeriodIndex] = useState(() => {
-    const saved = sessionStorage.getItem('aura-period-index');
-    if (saved !== null) {
-      const n = parseInt(saved, 10);
-      if (n >= 0 && n < PERIODS.length) return n;
-    }
-    return PERIODS.length - 1; // default: Apr '25
-  });
+  const [periodIndex, setPeriodIndex] = useState(() =>
+    _sessionPeriodIndex !== null ? _sessionPeriodIndex : PERIODS.length - 1
+  );
   const period = PERIODS[periodIndex].id;
 
-  // Persist selected period across navigation
+  // Persist selected period across SPA navigation (not across page reloads)
   React.useEffect(() => {
-    sessionStorage.setItem('aura-period-index', String(periodIndex));
+    _sessionPeriodIndex = periodIndex;
   }, [periodIndex]);
   const [config] = useState<LayoutConfig>(DEFAULT_CONFIG);
 

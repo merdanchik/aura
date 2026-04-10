@@ -23,11 +23,13 @@ import imgAusOpen    from '../../assets/node-aus-open.jpg';
 import imgVerstappen from '../../assets/node-verstappen.jpg';
 
 // Yandex service icons — same PNGs as used in Dashboard services section
-import svcMusic   from '../../assets/yandex-music.png';
-import svcKino    from '../../assets/kinopoisk.png';
-import svcBooks   from '../../assets/yandex-books.png';
-import svcAfisha  from '../../assets/yandex-afisha.png';
-import svcTravel  from '../../assets/yandex-travel.png';
+import svcMusic        from '../../assets/yandex-music.png';
+import svcKino         from '../../assets/kinopoisk.png';
+import svcBooks        from '../../assets/yandex-books.png';
+import svcAfisha       from '../../assets/yandex-afisha.png';
+import svcTravel       from '../../assets/yandex-travel.png';
+import svcWildberries  from '../../assets/wildberries.png';
+import svcAviasales    from '../../assets/aviasales.png';
 
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -188,7 +190,7 @@ const NODES: InterestNode[] = [
   // ── Additional period-specific experiences ────────────────────────────────
   {
     // Summer trip, Lake Baikal
-    id: 'baikal', label: 'Байкал, июль', type: 'symbol', weight: 0.78, color: '#00C7BE', image: svcTravel,
+    id: 'baikal', label: 'Байкал, июль', type: 'symbol', weight: 0.78, color: '#00C7BE', image: svcAviasales,
     periods: ['2024-07', '2024-08'],
     periodWeight: { '2024-07': 0.82, '2024-08': 0.55 },
   },
@@ -254,7 +256,7 @@ const NODES: InterestNode[] = [
   },
   {
     // Nabokov — The Gift, autumn reading
-    id: 'nabokov', label: 'Дар', type: 'symbol', weight: 0.56, color: '#5E5CE6', image: svcBooks,
+    id: 'nabokov', label: 'Дар', type: 'symbol', weight: 0.56, color: '#5E5CE6', image: svcWildberries,
     periods: ['2024-10', '2024-11'],
     periodWeight: { '2024-10': 0.44, '2024-11': 0.58 },
   },
@@ -332,7 +334,7 @@ const NODE_META: Record<string, { sub?: string; freshness?: string }> = {
   'books':        { sub: 'Яндекс Книги',         freshness: 'вернулся после паузы'       },
   'coffee':       { sub: 'Яндекс Карты',        freshness: 'каждое утро'                },
   'sushi':        { sub: 'Яндекс Путешествия',  freshness: 'Токио — давно'              },
-  'baikal':       { sub: 'Яндекс Путешествия',  freshness: 'прошлым летом'              },
+  'baikal':       { sub: 'Авиасейлс',            freshness: 'прошлым летом'              },
   'wimbledon':    { sub: 'Яндекс Спорт',        freshness: 'финал год назад'            },
   'moon-safari':  { sub: 'Яндекс Музыка',       freshness: 'летний альбом — давно'      },
   'euro2024':     { sub: 'Яндекс Спорт',        freshness: 'финал год назад'            },
@@ -343,7 +345,7 @@ const NODE_META: Record<string, { sub?: string; freshness?: string }> = {
   'sunrise-run':  { sub: 'Яндекс Спорт',        freshness: 'бегает по утрам'            },
   'garage':       { sub: 'Яндекс Афиша',        freshness: 'был на открытии'            },
   'istanbul':     { sub: 'Яндекс Путешествия',  freshness: 'лето 2024 — не возвращался' },
-  'nabokov':      { sub: 'Яндекс Книги',         freshness: 'прочитал осенью'            },
+  'nabokov':      { sub: 'Wildberries',            freshness: 'прочитал осенью'            },
   'nick-cave':    { sub: 'Яндекс Афиша',        freshness: 'концерт прошлой осенью'     },
   'bach-goldberg':{ sub: 'Яндекс Музыка',       freshness: 'зимний ритуал'              },
   'rome':         { sub: 'Яндекс Путешествия',  freshness: 'поездка прошлой зимой'      },

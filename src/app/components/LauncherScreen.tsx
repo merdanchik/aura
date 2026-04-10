@@ -30,6 +30,8 @@ import svcAfisha       from '../../assets/yandex-afisha.png';
 import svcTravel       from '../../assets/yandex-travel.png';
 import svcWildberries  from '../../assets/wildberries.png';
 import svcAviasales    from '../../assets/aviasales.png';
+import imgF1App        from '../../assets/f1-app.png';
+import imgNbaApp       from '../../assets/nba-app.png';
 
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -153,13 +155,13 @@ const NODES: InterestNode[] = [
   },
   {
     // Nikola Jokić — NBA season Oct–Apr, offseason in summer
-    id: 'basketball', label: 'Jokić', type: 'symbol', weight: 0.82, color: '#FF9500', image: imgJokic,
+    id: 'basketball', label: 'Jokić', type: 'symbol', weight: 0.82, color: '#FF9500', image: imgNbaApp,
     periods: ['2024-10', '2024-11', '2024-12', '2025-01', '2025-02', '2025-03', '2025-04'],
     periodWeight: { '2024-10': 0.62, '2024-11': 0.72, '2024-12': 0.78, '2025-01': 0.82, '2025-02': 0.85, '2025-03': 0.88, '2025-04': 0.92 },
   },
   {
     // Monaco GP — post-race hype fades by autumn, reborn with new F1 season in spring
-    id: 'f1', label: 'Монако GP', type: 'symbol', weight: 0.78, color: '#FF3B30', image: imgLeclerc,
+    id: 'f1', label: 'Монако GP', type: 'symbol', weight: 0.78, color: '#FF3B30', image: imgF1App,
     periods: ['2024-07', '2024-08', '2024-09', '2024-10'],
     periodWeight: { '2024-07': 0.92, '2024-08': 0.82, '2024-09': 0.65, '2024-10': 0.48 },
   },

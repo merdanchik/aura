@@ -257,8 +257,8 @@ const NODES: InterestNode[] = [
   {
     // Home office setup — autumn purchase research
     id: 'home-office', label: 'Домашний офис', type: 'symbol', weight: 0.56, color: '#5E5CE6', image: svcWildberries,
-    periods: ['2024-10', '2024-11'],
-    periodWeight: { '2024-10': 0.44, '2024-11': 0.58 },
+    periods: ['2025-03', '2025-04'],
+    periodWeight: { '2025-03': 0.48, '2025-04': 0.58 },
   },
   {
     // Nick Cave concert — dark autumn
@@ -311,8 +311,8 @@ const NODES: InterestNode[] = [
   {
     // Kandinsky — Tretyakov spring exhibition
     id: 'kandinsky', label: 'Кандинский', type: 'symbol', weight: 0.54, color: '#FF9F0A', image: svcAfisha,
-    periods: ['2025-03', '2025-04'],
-    periodWeight: { '2025-03': 0.48, '2025-04': 0.58 },
+    periods: ['2024-10', '2024-11'],
+    periodWeight: { '2024-10': 0.44, '2024-11': 0.58 },
   },
 ];
 

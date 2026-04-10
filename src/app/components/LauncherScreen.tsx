@@ -1059,6 +1059,13 @@ export const LauncherScreen = () => {
   );
   const period = PERIODS[periodIndex].id;
 
+  // Clear showWorlds from history immediately so browser back/forward doesn't re-open the sheet
+  React.useEffect(() => {
+    if ((location.state as any)?.showWorlds) {
+      window.history.replaceState({}, '', window.location.href);
+    }
+  }, []);
+
   // Persist selected period across SPA navigation (not across page reloads)
   React.useEffect(() => {
     _sessionPeriodIndex = periodIndex;

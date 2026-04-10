@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import avatarImg from '../../assets/avatar.jpg';
 import { WorldWidgets } from './scenarios/WorldWidgets';
@@ -818,7 +818,7 @@ const OrbNodeEl: React.FC<{
         const ew    = placed.effectiveWeight;
         const showSub = ew >= 0.48;
         const meta  = NODE_META[node.id];
-        const maxW  = Math.max(sz + 40, 120);
+        const maxW  = Math.max(sz + 40, 148);
         const lFs   = Math.max(12, labelFs);
         const sFs   = 12;
         return (
@@ -1046,13 +1046,16 @@ const TimelineSlider: React.FC<TimelineSliderProps> = ({ periods, selectedIndex,
 
 export const LauncherScreen = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   // State
   const [periodIndex, setPeriodIndex] = useState(() =>
     _sessionPeriodIndex !== null ? _sessionPeriodIndex : PERIODS.length - 1
   );
   const [timelineActive, setTimelineActive] = useState(false);
-  const [showWidgets, setShowWidgets] = useState(false);
+  const [showWidgets, setShowWidgets] = useState(
+    () => !!(location.state as any)?.showWorlds
+  );
   const period = PERIODS[periodIndex].id;
 
   // Persist selected period across SPA navigation (not across page reloads)

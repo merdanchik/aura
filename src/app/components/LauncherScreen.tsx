@@ -807,9 +807,10 @@ interface TimelineSliderProps {
   periods: typeof PERIODS;
   selectedIndex: number;
   onChange: (i: number) => void;
+  onActiveChange?: (active: boolean) => void;
 }
 
-const TimelineSlider: React.FC<TimelineSliderProps> = ({ periods, selectedIndex, onChange }) => {
+const TimelineSlider: React.FC<TimelineSliderProps> = ({ periods, selectedIndex, onChange, onActiveChange }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   // offset: ruler translation. -i*STEP puts month i under the center line.
   const [offset, setOffset] = useState(() => -selectedIndex * STEP);
@@ -828,6 +829,7 @@ const TimelineSlider: React.FC<TimelineSliderProps> = ({ periods, selectedIndex,
     containerRef.current?.setPointerCapture(e.pointerId);
     setIsDragging(true);
     setShowCircle(true);
+    onActiveChange?.(true);
     startX.current = e.clientX;
     startOffset.current = offset;
   };
@@ -845,7 +847,10 @@ const TimelineSlider: React.FC<TimelineSliderProps> = ({ periods, selectedIndex,
     setIsDragging(false);
     setOffset(snappedOffset);
     onChange(nearestIndex);
-    hideTimer.current = setTimeout(() => setShowCircle(false), 700);
+    hideTimer.current = setTimeout(() => {
+      setShowCircle(false);
+      onActiveChange?.(false);
+    }, 700);
   };
 
   // Ticks only for real data range — no phantom months
@@ -1008,6 +1013,7 @@ export const LauncherScreen = () => {
   const [periodIndex, setPeriodIndex] = useState(() =>
     _sessionPeriodIndex !== null ? _sessionPeriodIndex : PERIODS.length - 1
   );
+  const [timelineActive, setTimelineActive] = useState(false);
   const period = PERIODS[periodIndex].id;
 
   // Persist selected period across SPA navigation (not across page reloads)
@@ -1046,8 +1052,18 @@ export const LauncherScreen = () => {
   return (
     <div
       className="flex flex-col items-center"
-      style={{ backgroundColor: '#050508', fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", height: '100dvh', overflow: 'hidden' }}
+      style={{ backgroundColor: '#050508', fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", height: '100dvh', overflow: 'hidden', position: 'relative' }}
     >
+      {/* Timeline edge glow — warm amber vignette on scroll */}
+      <motion.div
+        animate={{ opacity: timelineActive ? 1 : 0 }}
+        transition={{ duration: timelineActive ? 0.15 : 0.9, ease: 'easeInOut' }}
+        style={{
+          position: 'absolute', inset: 0,
+          pointerEvents: 'none', zIndex: 50,
+          boxShadow: 'inset 0 0 90px 40px rgba(201, 162, 39, 0.32)',
+        }}
+      />
       <div className="w-full max-w-md mx-auto flex flex-col" style={{ height: '100%' }}>
 
         {/* ── TOP — profile card ── */}
@@ -1235,7 +1251,7 @@ export const LauncherScreen = () => {
         </div>
 
         {/* ── TIMELINE SLIDER ── */}
-        <TimelineSlider periods={PERIODS} selectedIndex={periodIndex} onChange={setPeriodIndex} />
+        <TimelineSlider periods={PERIODS} selectedIndex={periodIndex} onChange={setPeriodIndex} onActiveChange={setTimelineActive} />
 
         <div style={{ height: 68, flexShrink: 0 }} />
 

@@ -117,10 +117,10 @@ export const ShoppingWorldDetail: React.FC = () => {
             marginBottom: 30,
           }}>
             <p style={{ color: '#fff', fontSize: 24, fontWeight: 700, lineHeight: 1.15, marginBottom: 12 }}>
-              Намерение без триггера
+              Решение созревает
             </p>
             <p style={{ color: 'rgba(255,255,255,0.58)', fontSize: 16, lineHeight: 1.55, marginBottom: 16 }}>
-              Одни и те же кроссовки — четвёртый раз за неделю. Цена не изменилась. Решение почти принято.
+              Возвращается к тем же кроссовкам уже четвёртый раз — цена не менялась. Всё ещё сравнивает, но решение уже почти принято.
             </p>
             <p style={{ color: 'rgba(255,255,255,0.34)', fontSize: 13 }}>
               Основано на активности за последние 2 недели

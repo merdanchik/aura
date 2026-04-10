@@ -124,10 +124,10 @@ export const TravelWorldDetail: React.FC = () => {
             marginBottom: 30,
           }}>
             <p style={{ color: '#fff', fontSize: 24, fontWeight: 700, lineHeight: 1.15, marginBottom: 12 }}>
-              В режиме поездки
+              План становится конкретным
             </p>
             <p style={{ color: 'rgba(255,255,255,0.58)', fontSize: 16, lineHeight: 1.55, marginBottom: 16 }}>
-              Тбилиси, июнь. Есть конкретное направление, дата и первые сохранения — переход от мечты к плану.
+              Тбилиси, июнь. Уже есть направление, даты и первые сохранения — план движется к конкретной поездке.
             </p>
             <p style={{ color: 'rgba(255,255,255,0.34)', fontSize: 13 }}>
               Основано на активности за последние 2 недели

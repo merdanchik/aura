@@ -125,10 +125,10 @@ export const ContentWorldDetail: React.FC = () => {
             marginBottom: 30,
           }}>
             <p style={{ color: '#fff', fontSize: 24, fontWeight: 700, lineHeight: 1.15, marginBottom: 12 }}>
-              Исследователь историй
+              Музыка и кино доминируют
             </p>
             <p style={{ color: 'rgba(255,255,255,0.58)', fontSize: 16, lineHeight: 1.55, marginBottom: 16 }}>
-              Сейчас доминируют музыка и кино. Книги в фоне — вернулся к тексту после паузы.
+              Сейчас основная активность сосредоточена в музыке и кино. Книги не исчезли — остаются живым, но фоновым слоем интереса.
             </p>
             <p style={{ color: 'rgba(255,255,255,0.34)', fontSize: 13 }}>
               Основано на активности за последние 2 недели

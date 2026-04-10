@@ -19,8 +19,9 @@ import imgEuro      from '../../assets/node-euro.jpg';
 import imgNickCave  from '../../assets/node-nick-cave.jpg';
 import imgRome      from '../../assets/node-rome.jpg';
 import imgIstanbul  from '../../assets/node-istanbul.jpg';
-import imgNilsFrahm from '../../assets/node-nils-frahm.jpg';
-import imgAusOpen   from '../../assets/node-aus-open.jpg';
+import imgNilsFrahm  from '../../assets/node-nils-frahm.jpg';
+import imgAusOpen    from '../../assets/node-aus-open.jpg';
+import imgVerstappen from '../../assets/node-verstappen.jpg';
 
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -152,8 +153,8 @@ const NODES: InterestNode[] = [
     periodWeight: { '2024-07': 0.92, '2024-08': 0.82, '2024-09': 0.65, '2024-10': 0.48 },
   },
   {
-    // F1 new season — Bahrain/Australia opener, spring excitement
-    id: 'f1-2025', label: 'Гран-при', type: 'symbol', weight: 0.72, color: '#FF3B30', image: imgLeclerc,
+    // Verstappen — Melbourne 2025 season opener, dominant from pole
+    id: 'f1-2025', label: "Мельбурн '25", type: 'symbol', weight: 0.72, color: '#3A86FF', image: imgVerstappen,
     periods: ['2025-03', '2025-04'],
     periodWeight: { '2025-03': 0.62, '2025-04': 0.78 },
   },

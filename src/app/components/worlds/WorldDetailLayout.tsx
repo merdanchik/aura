@@ -32,12 +32,12 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
     <div style={{
       position: 'fixed', inset: 0,
       background: '#111114',
-      display: 'flex', flexDirection: 'column',
+      overflowY: 'auto', WebkitOverflowScrolling: 'touch' as any,
       fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
     }}>
 
       {/* Back button */}
-      <div style={{ padding: 'calc(env(safe-area-inset-top) + 8px) 16px 8px', flexShrink: 0 }}>
+      <div style={{ padding: 'calc(env(safe-area-inset-top) + 8px) 16px 8px' }}>
         <button
           onClick={() => navigate(-1 as any)}
           style={{
@@ -52,9 +52,7 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
         </button>
       </div>
 
-      {/* Scrollable body */}
-      <div style={{ flex: 1, overflowY: 'auto', WebkitOverflowScrolling: 'touch' as any }}>
-        <div style={{ padding: '4px 16px 60px' }}>
+      <div style={{ padding: '4px 16px 60px' }}>
 
           {/* Hero card */}
           <div style={{
@@ -221,7 +219,6 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
           </div>
 
         </div>
-      </div>
     </div>
   );
 };

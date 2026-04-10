@@ -596,7 +596,7 @@ const CapsuleNodeEl: React.FC<{
   const dx    = (3 + intensity * 4) * (nodeSeed(node.id, 13) > 0.5 ? 1 : -1) * (0.3 + nodeSeed(node.id, 14) * 0.7);
   const dur   = 5.5 + nodeSeed(node.id, 1) * 5;
   const delay = nodeSeed(node.id, 2) * 3.5;
-  const fs    = Math.round(13 + placed.effectiveWeight * 8);
+  const fs    = Math.round(13 + node.weight * 8);
   const ew    = placed.effectiveWeight;
 
   // 3-tier glow on text
@@ -748,7 +748,7 @@ const OrbNodeEl: React.FC<{
   const breathe = 3 + nodeSeed(node.id, 10) * 2.5;
   const dur     = 5.5 + nodeSeed(node.id, 8) * 5;
   const delay   = nodeSeed(node.id, 9) * 4;
-  const labelFs = Math.max(12, Math.round(9 + placed.effectiveWeight * 4));
+  const labelFs = Math.max(12, Math.round(9 + node.weight * 4));
 
   // Sample dominant color from image for glow
   const [glowColor, setGlowColor] = React.useState(node.color);
@@ -818,7 +818,7 @@ const OrbNodeEl: React.FC<{
       {/* Labels: label + source. Two lines for ew≥0.48, label-only below. */}
       {(() => {
         const ew    = placed.effectiveWeight;
-        const showSub = ew >= 0.48;
+        const showSub = node.weight >= 0.48;
         const meta  = NODE_META[node.id];
         const maxW  = Math.max(sz + 40, 148);
         const lFs   = Math.max(12, labelFs);

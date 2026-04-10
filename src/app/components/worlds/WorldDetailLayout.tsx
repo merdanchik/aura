@@ -21,7 +21,7 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
   const location = useLocation();
   const fromWorlds = (location.state as any)?.fromWorlds;
 
-  const goBack = () => navigate('/', fromWorlds ? { state: { showWorlds: true } } : undefined);
+  const goBack = () => navigate(-1 as any);
 
   return (
     <div style={screenBg}>
@@ -35,8 +35,8 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
           color: data.color, padding: 0,
           WebkitTapHighlightColor: 'transparent',
         }}>
-          <ChevronLeft size={15} />
-          <span style={{ fontSize: 15, fontWeight: 500 }}>Жизненные миры</span>
+          <ChevronLeft size={17} />
+          <span style={{ fontSize: 17, fontWeight: 500 }}>Жизненные миры</span>
         </button>
         {/* Заголовок */}
         <p style={detailHeaderTitle}>{data.title}</p>

@@ -23,11 +23,11 @@ import imgAusOpen    from '../../assets/node-aus-open.jpg';
 import imgVerstappen from '../../assets/node-verstappen.jpg';
 
 // Yandex service icons — same PNGs as used in Dashboard services section
-import svcMusic     from '../../assets/52729efb5574f608701f92848e1b348745677960.png';
-import svcKino      from '../../assets/b39f941bc25c3069b2f4719e19fdc535f4a56625.png';
-import svcBooks     from '../../assets/94e2bb438930a86c21d001934a49869c8425f73a.png';
-import svcAfisha    from '../../assets/afisha.png';
-import svcTravel    from '../../assets/travel.png';
+import svcMusic   from '../../assets/yandex-music.png';
+import svcKino    from '../../assets/kinopoisk.png';
+import svcBooks   from '../../assets/yandex-books.png';
+import svcAfisha  from '../../assets/yandex-afisha.png';
+import svcTravel  from '../../assets/yandex-travel.png';
 
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -1117,8 +1117,8 @@ export const LauncherScreen = () => {
         {/* ── CANVAS — interest map ── */}
         <div
           ref={canvasRef}
-          className="flex-1 relative overflow-hidden"
-          style={{ minHeight: 0 }}
+          className="flex-1 relative"
+          style={{ minHeight: 0, overflow: 'visible' }}
         >
 
           {/* Ambient color hazes — large blurred clouds behind top nodes, dreamlike depth */}

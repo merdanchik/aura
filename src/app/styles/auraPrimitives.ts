@@ -113,6 +113,7 @@ export const sourceCard: CSSProperties = {
 export const sourceIconImg: CSSProperties = {
   width: S.sourceIconSize, height: S.sourceIconSize,
   borderRadius: R.iconLg, objectFit: 'cover', flexShrink: 0,
+  overflow: 'hidden',
 };
 
 export const sourceBadge = (accent: string): CSSProperties => ({

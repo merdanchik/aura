@@ -2,12 +2,12 @@ import React from 'react';
 import { useNavigate } from 'react-router';
 import { motion } from 'motion/react';
 
-import svcMusic       from '../../../assets/52729efb5574f608701f92848e1b348745677960.png';
-import svcKino        from '../../../assets/b39f941bc25c3069b2f4719e19fdc535f4a56625.png';
-import svcBooks       from '../../../assets/94e2bb438930a86c21d001934a49869c8425f73a.png';
-import svcMarket      from '../../../assets/873668dc7d9e7bd9c16444667bc68a762e2b3499.png';
-import svcAfisha      from '../../../assets/afisha.png';
-import svcTravel      from '../../../assets/travel.png';
+import svcMusic       from '../../../assets/yandex-music.png';
+import svcKino        from '../../../assets/kinopoisk.png';
+import svcBooks       from '../../../assets/yandex-books.png';
+import svcMarket      from '../../../assets/yandex-market.png';
+import svcAfisha      from '../../../assets/yandex-afisha.png';
+import svcTravel      from '../../../assets/yandex-travel.png';
 import svcSpotify     from '../../../assets/spotify.png';
 import svcIvi         from '../../../assets/ivi.png';
 import svcKion        from '../../../assets/kion.png';
@@ -57,10 +57,9 @@ const ServiceBadge: React.FC<{ name: string }> = ({ name }) => {
   const def = SERVICES[name] ?? { initials: name.slice(0, 2), color: C.textQuiet };
   if (def.icon) {
     return (
-      <img
-        src={def.icon} alt={name} title={name}
-        style={{ width: S.serviceIconSize, height: S.serviceIconSize, borderRadius: R.iconSm, objectFit: 'cover', flexShrink: 0 }}
-      />
+      <div title={name} style={{ width: S.serviceIconSize, height: S.serviceIconSize, borderRadius: R.iconLg, overflow: 'hidden', flexShrink: 0 }}>
+        <img src={def.icon} alt={name} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+      </div>
     );
   }
   return (

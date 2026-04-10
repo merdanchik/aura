@@ -331,6 +331,42 @@ const BANDS = {
   outer: [202, 238] as const,   // background, ew < 0.42
 };
 
+// Minimum gap between any two footprint edges (px)
+const MIN_GAP = 12;
+// Avatar collision radius: half-size + clearance
+const AVATAR_FP = AVATAR_R + AVATAR_GAP; // 55 + 16 = 71
+
+/** Per-type collision footprint radius (px from node center).
+ *
+ *  text   — driven by actual label width × font-size; bloom extends 22 px each side.
+ *  symbol — max(orb_radius + buffer, half_label_width + buffer).
+ *  blob   — simple orb + buffer.
+ *
+ *  Using label.length × charWidth instead of a flat constant gives
+ *  "Дар" a small footprint and "Australian Open" a correctly large one.
+ */
+function footprintR(node: InterestNode, placed: PlacedNode): number {
+  const sz = placed.size;           // orb half-size px (from base weight, stable)
+  const ew = placed.effectiveWeight;
+
+  if (node.type === 'text') {
+    // CapsuleNodeEl: fontSize = round(13 + ew*8). Bloom extends 22 px each side.
+    const fs        = Math.round(13 + ew * 8);
+    const halfTextW = (node.label.length * fs * 0.6) / 2;
+    return halfTextW + 22 + 6;      // bloom(22) + gap buffer(6)
+  }
+
+  if (node.type === 'symbol') {
+    // OrbNodeEl: orb circle radius=sz. Label hangs below: connector 9px + ~13px text.
+    // Horizontal extent = max(orb_radius, half_label_width).
+    const labelFs    = Math.round(10 + ew * 5);
+    const halfLabelW = (node.label.length * labelFs * 0.6) / 2;
+    return Math.max(sz + 10, halfLabelW + 6);
+  }
+
+  return sz + 8; // blob / unknown
+}
+
 function computeLayout(
   nodes: InterestNode[],
   period: string,
@@ -365,63 +401,99 @@ function computeLayout(
     angles[originalIdx] = slotIdx * angleSlot + (rng() - 0.5) * angleSlot * 0.55;
   });
 
+  // Node lookup needed for footprint calculation during placement
+  const nodeMap = new Map(visible.map(({ node }) => [node.id, node]));
+
+  // Initial placement: band assignment + footprint-aware minimum radius.
+  // minR = AVATAR_FP + footprint + MIN_GAP ensures a large text node is
+  // never placed inside the avatar zone before the solver even starts.
   const placed: PlacedNode[] = visible.map(({ node, ew }, i) => {
-    // Inner capped at 3 top nodes — prevents cluster of small nodes near avatar
+    const sz            = nodeSize(node.weight);
     const innerEligible = i < 3 && ew > 0.78;
-    const band = innerEligible ? BANDS.inner : ew > 0.42 ? BANDS.mid : BANDS.outer;
-    const r = Math.min(band[0] + rng() * (band[1] - band[0]), maxR - nodeSize(node.weight));
+    const band          = innerEligible ? BANDS.inner : ew > 0.42 ? BANDS.mid : BANDS.outer;
+    // Compute footprint using a partial placed record (position not yet known)
+    const partialP      = { id: node.id, x: 0, y: 0, size: sz, effectiveWeight: ew, type: node.type };
+    const fp            = footprintR(node, partialP);
+    const minR          = AVATAR_FP + fp + MIN_GAP;
+    const bandR         = band[0] + rng() * (band[1] - band[0]);
+    const r             = Math.min(Math.max(bandR, minR), maxR - fp);
     return {
       id: node.id,
       x: Math.cos(angles[i]) * r,
       y: Math.sin(angles[i]) * r,
-      size: nodeSize(node.weight),
+      size: sz,
       effectiveWeight: ew,
       type: node.type,
     };
   });
 
-  // Collision repulsion (heavy nodes move less)
-  if (config.collisions) {
-    for (let k = 0; k < 16; k++) {
-      for (let i = 0; i < placed.length; i++) {
-        for (let j = i + 1; j < placed.length; j++) {
-          const a = placed[i], b = placed[j];
-          const dx = b.x - a.x, dy = b.y - a.y;
-          const d = Math.hypot(dx, dy) || 0.01;
-          const textExtra = (a.type === 'text' ? 40 : 0) + (b.type === 'text' ? 40 : 0);
-          const minD = a.size + b.size + 28 + textExtra;
-          if (d < minD) {
-            const push = (minD - d) * 0.52;
-            const nx = dx / d, ny = dy / d;
-            const tot = a.effectiveWeight + b.effectiveWeight || 1;
-            placed[i].x -= nx * push * (b.effectiveWeight / tot);
-            placed[i].y -= ny * push * (b.effectiveWeight / tot);
-            placed[j].x += nx * push * (a.effectiveWeight / tot);
-            placed[j].y += ny * push * (a.effectiveWeight / tot);
-          }
+  if (!config.collisions) return placed;
+
+  // Per-node footprint radii — stable, computed once after placement
+  const fp = placed.map(p => footprintR(nodeMap.get(p.id)!, p));
+  const hw = cW / 2 - 20;
+  const hh = cH / 2 - 20;
+
+  // ── Unified constraint solver ────────────────────────────────────────────
+  // All three constraint types run in a single loop, repeated until the layout
+  // satisfies every constraint (or hits MAX_ITER as a safety cap).
+  //
+  // Key differences from the old approach:
+  //  • Full-overlap push (factor 1.0): each resolved pair is fully separated
+  //    in one step — no more partial 0.52 factor that left residual overlap.
+  //  • Avatar + screen-edge constraints are inside the same loop, so fixing
+  //    one constraint cannot silently re-break another.
+  //  • Early-exit: as soon as a full pass finds no violations, we stop.
+  const MAX_ITER = 80;
+  for (let iter = 0; iter < MAX_ITER; iter++) {
+    let violated = false;
+
+    // 1. Avatar constraint — push nodes radially outward from center (0,0)
+    for (let i = 0; i < placed.length; i++) {
+      const p    = placed[i];
+      const d    = Math.hypot(p.x, p.y) || 0.01;
+      const minD = AVATAR_FP + fp[i];
+      if (d < minD) {
+        const scale = minD / d;
+        p.x    *= scale;
+        p.y    *= scale;
+        violated = true;
+      }
+    }
+
+    // 2. Node-node constraint — full separation, weight-proportional push.
+    //    Heavier node moves less; total push = full overlap (not partial).
+    for (let i = 0; i < placed.length; i++) {
+      for (let j = i + 1; j < placed.length; j++) {
+        const a   = placed[i], b = placed[j];
+        const dx  = b.x - a.x, dy = b.y - a.y;
+        const d   = Math.hypot(dx, dy) || 0.01;
+        const minD = fp[i] + fp[j] + MIN_GAP;
+        if (d < minD) {
+          violated        = true;
+          const overlap   = minD - d;
+          const nx        = dx / d, ny = dy / d;
+          const tot       = a.effectiveWeight + b.effectiveWeight || 1;
+          placed[i].x    -= nx * overlap * (b.effectiveWeight / tot);
+          placed[i].y    -= ny * overlap * (b.effectiveWeight / tot);
+          placed[j].x    += nx * overlap * (a.effectiveWeight / tot);
+          placed[j].y    += ny * overlap * (a.effectiveWeight / tot);
         }
       }
     }
-  }
 
-  // Push nodes away from avatar (center = 0,0)
-  placed.forEach(n => {
-    const d = Math.hypot(n.x, n.y) || 0.01;
-    const extra = n.type === 'text' ? 70 : n.type === 'symbol' ? 14 : 0;
-    const minD = AVATAR_R + n.size + AVATAR_GAP + extra;
-    if (d < minD) {
-      n.x = (n.x / d) * minD;
-      n.y = (n.y / d) * minD;
+    // 3. Screen-edge constraint — node footprint must stay within canvas
+    for (let i = 0; i < placed.length; i++) {
+      const p  = placed[i];
+      const r  = fp[i] + 4;   // 4 px breathing room at edges
+      const ox = p.x, oy = p.y;
+      p.x = Math.max(-(hw - r), Math.min(hw - r, p.x));
+      p.y = Math.max(-(hh - r), Math.min(hh - r, p.y));
+      if (p.x !== ox || p.y !== oy) violated = true;
     }
-  });
 
-  // Clamp — extra margin for text nodes (label wider than placed.size)
-  const hw = cW / 2 - 24, hh = cH / 2 - 24;
-  placed.forEach(n => {
-    const extra = n.type === 'text' ? 48 : 0;
-    n.x = Math.max(-(hw - n.size - extra), Math.min(hw - n.size - extra, n.x));
-    n.y = Math.max(-(hh - n.size), Math.min(hh - n.size, n.y));
-  });
+    if (!violated) break;  // all constraints satisfied — converged
+  }
 
   return placed;
 }
@@ -879,12 +951,12 @@ const AuraHeader: React.FC = () => {
     >
       {/* Rings with score number in center */}
       <div style={{ position: 'relative', flexShrink: 0 }}>
-        <AuraRings knowledge={globalKnowledgeScore} trust={globalTrustScore} size={82} />
+        <AuraRings knowledge={globalKnowledgeScore} trust={globalTrustScore} size={66} />
         <div style={{
           position: 'absolute', inset: 0,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
-          <span style={{ fontSize: 18, fontWeight: 700, color: 'white', letterSpacing: -0.5 }}>{score}</span>
+          <span style={{ fontSize: 14, fontWeight: 700, color: 'white', letterSpacing: -0.5 }}>{score}</span>
         </div>
       </div>
 

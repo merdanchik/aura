@@ -10,9 +10,9 @@
     l.replace(
       l.protocol + '//' + l.host + '/' +
       l.pathname.slice(1).split('/').slice(0, segmentCount).join('/') +
-      '/?p=/' +
+      '/?/' +
       l.pathname.slice(1).split('/').slice(segmentCount).join('/').replace(/&/g, '~and~') +
-      (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+      (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
       l.hash
     );
   </script>

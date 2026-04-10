@@ -4,10 +4,10 @@
 
 /** Colors */
 export const C = {
-  appBg:           '#0D0E11',
-  surface:         '#1C2030',
-  surfaceSecondary:'#222638',
-  chipBg:          '#2A2D3E',
+  appBg:           '#111114',
+  surface:         '#1C1C1E',
+  surfaceSecondary:'#2C2C2E',
+  chipBg:          '#2C2C2E',
 
   // Text emphasis scale
   textPrimary:          '#FFFFFF',

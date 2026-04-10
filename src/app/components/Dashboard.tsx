@@ -44,7 +44,13 @@ const serviceIconMap: Record<string, string> = {
   travel: iconTravel,
 };
 
-const PRIMARY_SERVICES = ['music', 'kinopoisk', 'books', 'market', 'split'];
+const WORLDS_DATA = [
+  { id: 'content',  label: 'Контент',      sub: 'Музыка · Кино · Книги',          color: '#5AC8F5', freshnessColor: '#30D158', freshnessLabel: 'активно'  },
+  { id: 'music',    label: 'Музыка',        sub: 'Слушает · Открывает · Собирает',  color: '#BF5AF2', freshnessColor: '#30D158', freshnessLabel: 'активно'  },
+  { id: 'cinema',   label: 'Кино',          sub: 'Фильмы · Сериалы · Список',       color: '#FF9F0A', freshnessColor: '#E7A93B', freshnessLabel: 'остывает' },
+  { id: 'shopping', label: 'Шопинг',        sub: 'Поиск · Сравнение · Решение',     color: '#FF6633', freshnessColor: '#E7A93B', freshnessLabel: 'остывает' },
+  { id: 'travel',   label: 'Путешествия',   sub: 'Маршруты · Места · Логистика',    color: '#00C7BE', freshnessColor: '#30D158', freshnessLabel: 'активно'  },
+];
 
 // ─── Heart Aura ──────────────────────────────────────────────────────────────
 
@@ -531,15 +537,9 @@ const TABS = ['Мой профиль', 'Друзья', 'Партнеры'] as co
 type TabType = typeof TABS[number];
 
 export const Dashboard = () => {
-  const { services, globalTrustScore, globalKnowledgeScore, overallScore, strongAura, toggleStrongAura } = useAura();
+  const { globalTrustScore, globalKnowledgeScore, overallScore, strongAura, toggleStrongAura } = useAura();
   const navigate = useNavigate();
-  const [servicesExpanded, setServicesExpanded] = useState(() => sessionStorage.getItem('servicesExpanded') === 'true');
   const [activeTab, setActiveTab] = useState<TabType>('Мой профиль');
-
-  const toggleExpanded = (v: boolean) => {
-    setServicesExpanded(v);
-    sessionStorage.setItem('servicesExpanded', String(v));
-  };
 
   React.useEffect(() => {
     const saved = sessionStorage.getItem('dashboardScroll');
@@ -568,22 +568,36 @@ export const Dashboard = () => {
       WebkitOverflowScrolling: 'touch' as any,
       fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
     }}><div>
-      {/* ── Header: avatar + strong aura toggle ── */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '52px 16px 12px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <img src={avatarImg} alt="Аватар" style={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} />
-          <div>
-            <p style={{ color: 'white', fontSize: 17, fontWeight: 700, lineHeight: 1 }}>Александр</p>
-            <p style={{ color: '#636366', fontSize: 12, marginTop: 2 }}>Аура ID · 4821</p>
+      {/* ── Header: back + avatar + strong aura toggle ── */}
+      <div style={{ padding: '52px 16px 12px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+          <button
+            onClick={() => navigate(-1 as any)}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 4,
+              background: 'none', border: 'none', cursor: 'pointer',
+              color: '#636366', padding: 0,
+              WebkitTapHighlightColor: 'transparent',
+            }}
+          >
+            <svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M7 1L1 7L7 13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            <span style={{ fontSize: 15, fontWeight: 500 }}>Назад</span>
+          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ color: strongAura ? '#BF5AF2' : '#636366', fontSize: 13, fontWeight: 500 }}>Сильная аура</span>
+            <Switch
+              checked={strongAura}
+              onCheckedChange={toggleStrongAura}
+              className="h-[31px] w-[51px] data-[state=checked]:bg-[#BF5AF2] data-[state=unchecked]:bg-[#3A3A3C] border-0 [&>[data-slot=switch-thumb]]:size-[27px] [&>[data-slot=switch-thumb]]:data-[state=checked]:translate-x-[22px] [&>[data-slot=switch-thumb]]:shadow-[0_2px_6px_rgba(0,0,0,0.4)]"
+            />
           </div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span style={{ color: strongAura ? '#BF5AF2' : '#636366', fontSize: 13, fontWeight: 500 }}>Сильная аура</span>
-          <Switch
-            checked={strongAura}
-            onCheckedChange={toggleStrongAura}
-            className="h-[31px] w-[51px] data-[state=checked]:bg-[#BF5AF2] data-[state=unchecked]:bg-[#3A3A3C] border-0 [&>[data-slot=switch-thumb]]:size-[27px] [&>[data-slot=switch-thumb]]:data-[state=checked]:translate-x-[22px] [&>[data-slot=switch-thumb]]:shadow-[0_2px_6px_rgba(0,0,0,0.4)]"
-          />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <img src={avatarImg} alt="Аватар" style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} />
+          <div>
+            <p style={{ color: 'white', fontSize: 20, fontWeight: 700, lineHeight: 1 }}>Александр</p>
+            <p style={{ color: '#636366', fontSize: 12, marginTop: 3 }}>Аура ID · 4821</p>
+          </div>
         </div>
       </div>
       {/* ── Tab bar ── */}
@@ -682,7 +696,7 @@ export const Dashboard = () => {
         </div>
       </motion.div>
 
-      {/* Services + Relationship merged — MOVED UP */}
+      {/* Жизненные миры */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -690,65 +704,26 @@ export const Dashboard = () => {
         className="mt-5"
       >
         <p className="text-[13px] text-[#98989D] px-1 mb-3 tracking-widest font-semibold uppercase">
-          Сервисы
+          Жизненные миры
         </p>
         <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#1C1C1E' }}>
-          {Object.values(services)
-            .filter(s => servicesExpanded || PRIMARY_SERVICES.includes(s.id))
-            .map((service, idx, arr) => {
-              const isLast = idx === arr.length - 1 && servicesExpanded;
-              const allDone = service.actions.length > 0 && service.actions.every(a => a.completed);
-              const k = allDone ? 100 : service.knowledgeScore;
-              const t = allDone ? 100 : (service.trustScore ?? 0);
-              const sTrust = allDone ? 100 : (service.trustScore ?? globalTrustScore);
-              const combined = service.trustScore !== null ? (k + t) / 2 : k;
-
-              let label = 'новая';
-              let labelColor = '#636366';
-              if (combined >= 70) { label = 'глубокая'; labelColor = '#BF5AF2'; }
-              else if (combined >= 45) { label = 'близкая'; labelColor = '#30D158'; }
-              else if (combined >= 25) { label = 'знакомая'; labelColor = '#FF9500'; }
-              else if (service.trustScore !== null && t < 30) { label = 'сложная'; labelColor = '#FF3B30'; }
-
-              return (
-                <motion.button
-                  key={service.id}
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.25 }}
-                  onClick={() => navigate(`/service/${service.id}`)}
-                  className="w-full flex items-center gap-3 px-4 py-3.5 active:bg-white/[0.05] transition-colors text-left"
-                >
-                  <img
-                    src={serviceIconMap[service.id]}
-                    alt={service.name}
-                    className="w-11 h-11 rounded-[12px] object-cover flex-shrink-0"
-                  />
-                  <div className={`flex-1 min-w-0 flex items-center gap-3 ${!isLast ? 'border-b border-white/[0.08] pb-3.5 -mb-3.5' : ''}`}>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-[17px] text-white truncate" style={{ fontWeight: 500 }}>{service.name}</p>
-                      <p className="text-[13px] mt-0.5" style={{ color: labelColor, fontWeight: 500 }}>{label}</p>
-                    </div>
-                    <AuraRingsMini knowledge={k} trust={sTrust} size={38} className="flex-shrink-0" singleRing={service.trustScore === null} />
-                    <ChevronRight className="w-4 h-4 text-[#48484A] flex-shrink-0" />
-                  </div>
-                </motion.button>
-              );
-            })}
-
-          {/* Expand button */}
-          <button
-            onClick={() => toggleExpanded(!servicesExpanded)}
-            className="w-full flex items-center justify-center gap-1.5 py-3.5 border-t border-white/[0.08] active:bg-white/[0.05] transition-colors"
-          >
-            <span className="text-[15px] text-[#98989D]" style={{ fontWeight: 500 }}>
-              {servicesExpanded ? 'Скрыть' : 'Ещё сервисы'}
-            </span>
-            <motion.div animate={{ rotate: servicesExpanded ? 180 : 0 }} transition={{ duration: 0.25 }}>
-              <ChevronDown className="w-4 h-4 text-[#48484A]" />
-            </motion.div>
-          </button>
+          {WORLDS_DATA.map((w, idx) => (
+            <button
+              key={w.id}
+              onClick={() => navigate(`/${w.id}`)}
+              className="w-full flex items-center gap-3 px-4 py-3.5 active:bg-white/[0.05] transition-colors text-left"
+            >
+              <div style={{ width: 10, height: 10, borderRadius: '50%', backgroundColor: w.color, flexShrink: 0 }} />
+              <div className={`flex-1 min-w-0 flex items-center gap-2 ${idx < WORLDS_DATA.length - 1 ? 'border-b border-white/[0.08] pb-3.5 -mb-3.5' : ''}`}>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[17px] text-white truncate" style={{ fontWeight: 500 }}>{w.label}</p>
+                  <p className="text-[13px] mt-0.5 truncate" style={{ color: '#636366' }}>{w.sub}</p>
+                </div>
+                <span style={{ fontSize: 13, fontWeight: 500, color: w.freshnessColor, flexShrink: 0 }}>{w.freshnessLabel}</span>
+                <ChevronRight className="w-4 h-4 text-[#48484A] flex-shrink-0" />
+              </div>
+            </button>
+          ))}
         </div>
       </motion.div>
 

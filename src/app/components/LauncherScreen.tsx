@@ -1124,6 +1124,73 @@ export const LauncherScreen = () => {
             })}
           </AnimatePresence>
 
+          {/* ── Connection threads ────────────────────────────────────────────
+               Gentle quadratic-arc threads from avatar center to each node.
+               • Single motion.g handles the slow opacity breathe — zero per-line cost.
+               • linearGradient per thread: transparent at avatar → peak ~22% → fades
+                 to near-zero before reaching the node — threads "emanate" from the
+                 aura field, not from a hard connector point.
+               • Hierarchy: inner/heavy nodes get more visible threads, outer near-zero.
+               • No filter/blur on SVG — lightweight on mobile.
+          ─────────────────────────────────────────────────────────────────── */}
+          <svg
+            style={{
+              position: 'absolute', left: 0, top: 0,
+              width: '100%', height: '100%',
+              pointerEvents: 'none', overflow: 'visible',
+              zIndex: 1,
+            }}
+          >
+            <defs>
+              {layout.map(placed => {
+                const ew  = placed.effectiveWeight;
+                const alpha = ew > 0.75 ? 0.22 : ew > 0.42 ? 0.12 : 0.05;
+                return (
+                  <linearGradient
+                    key={`grad-${placed.id}`}
+                    id={`conn-${placed.id}`}
+                    x1={cx} y1={cy}
+                    x2={cx + placed.x} y2={cy + placed.y}
+                    gradientUnits="userSpaceOnUse"
+                  >
+                    <stop offset="0%"   stopColor="rgb(200,185,255)" stopOpacity={0} />
+                    <stop offset="22%"  stopColor="rgb(200,185,255)" stopOpacity={alpha} />
+                    <stop offset="75%"  stopColor="rgb(200,185,255)" stopOpacity={alpha * 0.35} />
+                    <stop offset="100%" stopColor="rgb(200,185,255)" stopOpacity={0} />
+                  </linearGradient>
+                );
+              })}
+            </defs>
+
+            {/* Single slow breathe on the whole group — one animation, not N */}
+            <motion.g
+              animate={{ opacity: [0.6, 1, 0.6] }}
+              transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
+            >
+              {layout.map(placed => {
+                const ew      = placed.effectiveWeight;
+                const strokeW = ew > 0.75 ? 0.8 : ew > 0.42 ? 0.55 : 0.4;
+                // Gentle arc: control point offset perpendicular to radial direction
+                const r   = Math.hypot(placed.x, placed.y) || 1;
+                const cur = 14; // px perpendicular offset at midpoint
+                const cpx = cx + placed.x / 2 - (placed.y / r) * cur;
+                const cpy = cy + placed.y / 2 + (placed.x / r) * cur;
+                const nx  = (cx + placed.x).toFixed(1);
+                const ny  = (cy + placed.y).toFixed(1);
+                return (
+                  <path
+                    key={`conn-${placed.id}`}
+                    d={`M ${cx} ${cy} Q ${cpx.toFixed(1)} ${cpy.toFixed(1)} ${nx} ${ny}`}
+                    stroke={`url(#conn-${placed.id})`}
+                    strokeWidth={strokeW}
+                    fill="none"
+                    strokeLinecap="round"
+                  />
+                );
+              })}
+            </motion.g>
+          </svg>
+
           {/* Interest nodes */}
           <AnimatePresence>
             {layout.map(placed => {

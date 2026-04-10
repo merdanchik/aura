@@ -95,7 +95,7 @@ export const ScenarioDetail: React.FC = () => {
         }}
       >
         <button
-          onClick={() => navigate('/scenarios')}
+          onClick={() => navigate('/')}
           style={{
             width: 32, height: 32, borderRadius: '50%',
             background: 'rgba(255,255,255,0.08)',
@@ -117,20 +117,6 @@ export const ScenarioDetail: React.FC = () => {
           </p>
         </div>
 
-        {/* Chat button */}
-        <button
-          onClick={() => navigate(`/app/chat/${scenario.chatContextId}`)}
-          style={{
-            width: 32, height: 32, borderRadius: '50%',
-            background: `${scenario.color}22`,
-            border: `1.5px solid ${scenario.color}55`,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            color: scenario.color, fontSize: 15, cursor: 'pointer',
-            WebkitTapHighlightColor: 'transparent',
-          }}
-        >
-          💬
-        </button>
       </div>
 
       {/* ── Scenario dots indicator ── */}

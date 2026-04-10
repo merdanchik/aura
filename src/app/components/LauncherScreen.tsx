@@ -1107,7 +1107,15 @@ export const LauncherScreen = () => {
           boxShadow: 'inset 0 0 50px 40px rgba(201, 162, 39, 0.25)',
         }}
       />
-      <div className="w-full max-w-md mx-auto flex flex-col" style={{ height: '100%' }}>
+      {/* Stage lighting + vignette at full-viewport level — no rect boundary */}
+      <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none',
+        background: 'radial-gradient(ellipse at 50% 46%, rgba(255,255,255,0.066) 0%, rgba(140,120,255,0.022) 38%, transparent 65%)',
+      }} />
+      <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none',
+        background: 'radial-gradient(ellipse at 50% 50%, transparent 48%, rgba(3,3,6,0.35) 72%, rgba(3,3,6,0.70) 100%)',
+      }} />
+
+      <div className="w-full max-w-md mx-auto flex flex-col" style={{ height: '100%', position: 'relative' }}>
 
         {/* ── CANVAS — interest map ── */}
         <div
@@ -1115,16 +1123,6 @@ export const LauncherScreen = () => {
           className="flex-1 relative overflow-hidden"
           style={{ minHeight: 0 }}
         >
-          {/* Stage lighting: warm center glow */}
-          <div style={{
-            position: 'absolute', inset: 0, pointerEvents: 'none',
-            background: 'radial-gradient(ellipse at 50% 46%, rgba(255,255,255,0.066) 0%, rgba(140,120,255,0.022) 38%, transparent 65%)',
-          }} />
-          {/* Vignette: darkens edges, focuses eye on center */}
-          <div style={{
-            position: 'absolute', inset: 0, pointerEvents: 'none',
-            background: 'radial-gradient(ellipse at 50% 50%, transparent 48%, rgba(3,3,6,0.35) 72%, rgba(3,3,6,0.70) 100%)',
-          }} />
 
           {/* Ambient color hazes — large blurred clouds behind top nodes, dreamlike depth */}
           <AnimatePresence>

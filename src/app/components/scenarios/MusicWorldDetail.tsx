@@ -4,7 +4,7 @@ import { ChevronLeft } from 'lucide-react';
 import svcMusic from '../../../assets/52729efb5574f608701f92848e1b348745677960.png';
 import { C, S } from '../../styles/auraTokens';
 import {
-  screenBg, detailHeader, backBtn, chatBtnBase,
+  screenBg, detailHeader, backBtn,
   heroBlock, heroTitleStyle, heroBodyStyle, heroTemporalStyle,
   valueDot, valueText,
   sourceCard, sourceIconImg, sourceNameStyle, sourceFactsStyle,
@@ -44,7 +44,7 @@ export const MusicWorldDetail: React.FC = () => {
   const location = useLocation();
   const fromWorlds = (location.state as any)?.fromWorlds;
 
-  const goBack = () => navigate('/scenarios', fromWorlds ? { state: { showWorlds: true } } : undefined);
+  const goBack = () => navigate('/', fromWorlds ? { state: { showWorlds: true } } : undefined);
 
   return (
     <div style={screenBg}>
@@ -62,7 +62,6 @@ export const MusicWorldDetail: React.FC = () => {
           <div style={{ width: 6, height: 6, borderRadius: '50%', background: C.active }} />
           <span style={{ color: C.active, fontSize: 13, fontWeight: 500 }}>в потоке</span>
         </div>
-        <button onClick={() => navigate('/app/chat/jazz')} style={chatBtnBase(COLOR)}>💬</button>
       </div>
 
       {/* Scrollable body */}

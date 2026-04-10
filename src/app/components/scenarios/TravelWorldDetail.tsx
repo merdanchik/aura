@@ -5,7 +5,7 @@ import svcTravel from '../../../assets/travel.png';
 import svcYMaps  from '../../../assets/yandex-maps.png';
 import { C } from '../../styles/auraTokens';
 import {
-  screenBg, detailHeader, backBtn, chatBtnBase,
+  screenBg, detailHeader, backBtn,
   heroBlock, heroTitleStyle, heroBodyStyle, heroTemporalStyle,
   valueDot, valueText,
   sourceCard, sourceIconImg, sourceBadge, sourceNameStyle, sourceFactsStyle,
@@ -53,7 +53,7 @@ export const TravelWorldDetail: React.FC = () => {
   const location = useLocation();
   const fromWorlds = (location.state as any)?.fromWorlds;
 
-  const goBack = () => navigate('/scenarios', fromWorlds ? { state: { showWorlds: true } } : undefined);
+  const goBack = () => navigate('/', fromWorlds ? { state: { showWorlds: true } } : undefined);
 
   return (
     <div style={screenBg}>
@@ -71,7 +71,6 @@ export const TravelWorldDetail: React.FC = () => {
           <div style={{ width: 6, height: 6, borderRadius: '50%', background: COLOR }} />
           <span style={{ color: COLOR, fontSize: 13, fontWeight: 500 }}>планирует</span>
         </div>
-        <button onClick={() => navigate('/app/chat/baikal')} style={chatBtnBase(COLOR)}>💬</button>
       </div>
 
       {/* Scrollable body */}
@@ -119,11 +118,11 @@ export const TravelWorldDetail: React.FC = () => {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-            <p style={{ color: 'rgba(255,255,255,0.28)', fontSize: 13 }}>Также подключены:</p>
+            <p style={{ color: C.textTertiary, fontSize: 13 }}>Также подключены:</p>
             {EXT_SOURCES.map((name, i) => (
               <React.Fragment key={name}>
-                <p style={{ color: 'rgba(255,255,255,0.42)', fontSize: 13, fontWeight: 500 }}>{name}</p>
-                {i < EXT_SOURCES.length - 1 && <p style={{ color: 'rgba(255,255,255,0.18)', fontSize: 13 }}>·</p>}
+                <p style={{ color: C.textSecondary, fontSize: 13, fontWeight: 500 }}>{name}</p>
+                {i < EXT_SOURCES.length - 1 && <p style={{ color: C.textQuaternary, fontSize: 13 }}>·</p>}
               </React.Fragment>
             ))}
           </div>

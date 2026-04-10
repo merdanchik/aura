@@ -6,7 +6,6 @@ import { HeartPage } from './components/HeartPage';
 
 const router = createBrowserRouter([
   { index: true,           Component: LauncherScreen },
-  { path: 'scenarios',     Component: LauncherScreen },
   { path: 'scenarios/:id', Component: ScenarioDetail },
   { path: 'heart',         Component: HeartPage },
 ], { basename: import.meta.env.BASE_URL });

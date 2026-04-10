@@ -56,7 +56,7 @@ export const sectionDivider: CSSProperties = {
 
 export const heroBlock = (accent: string): CSSProperties => ({
   borderRadius: R.card,
-  background: `linear-gradient(140deg, ${accent}16 0%, rgba(16,16,20,0.99) 64%)`,
+  background: `linear-gradient(140deg, ${accent}16 0%, ${C.appBg} 64%)`,
   border: `1px solid ${accent}22`,
   padding: '22px 20px 20px',
   marginBottom: 30,

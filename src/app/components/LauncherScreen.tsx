@@ -322,7 +322,7 @@ const nodeSize = (w: number) => Math.round(12 + w * 20);
 
 // Avatar half-size + clearance gap for collision
 const AVATAR_R = 55;
-const AVATAR_GAP = 16;
+const AVATAR_GAP = 24;   // 24 px of air between avatar glow edge and node footprint
 
 // Radial bands — explicit gaps between zones create readable orbital structure
 // inner→mid gap 18px, mid→outer gap 7px
@@ -333,9 +333,9 @@ const BANDS = {
 };
 
 // Minimum gap between any two footprint edges (px)
-const MIN_GAP = 12;
+const MIN_GAP = 20;
 // Avatar collision radius: half-size + clearance
-const AVATAR_FP = AVATAR_R + AVATAR_GAP; // 55 + 16 = 71
+const AVATAR_FP = AVATAR_R + AVATAR_GAP; // 55 + 24 = 79
 
 /** Per-type collision footprint radius (px from node center).
  *
@@ -438,8 +438,8 @@ function computeLayout(
 
   // Per-node footprint radii — stable, computed once after placement
   const fp = placed.map(p => footprintR(nodeMap.get(p.id)!, p));
-  const hw = cW / 2 - 20;
-  const hh = cH / 2 - 20;
+  const hw = cW / 2 - 24;   // 24 px safe margin from canvas edge
+  const hh = cH / 2 - 24;
 
   // ── Unified constraint solver ────────────────────────────────────────────
   // All three constraint types run in a single loop, repeated until the layout
@@ -492,7 +492,7 @@ function computeLayout(
     // 3. Screen-edge constraint — node footprint must stay within canvas
     for (let i = 0; i < placed.length; i++) {
       const p  = placed[i];
-      const r  = fp[i] + 4;   // 4 px breathing room at edges
+      const r  = fp[i] + 12;  // 12 px breathing room — keeps labels/bloom within canvas
       const ox = p.x, oy = p.y;
       p.x = Math.max(-(hw - r), Math.min(hw - r, p.x));
       p.y = Math.max(-(hh - r), Math.min(hh - r, p.y));
@@ -509,9 +509,9 @@ function computeLayout(
   // rather than silently accepting the broken state.
   if (count > 8) {
     const hasResidual = placed.some((p, i) => {
-      if (Math.hypot(p.x, p.y) < AVATAR_FP + fp[i] - 2) return true;
+      if (Math.hypot(p.x, p.y) < AVATAR_FP + fp[i] - 3) return true;
       return placed.some((q, j) =>
-        j > i && Math.hypot(q.x - p.x, q.y - p.y) < fp[i] + fp[j] + MIN_GAP - 2,
+        j > i && Math.hypot(q.x - p.x, q.y - p.y) < fp[i] + fp[j] + MIN_GAP - 3,
       );
     });
     if (hasResidual) return computeLayout(nodes, period, config, cW, cH, count - 1);

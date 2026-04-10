@@ -413,10 +413,11 @@ function computeLayout(
     const band          = innerEligible ? BANDS.inner : ew > 0.42 ? BANDS.mid : BANDS.outer;
     // Compute footprint using a partial placed record (position not yet known)
     const partialP      = { id: node.id, x: 0, y: 0, size: sz, effectiveWeight: ew, type: node.type };
-    const fp            = footprintR(node, partialP);
-    const minR          = AVATAR_FP + fp + MIN_GAP;
+    const nodeFp        = footprintR(node, partialP);
+    const minR          = AVATAR_FP + nodeFp + MIN_GAP;
     const bandR         = band[0] + rng() * (band[1] - band[0]);
-    const r             = Math.min(Math.max(bandR, minR), maxR - fp);
+    // Floor at avatar-safe radius; screen-edge constraint is enforced by the solver.
+    const r             = Math.max(bandR, minR);
     return {
       id: node.id,
       x: Math.cos(angles[i]) * r,

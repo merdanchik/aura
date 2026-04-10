@@ -531,7 +531,7 @@ const TABS = ['Мой профиль', 'Друзья', 'Партнеры'] as co
 type TabType = typeof TABS[number];
 
 export const Dashboard = () => {
-  const { services, globalTrustScore, globalKnowledgeScore, overallScore } = useAura();
+  const { services, globalTrustScore, globalKnowledgeScore, overallScore, strongAura, toggleStrongAura } = useAura();
   const navigate = useNavigate();
   const [servicesExpanded, setServicesExpanded] = useState(() => sessionStorage.getItem('servicesExpanded') === 'true');
   const [activeTab, setActiveTab] = useState<TabType>('Мой профиль');
@@ -568,6 +568,24 @@ export const Dashboard = () => {
       WebkitOverflowScrolling: 'touch' as any,
       fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
     }}><div>
+      {/* ── Header: avatar + strong aura toggle ── */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '52px 16px 12px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <img src={avatarImg} alt="Аватар" style={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} />
+          <div>
+            <p style={{ color: 'white', fontSize: 17, fontWeight: 700, lineHeight: 1 }}>Александр</p>
+            <p style={{ color: '#636366', fontSize: 12, marginTop: 2 }}>Аура ID · 4821</p>
+          </div>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span style={{ color: strongAura ? '#BF5AF2' : '#636366', fontSize: 13, fontWeight: 500 }}>Сильная аура</span>
+          <Switch
+            checked={strongAura}
+            onCheckedChange={toggleStrongAura}
+            className="h-[31px] w-[51px] data-[state=checked]:bg-[#BF5AF2] data-[state=unchecked]:bg-[#3A3A3C] border-0 [&>[data-slot=switch-thumb]]:size-[27px] [&>[data-slot=switch-thumb]]:data-[state=checked]:translate-x-[22px] [&>[data-slot=switch-thumb]]:shadow-[0_2px_6px_rgba(0,0,0,0.4)]"
+          />
+        </div>
+      </div>
       {/* ── Tab bar ── */}
       <div className="px-4 pt-3 pb-0">
         <div className="flex relative">

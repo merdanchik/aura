@@ -45,7 +45,7 @@ const serviceIconMap: Record<string, string> = {
 };
 
 const WORLDS_DATA = [
-  { id: 'content',  label: 'Контент',      sub: 'Музыка · Кино · Книги',          color: '#5AC8F5', freshnessColor: '#30D158', freshnessLabel: 'активно'  },
+  { id: 'content',  label: 'Спорт',         sub: 'Гонки · Баскетбол · Матчи',       color: '#5AC8F5', freshnessColor: '#30D158', freshnessLabel: 'активно'  },
   { id: 'music',    label: 'Музыка',        sub: 'Слушает · Открывает · Собирает',  color: '#BF5AF2', freshnessColor: '#30D158', freshnessLabel: 'активно'  },
   { id: 'cinema',   label: 'Кино',          sub: 'Фильмы · Сериалы · Список',       color: '#FF9F0A', freshnessColor: '#E7A93B', freshnessLabel: 'остывает' },
   { id: 'shopping', label: 'Шопинг',        sub: 'Поиск · Сравнение · Решение',     color: '#FF6633', freshnessColor: '#E7A93B', freshnessLabel: 'остывает' },
@@ -570,7 +570,7 @@ export const Dashboard = () => {
     }}><div>
       {/* ── Header: back + avatar + strong aura toggle ── */}
       <div style={{ padding: '52px 16px 12px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+        <div style={{ marginBottom: 14 }}>
           <button
             onClick={() => navigate(-1 as any)}
             style={{
@@ -583,6 +583,13 @@ export const Dashboard = () => {
             <ChevronLeft size={17} />
             <span style={{ fontSize: 17, fontWeight: 500 }}>Орбиты</span>
           </button>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <img src={avatarImg} alt="Аватар" style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} />
+          <div style={{ flex: 1 }}>
+            <p style={{ color: 'white', fontSize: 20, fontWeight: 700, lineHeight: 1 }}>Александр</p>
+            <p style={{ color: '#636366', fontSize: 12, marginTop: 3 }}>Аура ID · 4821</p>
+          </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <span style={{ color: strongAura ? '#BF5AF2' : '#636366', fontSize: 13, fontWeight: 500 }}>Сильная аура</span>
             <Switch
@@ -590,13 +597,6 @@ export const Dashboard = () => {
               onCheckedChange={toggleStrongAura}
               className="h-[31px] w-[51px] data-[state=checked]:bg-[#BF5AF2] data-[state=unchecked]:bg-[#3A3A3C] border-0 [&>[data-slot=switch-thumb]]:size-[27px] [&>[data-slot=switch-thumb]]:data-[state=checked]:translate-x-[22px] [&>[data-slot=switch-thumb]]:shadow-[0_2px_6px_rgba(0,0,0,0.4)]"
             />
-          </div>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <img src={avatarImg} alt="Аватар" style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} />
-          <div>
-            <p style={{ color: 'white', fontSize: 20, fontWeight: 700, lineHeight: 1 }}>Александр</p>
-            <p style={{ color: '#636366', fontSize: 12, marginTop: 3 }}>Аура ID · 4821</p>
           </div>
         </div>
       </div>
@@ -727,379 +727,6 @@ export const Dashboard = () => {
         </div>
       </motion.div>
 
-      {/* Memories */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.22 }}
-        className="mt-5"
-      >
-        <p className="text-[13px] text-[#98989D] px-1 mb-3 tracking-widest font-semibold uppercase">
-          Воспоминания
-        </p>
-        <div className="flex gap-3 overflow-x-auto -mx-4 px-4 scrollbar-hide pb-1">
-          {[
-            {
-              label: 'АВГУСТ · КИНОПОИСК',
-              title: 'Неделя, когда ты не спал',
-              subtitle: 'Семь фильмов за семь ночей. Самый длинный — «Братья Блюз», 2 ч 13 мин',
-              contextId: 'mem-kinopoisk',
-              bg: '#07101A',
-              shadow: [
-                'inset 0 2px 42px 28px rgba(5,25,60,0.98)',
-                'inset 0 0 32px 18px rgba(10,55,130,0.82)',
-                'inset 0 6px 24px 8px rgba(30,90,200,0.55)',
-                'inset 0 1px 20px 5px rgba(100,160,255,0.35)',
-              ].join(', '),
-            },
-            {
-              label: 'СЕНТЯБРЬ · МУЗЫКА',
-              title: 'Один трек на repeat',
-              subtitle: 'Nils Frahm — Says. 41 раз за месяц. Почти всегда после полуночи',
-              contextId: 'mem-music',
-              bg: '#0A0320',
-              shadow: [
-                'inset 0 2px 42px 28px rgba(38,8,98,0.98)',
-                'inset 0 0 32px 18px rgba(98,28,218,0.82)',
-                'inset 0 6px 24px 8px rgba(158,78,255,0.65)',
-                'inset 0 1px 20px 5px rgba(210,178,255,0.42)',
-              ].join(', '),
-            },
-            {
-              label: 'НОЯБРЬ · ЕДА',
-              title: 'Дождливые пятницы',
-              subtitle: 'Три пятницы подряд — один и тот же заказ из «Мареа». Всегда около девяти вечера',
-              contextId: 'mem-food',
-              bg: '#120800',
-              shadow: [
-                'inset 0 2px 42px 28px rgba(80,35,0,0.98)',
-                'inset 0 0 32px 18px rgba(160,75,0,0.82)',
-                'inset 0 6px 24px 8px rgba(210,110,10,0.62)',
-                'inset 0 1px 20px 5px rgba(255,185,80,0.38)',
-              ].join(', '),
-            },
-            {
-              label: 'ЭТОЙ ОСЕНЬЮ · МАРКЕТ',
-              title: 'Шесть книг про Рим',
-              subtitle: 'Всё началось с «SPQR» Мэри Бирд. Последняя пришла вчера',
-              contextId: 'mem-blackfriday',
-              bg: '#0E0800',
-              shadow: [
-                'inset 0 2px 42px 28px rgba(70,30,0,0.98)',
-                'inset 0 0 32px 18px rgba(140,65,0,0.82)',
-                'inset 0 6px 24px 8px rgba(195,100,5,0.60)',
-                'inset 0 1px 20px 5px rgba(255,168,60,0.36)',
-              ].join(', '),
-            },
-            {
-              label: 'БУДНИ · ТАКСИ',
-              title: 'Утро понедельника',
-              subtitle: 'В 9:14 — всегда один адрес. Льва Толстого, 16',
-              contextId: 'mem-taxi',
-              bg: '#060C18',
-              shadow: [
-                'inset 0 2px 42px 28px rgba(8,28,70,0.98)',
-                'inset 0 0 32px 18px rgba(15,60,145,0.82)',
-                'inset 0 6px 24px 8px rgba(25,95,210,0.58)',
-                'inset 0 1px 20px 5px rgba(90,155,255,0.36)',
-              ].join(', '),
-            },
-            {
-              label: 'ЭТОТ ГОД · КИНОПОИСК',
-              title: 'Фильм, к которому ты вернулся',
-              subtitle: '«Трудности перевода» — третий раз за год. Всегда один, всегда поздно',
-              contextId: 'mem-electronic',
-              bg: '#150300',
-              shadow: [
-                'inset 0 2px 42px 28px rgba(90,12,0,0.98)',
-                'inset 0 0 32px 18px rgba(175,35,5,0.82)',
-                'inset 0 6px 24px 8px rgba(225,65,15,0.60)',
-                'inset 0 1px 20px 5px rgba(255,140,80,0.38)',
-              ].join(', '),
-            },
-            {
-              label: 'ЛЕТО · ЕДА',
-              title: 'Девять завтраков на двоих',
-              subtitle: 'Сырники и два капучино. Всегда по субботам, до десяти утра',
-              contextId: 'mem-travel',
-              bg: '#110900',
-              shadow: [
-                'inset 0 2px 42px 28px rgba(85,42,0,0.98)',
-                'inset 0 0 32px 18px rgba(170,88,0,0.82)',
-                'inset 0 6px 24px 8px rgba(220,130,10,0.60)',
-                'inset 0 1px 20px 5px rgba(255,200,90,0.36)',
-              ].join(', '),
-            },
-            {
-              label: 'АВГУСТ · ПУТЕШЕСТВИЕ',
-              title: 'Паром через Босфор',
-              subtitle: 'Стамбул. Двадцать минут, три лиры. Азия и Европа одновременно',
-              contextId: 'istanbul',
-              bg: '#130700',
-              shadow: [
-                'inset 0 2px 42px 28px rgba(90,30,0,0.98)',
-                'inset 0 0 32px 18px rgba(180,65,0,0.82)',
-                'inset 0 6px 24px 8px rgba(230,95,20,0.62)',
-                'inset 0 1px 20px 5px rgba(255,145,60,0.38)',
-              ].join(', '),
-            },
-            {
-              label: 'ОКТЯБРЬ · КНИГИ',
-              title: 'Книга внутри книги',
-              subtitle: 'Набоков, «Дар». Не сразу понимаешь, где граница между автором и героем',
-              contextId: 'nabokov',
-              bg: '#06041A',
-              shadow: [
-                'inset 0 2px 42px 28px rgba(20,10,80,0.98)',
-                'inset 0 0 32px 18px rgba(60,30,180,0.82)',
-                'inset 0 6px 24px 8px rgba(100,60,230,0.62)',
-                'inset 0 1px 20px 5px rgba(175,140,255,0.38)',
-              ].join(', '),
-            },
-            {
-              label: 'НОЯБРЬ · МУЗЫКА',
-              title: 'Он поёт тихо',
-              subtitle: 'Nick Cave & The Bad Seeds. Тихо — это страшнее, чем если бы кричал',
-              contextId: 'nick-cave',
-              bg: '#140008',
-              shadow: [
-                'inset 0 2px 42px 28px rgba(80,0,30,0.98)',
-                'inset 0 0 32px 18px rgba(180,0,65,0.82)',
-                'inset 0 6px 24px 8px rgba(240,40,90,0.62)',
-                'inset 0 1px 20px 5px rgba(255,120,155,0.38)',
-              ].join(', '),
-            },
-            {
-              label: 'НОЯБРЬ · ПУТЕШЕСТВИЕ',
-              title: 'Трастевере без туристов',
-              subtitle: 'Рим в ноябре. Кофе у Сан-Каллисто. Ты единственный иностранец за стойкой',
-              contextId: 'rome',
-              bg: '#110800',
-              shadow: [
-                'inset 0 2px 42px 28px rgba(80,38,0,0.98)',
-                'inset 0 0 32px 18px rgba(155,75,0,0.82)',
-                'inset 0 6px 24px 8px rgba(210,115,10,0.62)',
-                'inset 0 1px 20px 5px rgba(255,185,70,0.38)',
-              ].join(', '),
-            },
-            {
-              label: 'ДЕКАБРЬ · МУЗЫКА',
-              title: 'Гульд мурлыкал под запись',
-              subtitle: 'Гольдберг-вариации, 1981. Слышно на всей дорожке — он не мог остановиться',
-              contextId: 'bach-goldberg',
-              bg: '#0D0218',
-              shadow: [
-                'inset 0 2px 42px 28px rgba(48,5,90,0.98)',
-                'inset 0 0 32px 18px rgba(110,20,190,0.82)',
-                'inset 0 6px 24px 8px rgba(165,60,240,0.62)',
-                'inset 0 1px 20px 5px rgba(215,160,255,0.38)',
-              ].join(', '),
-            },
-            {
-              label: 'ДЕКАБРЬ · МОМЕНТ',
-              title: 'Последний час года',
-              subtitle: 'Всё, что не сделал — уже не сделаешь. И почему-то это отпускает',
-              contextId: 'new-year',
-              bg: '#140008',
-              shadow: [
-                'inset 0 2px 42px 28px rgba(85,0,28,0.98)',
-                'inset 0 0 32px 18px rgba(185,0,60,0.82)',
-                'inset 0 6px 24px 8px rgba(240,38,85,0.62)',
-                'inset 0 1px 20px 5px rgba(255,115,150,0.38)',
-              ].join(', '),
-            },
-            {
-              label: 'ЯНВАРЬ · РИТУАЛ',
-              title: 'Три секунды — и всё лишнее',
-              subtitle: 'Прорубь в Серебряном Бору. −10°. Крещение. Выходишь — другой человек',
-              contextId: 'ice-swim',
-              bg: '#001210',
-              shadow: [
-                'inset 0 2px 42px 28px rgba(0,55,48,0.98)',
-                'inset 0 0 32px 18px rgba(0,120,108,0.82)',
-                'inset 0 6px 24px 8px rgba(0,175,158,0.62)',
-                'inset 0 1px 20px 5px rgba(80,230,215,0.38)',
-              ].join(', '),
-            },
-            {
-              label: 'ЯНВАРЬ · СЕРИАЛ',
-              title: 'Работа — это работа',
-              subtitle: 'Severance. Первые два эпизода — и ты уже не уверен, что это плохая идея',
-              contextId: 'severance',
-              bg: '#001018',
-              shadow: [
-                'inset 0 2px 42px 28px rgba(0,30,70,0.98)',
-                'inset 0 0 32px 18px rgba(0,75,160,0.82)',
-                'inset 0 6px 24px 8px rgba(10,110,220,0.62)',
-                'inset 0 1px 20px 5px rgba(80,170,255,0.38)',
-              ].join(', '),
-            },
-            {
-              label: 'ЯНВАРЬ · СПОРТ',
-              title: '+40 на корте',
-              subtitle: 'Australian Open. Мельбурн в январе. Лучший теннис года — потому что никто не ждал',
-              contextId: 'aus-open',
-              bg: '#001408',
-              shadow: [
-                'inset 0 2px 42px 28px rgba(0,55,20,0.98)',
-                'inset 0 0 32px 18px rgba(0,120,45,0.82)',
-                'inset 0 6px 24px 8px rgba(15,175,65,0.62)',
-                'inset 0 1px 20px 5px rgba(80,230,120,0.38)',
-              ].join(', '),
-            },
-            {
-              label: 'ФЕВРАЛЬ · МУЗЫКА',
-              title: 'Двадцать минут незаметно',
-              subtitle: 'Nils Frahm, «Says». Начинается тихо. Понимаешь, что прошло время, только когда кончается',
-              contextId: 'nils-frahm',
-              bg: '#0D0218',
-              shadow: [
-                'inset 0 2px 42px 28px rgba(48,5,90,0.98)',
-                'inset 0 0 32px 18px rgba(110,20,195,0.82)',
-                'inset 0 6px 24px 8px rgba(168,62,242,0.62)',
-                'inset 0 1px 20px 5px rgba(215,162,255,0.38)',
-              ].join(', '),
-            },
-            {
-              label: 'МАРТ · ГОНКИ',
-              title: 'Сзади никого',
-              subtitle: 'Мельбурн 2025. Ферстапен с поула — вопрос только в том, кто финишировал вторым',
-              contextId: 'f1-2025',
-              bg: '#00081A',
-              shadow: [
-                'inset 0 2px 42px 28px rgba(0,20,80,0.98)',
-                'inset 0 0 32px 18px rgba(15,55,175,0.82)',
-                'inset 0 6px 24px 8px rgba(40,100,245,0.62)',
-                'inset 0 1px 20px 5px rgba(100,165,255,0.38)',
-              ].join(', '),
-            },
-            {
-              label: 'МАРТ · ИСКУССТВО',
-              title: 'Синий — труба',
-              subtitle: 'Кандинский называл цвета нотами. Жёлтый — фанфара. Смотришь — и почти слышишь',
-              contextId: 'kandinsky',
-              bg: '#110800',
-              shadow: [
-                'inset 0 2px 42px 28px rgba(75,35,0,0.98)',
-                'inset 0 0 32px 18px rgba(152,72,0,0.82)',
-                'inset 0 6px 24px 8px rgba(208,112,8,0.62)',
-                'inset 0 1px 20px 5px rgba(255,182,65,0.38)',
-              ].join(', '),
-            },
-          ].map((mem, i) => (
-            <div
-              key={i}
-              onClick={() => navigateToChat(`/chat/${mem.contextId}`)}
-              className="flex-shrink-0 w-[155px] h-[210px] rounded-2xl flex flex-col p-4 active:opacity-70 transition-opacity"
-              style={{ backgroundColor: mem.bg, boxShadow: mem.shadow, cursor: 'pointer' }}
-            >
-              <p className="text-[10px] text-white/50 font-semibold tracking-widest uppercase mb-3">
-                {mem.label}
-              </p>
-              <p className="text-[15px] text-white leading-[1.22]" style={{ fontWeight: 700, marginBottom: 'auto' }}>
-                {mem.title}
-              </p>
-              <p className="text-[11px] text-white/50 leading-[1.4] mt-3">
-                {mem.subtitle}
-              </p>
-            </div>
-          ))}
-        </div>
-      </motion.div>
-
-      {/* Insights */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.26 }}
-        className="mt-5"
-      >
-        <p className="text-[13px] text-[#98989D] px-1 mb-3 tracking-widest font-semibold uppercase">
-          Инсайты
-        </p>
-        <div className="flex gap-3 overflow-x-auto -mx-4 px-4 scrollbar-hide pb-1">
-          {[
-            {
-              category: 'ВКУС · МУЗЫКА',
-              icon: '🎵',
-              text: 'Электроника в 2× чаще по пятницам после 22:00',
-              accent: '#E03366',
-              contextId: 'ins-music',
-            },
-            {
-              category: 'ОТКРЫТИЕ · КИНОПОИСК',
-              icon: '🎬',
-              text: 'Аниме расширило профиль знания',
-              accent: '#FF6600',
-              contextId: 'ins-kinopoisk',
-            },
-            {
-              category: 'ПРИВЫЧКА · МАРКЕТ',
-              icon: '🛍️',
-              text: 'Чаще покупаете по воскресеньям',
-              accent: '#FFCC00',
-              contextId: 'ins-market',
-            },
-            {
-              category: 'ПАТТЕРН · СПЛИТ',
-              icon: '💳',
-              text: 'Платите вовремя — доверие растёт',
-              accent: '#30D158',
-              contextId: 'ins-split',
-            },
-            {
-              category: 'ОТКРЫТИЕ · КНИГИ',
-              icon: '📚',
-              text: 'Читаете больше нон-фикшна по утрам',
-              accent: '#0077FF',
-              contextId: 'ins-books',
-            },
-          ].map((insight, i) => (
-            <div
-              key={i}
-              onClick={() => navigateToChat(`/chat/${insight.contextId}`)}
-              className="flex-shrink-0 w-[160px] rounded-2xl p-3.5 flex flex-col gap-2.5 active:opacity-70 transition-opacity"
-              style={{ backgroundColor: '#1C1C1E', cursor: 'pointer' }}
-            >
-              <div className="text-[24px] leading-none">{insight.icon}</div>
-              <p className="text-[10px] font-semibold tracking-wider leading-tight" style={{ color: insight.accent }}>
-                {insight.category}
-              </p>
-              <p className="text-[14px] text-white leading-snug" style={{ fontWeight: 600 }}>
-                {insight.text}
-              </p>
-            </div>
-          ))}
-        </div>
-      </motion.div>
-
-      {/* История отношений */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.28 }}
-        className="mt-5"
-      >
-        <p className="text-[13px] text-[#98989D] px-1 mb-3 tracking-widest font-semibold uppercase">
-          История отношений
-        </p>
-        <div className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#1C1C1E' }}>
-          {[
-            { icon: iconKinopoisk, title: 'Князь Андрей', sub: 'Кинопоиск · Оценка 10 · Только что', right: '10 +', rightColor: '#30D158' },
-            { icon: iconBooks, title: 'Яндекс Музыка', sub: '3 года · 1 200+ часов', right: 'глубоко', rightColor: '#BF5AF2' },
-            { icon: iconTaxi, title: 'Яндекс Такси', sub: '214 поездок · рейтинг 4.9', right: 'надёжно', rightColor: '#30D158' },
-          ].map((item, idx, arr) => (
-            <div key={idx} className={`flex items-center gap-3 px-4 py-3.5 ${idx < arr.length - 1 ? 'border-b border-white/[0.08]' : ''}`}>
-              <img src={item.icon} alt={item.title} className="w-11 h-11 rounded-[12px] object-cover flex-shrink-0" />
-              <div className="flex-1 min-w-0">
-                <p className="text-[17px] text-white truncate" style={{ fontWeight: 500 }}>{item.title}</p>
-                <p className="text-[13px] text-[#636366] mt-0.5 truncate">{item.sub}</p>
-              </div>
-              <p className="text-[15px] flex-shrink-0" style={{ color: item.rightColor, fontWeight: 600 }}>{item.right}</p>
-            </div>
-          ))}
-        </div>
-      </motion.div>
 
       {/* Что Яндекс знает обо мне — swipe stack */}
       <motion.div

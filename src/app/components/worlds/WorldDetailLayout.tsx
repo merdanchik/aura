@@ -58,7 +58,6 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
 
           {/* Hero card */}
           <div style={{
-            backgroundColor: '#1C1C1E',
             borderRadius: 20,
             overflow: 'hidden',
             marginBottom: 28,
@@ -80,22 +79,18 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
             </p>
             {/* Subtitle */}
             <p style={{
-              fontSize: 13, color: '#636366', fontWeight: 400,
+              fontSize: 13, color: '#636366',
               textAlign: 'center',
               padding: '0 24px 16px',
             }}>
               {data.subtitle}
             </p>
 
-            {/* Divider */}
-            <div style={{ height: '0.5px', backgroundColor: 'rgba(255,255,255,0.08)', margin: '0 0' }} />
+            <div style={{ height: '0.5px', backgroundColor: 'rgba(255,255,255,0.08)' }} />
 
             {/* Insight */}
             <div style={{ padding: '16px 20px 20px' }}>
-              <p style={{
-                fontSize: 17, fontWeight: 600, color: '#FFFFFF', lineHeight: 1.25,
-                marginBottom: 8,
-              }}>
+              <p style={{ fontSize: 17, fontWeight: 600, color: '#FFFFFF', lineHeight: 1.25, marginBottom: 8 }}>
                 {data.heroTitle}
               </p>
               <p style={{ fontSize: 15, color: '#98989D', lineHeight: 1.55, marginBottom: 12 }}>
@@ -105,30 +100,6 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
                 {data.heroTemporal}
               </p>
             </div>
-          </div>
-
-          {/* Что это даёт */}
-          <p style={SEC_LABEL}>Что это даёт</p>
-          <div style={{ ...CARD, marginBottom: 28 }}>
-            {data.values.map((v, i) => (
-              <div
-                key={i}
-                style={{
-                  display: 'flex', alignItems: 'flex-start', gap: 12,
-                  padding: '14px 16px',
-                  ...(i < data.values.length - 1 ? ROW_DIVIDER : {}),
-                }}
-              >
-                <div style={{
-                  width: 7, height: 7, borderRadius: '50%',
-                  backgroundColor: data.color,
-                  flexShrink: 0, marginTop: 6,
-                }} />
-                <p style={{ fontSize: 15, color: '#FFFFFF', lineHeight: 1.5, fontWeight: 400 }}>
-                  {v}
-                </p>
-              </div>
-            ))}
           </div>
 
           {/* Источники */}
@@ -143,11 +114,10 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
                   ...(i < data.sources.length - 1 ? ROW_DIVIDER : {}),
                 }}
               >
-                {/* Icon */}
                 {src.iconSrc
                   ? <img src={src.iconSrc} alt="" style={{
                       width: 44, height: 44, borderRadius: 12,
-                      objectFit: 'cover', flexShrink: 0, overflow: 'hidden',
+                      objectFit: 'cover', flexShrink: 0,
                     }} />
                   : <div style={{
                       width: 44, height: 44, borderRadius: 12, flexShrink: 0,
@@ -158,7 +128,6 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
                       {src.initials}
                     </div>
                 }
-                {/* Text */}
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <p style={{ fontSize: 17, fontWeight: 500, color: '#FFFFFF', marginBottom: 2 }}>
                     {src.name}
@@ -170,9 +139,7 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
                     {src.meaning}
                   </p>
                 </div>
-                {/* Mini rings */}
                 <AuraRingsMini knowledge={72} trust={65} size={32} />
-                {/* Chevron */}
                 <ChevronRight size={16} color="#48484A" style={{ flexShrink: 0 }} />
               </div>
             ))}
@@ -196,27 +163,62 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
             </div>
           </div>
 
-          {/* Также подключены */}
-          {data.extSources.length > 0 && (
-            <>
-              <p style={SEC_LABEL}>Также подключены</p>
-              <div style={{ ...CARD, padding: '14px 16px' }}>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                  {data.extSources.map((name) => (
-                    <span key={name} style={{
-                      fontSize: 13, fontWeight: 500,
-                      color: '#98989D',
-                      backgroundColor: '#2C2C2E',
-                      borderRadius: 999,
-                      padding: '5px 12px',
-                    }}>
-                      {name}
-                    </span>
-                  ))}
-                </div>
+          {/* Инсайты */}
+          <p style={SEC_LABEL}>Инсайты</p>
+          <div style={{
+            display: 'flex', gap: 12,
+            overflowX: 'auto',
+            marginLeft: -16, marginRight: -16,
+            paddingLeft: 16, paddingRight: 16,
+            paddingBottom: 4,
+            marginBottom: 28,
+          }}>
+            {data.insights.map((ins, i) => (
+              <div
+                key={i}
+                style={{
+                  flexShrink: 0, width: 160,
+                  backgroundColor: '#1C1C1E',
+                  borderRadius: 16,
+                  padding: '14px',
+                  display: 'flex', flexDirection: 'column', gap: 10,
+                  cursor: 'pointer',
+                }}
+              >
+                <div style={{ fontSize: 24, lineHeight: 1 }}>{ins.icon}</div>
+                <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.07em', color: ins.accent, textTransform: 'uppercase', lineHeight: 1.3 }}>
+                  {ins.category}
+                </p>
+                <p style={{ fontSize: 14, fontWeight: 600, color: '#FFFFFF', lineHeight: 1.35 }}>
+                  {ins.text}
+                </p>
               </div>
-            </>
-          )}
+            ))}
+          </div>
+
+          {/* Что это даёт */}
+          <p style={SEC_LABEL}>Что это даёт</p>
+          <div style={{ ...CARD }}>
+            {data.values.map((v, i) => (
+              <div
+                key={i}
+                style={{
+                  display: 'flex', alignItems: 'flex-start', gap: 12,
+                  padding: '14px 16px',
+                  ...(i < data.values.length - 1 ? ROW_DIVIDER : {}),
+                }}
+              >
+                <div style={{
+                  width: 7, height: 7, borderRadius: '50%',
+                  backgroundColor: data.color,
+                  flexShrink: 0, marginTop: 6,
+                }} />
+                <p style={{ fontSize: 15, color: '#FFFFFF', lineHeight: 1.5 }}>
+                  {v}
+                </p>
+              </div>
+            ))}
+          </div>
 
         </div>
       </div>

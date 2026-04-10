@@ -135,15 +135,15 @@ export const ChatScreen: React.FC = () => {
         >✕</button>
       </div>
 
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', overflow: 'hidden', paddingTop: 12 }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', overflowY: 'auto', paddingTop: 12 }}>
         <motion.img
           src={wolfImg} alt=""
           animate={{ y: [0, -8, 0] }}
           transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
-          style={{ width: 190, height: 190, objectFit: 'contain', flexShrink: 0 }}
+          style={{ width: 140, height: 140, objectFit: 'contain', flexShrink: 0 }}
         />
         <p style={{
-          marginTop: 16, fontSize: 24, fontWeight: 700,
+          marginTop: 16, fontSize: 20, fontWeight: 700,
           lineHeight: 1.4, textAlign: 'center',
           padding: '0 28px', whiteSpace: 'pre-line',
           background: `linear-gradient(150deg, ${c1} 0%, ${c2} 100%)`,

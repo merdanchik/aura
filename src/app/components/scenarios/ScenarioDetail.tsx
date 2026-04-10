@@ -3,8 +3,11 @@ import { useNavigate, useParams } from 'react-router';
 import { motion } from 'motion/react';
 import { ChevronLeft } from 'lucide-react';
 import { SCENARIOS } from './types';
-import { ContentWorldDetail } from './ContentWorldDetail';
-import { TravelWorldDetail } from './TravelWorldDetail';
+import { ContentWorldDetail }  from './ContentWorldDetail';
+import { TravelWorldDetail }   from './TravelWorldDetail';
+import { MusicWorldDetail }    from './MusicWorldDetail';
+import { CinemaWorldDetail }   from './CinemaWorldDetail';
+import { ShoppingWorldDetail } from './ShoppingWorldDetail';
 
 // ── Placeholder block ────────────────────────────────────────────────────────
 const Block: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
@@ -39,8 +42,11 @@ export const ScenarioDetail: React.FC = () => {
   const navigate = useNavigate();
 
   // Content world has its own rich detail screen
-  if (id === 'content') return <ContentWorldDetail />;
-  if (id === 'travel')  return <TravelWorldDetail />;
+  if (id === 'content')  return <ContentWorldDetail />;
+  if (id === 'travel')   return <TravelWorldDetail />;
+  if (id === 'music')    return <MusicWorldDetail />;
+  if (id === 'cinema')   return <CinemaWorldDetail />;
+  if (id === 'shopping') return <ShoppingWorldDetail />;
 
   const scenario = SCENARIOS.find(s => s.id === id) ?? SCENARIOS[0];
   const currentIndex = SCENARIOS.indexOf(scenario);

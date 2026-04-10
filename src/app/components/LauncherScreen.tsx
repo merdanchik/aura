@@ -1400,8 +1400,8 @@ export const LauncherScreen = () => {
                     {mem.month}
                   </p>
                 </div>
-                {/* Title — anchored to bottom */}
-                <div style={{ flex: 1, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', padding: '0 12px 12px' }}>
+                {/* Title — centered H+V in remaining space */}
+                <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 12px' }}>
                   <p style={{
                     fontSize: 13, fontWeight: 700, color: '#FFFFFF',
                     lineHeight: 1.25, textAlign: 'center',

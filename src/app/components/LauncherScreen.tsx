@@ -16,6 +16,11 @@ import imgWimbledon from '../../assets/node-wimbledon.jpg';
 import imgRamen     from '../../assets/node-ramen.jpg';
 import imgRunning   from '../../assets/node-running.jpg';
 import imgEuro      from '../../assets/node-euro.jpg';
+import imgNickCave  from '../../assets/node-nick-cave.jpg';
+import imgRome      from '../../assets/node-rome.jpg';
+import imgIstanbul  from '../../assets/node-istanbul.jpg';
+import imgNilsFrahm from '../../assets/node-nils-frahm.jpg';
+import imgAusOpen   from '../../assets/node-aus-open.jpg';
 
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -135,15 +140,22 @@ const NODES: InterestNode[] = [
     periodWeight: { '2025-01': 0.32, '2025-02': 0.48, '2025-03': 0.58, '2025-04': 0.62 },
   },
   {
-    // Nikola Jokić — specific player, not just "basketball"
+    // Nikola Jokić — NBA season Oct–Apr, offseason in summer
     id: 'basketball', label: 'Jokić', type: 'symbol', weight: 0.82, color: '#FF9500', image: imgJokic,
-    periods: ['*'],
+    periods: ['2024-10', '2024-11', '2024-12', '2025-01', '2025-02', '2025-03', '2025-04'],
+    periodWeight: { '2024-10': 0.62, '2024-11': 0.72, '2024-12': 0.78, '2025-01': 0.82, '2025-02': 0.85, '2025-03': 0.88, '2025-04': 0.92 },
   },
   {
-    // Monaco GP peaks in summer — specific race
+    // Monaco GP — post-race hype fades by autumn, reborn with new F1 season in spring
     id: 'f1', label: 'Монако GP', type: 'symbol', weight: 0.78, color: '#FF3B30', image: imgLeclerc,
-    periods: ['*'],
-    periodWeight: { '2024-07': 0.92, '2024-08': 0.88, '2024-09': 0.72, '2024-10': 0.6, '2024-11': 0.55, '2024-12': 0.52, '2025-01': 0.55, '2025-02': 0.62, '2025-03': 0.72, '2025-04': 0.82 },
+    periods: ['2024-07', '2024-08', '2024-09', '2024-10'],
+    periodWeight: { '2024-07': 0.92, '2024-08': 0.82, '2024-09': 0.65, '2024-10': 0.48 },
+  },
+  {
+    // F1 new season — Bahrain/Australia opener, spring excitement
+    id: 'f1-2025', label: 'Гран-при', type: 'symbol', weight: 0.72, color: '#FF3B30', image: imgLeclerc,
+    periods: ['2025-03', '2025-04'],
+    periodWeight: { '2025-03': 0.62, '2025-04': 0.78 },
   },
   {
     // Hesse's Siddhartha — specific book
@@ -221,6 +233,74 @@ const NODES: InterestNode[] = [
     id: 'garage', label: 'Гараж', type: 'text', weight: 0.52, color: '#FF9F0A',
     periods: ['2025-03', '2025-04'],
     periodWeight: { '2025-03': 0.45, '2025-04': 0.55 },
+  },
+
+  // ── New diverse experiences ───────────────────────────────────────────────
+  {
+    // Istanbul summer trip — Bosphorus, Aug–Sep
+    id: 'istanbul', label: 'Стамбул', type: 'symbol', weight: 0.74, color: '#FF6633', image: imgIstanbul,
+    periods: ['2024-08', '2024-09'],
+    periodWeight: { '2024-08': 0.68, '2024-09': 0.78 },
+  },
+  {
+    // Nabokov — The Gift, autumn reading
+    id: 'nabokov', label: 'Дар', type: 'text', weight: 0.56, color: '#5E5CE6',
+    periods: ['2024-10', '2024-11'],
+    periodWeight: { '2024-10': 0.44, '2024-11': 0.58 },
+  },
+  {
+    // Nick Cave concert — dark autumn
+    id: 'nick-cave', label: 'Nick Cave', type: 'symbol', weight: 0.7, color: '#FF375F', image: imgNickCave,
+    periods: ['2024-11', '2024-12'],
+    periodWeight: { '2024-11': 0.72, '2024-12': 0.52 },
+  },
+  {
+    // Bach Goldberg Variations — winter listening ritual
+    id: 'bach-goldberg', label: 'Гольдберг', type: 'text', weight: 0.58, color: '#BF5AF2',
+    periods: ['2024-12', '2025-01'],
+    periodWeight: { '2024-12': 0.62, '2025-01': 0.52 },
+  },
+  {
+    // Rome trip, Trastevere — late autumn November-December
+    id: 'rome', label: 'Рим', type: 'symbol', weight: 0.76, color: '#FF9F0A', image: imgRome,
+    periods: ['2024-11', '2024-12'],
+    periodWeight: { '2024-11': 0.68, '2024-12': 0.82 },
+  },
+  {
+    // New Year's Eve — December only
+    id: 'new-year', label: '31 декабря', type: 'text', weight: 0.65, color: '#FF375F',
+    periods: ['2024-12'],
+    periodWeight: { '2024-12': 0.78 },
+  },
+  {
+    // Epiphany ice swim — January only
+    id: 'ice-swim', label: 'Прорубь', type: 'text', weight: 0.55, color: '#00C7BE',
+    periods: ['2025-01'],
+    periodWeight: { '2025-01': 0.68 },
+  },
+  {
+    // Severance S2 — winter watch
+    id: 'severance', label: 'Severance', type: 'text', weight: 0.62, color: '#0A84FF',
+    periods: ['2025-01', '2025-02'],
+    periodWeight: { '2025-01': 0.65, '2025-02': 0.55 },
+  },
+  {
+    // Australian Open — January tennis
+    id: 'aus-open', label: 'Australian Open', type: 'symbol', weight: 0.66, color: '#34C759', image: imgAusOpen,
+    periods: ['2025-01'],
+    periodWeight: { '2025-01': 0.74 },
+  },
+  {
+    // Nils Frahm — winter/spring piano
+    id: 'nils-frahm', label: 'Nils Frahm', type: 'symbol', weight: 0.64, color: '#BF5AF2', image: imgNilsFrahm,
+    periods: ['2025-02', '2025-03'],
+    periodWeight: { '2025-02': 0.68, '2025-03': 0.55 },
+  },
+  {
+    // Kandinsky — Tretyakov spring exhibition
+    id: 'kandinsky', label: 'Кандинский', type: 'text', weight: 0.54, color: '#FF9F0A',
+    periods: ['2025-03', '2025-04'],
+    periodWeight: { '2025-03': 0.48, '2025-04': 0.58 },
   },
 ];
 

@@ -157,9 +157,8 @@ export const worldCard = (accent?: string): CSSProperties => ({
   background: accent
     ? `linear-gradient(135deg, ${accent}12 0%, ${C.surface} 55%)`
     : C.surface,
-  border: `1px solid ${accent ? accent + '25' : C.border}`,
   padding: `${S.cardPadding}px`,
   cursor: 'pointer',
   WebkitTapHighlightColor: 'transparent',
-  boxShadow: `0 4px 24px rgba(0,0,0,0.45)${accent ? `, 0 0 32px ${accent}0A` : ''}`,
+  boxShadow: '0 4px 24px rgba(0,0,0,0.45)',
 });

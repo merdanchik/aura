@@ -12,38 +12,11 @@ const COLOR = '#5AC8F5';
 
 type WorldState = 'active' | 'cooling' | 'quiet';
 
-interface StatusConfig {
-  dotColor: string;
-  dotGlow:  string;
-  label:    string;
-}
-
-interface DomainBar {
-  label: string;
-  fill:  number;
-  color: string;
-}
-
-interface HeroConfig {
-  headline: string;
-  body:     string;
-  bars:     DomainBar[];
-}
-
-interface Experience {
-  emoji:    string;
-  title:    string;
-  desc:     string;
-  time:     string;
-  svc:      string;
-  svcColor: string;
-}
-
-interface Signal {
-  emoji: string;
-  text:  string;
-  sub:   string;
-}
+interface StatusConfig { dotColor: string; dotGlow: string; label: string }
+interface DomainBar    { label: string; fill: number; color: string }
+interface HeroConfig   { headline: string; body: string; bars: DomainBar[] }
+interface Experience   { emoji: string; title: string; desc: string; time: string; svc: string; svcColor: string }
+interface Signal       { text: string; sub: string }
 
 interface StateData {
   status:      StatusConfig;
@@ -54,11 +27,7 @@ interface StateData {
 
 const STATE_DATA: Record<WorldState, StateData> = {
   active: {
-    status: {
-      dotColor: '#30D158',
-      dotGlow:  '0 0 6px 1px #30D15888',
-      label:    'активен сейчас',
-    },
+    status: { dotColor: '#30D158', dotGlow: '0 0 6px 1px #30D15888', label: 'активен сейчас' },
     hero: {
       headline: 'Исследователь историй',
       body:     'Сейчас доминируют музыка и кино. Книги в фоне — вернулся к тексту после паузы.',
@@ -69,27 +38,21 @@ const STATE_DATA: Record<WorldState, StateData> = {
       ],
     },
     experiences: [
-      { emoji: '🎵', title: 'Всё ещё на повторе',        desc: 'Kind of Blue — третий день подряд',             time: '2 ч назад',    svc: 'Яндекс Музыка', svcColor: '#BF5AF2' },
-      { emoji: '🎬', title: 'Добавил в «Буду смотреть»', desc: 'Anatomie d\'une chute (2023)',                   time: 'вчера',        svc: 'Кинопоиск',     svcColor: '#FF9F0A' },
-      { emoji: '📖', title: 'Вернулся к книге',           desc: 'Братья Карамазовы — после паузы три недели',    time: '3 дня назад',  svc: 'Яндекс Книги',  svcColor: '#5E5CE6' },
-      { emoji: '🎬', title: 'Досмотрел до конца',         desc: 'The Bear — сезон 3, последние две серии сразу', time: '5 дней назад', svc: 'Кинопоиск',     svcColor: '#FF9F0A' },
-      { emoji: '🎵', title: 'Собрал плейлист',            desc: '«Для долгой поездки» — 14 треков, джаз+ambient',time: 'неделю назад', svc: 'Яндекс Музыка', svcColor: '#BF5AF2' },
+      { emoji: '🎵', title: 'Всё ещё на повторе',        desc: 'Kind of Blue — третий день подряд',              time: '2 ч назад',    svc: 'Яндекс Музыка', svcColor: '#BF5AF2' },
+      { emoji: '🎬', title: 'Добавил в «Буду смотреть»', desc: 'Anatomie d\'une chute (2023)',                    time: 'вчера',        svc: 'Кинопоиск',     svcColor: '#FF9F0A' },
+      { emoji: '📖', title: 'Вернулся к книге',           desc: 'Братья Карамазовы — после паузы три недели',     time: '3 дня назад',  svc: 'Яндекс Книги',  svcColor: '#5E5CE6' },
+      { emoji: '🎬', title: 'Досмотрел до конца',         desc: 'The Bear — сезон 3, последние две серии сразу',  time: '5 дней назад', svc: 'Кинопоиск',     svcColor: '#FF9F0A' },
+      { emoji: '🎵', title: 'Собрал плейлист',            desc: '«Для долгой поездки» — 14 треков, джаз+ambient', time: 'неделю назад', svc: 'Яндекс Музыка', svcColor: '#BF5AF2' },
     ],
     signals: [
-      { emoji: '🎵', text: '127 прослушиваний',       sub: 'за последние 2 недели' },
-      { emoji: '❤️', text: '14 лайков и сохранений',  sub: 'треки, фильмы, главы книг' },
-      { emoji: '👁️', text: '3 досмотра до финала',    sub: 'полные просмотры без пауз' },
-      { emoji: '📌', text: '5 добавлений в списки',    sub: '«Буду смотреть», «Хочу прочитать»' },
-      { emoji: '🔄', text: 'Повторное слушание',       sub: '2 альбома — вернулся сам, без рекомендации' },
+      { text: '127 прослушиваний за 2 недели',      sub: '14 лайков и сохранений' },
+      { text: '3 досмотра до финала без пауз',      sub: '5 добавлений в списки' },
+      { text: 'повторное слушание 2 альбомов',       sub: 'вернулся сам, без рекомендации' },
     ],
   },
 
   cooling: {
-    status: {
-      dotColor: '#FF9F0A',
-      dotGlow:  '0 0 6px 1px #FF9F0A88',
-      label:    'остывает',
-    },
+    status: { dotColor: '#FF9F0A', dotGlow: '0 0 6px 1px #FF9F0A88', label: 'остывает' },
     hero: {
       headline: 'Замедление после волны',
       body:     'Активный период позади. Музыка ещё звучит фоном, кино отошло. Книга брошена.',
@@ -100,25 +63,20 @@ const STATE_DATA: Record<WorldState, StateData> = {
       ],
     },
     experiences: [
-      { emoji: '🎵', title: 'Слушал в фоне',           desc: 'Ambient mix — без фокуса, скорее привычка',      time: '4 дня назад',   svc: 'Яндекс Музыка', svcColor: '#BF5AF2' },
-      { emoji: '🎬', title: 'Прервал на середине',      desc: 'Oppenheimer — поставил на паузу, не вернулся',   time: '5 дней назад',  svc: 'Кинопоиск',     svcColor: '#FF9F0A' },
-      { emoji: '🎵', title: 'Запустил старый плейлист', desc: '«Рабочее» — ничего нового не искал',             time: 'неделю назад',  svc: 'Яндекс Музыка', svcColor: '#BF5AF2' },
-      { emoji: '📖', title: 'Книга на паузе',           desc: 'Братья Карамазовы — не открывал 10 дней',        time: '10 дней назад', svc: 'Яндекс Книги',  svcColor: '#5E5CE6' },
+      { emoji: '🎵', title: 'Слушал в фоне',            desc: 'Ambient mix — без фокуса, скорее привычка',       time: '4 дня назад',   svc: 'Яндекс Музыка', svcColor: '#BF5AF2' },
+      { emoji: '🎬', title: 'Прервал на середине',       desc: 'Oppenheimer — поставил на паузу, не вернулся',    time: '5 дней назад',  svc: 'Кинопоиск',     svcColor: '#FF9F0A' },
+      { emoji: '🎵', title: 'Запустил старый плейлист',  desc: '«Рабочее» — ничего нового не искал',              time: 'неделю назад',  svc: 'Яндекс Музыка', svcColor: '#BF5AF2' },
+      { emoji: '📖', title: 'Книга на паузе',            desc: 'Братья Карамазовы — не открывал 10 дней',         time: '10 дней назад', svc: 'Яндекс Книги',  svcColor: '#5E5CE6' },
     ],
     signals: [
-      { emoji: '🎵', text: '31 прослушивание',        sub: 'за последние 2 недели' },
-      { emoji: '👁️', text: '1 брошенный просмотр',   sub: 'менее 50% фильма' },
-      { emoji: '📌', text: '0 новых добавлений',      sub: 'списки не пополнялись' },
-      { emoji: '⏱️', text: 'Средняя сессия 14 мин',  sub: 'vs 47 мин в активной фазе' },
+      { text: '31 прослушивание за 2 недели',       sub: 'vs 127 в активной фазе' },
+      { text: '1 брошенный просмотр до середины',   sub: '0 новых добавлений в списки' },
+      { text: 'средняя сессия 14 мин',               sub: 'vs 47 мин в активной фазе' },
     ],
   },
 
   quiet: {
-    status: {
-      dotColor: '#636366',
-      dotGlow:  '0 0 4px 1px #63636666',
-      label:    'в спячке',
-    },
+    status: { dotColor: '#636366', dotGlow: '0 0 4px 1px #63636666', label: 'в спячке' },
     hero: {
       headline: 'Мир на паузе',
       body:     'Контент почти не потребляется. Aura помнит вкусы — ждёт возвращения.',
@@ -129,35 +87,22 @@ const STATE_DATA: Record<WorldState, StateData> = {
       ],
     },
     experiences: [
-      { emoji: '🎵', title: 'Случайный трек',   desc: 'Авторадио в машине — не Яндекс',                 time: '3 нед. назад', svc: 'Яндекс Музыка', svcColor: '#BF5AF2' },
-      { emoji: '🎬', title: 'Ничего не смотрел', desc: 'Вишлист не менялся',                             time: '3 нед. назад', svc: 'Кинопоиск',     svcColor: '#FF9F0A' },
-      { emoji: '📖', title: 'Книга закрыта',     desc: 'Братья Карамазовы — страница 214, не двигается', time: '3 нед. назад', svc: 'Яндекс Книги',  svcColor: '#5E5CE6' },
-      { emoji: '💤', title: 'Сигналов нет',      desc: 'Лайков, сохранений, добавлений — ноль',          time: '3 нед. назад', svc: 'Aura',          svcColor: '#636366' },
+      { emoji: '🎵', title: 'Случайный трек',    desc: 'Авторадио в машине — не Яндекс',                 time: '3 нед. назад', svc: 'Яндекс Музыка', svcColor: '#BF5AF2' },
+      { emoji: '🎬', title: 'Ничего не смотрел',  desc: 'Вишлист не менялся',                             time: '3 нед. назад', svc: 'Кинопоиск',     svcColor: '#FF9F0A' },
+      { emoji: '📖', title: 'Книга закрыта',      desc: 'Братья Карамазовы — страница 214, не двигается', time: '3 нед. назад', svc: 'Яндекс Книги',  svcColor: '#5E5CE6' },
+      { emoji: '💤', title: 'Сигналов нет',       desc: 'Лайков, сохранений, добавлений — ноль',          time: '3 нед. назад', svc: 'Aura',          svcColor: '#636366' },
     ],
     signals: [
-      { emoji: '😶', text: '3 прослушивания',              sub: 'за последние 2 недели' },
-      { emoji: '🚫', text: 'Нет лайков',                   sub: 'ни одного за 3 недели' },
-      { emoji: '🔕', text: 'Рекомендации проигнорированы', sub: 'показаны, не нажаты' },
-      { emoji: '📉', text: 'Активность −94%',              sub: 'относительно пика 4 нед. назад' },
+      { text: '3 прослушивания за 2 недели',        sub: 'ни одного лайка за 3 недели' },
+      { text: 'рекомендации проигнорированы',        sub: 'показаны, не нажаты' },
+      { text: 'активность −94%',                    sub: 'относительно пика 4 нед. назад' },
     ],
   },
 };
 
-const STATE_ORDER: WorldState[] = ['active', 'cooling', 'quiet'];
-
-const STATE_LABELS: Record<WorldState, string> = {
-  active:  'Активен',
-  cooling: 'Остывает',
-  quiet:   'Тихо',
-};
-
-const STATE_COLORS: Record<WorldState, string> = {
-  active:  '#30D158',
-  cooling: '#FF9F0A',
-  quiet:   '#636366',
-};
-
-// ── Static sources ────────────────────────────────────────────────────────────
+const STATE_ORDER: WorldState[]             = ['active', 'cooling', 'quiet'];
+const STATE_LABELS: Record<WorldState, string> = { active: 'Активен', cooling: 'Остывает', quiet: 'Тихо' };
+const STATE_COLORS: Record<WorldState, string> = { active: '#30D158', cooling: '#FF9F0A',  quiet: '#636366' };
 
 const SOURCE_SERVICES = [
   { icon: svcMusic, name: 'Яндекс Музыка' },
@@ -197,38 +142,32 @@ export const ContentWorldDetail: React.FC = () => {
 
   return (
     <div style={{
-      position: 'fixed', inset: 0,
-      background: '#000',
+      position: 'fixed', inset: 0, background: '#000',
       display: 'flex', flexDirection: 'column',
       fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
     }}>
 
-      {/* ── A. Header ── */}
+      {/* ── Header ── */}
       <div style={{
         display: 'flex', alignItems: 'center', gap: 10,
         padding: '52px 16px 14px',
-        borderBottom: '0.5px solid rgba(255,255,255,0.07)',
-        flexShrink: 0,
+        borderBottom: '0.5px solid rgba(255,255,255,0.07)', flexShrink: 0,
       }}>
-        <button
-          onClick={() => navigate('/scenarios')}
-          style={{
-            width: 32, height: 32, borderRadius: '50%',
-            background: 'rgba(255,255,255,0.08)', border: 'none',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            color: '#fff', cursor: 'pointer', flexShrink: 0,
-            WebkitTapHighlightColor: 'transparent',
-          }}
-        >
+        <button onClick={() => navigate('/scenarios')} style={{
+          width: 32, height: 32, borderRadius: '50%',
+          background: 'rgba(255,255,255,0.08)', border: 'none',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          color: '#fff', cursor: 'pointer', flexShrink: 0,
+          WebkitTapHighlightColor: 'transparent',
+        }}>
           <ChevronLeft size={18} />
         </button>
-
         <div style={{ flex: 1, minWidth: 0 }}>
           <p style={{ color: '#fff', fontSize: 17, fontWeight: 700, lineHeight: 1.1 }}>Контент</p>
           <p style={{ color: 'rgba(255,255,255,0.38)', fontSize: 12, marginTop: 2 }}>Музыка · Кино · Книги</p>
         </div>
 
-        {/* Freshness badge — animates when state changes */}
+        {/* Animated status badge */}
         <AnimatePresence mode="wait">
           <motion.div
             key={worldState}
@@ -238,34 +177,25 @@ export const ContentWorldDetail: React.FC = () => {
             transition={{ duration: 0.18 }}
             style={{ display: 'flex', alignItems: 'center', gap: 5, flexShrink: 0 }}
           >
-            <div style={{
-              width: 6, height: 6, borderRadius: '50%',
-              background: data.status.dotColor,
-              boxShadow: data.status.dotGlow,
-            }} />
-            <span style={{ color: data.status.dotColor, fontSize: 11, fontWeight: 500 }}>
-              {data.status.label}
-            </span>
+            <div style={{ width: 6, height: 6, borderRadius: '50%', background: data.status.dotColor, boxShadow: data.status.dotGlow }} />
+            <span style={{ color: data.status.dotColor, fontSize: 11, fontWeight: 500 }}>{data.status.label}</span>
           </motion.div>
         </AnimatePresence>
 
-        <button
-          onClick={() => navigate('/app/chat/cinema')}
-          style={{
-            width: 32, height: 32, borderRadius: '50%',
-            background: `${COLOR}1A`, border: `1.5px solid ${COLOR}44`,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 15, cursor: 'pointer', flexShrink: 0,
-            WebkitTapHighlightColor: 'transparent',
-          }}
-        >💬</button>
+        <button onClick={() => navigate('/app/chat/cinema')} style={{
+          width: 32, height: 32, borderRadius: '50%',
+          background: `${COLOR}1A`, border: `1.5px solid ${COLOR}44`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: 15, cursor: 'pointer', flexShrink: 0,
+          WebkitTapHighlightColor: 'transparent',
+        }}>💬</button>
       </div>
 
       {/* ── Scrollable body ── */}
       <div style={{ flex: 1, overflowY: 'auto', WebkitOverflowScrolling: 'touch' as any }}>
         <div style={{ padding: '20px 16px 48px' }}>
 
-          {/* ── B. Hero summary ── */}
+          {/* ── Hero ── */}
           <AnimatePresence mode="wait">
             <motion.div
               key={`hero-${worldState}`}
@@ -277,8 +207,7 @@ export const ContentWorldDetail: React.FC = () => {
                 borderRadius: 18,
                 background: `linear-gradient(140deg, ${stColor}12 0%, rgba(22,22,24,0.96) 60%)`,
                 border: `1px solid ${stColor}28`,
-                padding: '18px 18px 16px',
-                marginBottom: 24,
+                padding: '18px 18px 16px', marginBottom: 24,
               }}
             >
               <p style={{ color: '#fff', fontSize: 20, fontWeight: 700, lineHeight: 1.2, marginBottom: 6 }}>
@@ -287,8 +216,6 @@ export const ContentWorldDetail: React.FC = () => {
               <p style={{ color: 'rgba(255,255,255,0.52)', fontSize: 13, lineHeight: 1.55, marginBottom: 16 }}>
                 {data.hero.body}
               </p>
-
-              {/* Domain activity mini-bars */}
               <div style={{ display: 'flex', gap: 10, marginBottom: 16 }}>
                 {data.hero.bars.map(d => (
                   <div key={d.label} style={{ flex: 1 }}>
@@ -299,13 +226,8 @@ export const ContentWorldDetail: React.FC = () => {
                   </div>
                 ))}
               </div>
-
-              {/* ── Demo switcher ── */}
-              <div style={{
-                display: 'flex', gap: 6,
-                borderTop: '1px solid rgba(255,255,255,0.07)',
-                paddingTop: 14,
-              }}>
+              {/* State switcher */}
+              <div style={{ display: 'flex', gap: 6, borderTop: '1px solid rgba(255,255,255,0.07)', paddingTop: 14 }}>
                 {STATE_ORDER.map(s => {
                   const active = worldState === s;
                   const c = STATE_COLORS[s];
@@ -331,14 +253,12 @@ export const ContentWorldDetail: React.FC = () => {
             </motion.div>
           </AnimatePresence>
 
-          {/* ── C. Experiences ── */}
+          {/* ── Experiences ── */}
           <SecLabel>Что происходило</SecLabel>
           <AnimatePresence mode="wait">
             <motion.div
               key={`exp-${worldState}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
               style={{ marginBottom: 4 }}
             >
@@ -347,30 +267,22 @@ export const ContentWorldDetail: React.FC = () => {
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
                     <div style={{
                       width: 38, height: 38, borderRadius: '50%',
-                      background: `${exp.svcColor}14`,
-                      border: `1px solid ${exp.svcColor}40`,
+                      background: `${exp.svcColor}14`, border: `1px solid ${exp.svcColor}40`,
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: 17, flexShrink: 0,
-                    }}>
-                      {exp.emoji}
-                    </div>
+                    }}>{exp.emoji}</div>
                     {i < data.experiences.length - 1 && (
                       <div style={{ width: 1, flex: 1, minHeight: 14, background: 'rgba(255,255,255,0.07)', marginTop: 4 }} />
                     )}
                   </div>
-
                   <div style={{ flex: 1, paddingBottom: 14 }}>
                     <p style={{ color: '#fff', fontSize: 14, fontWeight: 600, lineHeight: 1.3 }}>{exp.title}</p>
                     <p style={{ color: 'rgba(255,255,255,0.46)', fontSize: 12.5, marginTop: 2, lineHeight: 1.4 }}>{exp.desc}</p>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 7 }}>
                       <span style={{
-                        background: `${exp.svcColor}14`,
-                        border: `1px solid ${exp.svcColor}30`,
-                        borderRadius: 8, padding: '2px 9px',
-                        color: exp.svcColor, fontSize: 11, fontWeight: 500,
-                      }}>
-                        {exp.svc}
-                      </span>
+                        background: `${exp.svcColor}14`, border: `1px solid ${exp.svcColor}30`,
+                        borderRadius: 8, padding: '2px 9px', color: exp.svcColor, fontSize: 11, fontWeight: 500,
+                      }}>{exp.svc}</span>
                       <span style={{ color: 'rgba(255,255,255,0.26)', fontSize: 11 }}>{exp.time}</span>
                     </div>
                   </div>
@@ -381,46 +293,38 @@ export const ContentWorldDetail: React.FC = () => {
 
           <Divider />
 
-          {/* ── D. Unified sources block ── */}
+          {/* ── Sources ── */}
           <SecLabel>Источники</SecLabel>
 
           {/* Static service icon strip */}
           <div style={{ display: 'flex', gap: 14, marginBottom: 16 }}>
             {SOURCE_SERVICES.map(s => (
               <div key={s.name} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5 }}>
-                <img src={s.icon} style={{ width: 42, height: 42, borderRadius: 11, objectFit: 'cover' }} />
-                <p style={{ color: 'rgba(255,255,255,0.34)', fontSize: 9.5, fontWeight: 500, textAlign: 'center', maxWidth: 60 }}>{s.name}</p>
+                <img src={s.icon} style={{ width: 42, height: 42, borderRadius: 11, objectFit: 'cover', border: '1px solid rgba(255,255,255,0.08)' }} />
+                <p style={{ color: 'rgba(255,255,255,0.32)', fontSize: 9, fontWeight: 500, textAlign: 'center', maxWidth: 58 }}>{s.name}</p>
               </div>
             ))}
           </div>
 
-          {/* Animated signals — per state */}
+          {/* Animated state-based signals */}
           <AnimatePresence mode="wait">
             <motion.div
               key={`sig-${worldState}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
               style={{
-                borderRadius: 16,
-                background: '#1C1C1E',
+                borderRadius: 14, background: '#1C1C1E',
                 border: '1px solid rgba(255,255,255,0.06)',
-                overflow: 'hidden',
-                marginBottom: 10,
+                overflow: 'hidden', marginBottom: 10,
               }}
             >
               {data.signals.map((s, i) => (
                 <div key={i} style={{
-                  display: 'flex', alignItems: 'center', gap: 14,
-                  padding: '13px 16px',
+                  padding: '11px 16px',
                   borderBottom: i < data.signals.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none',
                 }}>
-                  <span style={{ fontSize: 20, flexShrink: 0, lineHeight: 1 }}>{s.emoji}</span>
-                  <div>
-                    <p style={{ color: '#fff', fontSize: 13, fontWeight: 500 }}>{s.text}</p>
-                    <p style={{ color: 'rgba(255,255,255,0.34)', fontSize: 11, marginTop: 1 }}>{s.sub}</p>
-                  </div>
+                  <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: 12.5, fontWeight: 500, lineHeight: 1.3 }}>{s.text}</p>
+                  <p style={{ color: 'rgba(255,255,255,0.36)', fontSize: 11, marginTop: 2 }}>{s.sub}</p>
                 </div>
               ))}
             </motion.div>
@@ -439,7 +343,7 @@ export const ContentWorldDetail: React.FC = () => {
 
           <Divider />
 
-          {/* ── E. Benefits (static) ── */}
+          {/* ── Benefits ── */}
           <SecLabel>Что это даёт</SecLabel>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {BENEFITS.map((b, i) => (

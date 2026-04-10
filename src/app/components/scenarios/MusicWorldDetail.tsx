@@ -1,15 +1,17 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
 import { ChevronLeft } from 'lucide-react';
+import svcMusic  from '../../../assets/52729efb5574f608701f92848e1b348745677960.png';
+import svcAfisha from '../../../assets/afisha.png';
 
 const COLOR = '#BF5AF2';
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 
 const GENRE_BARS = [
-  { label: 'Джаз',       fill: 0.82, color: COLOR },
-  { label: 'Ambient',    fill: 0.58, color: '#5AC8F5' },
-  { label: 'Classical',  fill: 0.41, color: '#5E5CE6' },
+  { label: 'Джаз',      fill: 0.82, color: COLOR },
+  { label: 'Ambient',   fill: 0.58, color: '#5AC8F5' },
+  { label: 'Classical', fill: 0.41, color: '#5E5CE6' },
 ];
 
 const EXPERIENCES = [
@@ -35,37 +37,38 @@ const EXPERIENCES = [
   },
 ];
 
-const SIGNALS = [
-  { emoji: '🔁', text: '3 возврата к одному альбому',      sub: 'Kind of Blue — собственный выбор, не рекомендация' },
-  { emoji: '⏱️', text: 'Сессии по 50+ минут',               sub: 'в два раза длиннее обычного — фокусное, не фоновое' },
-  { emoji: '❤️', text: '7 лайков за один вечер',            sub: 'кластерное открытие — сигнал нового направления вкуса' },
-  { emoji: '⏭️', text: 'Ни одного пропуска трека',          sub: 'в последнем плейлисте — слушает внимательно' },
+const SOURCES = [
+  {
+    iconSrc: svcMusic, name: 'Яндекс Музыка', accentColor: COLOR,
+    facts: [
+      '127 прослушиваний за последние 2 недели',
+      '7 лайков за один вечер — кластерное открытие',
+      '3 возврата к Kind of Blue — собственный выбор, не рекомендация',
+      'сессии по 50+ минут — в 2× длиннее обычного',
+    ],
+  },
+  {
+    iconSrc: svcAfisha, name: 'Яндекс Афиша', accentColor: '#FF9F0A',
+    facts: [
+      'Nils Frahm — добавлен в «Хочу пойти», март, Москва',
+      'первый концертный план за последний месяц',
+    ],
+  },
 ];
 
-const YANDEX_CONTRIBUTORS = [
-  { name: 'Яндекс Музыка', role: 'прослушивания, лайки, плейлисты' },
-  { name: 'Яндекс Афиша',  role: 'концерты, события, избранное' },
-];
-
-const EXT_CONTRIBUTORS = [
-  { name: 'Spotify',  role: 'синхронизация вкуса' },
-  { name: 'Last.fm',  role: 'история прослушиваний' },
-];
+const EXT_SOURCES = ['Spotify', 'Last.fm'];
 
 const BENEFITS = [
   {
-    icon: '🎯',
-    title: 'Рекомендации в момент открытия',
+    icon: '🎯', title: 'Рекомендации в момент открытия',
     desc: 'Видит, что ты в периоде активного поиска — предложит новое, а не привычное',
   },
   {
-    icon: '🔗',
-    title: 'От трека до события',
+    icon: '🔗', title: 'От трека до события',
     desc: 'Нашёл артиста в стриминге — Aura покажет ближайший концерт без отдельного поиска',
   },
   {
-    icon: '🧠',
-    title: 'Вкус меняется — Aura не теряет нить',
+    icon: '🧠', title: 'Вкус меняется — Aura не теряет нить',
     desc: 'Фиксирует сдвиги: джаз после рок-фазы — не случайность, а новый паттерн',
   },
 ];
@@ -89,8 +92,7 @@ export const MusicWorldDetail: React.FC = () => {
 
   return (
     <div style={{
-      position: 'fixed', inset: 0,
-      background: '#000',
+      position: 'fixed', inset: 0, background: '#000',
       display: 'flex', flexDirection: 'column',
       fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
     }}>
@@ -99,42 +101,32 @@ export const MusicWorldDetail: React.FC = () => {
       <div style={{
         display: 'flex', alignItems: 'center', gap: 10,
         padding: '52px 16px 14px',
-        borderBottom: '0.5px solid rgba(255,255,255,0.07)',
-        flexShrink: 0,
+        borderBottom: '0.5px solid rgba(255,255,255,0.07)', flexShrink: 0,
       }}>
-        <button
-          onClick={() => navigate('/scenarios')}
-          style={{
-            width: 32, height: 32, borderRadius: '50%',
-            background: 'rgba(255,255,255,0.08)', border: 'none',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            color: '#fff', cursor: 'pointer', flexShrink: 0,
-            WebkitTapHighlightColor: 'transparent',
-          }}
-        >
+        <button onClick={() => navigate('/scenarios')} style={{
+          width: 32, height: 32, borderRadius: '50%',
+          background: 'rgba(255,255,255,0.08)', border: 'none',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          color: '#fff', cursor: 'pointer', flexShrink: 0,
+          WebkitTapHighlightColor: 'transparent',
+        }}>
           <ChevronLeft size={18} />
         </button>
-
         <div style={{ flex: 1, minWidth: 0 }}>
           <p style={{ color: '#fff', fontSize: 17, fontWeight: 700, lineHeight: 1.1 }}>Музыка</p>
           <p style={{ color: 'rgba(255,255,255,0.38)', fontSize: 12, marginTop: 2 }}>Слушает · Открывает · Собирает</p>
         </div>
-
         <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexShrink: 0 }}>
           <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#30D158', boxShadow: '0 0 6px 1px #30D15888' }} />
           <span style={{ color: '#30D158', fontSize: 11, fontWeight: 500 }}>в потоке</span>
         </div>
-
-        <button
-          onClick={() => navigate('/app/chat/jazz')}
-          style={{
-            width: 32, height: 32, borderRadius: '50%',
-            background: `${COLOR}1A`, border: `1.5px solid ${COLOR}44`,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 15, cursor: 'pointer', flexShrink: 0,
-            WebkitTapHighlightColor: 'transparent',
-          }}
-        >💬</button>
+        <button onClick={() => navigate('/app/chat/jazz')} style={{
+          width: 32, height: 32, borderRadius: '50%',
+          background: `${COLOR}1A`, border: `1.5px solid ${COLOR}44`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: 15, cursor: 'pointer', flexShrink: 0,
+          WebkitTapHighlightColor: 'transparent',
+        }}>💬</button>
       </div>
 
       {/* ── Scrollable body ── */}
@@ -144,26 +136,22 @@ export const MusicWorldDetail: React.FC = () => {
           {/* ── Hero ── */}
           <div style={{
             borderRadius: 18,
-            background: `linear-gradient(140deg, ${COLOR}14 0%, rgba(28,28,30,0.9) 65%)`,
-            border: `1px solid ${COLOR}28`,
-            padding: '18px 18px 16px',
-            marginBottom: 24,
+            background: `linear-gradient(140deg, ${COLOR}18 0%, rgba(22,22,24,0.96) 60%)`,
+            border: `1px solid ${COLOR}30`, padding: '18px 18px 16px', marginBottom: 24,
           }}>
             <p style={{ color: '#fff', fontSize: 20, fontWeight: 700, lineHeight: 1.2, marginBottom: 6 }}>
               Глубокое слушание
             </p>
-            <p style={{ color: 'rgba(255,255,255,0.52)', fontSize: 13, lineHeight: 1.55, marginBottom: 16 }}>
-              Не фоновый шум — намеренные сессии. Kind of Blue в третий раз за неделю: это сигнал открытия, не привычка.
+            <p style={{ color: 'rgba(255,255,255,0.52)', fontSize: 13, lineHeight: 1.55, marginBottom: 18 }}>
+              Не фоновый шум — намеренные сессии. Kind of Blue в третий раз за неделю: сигнал открытия, не привычка.
             </p>
-
-            {/* Genre activity bars */}
             <div style={{ display: 'flex', gap: 10 }}>
               {GENRE_BARS.map(d => (
                 <div key={d.label} style={{ flex: 1 }}>
-                  <div style={{ height: 3, borderRadius: 2, background: 'rgba(255,255,255,0.08)', overflow: 'hidden', marginBottom: 5 }}>
+                  <div style={{ height: 3, borderRadius: 2, background: 'rgba(255,255,255,0.08)', overflow: 'hidden', marginBottom: 6 }}>
                     <div style={{ width: `${d.fill * 100}%`, height: '100%', borderRadius: 2, background: d.color }} />
                   </div>
-                  <p style={{ color: 'rgba(255,255,255,0.38)', fontSize: 10, fontWeight: 500 }}>{d.label}</p>
+                  <p style={{ color: 'rgba(255,255,255,0.40)', fontSize: 10, fontWeight: 500 }}>{d.label}</p>
                 </div>
               ))}
             </div>
@@ -180,9 +168,7 @@ export const MusicWorldDetail: React.FC = () => {
                     background: `${exp.svcColor}14`, border: `1px solid ${exp.svcColor}40`,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     fontSize: 17, flexShrink: 0,
-                  }}>
-                    {exp.emoji}
-                  </div>
+                  }}>{exp.emoji}</div>
                   {i < EXPERIENCES.length - 1 && (
                     <div style={{ width: 1, flex: 1, minHeight: 14, background: 'rgba(255,255,255,0.07)', marginTop: 4 }} />
                   )}
@@ -204,58 +190,45 @@ export const MusicWorldDetail: React.FC = () => {
 
           <Divider />
 
-          {/* ── Signals ── */}
-          <SecLabel>Откуда Aura это знает</SecLabel>
-          <div style={{
-            borderRadius: 16, background: '#1C1C1E',
-            border: '1px solid rgba(255,255,255,0.06)', overflow: 'hidden', marginBottom: 4,
-          }}>
-            {SIGNALS.map((s, i) => (
-              <div key={i} style={{
-                display: 'flex', alignItems: 'center', gap: 14, padding: '13px 16px',
-                borderBottom: i < SIGNALS.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none',
+          {/* ── Sources ── */}
+          <SecLabel>Источники</SecLabel>
+          <div style={{ marginBottom: 10 }}>
+            {SOURCES.map(src => (
+              <div key={src.name} style={{
+                borderRadius: 14, background: '#1C1C1E',
+                border: `1px solid ${src.accentColor}1E`,
+                padding: '14px 16px', marginBottom: 10,
+                display: 'flex', gap: 14, alignItems: 'flex-start',
               }}>
-                <span style={{ fontSize: 20, flexShrink: 0, lineHeight: 1 }}>{s.emoji}</span>
-                <div>
-                  <p style={{ color: '#fff', fontSize: 13, fontWeight: 500 }}>{s.text}</p>
-                  <p style={{ color: 'rgba(255,255,255,0.34)', fontSize: 11, marginTop: 1 }}>{s.sub}</p>
+                {'iconSrc' in src ? (
+                  <img src={src.iconSrc as string} style={{ width: 38, height: 38, borderRadius: 9, objectFit: 'cover', flexShrink: 0, marginTop: 1 }} />
+                ) : (
+                  <div style={{ width: 38, height: 38, borderRadius: 9, background: 'rgba(255,255,255,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0, marginTop: 1 }}>
+                    {(src as any).iconEmoji}
+                  </div>
+                )}
+                <div style={{ flex: 1 }}>
+                  <p style={{ color: '#fff', fontSize: 13, fontWeight: 600, marginBottom: 8 }}>{src.name}</p>
+                  {src.facts.map((fact, i) => (
+                    <p key={i} style={{
+                      color: 'rgba(255,255,255,0.52)',
+                      fontSize: 12, lineHeight: 1.55,
+                      borderTop: i > 0 ? '1px solid rgba(255,255,255,0.05)' : 'none',
+                      paddingTop: i > 0 ? 5 : 0,
+                      marginBottom: 0,
+                    }}>{fact}</p>
+                  ))}
                 </div>
               </div>
             ))}
           </div>
-
-          <Divider />
-
-          {/* ── Contributors ── */}
-          <SecLabel>Кто подпитывает этот мир</SecLabel>
-
-          <p style={{ color: 'rgba(255,255,255,0.26)', fontSize: 11, fontWeight: 500, marginBottom: 8, textTransform: 'uppercase', letterSpacing: 0.5 }}>Яндекс</p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
-            {YANDEX_CONTRIBUTORS.map((c, i) => (
-              <div key={i} style={{
-                display: 'flex', alignItems: 'center', gap: 12,
-                background: '#1C1C1E', borderRadius: 12, padding: '11px 14px',
-                border: '1px solid rgba(255,255,255,0.06)',
-              }}>
-                <div style={{ width: 7, height: 7, borderRadius: '50%', background: COLOR, flexShrink: 0 }} />
-                <div>
-                  <p style={{ color: '#fff', fontSize: 13, fontWeight: 500 }}>{c.name}</p>
-                  <p style={{ color: 'rgba(255,255,255,0.34)', fontSize: 11 }}>{c.role}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <p style={{ color: 'rgba(255,255,255,0.26)', fontSize: 11, fontWeight: 500, marginBottom: 8, textTransform: 'uppercase', letterSpacing: 0.5 }}>Внешние сервисы</p>
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 4 }}>
-            {EXT_CONTRIBUTORS.map((c, i) => (
-              <div key={i} style={{
-                background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.09)',
-                borderRadius: 11, padding: '8px 13px',
-              }}>
-                <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 12.5, fontWeight: 500 }}>{c.name}</p>
-                <p style={{ color: 'rgba(255,255,255,0.28)', fontSize: 10.5, marginTop: 1 }}>{c.role}</p>
-              </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+            <p style={{ color: 'rgba(255,255,255,0.26)', fontSize: 11 }}>Также подключены:</p>
+            {EXT_SOURCES.map((name, i) => (
+              <React.Fragment key={name}>
+                <p style={{ color: 'rgba(255,255,255,0.42)', fontSize: 11, fontWeight: 500 }}>{name}</p>
+                {i < EXT_SOURCES.length - 1 && <p style={{ color: 'rgba(255,255,255,0.18)', fontSize: 11 }}>·</p>}
+              </React.Fragment>
             ))}
           </div>
 

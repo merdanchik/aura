@@ -39,28 +39,29 @@ const EXPERIENCES = [
 const SOURCES = [
   {
     iconSrc: svcTravel, name: 'Яндекс Путешествия', accentColor: COLOR,
-    signals: [
-      { emoji: '🔍', text: '11 поисков направлений', sub: 'за последние 2 недели' },
-      { emoji: '🏨', text: '3 отеля в избранном',    sub: 'Тбилиси, июнь' },
-      { emoji: '✈️', text: 'Билеты проверены 4 раза', sub: 'одно направление, разные даты' },
+    facts: [
+      '11 поисков направлений за последние 2 недели',
+      '3 отеля в избранном — Тбилиси, июнь',
+      '4 проверки билетов — одно направление, разные даты',
     ],
   },
   {
     iconEmoji: '🗺️', name: 'Яндекс Карты', accentColor: '#FF9F0A',
-    signals: [
-      { emoji: '📍', text: '7 мест сохранено на карте', sub: 'рестораны, районы, маршруты' },
+    facts: [
+      '7 мест сохранено — рестораны, районы, маршруты',
     ],
   },
   {
     iconEmoji: '☁️', name: 'Яндекс Погода', accentColor: '#5AC8F5',
-    signals: [
-      { emoji: '🌤️', text: '3 просмотра погоды', sub: 'одна и та же поездка — сигнал намерения' },
+    facts: [
+      'Тбилиси 2–15 июня: +28°C без дождей — 3 просмотра',
+      'повторный просмотр = сигнал реального намерения',
     ],
   },
   {
     iconSrc: svcTaxi, name: 'Яндекс Такси', accentColor: '#FFCC00',
-    signals: [
-      { emoji: '🚕', text: 'Маршрут до аэропорта', sub: 'проверял стоимость поездки' },
+    facts: [
+      'маршрут до аэропорта — проверял стоимость поездки',
     ],
   },
 ];
@@ -109,8 +110,7 @@ export const TravelWorldDetail: React.FC = () => {
 
   return (
     <div style={{
-      position: 'fixed', inset: 0,
-      background: '#000',
+      position: 'fixed', inset: 0, background: '#000',
       display: 'flex', flexDirection: 'column',
       fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
     }}>
@@ -119,58 +119,43 @@ export const TravelWorldDetail: React.FC = () => {
       <div style={{
         display: 'flex', alignItems: 'center', gap: 10,
         padding: '52px 16px 14px',
-        borderBottom: '0.5px solid rgba(255,255,255,0.07)',
-        flexShrink: 0,
+        borderBottom: '0.5px solid rgba(255,255,255,0.07)', flexShrink: 0,
       }}>
-        <button
-          onClick={() => navigate('/scenarios')}
-          style={{
-            width: 32, height: 32, borderRadius: '50%',
-            background: 'rgba(255,255,255,0.08)', border: 'none',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            color: '#fff', cursor: 'pointer', flexShrink: 0,
-            WebkitTapHighlightColor: 'transparent',
-          }}
-        >
+        <button onClick={() => navigate('/scenarios')} style={{
+          width: 32, height: 32, borderRadius: '50%',
+          background: 'rgba(255,255,255,0.08)', border: 'none',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          color: '#fff', cursor: 'pointer', flexShrink: 0,
+          WebkitTapHighlightColor: 'transparent',
+        }}>
           <ChevronLeft size={18} />
         </button>
-
         <div style={{ flex: 1, minWidth: 0 }}>
           <p style={{ color: '#fff', fontSize: 17, fontWeight: 700, lineHeight: 1.1 }}>Путешествия</p>
           <p style={{ color: 'rgba(255,255,255,0.38)', fontSize: 12, marginTop: 2 }}>Маршруты · Места · Логистика</p>
         </div>
-
         <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexShrink: 0 }}>
-          <div style={{
-            width: 6, height: 6, borderRadius: '50%',
-            background: COLOR, boxShadow: `0 0 6px 1px ${COLOR}88`,
-          }} />
+          <div style={{ width: 6, height: 6, borderRadius: '50%', background: COLOR, boxShadow: `0 0 6px 1px ${COLOR}88` }} />
           <span style={{ color: COLOR, fontSize: 11, fontWeight: 500 }}>планирует</span>
         </div>
-
-        <button
-          onClick={() => navigate('/app/chat/baikal')}
-          style={{
-            width: 32, height: 32, borderRadius: '50%',
-            background: `${COLOR}1A`, border: `1.5px solid ${COLOR}44`,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 15, cursor: 'pointer', flexShrink: 0,
-            WebkitTapHighlightColor: 'transparent',
-          }}
-        >💬</button>
+        <button onClick={() => navigate('/app/chat/baikal')} style={{
+          width: 32, height: 32, borderRadius: '50%',
+          background: `${COLOR}1A`, border: `1.5px solid ${COLOR}44`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: 15, cursor: 'pointer', flexShrink: 0,
+          WebkitTapHighlightColor: 'transparent',
+        }}>💬</button>
       </div>
 
       {/* ── Scrollable body ── */}
       <div style={{ flex: 1, overflowY: 'auto', WebkitOverflowScrolling: 'touch' as any }}>
         <div style={{ padding: '20px 16px 48px' }}>
 
-          {/* ── Hero summary ── */}
+          {/* ── Hero ── */}
           <div style={{
             borderRadius: 18,
             background: `linear-gradient(140deg, ${COLOR}14 0%, rgba(22,22,24,0.96) 60%)`,
-            border: `1px solid ${COLOR}30`,
-            padding: '18px 18px 16px',
-            marginBottom: 24,
+            border: `1px solid ${COLOR}30`, padding: '18px 18px 16px', marginBottom: 24,
           }}>
             <p style={{ color: '#fff', fontSize: 20, fontWeight: 700, lineHeight: 1.2, marginBottom: 6 }}>
               В режиме поездки
@@ -178,8 +163,6 @@ export const TravelWorldDetail: React.FC = () => {
             <p style={{ color: 'rgba(255,255,255,0.52)', fontSize: 13, lineHeight: 1.55, marginBottom: 16 }}>
               Тбилиси, июнь. Маршрут формируется — есть конкретное направление, дата и первые сохранения. Переход от мечты к плану.
             </p>
-
-            {/* Phase progress */}
             <div style={{ display: 'flex', gap: 6 }}>
               {[
                 { label: 'Мечта',        fill: 1.0  },
@@ -207,30 +190,22 @@ export const TravelWorldDetail: React.FC = () => {
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
                   <div style={{
                     width: 38, height: 38, borderRadius: '50%',
-                    background: `${exp.svcColor}14`,
-                    border: `1px solid ${exp.svcColor}40`,
+                    background: `${exp.svcColor}14`, border: `1px solid ${exp.svcColor}40`,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     fontSize: 17, flexShrink: 0,
-                  }}>
-                    {exp.emoji}
-                  </div>
+                  }}>{exp.emoji}</div>
                   {i < EXPERIENCES.length - 1 && (
                     <div style={{ width: 1, flex: 1, minHeight: 14, background: 'rgba(255,255,255,0.07)', marginTop: 4 }} />
                   )}
                 </div>
-
                 <div style={{ flex: 1, paddingBottom: 14 }}>
                   <p style={{ color: '#fff', fontSize: 14, fontWeight: 600, lineHeight: 1.3 }}>{exp.title}</p>
                   <p style={{ color: 'rgba(255,255,255,0.46)', fontSize: 12.5, marginTop: 2, lineHeight: 1.4 }}>{exp.desc}</p>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 7 }}>
                     <span style={{
-                      background: `${exp.svcColor}14`,
-                      border: `1px solid ${exp.svcColor}30`,
-                      borderRadius: 8, padding: '2px 9px',
-                      color: exp.svcColor, fontSize: 11, fontWeight: 500,
-                    }}>
-                      {exp.svc}
-                    </span>
+                      background: `${exp.svcColor}14`, border: `1px solid ${exp.svcColor}30`,
+                      borderRadius: 8, padding: '2px 9px', color: exp.svcColor, fontSize: 11, fontWeight: 500,
+                    }}>{exp.svc}</span>
                     <span style={{ color: 'rgba(255,255,255,0.26)', fontSize: 11 }}>{exp.time}</span>
                   </div>
                 </div>
@@ -240,52 +215,36 @@ export const TravelWorldDetail: React.FC = () => {
 
           <Divider />
 
-          {/* ── Unified sources block ── */}
+          {/* ── Sources ── */}
           <SecLabel>Источники</SecLabel>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 10 }}>
+          <div style={{ marginBottom: 10 }}>
             {SOURCES.map(src => (
               <div key={src.name} style={{
-                borderRadius: 16, background: '#1C1C1E',
-                border: '1px solid rgba(255,255,255,0.07)', overflow: 'hidden',
+                borderRadius: 14, background: '#1C1C1E',
+                border: `1px solid ${src.accentColor}1E`,
+                padding: '14px 16px', marginBottom: 10,
+                display: 'flex', gap: 14, alignItems: 'flex-start',
               }}>
-                {/* Service header */}
-                <div style={{
-                  display: 'flex', alignItems: 'center', gap: 10, padding: '12px 14px',
-                  background: 'rgba(255,255,255,0.03)',
-                  borderBottom: '1px solid rgba(255,255,255,0.05)',
-                }}>
-                  {'iconSrc' in src ? (
-                    <img src={src.iconSrc as string} style={{ width: 32, height: 32, borderRadius: 8, objectFit: 'cover', flexShrink: 0 }} />
-                  ) : (
-                    <div style={{
-                      width: 32, height: 32, borderRadius: 8, flexShrink: 0,
-                      background: 'rgba(255,255,255,0.07)',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: 17,
-                    }}>{src.iconEmoji as string}</div>
-                  )}
-                  <p style={{ color: '#fff', fontSize: 13, fontWeight: 600, flex: 1 }}>{src.name}</p>
-                  <p style={{ color: src.accentColor, fontSize: 10, fontWeight: 600 }}>
-                    {src.signals.length} {src.signals.length === 1 ? 'сигнал' : 'сигнала'}
-                  </p>
-                </div>
-                {/* Signals */}
-                {src.signals.map((sig, i) => (
-                  <div key={i} style={{
-                    display: 'flex', alignItems: 'flex-start', gap: 12, padding: '10px 14px',
-                    borderBottom: i < src.signals.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
-                  }}>
-                    <span style={{ fontSize: 16, lineHeight: 1.5, flexShrink: 0 }}>{sig.emoji}</span>
-                    <div>
-                      <p style={{ color: '#fff', fontSize: 12.5, fontWeight: 500, lineHeight: 1.3 }}>{sig.text}</p>
-                      <p style={{ color: 'rgba(255,255,255,0.34)', fontSize: 11, marginTop: 2 }}>{sig.sub}</p>
-                    </div>
+                {'iconSrc' in src ? (
+                  <img src={src.iconSrc as string} style={{ width: 38, height: 38, borderRadius: 9, objectFit: 'cover', flexShrink: 0, marginTop: 1 }} />
+                ) : (
+                  <div style={{ width: 38, height: 38, borderRadius: 9, background: 'rgba(255,255,255,0.07)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0, marginTop: 1 }}>
+                    {(src as any).iconEmoji}
                   </div>
-                ))}
+                )}
+                <div style={{ flex: 1 }}>
+                  <p style={{ color: '#fff', fontSize: 13, fontWeight: 600, marginBottom: 8 }}>{src.name}</p>
+                  {src.facts.map((fact, i) => (
+                    <p key={i} style={{
+                      color: 'rgba(255,255,255,0.52)', fontSize: 12, lineHeight: 1.55,
+                      borderTop: i > 0 ? '1px solid rgba(255,255,255,0.05)' : 'none',
+                      paddingTop: i > 0 ? 5 : 0,
+                    }}>{fact}</p>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
-          {/* External services */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
             <p style={{ color: 'rgba(255,255,255,0.26)', fontSize: 11 }}>Также подключены:</p>
             {EXT_SOURCES.map((name, i) => (

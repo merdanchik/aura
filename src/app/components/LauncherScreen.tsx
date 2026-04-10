@@ -23,13 +23,12 @@ import imgNilsFrahm  from '../../assets/node-nils-frahm.jpg';
 import imgAusOpen    from '../../assets/node-aus-open.jpg';
 import imgVerstappen from '../../assets/node-verstappen.jpg';
 
-// Yandex service icons — same as used in Dashboard services section
-import svcMusic     from 'figma:asset/52729efb5574f608701f92848e1b348745677960.png';
-import svcKino      from 'figma:asset/b39f941bc25c3069b2f4719e19fdc535f4a56625.png';
-import svcBooks     from 'figma:asset/94e2bb438930a86c21d001934a49869c8425f73a.png';
+// Yandex service icons — same PNGs as used in Dashboard services section
+import svcMusic     from '../../assets/52729efb5574f608701f92848e1b348745677960.png';
+import svcKino      from '../../assets/b39f941bc25c3069b2f4719e19fdc535f4a56625.png';
+import svcBooks     from '../../assets/94e2bb438930a86c21d001934a49869c8425f73a.png';
 import svcAfisha    from '../../assets/afisha.png';
 import svcTravel    from '../../assets/travel.png';
-import svcFood      from '../../assets/food.png';
 
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -116,7 +115,7 @@ const NODES: InterestNode[] = [
   },
   {
     // Melnikov — Russian constructivist architect obsession
-    id: 'architecture', label: 'Мельников', type: 'symbol', weight: 0.5, color: '#0A84FF', image: svcAfisha,
+    id: 'architecture', label: 'Мельников', type: 'symbol', weight: 0.5, color: '#0A84FF', image: svcBooks,
     periods: ['2025-02', '2025-03', '2025-04'],
     periodWeight: { '2025-02': 0.32, '2025-03': 0.44, '2025-04': 0.5 },
   },

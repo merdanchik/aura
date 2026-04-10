@@ -1092,7 +1092,7 @@ export const LauncherScreen = () => {
   return (
     <div
       className="flex flex-col items-center"
-      style={{ backgroundColor: C.appBg, fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", height: '100dvh', overflow: 'hidden', position: 'relative' }}
+      style={{ backgroundColor: C.appBg, fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", height: '100svh', overflow: 'hidden', position: 'relative' }}
     >
       {/* Timeline edge glow — warm amber vignette on scroll */}
       <motion.div
@@ -1118,7 +1118,7 @@ export const LauncherScreen = () => {
         <div
           ref={canvasRef}
           className="flex-1 relative"
-          style={{ minHeight: 0, overflow: 'visible' }}
+          style={{ minHeight: 140, overflow: 'visible' }}
         >
 
           {/* Ambient color hazes — large blurred clouds behind top nodes, dreamlike depth */}

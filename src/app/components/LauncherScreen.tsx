@@ -746,7 +746,7 @@ const OrbNodeEl: React.FC<{
   const breathe = 3 + nodeSeed(node.id, 10) * 2.5;
   const dur     = 5.5 + nodeSeed(node.id, 8) * 5;
   const delay   = nodeSeed(node.id, 9) * 4;
-  const labelFs = Math.round(9 + placed.effectiveWeight * 4);
+  const labelFs = Math.max(12, Math.round(9 + placed.effectiveWeight * 4));
 
   // Sample dominant color from image for glow
   const [glowColor, setGlowColor] = React.useState(node.color);
@@ -813,30 +813,25 @@ const OrbNodeEl: React.FC<{
         pointerEvents: 'none',
       }} />
 
-      {/* Labels — tiered by effectiveWeight, max width keeps text within orb footprint */}
+      {/* Labels: label + source. Two lines for ew≥0.48, label-only below. */}
       {(() => {
-        const ew   = placed.effectiveWeight;
-        // primary ≥ 0.72: label + sub + freshness
-        // secondary ≥ 0.48: label + sub
-        // tertiary  < 0.48: label only
-        const tier = ew >= 0.72 ? 'primary' : ew >= 0.48 ? 'secondary' : 'tertiary';
-        const meta = NODE_META[node.id];
-        // max container width: grows with orb but capped so text can't drift into neighbors
-        const maxW = Math.max(sz + 20, 76);
-        const subFs  = Math.max(8, labelFs - 1);
-        const frshFs = Math.max(8, labelFs - 2);
+        const ew    = placed.effectiveWeight;
+        const showSub = ew >= 0.48;
+        const meta  = NODE_META[node.id];
+        const maxW  = Math.max(sz + 40, 120);
+        const lFs   = Math.max(12, labelFs);
+        const sFs   = 12;
         return (
           <div style={{
             position: 'absolute',
-            top: sz + 9,
+            top: sz + 8,
             left: '50%', transform: 'translateX(-50%)',
-            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2,
+            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1,
             pointerEvents: 'none',
             maxWidth: maxW,
           }}>
-            {/* Label — always shown, slightly bolder for prominence */}
             <span style={{
-              fontSize: labelFs,
+              fontSize: lFs,
               fontWeight: 500,
               color: `${node.color}CC`,
               letterSpacing: 0.25,
@@ -849,12 +844,11 @@ const OrbNodeEl: React.FC<{
               {node.label}
             </span>
 
-            {/* Sub (service) — secondary and primary only */}
-            {(tier === 'primary' || tier === 'secondary') && meta?.sub && (
+            {showSub && meta?.sub && (
               <span style={{
-                fontSize: subFs,
+                fontSize: sFs,
                 fontWeight: 400,
-                color: 'rgba(255,255,255,0.42)',
+                color: 'rgba(255,255,255,0.44)',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden', textOverflow: 'ellipsis',
                 maxWidth: maxW,
@@ -862,21 +856,6 @@ const OrbNodeEl: React.FC<{
                 textShadow: '0 1px 4px rgba(0,0,0,0.7)',
               }}>
                 {meta.sub}
-              </span>
-            )}
-
-            {/* Freshness — primary only, no italic */}
-            {tier === 'primary' && meta?.freshness && (
-              <span style={{
-                fontSize: frshFs,
-                fontWeight: 400,
-                color: 'rgba(255,255,255,0.26)',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden', textOverflow: 'ellipsis',
-                maxWidth: maxW,
-                userSelect: 'none',
-              }}>
-                {meta.freshness}
               </span>
             )}
           </div>

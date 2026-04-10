@@ -118,7 +118,7 @@ export const MusicWorldDetail: React.FC = () => {
             <p style={{ color: 'rgba(255,255,255,0.58)', fontSize: 14, lineHeight: 1.55, marginBottom: 14 }}>
               Не просто слушает — уходит в повторяющиеся длинные сессии.
             </p>
-            <p style={{ color: 'rgba(255,255,255,0.26)', fontSize: 11.5 }}>
+            <p style={{ color: 'rgba(255,255,255,0.26)', fontSize: 12 }}>
               Основано на активности за последние 2 недели
             </p>
           </div>
@@ -158,7 +158,7 @@ export const MusicWorldDetail: React.FC = () => {
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <p style={{ color: '#fff', fontSize: 13, fontWeight: 600, marginBottom: 5 }}>{src.name}</p>
                   <p style={{ color: 'rgba(255,255,255,0.44)', fontSize: 12, lineHeight: 1.5, marginBottom: 6 }}>{src.facts}</p>
-                  <p style={{ color: src.accent, fontSize: 11.5, fontWeight: 500, opacity: 0.75 }}>{src.meaning}</p>
+                  <p style={{ color: src.accent, fontSize: 12, fontWeight: 500, opacity: 0.75 }}>{src.meaning}</p>
                 </div>
               </div>
             ))}

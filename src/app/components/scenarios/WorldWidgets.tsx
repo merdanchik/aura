@@ -150,7 +150,6 @@ export const WorldWidgets: React.FC<Props> = ({ onClose }) => {
                   marginBottom: 16,
                   minHeight: 156,
                   background: '#15161A',
-                  border: '1px solid rgba(255,255,255,0.08)',
                   padding: '22px',
                   cursor: 'pointer',
                   WebkitTapHighlightColor: 'transparent',
@@ -203,8 +202,7 @@ export const WorldWidgets: React.FC<Props> = ({ onClose }) => {
                       height: 30,
                       borderRadius: 999,
                       padding: '0 12px',
-                      background: 'rgba(255,255,255,0.04)',
-                      border: '1px solid rgba(255,255,255,0.06)',
+                      background: 'rgba(255,255,255,0.06)',
                       color: 'rgba(255,255,255,0.64)',
                       fontSize: 13, fontWeight: 500,
                       whiteSpace: 'nowrap',
@@ -217,7 +215,6 @@ export const WorldWidgets: React.FC<Props> = ({ onClose }) => {
                 {/* Row 5: connected services */}
                 <div style={{
                   marginTop: 18, paddingTop: 16,
-                  borderTop: '1px solid rgba(255,255,255,0.06)',
                   display: 'flex', alignItems: 'center', gap: 6,
                 }}>
                   <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 0, flexWrap: 'nowrap', overflow: 'hidden' }}>
@@ -239,8 +236,7 @@ export const WorldWidgets: React.FC<Props> = ({ onClose }) => {
                     style={{
                       height: 28, borderRadius: 999,
                       padding: '0 10px',
-                      background: 'rgba(255,255,255,0.05)',
-                      border: '1px solid rgba(255,255,255,0.08)',
+                      background: 'rgba(255,255,255,0.07)',
                       color: 'rgba(255,255,255,0.55)',
                       fontSize: 13, fontWeight: 400,
                       cursor: 'pointer', flexShrink: 0,

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
-import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
+import { ChevronLeft, Plus } from 'lucide-react';
 import { AuraRingsMini } from '../AuraRings';
 import { StatusBadge } from './WorldDetailShared';
 import type { WorldDetailData } from './worldsData';
@@ -102,6 +102,39 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
             </div>
           </div>
 
+          {/* Инсайты */}
+          <p style={SEC_LABEL}>Инсайты</p>
+          <div style={{
+            display: 'flex', gap: 12,
+            overflowX: 'auto',
+            marginLeft: -16, marginRight: -16,
+            paddingLeft: 16, paddingRight: 16,
+            paddingBottom: 4,
+            marginBottom: 28,
+          }}>
+            {data.insights.map((ins, i) => (
+              <div
+                key={i}
+                style={{
+                  flexShrink: 0, width: 160,
+                  backgroundColor: '#1C1C1E',
+                  borderRadius: 16,
+                  padding: '14px',
+                  display: 'flex', flexDirection: 'column', gap: 10,
+                  cursor: 'pointer',
+                }}
+              >
+                <div style={{ fontSize: 24, lineHeight: 1 }}>{ins.icon}</div>
+                <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.07em', color: ins.accent, textTransform: 'uppercase', lineHeight: 1.3 }}>
+                  {ins.category}
+                </p>
+                <p style={{ fontSize: 14, fontWeight: 600, color: '#FFFFFF', lineHeight: 1.35 }}>
+                  {ins.text}
+                </p>
+              </div>
+            ))}
+          </div>
+
           {/* Источники */}
           <p style={SEC_LABEL}>Источники</p>
           <div style={{ ...CARD, marginBottom: 28 }}>
@@ -140,7 +173,6 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
                   </p>
                 </div>
                 <AuraRingsMini knowledge={72} trust={65} size={32} />
-                <ChevronRight size={16} color="#48484A" style={{ flexShrink: 0 }} />
               </div>
             ))}
 
@@ -161,39 +193,6 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
                 Добавить источник
               </p>
             </div>
-          </div>
-
-          {/* Инсайты */}
-          <p style={SEC_LABEL}>Инсайты</p>
-          <div style={{
-            display: 'flex', gap: 12,
-            overflowX: 'auto',
-            marginLeft: -16, marginRight: -16,
-            paddingLeft: 16, paddingRight: 16,
-            paddingBottom: 4,
-            marginBottom: 28,
-          }}>
-            {data.insights.map((ins, i) => (
-              <div
-                key={i}
-                style={{
-                  flexShrink: 0, width: 160,
-                  backgroundColor: '#1C1C1E',
-                  borderRadius: 16,
-                  padding: '14px',
-                  display: 'flex', flexDirection: 'column', gap: 10,
-                  cursor: 'pointer',
-                }}
-              >
-                <div style={{ fontSize: 24, lineHeight: 1 }}>{ins.icon}</div>
-                <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.07em', color: ins.accent, textTransform: 'uppercase', lineHeight: 1.3 }}>
-                  {ins.category}
-                </p>
-                <p style={{ fontSize: 14, fontWeight: 600, color: '#FFFFFF', lineHeight: 1.35 }}>
-                  {ins.text}
-                </p>
-              </div>
-            ))}
           </div>
 
           {/* Что это даёт */}

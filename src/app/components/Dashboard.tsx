@@ -565,6 +565,7 @@ export const Dashboard = () => {
       position: 'fixed', inset: 0,
       backgroundColor: '#111114',
       overflowY: 'auto',
+      overflowX: 'hidden',
       WebkitOverflowScrolling: 'touch' as any,
       fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
     }}><div>

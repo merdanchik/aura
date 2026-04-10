@@ -1,8 +1,7 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import { ChevronLeft } from 'lucide-react';
-import svcMusic  from '../../../assets/52729efb5574f608701f92848e1b348745677960.png';
-import svcAfisha from '../../../assets/afisha.png';
+import svcMusic from '../../../assets/52729efb5574f608701f92848e1b348745677960.png';
 import { C, S } from '../../styles/auraTokens';
 import {
   screenBg, detailHeader, backBtn, chatBtnBase,
@@ -15,9 +14,9 @@ import { SecLabel, Divider } from './WorldDetailShared';
 const COLOR = '#BF5AF2';
 
 const VALUES = [
-  'Позволяет начать с релевантного сценария без дополнительных вопросов',
-  'Делает рекомендации точнее по текущей фазе, а не по старым вкусам',
-  'Помогает ассистенту говорить в правильном музыкальном контексте',
+  'Позволяет стартовать музыкальные сессии с нужным настроением без лишних вопросов',
+  'Делает алгоритмы чувствительными к текущей фазе, а не к историческим вкусам',
+  'Снижает барьер входа в интерфейсах автомобиля и умного дома',
 ];
 
 interface Source {
@@ -32,16 +31,9 @@ const SOURCES: Source[] = [
   {
     iconSrc: svcMusic,
     name:    'Яндекс Музыка',
-    facts:   '127 прослушиваний за 2 недели, 14 лайков, 3 возврата к Kind of Blue',
-    meaning: 'Устойчивое повторное внимание — не фон, а выбор',
+    facts:   '3 возврата к альбому, сессии 50+ минут, 7 лайков',
+    meaning: 'Высокая вовлечённость и осознанный выбор',
     accent:  COLOR,
-  },
-  {
-    iconSrc: svcAfisha,
-    name:    'Яндекс Афиша',
-    facts:   'Nils Frahm — в «Хочу пойти», март, Москва · первый концертный план за месяц',
-    meaning: 'Интерес выходит за пределы стриминга',
-    accent:  '#FF9F0A',
   },
 ];
 
@@ -81,7 +73,7 @@ export const MusicWorldDetail: React.FC = () => {
           <div style={heroBlock(COLOR)}>
             <p style={heroTitleStyle}>Глубокое слушание</p>
             <p style={heroBodyStyle}>
-              Не просто слушает в фоне — уходит в намеренные, повторяющиеся длинные сессии.
+              Музыка сейчас переживается не как фоновый шум, а как осознанный сценарий с длинными сессиями и регулярным возвратом к выбранным альбомам.
             </p>
             <p style={heroTemporalStyle}>Основано на активности за последние 2 недели</p>
           </div>

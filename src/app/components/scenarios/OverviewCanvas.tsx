@@ -11,6 +11,7 @@ function polar(angleDeg: number, r: number) {
 
 // Visual config per scenario
 const VISUAL: Record<string, { weight: number; angleDeg: number }> = {
+  content:  { weight: 0.95, angleDeg: 280 },
   music:    { weight: 0.85, angleDeg: 330 },
   cinema:   { weight: 0.92, angleDeg: 50  },
   shopping: { weight: 0.62, angleDeg: 145 },

@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router';
 import { motion } from 'motion/react';
 import { ChevronLeft } from 'lucide-react';
 import { SCENARIOS } from './types';
+import { ContentWorldDetail } from './ContentWorldDetail';
 
 // ── Placeholder block ────────────────────────────────────────────────────────
 const Block: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
@@ -35,6 +36,9 @@ const SkeletonCircle: React.FC<{ size?: number }> = ({ size = 36 }) => (
 export const ScenarioDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+
+  // Content world has its own rich detail screen
+  if (id === 'content') return <ContentWorldDetail />;
 
   const scenario = SCENARIOS.find(s => s.id === id) ?? SCENARIOS[0];
   const currentIndex = SCENARIOS.indexOf(scenario);

@@ -6,6 +6,7 @@ export interface Scenario {
 }
 
 export const SCENARIOS: Scenario[] = [
+  { id: 'content',  label: 'Контент',     color: '#5AC8F5', chatContextId: 'cinema' },
   { id: 'music',    label: 'Музыка',      color: '#BF5AF2', chatContextId: 'jazz'   },
   { id: 'cinema',   label: 'Кино',        color: '#FF9F0A', chatContextId: 'cinema' },
   { id: 'shopping', label: 'Шопинг',      color: '#FF6633', chatContextId: 'ramen'  },

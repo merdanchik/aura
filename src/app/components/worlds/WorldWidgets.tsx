@@ -82,6 +82,7 @@ interface WorldWidget {
   id:        string;
   label:     string;
   sub:       string;
+  color:     string;
   freshness: Freshness;
   insight:   string;
   chips:     string[];
@@ -91,35 +92,35 @@ interface WorldWidget {
 const WORLDS: WorldWidget[] = [
   {
     id: 'content', label: 'Контент', sub: 'Музыка · Кино · Книги',
-    freshness: 'active',
+    color: '#5AC8F5', freshness: 'active',
     insight: 'Внимание распределено между форматами: музыка и кино доминируют, книги остаются в фоне',
     chips: ['127 прослушиваний', '3 досмотра', '14 лайков'],
     services: ['Яндекс Музыка', 'Кинопоиск', 'Яндекс Книги'],
   },
   {
     id: 'music', label: 'Музыка', sub: 'Слушает · Открывает · Собирает',
-    freshness: 'active',
+    color: '#BF5AF2', freshness: 'active',
     insight: 'Музыка перешла из фона в устойчивый сценарий намеренного слушания',
     chips: ['3 возврата к альбому', 'сессии 50+ мин', '7 лайков'],
     services: ['Яндекс Музыка', 'Spotify', 'Яндекс Афиша'],
   },
   {
     id: 'cinema', label: 'Кино', sub: 'Фильмы · Сериалы · Список',
-    freshness: 'cooling',
+    color: '#FF9F0A', freshness: 'cooling',
     insight: 'Интерес к просмотру есть, но готовность тратить время пока нестабильна',
     chips: ['3 досмотра до конца', '2 брошено', '10 дней пауза'],
     services: ['Кинопоиск', 'ivi', 'KION'],
   },
   {
     id: 'shopping', label: 'Шопинг', sub: 'Поиск · Сравнение · Решение',
-    freshness: 'cooling',
+    color: '#FF6633', freshness: 'cooling',
     insight: 'Сценарий покупки уже активен: идёт сравнение, но решение ещё зреет',
     chips: ['8 возвратов к товару', '3 в корзине', '12 сравнений'],
     services: ['Яндекс Маркет', 'Wildberries', 'Ozon'],
   },
   {
     id: 'travel', label: 'Путешествия', sub: 'Маршруты · Места · Логистика',
-    freshness: 'active',
+    color: '#00C7BE', freshness: 'active',
     insight: 'Сценарий сдвинулся от вдохновения к конкретному планированию поездки',
     chips: ['3 отеля в избранном', '4 проверки билетов', '7 мест'],
     services: ['Яндекс Путешествия', 'Яндекс Карты', 'Яндекс Погода'],
@@ -181,7 +182,7 @@ export const WorldWidgets: React.FC = () => {
             <div
               key={w.id}
               onClick={() => navigate(`/${w.id}`)}
-              style={worldCard}
+              style={worldCard(w.color)}
             >
               {/* Row 1: title + status */}
               <div style={{

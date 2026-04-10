@@ -5,9 +5,9 @@
 /** Colors */
 export const C = {
   appBg:           '#0D0E11',
-  surface:         '#14161B',
-  surfaceSecondary:'#1B1E25',
-  chipBg:          '#25262B',
+  surface:         '#1C2030',
+  surfaceSecondary:'#222638',
+  chipBg:          '#2A2D3E',
 
   // Text emphasis scale
   textPrimary:          '#FFFFFF',

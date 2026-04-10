@@ -64,10 +64,11 @@ export const sectionDivider: CSSProperties = {
 
 export const heroBlock = (accent: string): CSSProperties => ({
   borderRadius: R.card,
-  background: `linear-gradient(140deg, ${accent}16 0%, ${C.appBg} 64%)`,
-  border: `1px solid ${accent}22`,
+  background: `linear-gradient(140deg, ${accent}35 0%, ${C.surface} 70%)`,
+  border: `1px solid ${accent}45`,
   padding: '22px 20px 20px',
   marginBottom: 30,
+  boxShadow: `0 0 48px ${accent}18, 0 4px 24px rgba(0,0,0,0.45)`,
 });
 
 export const heroTitleStyle: CSSProperties = {
@@ -107,6 +108,7 @@ export const sourceCard: CSSProperties = {
   background: C.surface,
   padding: '16px',
   display: 'flex', gap: S.cardGap, alignItems: 'flex-start',
+  boxShadow: '0 2px 12px rgba(0,0,0,0.35)',
 };
 
 export const sourceIconImg: CSSProperties = {
@@ -149,11 +151,15 @@ export const chipStyle: CSSProperties = {
 
 // ── World card (WorldWidgets) ─────────────────────────────────────────────────
 
-export const worldCard: CSSProperties = {
+export const worldCard = (accent?: string): CSSProperties => ({
   borderRadius: R.sheet,
   marginBottom: S.cardGap,
-  background: C.surface,
+  background: accent
+    ? `linear-gradient(135deg, ${accent}12 0%, ${C.surface} 55%)`
+    : C.surface,
+  border: `1px solid ${accent ? accent + '25' : C.border}`,
   padding: `${S.cardPadding}px`,
   cursor: 'pointer',
   WebkitTapHighlightColor: 'transparent',
-};
+  boxShadow: `0 4px 24px rgba(0,0,0,0.45)${accent ? `, 0 0 32px ${accent}0A` : ''}`,
+});

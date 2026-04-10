@@ -5,7 +5,6 @@ import { Dashboard } from './components/Dashboard';
 import { ServiceDetail } from './components/ServiceDetail';
 import { ChatScreen } from './components/ChatScreen';
 import { LauncherScreen } from './components/LauncherScreen';
-import { OverviewCanvas } from './components/scenarios/OverviewCanvas';
 import { ScenarioDetail } from './components/scenarios/ScenarioDetail';
 import { ChevronLeft } from 'lucide-react';
 import { useAura, ServiceId } from './context/AuraContext';
@@ -124,7 +123,7 @@ const ShellInner = () => {
 const router = createBrowserRouter([
   { index: true, element: <Navigate to="/scenarios" replace /> },
   { path: "legacy",           Component: LauncherScreen },
-  { path: "scenarios",        Component: OverviewCanvas },
+  { path: "scenarios",        Component: LauncherScreen },
   { path: "scenarios/:id",    Component: ScenarioDetail },
   {
     path: "app",

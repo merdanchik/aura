@@ -2,8 +2,7 @@ import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import avatarImg from '../../assets/avatar.jpg';
-import { useAura } from '../context/AuraContext';
-import { AuraRings } from './AuraRings';
+import { WorldWidgets } from './scenarios/WorldWidgets';
 
 // Node images
 import imgRadiohead from '../../assets/node-radiohead.jpg';
@@ -48,6 +47,9 @@ interface InterestNode {
   gradient?: [string, string];             // blob nodes
   periods: string[];                       // '*' = always active
   periodWeight?: Record<string, number>;   // per-period weight override
+  sub?: string;                            // service name shown below label
+  freshness?: string;                      // recency note, italic
+  lastActive?: string;                     // period id of last activity
 }
 
 interface LayoutConfig {
@@ -311,6 +313,47 @@ const NODES: InterestNode[] = [
     periodWeight: { '2025-03': 0.48, '2025-04': 0.58 },
   },
 ];
+
+// ── Node metadata: service + freshness labels ─────────────────────────────
+// Companion to NODES — avoids editing all 36 node objects inline.
+const NODE_META: Record<string, { sub?: string; freshness?: string }> = {
+  'jazz':         { sub: 'Яндекс Музыка',       freshness: '3-й день подряд'            },
+  'tokyo':        { sub: 'Яндекс Путешествия',  freshness: 'поездка год назад'          },
+  'stoicism':     { sub: 'Яндекс Книги',         freshness: 'читал зимой'                },
+  'night-drives': { sub: 'Яндекс Музыка',       freshness: 'зима — давно не повторял'   },
+  'architecture': { sub: 'Яндекс Афиша',        freshness: 'ищет выставку весной'       },
+  'cinema':       { sub: 'Кинопоиск',            freshness: 'снова смотрит'              },
+  'music-blob':   { sub: 'Яндекс Музыка',       freshness: 'всегда в плейлисте'         },
+  'travel-blob':  { sub: 'Яндекс Путешествия',  freshness: 'поездка год назад'          },
+  'tech-blob':    { sub: 'Яндекс Маркет',       freshness: 'читает отзывы с января'     },
+  'basketball':   { sub: 'Яндекс Спорт',        freshness: 'следит за сезоном'          },
+  'f1':           { sub: 'Яндекс Спорт',        freshness: 'гонка год назад'            },
+  'f1-2025':      { sub: 'Яндекс Спорт',        freshness: 'новый сезон открыт'         },
+  'books':        { sub: 'Яндекс Книги',         freshness: 'вернулся после паузы'       },
+  'coffee':       { sub: 'Яндекс Карты',        freshness: 'каждое утро'                },
+  'sushi':        { sub: 'Яндекс Путешествия',  freshness: 'Токио — давно'              },
+  'baikal':       { sub: 'Яндекс Путешествия',  freshness: 'прошлым летом'              },
+  'wimbledon':    { sub: 'Яндекс Спорт',        freshness: 'финал год назад'            },
+  'moon-safari':  { sub: 'Яндекс Музыка',       freshness: 'летний альбом — давно'      },
+  'euro2024':     { sub: 'Яндекс Спорт',        freshness: 'финал год назад'            },
+  'vinyl':        { sub: 'Яндекс Музыка',       freshness: 'нашёл прошлым летом'        },
+  'ramen':        { sub: 'Яндекс Еда',          freshness: 'Токио — давно'              },
+  'wabi-sabi':    { sub: 'Яндекс Книги',         freshness: 'осенняя идея'               },
+  'brodsky':      { sub: 'Яндекс Книги',         freshness: 'декабрьское чтение'         },
+  'sunrise-run':  { sub: 'Яндекс Спорт',        freshness: 'бегает по утрам'            },
+  'garage':       { sub: 'Яндекс Афиша',        freshness: 'был на открытии'            },
+  'istanbul':     { sub: 'Яндекс Путешествия',  freshness: 'лето 2024 — не возвращался' },
+  'nabokov':      { sub: 'Яндекс Книги',         freshness: 'прочитал осенью'            },
+  'nick-cave':    { sub: 'Яндекс Афиша',        freshness: 'концерт прошлой осенью'     },
+  'bach-goldberg':{ sub: 'Яндекс Музыка',       freshness: 'зимний ритуал'              },
+  'rome':         { sub: 'Яндекс Путешествия',  freshness: 'поездка прошлой зимой'      },
+  'new-year':     { sub: 'Яндекс Музыка',       freshness: 'один особый вечер'          },
+  'ice-swim':     { sub: 'Яндекс Карты',        freshness: 'Крещение — раз в год'       },
+  'severance':    { sub: 'Кинопоиск',            freshness: 'смотрел зимой'              },
+  'aus-open':     { sub: 'Яндекс Спорт',        freshness: 'январь — прямой эфир'       },
+  'nils-frahm':   { sub: 'Яндекс Афиша',        freshness: 'концерт в марте'            },
+  'kandinsky':    { sub: 'Яндекс Афиша',        freshness: 'посетил выставку'           },
+};
 
 // ═══════════════════════════════════════════════════════════════════════════
 // LAYOUT ENGINE — pure functions, easy to swap
@@ -770,21 +813,48 @@ const OrbNodeEl: React.FC<{
         pointerEvents: 'none',
       }} />
 
-      {/* Label — anchored below orb as attached satellite */}
-      <span style={{
+      {/* Labels — 3-line stack anchored below orb */}
+      <div style={{
         position: 'absolute',
         top: sz + 9,
         left: '50%', transform: 'translateX(-50%)',
-        fontSize: Math.round(10 + placed.effectiveWeight * 5),
-        fontWeight: 400,
-        color: `${node.color}B8`,
-        letterSpacing: 0.3,
-        whiteSpace: 'nowrap',
-        userSelect: 'none',
-        textShadow: '0 1px 5px rgba(0,0,0,0.75)',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2,
+        pointerEvents: 'none',
       }}>
-        {node.label}
-      </span>
+        <span style={{
+          fontSize: labelFs,
+          fontWeight: 400,
+          color: `${node.color}B8`,
+          letterSpacing: 0.3,
+          whiteSpace: 'nowrap',
+          userSelect: 'none',
+          textShadow: '0 1px 5px rgba(0,0,0,0.75)',
+        }}>
+          {node.label}
+        </span>
+        {NODE_META[node.id]?.sub && (
+          <span style={{
+            fontSize: Math.max(8, labelFs - 2),
+            color: 'rgba(255,255,255,0.32)',
+            whiteSpace: 'nowrap',
+            userSelect: 'none',
+            textShadow: '0 1px 4px rgba(0,0,0,0.6)',
+          }}>
+            {NODE_META[node.id]!.sub}
+          </span>
+        )}
+        {NODE_META[node.id]?.freshness && (
+          <span style={{
+            fontSize: Math.max(7, labelFs - 3),
+            color: 'rgba(255,255,255,0.20)',
+            whiteSpace: 'nowrap',
+            userSelect: 'none',
+            fontStyle: 'italic',
+          }}>
+            {NODE_META[node.id]!.freshness}
+          </span>
+        )}
+      </div>
     </motion.div>
   );
 };
@@ -965,51 +1035,6 @@ const TimelineSlider: React.FC<TimelineSliderProps> = ({ periods, selectedIndex,
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
-// AURA HEADER — profile card, live from AuraContext
-// ═══════════════════════════════════════════════════════════════════════════
-
-const AuraHeader: React.FC = () => {
-  const { globalKnowledgeScore, globalTrustScore, overallScore } = useAura();
-  const navigate = useNavigate();
-  const score = Math.round(overallScore);
-
-  return (
-    <div
-      onClick={() => navigate('/app')}
-      style={{
-        flexShrink: 0,
-        display: 'flex', alignItems: 'center', gap: 14,
-        padding: '14px 16px 12px',
-        cursor: 'pointer',
-      }}
-    >
-      {/* Rings with score number in center */}
-      <div style={{ position: 'relative', flexShrink: 0 }}>
-        <AuraRings knowledge={globalKnowledgeScore} trust={globalTrustScore} size={66} />
-        <div style={{
-          position: 'absolute', inset: 0,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }}>
-          <span style={{ fontSize: 14, fontWeight: 700, color: 'white', letterSpacing: -0.5 }}>{score}</span>
-        </div>
-      </div>
-
-      {/* Name + handle */}
-      <div>
-        <p style={{ fontSize: 26, fontWeight: 700, color: 'white', lineHeight: 1.15, marginBottom: 5 }}>
-          Саша. Д.
-        </p>
-        <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.38)', lineHeight: 1 }}>
-          @englishcanal
-          <span style={{ margin: '0 5px', color: 'rgba(255,255,255,0.2)' }}>•</span>
-          публичный профиль
-        </p>
-      </div>
-    </div>
-  );
-};
-
-// ═══════════════════════════════════════════════════════════════════════════
 // MAIN SCREEN
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -1021,6 +1046,7 @@ export const LauncherScreen = () => {
     _sessionPeriodIndex !== null ? _sessionPeriodIndex : PERIODS.length - 1
   );
   const [timelineActive, setTimelineActive] = useState(false);
+  const [showWidgets, setShowWidgets] = useState(false);
   const period = PERIODS[periodIndex].id;
 
   // Persist selected period across SPA navigation (not across page reloads)
@@ -1072,9 +1098,6 @@ export const LauncherScreen = () => {
         }}
       />
       <div className="w-full max-w-md mx-auto flex flex-col" style={{ height: '100%' }}>
-
-        {/* ── TOP — profile card ── */}
-        <AuraHeader />
 
         {/* ── CANVAS — interest map ── */}
         <div
@@ -1295,7 +1318,7 @@ export const LauncherScreen = () => {
 
             {/* ── Layer 4: PHOTO — color-neutral, outside hue-rotate wrapper ── */}
             <div
-              onClick={() => navigate('/app')}
+              onClick={() => setShowWidgets(true)}
               style={{
                 position: 'relative',
                 width: 110, height: 110, borderRadius: '50%',
@@ -1331,6 +1354,12 @@ export const LauncherScreen = () => {
         <div style={{ height: 68, flexShrink: 0 }} />
 
       </div>
+
+      {/* ── WorldWidgets overlay ── */}
+      <AnimatePresence>
+        {showWidgets && <WorldWidgets onClose={() => setShowWidgets(false)} />}
+      </AnimatePresence>
+
     </div>
   );
 };

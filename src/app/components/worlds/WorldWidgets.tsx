@@ -144,15 +144,10 @@ export const WorldWidgets: React.FC = () => {
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
       }}
     >
-      {/* Drag handle */}
-      <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 14 }}>
-        <div style={{ width: 30, height: 3, borderRadius: 2, background: C.handleBar }} />
-      </div>
-
       {/* Header */}
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '14px 20px 18px',
+        padding: '16px 20px 18px',
       }}>
         <p style={{ color: C.textPrimary, fontSize: 28, fontWeight: 700, lineHeight: 1.05 }}>
           Жизненные миры

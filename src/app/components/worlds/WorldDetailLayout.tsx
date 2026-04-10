@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router';
 import { ChevronLeft } from 'lucide-react';
 import { C } from '../../styles/auraTokens';
 import {
-  screenBg, detailHeader, backBtn,
+  screenBg, detailHeader,
   detailHeaderTitle, detailHeaderSubtitle,
   heroBlock, heroTitleStyle, heroBodyStyle, heroTemporalStyle,
   valueDot, valueText,
@@ -28,14 +28,23 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
 
       {/* Header */}
       <div style={detailHeader}>
-        <button onClick={goBack} style={backBtn}>
-          <ChevronLeft size={18} />
+        {/* Навигация */}
+        <button onClick={goBack} style={{
+          display: 'flex', alignItems: 'center', gap: 4,
+          background: 'none', border: 'none', cursor: 'pointer',
+          color: data.color, padding: 0,
+          WebkitTapHighlightColor: 'transparent',
+        }}>
+          <ChevronLeft size={15} />
+          <span style={{ fontSize: 15, fontWeight: 500 }}>Жизненные миры</span>
         </button>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <p style={detailHeaderTitle}>{data.title}</p>
+        {/* Заголовок */}
+        <p style={detailHeaderTitle}>{data.title}</p>
+        {/* Подзаголовок + статус */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <p style={detailHeaderSubtitle}>{data.subtitle}</p>
+          <StatusBadge color={data.color} text={data.statusText} />
         </div>
-        <StatusBadge color={data.color} text={data.statusText} />
       </div>
 
       {/* Scrollable body */}

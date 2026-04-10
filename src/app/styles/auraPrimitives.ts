@@ -13,18 +13,18 @@ export const screenBg: CSSProperties = {
 // ── Detail header ──────────────────────────────────────────────────────────────
 
 export const detailHeader: CSSProperties = {
-  display: 'flex', alignItems: 'center', gap: 10,
-  padding: '52px 16px 14px',
-  borderBottom: `0.5px solid ${C.border}`,
+  display: 'flex', flexDirection: 'column',
+  padding: '16px 16px 12px',
   flexShrink: 0,
 };
 
 export const detailHeaderTitle: CSSProperties = {
-  color: C.textPrimary, fontSize: 18, fontWeight: 700, lineHeight: 1.1,
+  color: C.textPrimary, fontSize: 28, fontWeight: 700, lineHeight: 1.05,
+  marginTop: 6,
 };
 
 export const detailHeaderSubtitle: CSSProperties = {
-  color: C.textQuiet, fontSize: 13, marginTop: 2,
+  color: C.textQuiet, fontSize: 13, marginTop: 3,
 };
 
 export const backBtn: CSSProperties = {

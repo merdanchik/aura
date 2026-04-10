@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAura } from '../context/AuraContext';
 import { AuraRings, AuraRingsMini } from './AuraRings';
 import { useNavigate } from 'react-router';
-import { ChevronRight, ChevronDown, Shield, CheckCircle, MapPin } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown, Shield, CheckCircle, MapPin } from 'lucide-react';
 import { motion, AnimatePresence, useMotionValue, useTransform, animate as motionAnimate } from 'motion/react';
 import { Switch } from './ui/switch';
 
@@ -576,12 +576,12 @@ export const Dashboard = () => {
             style={{
               display: 'flex', alignItems: 'center', gap: 4,
               background: 'none', border: 'none', cursor: 'pointer',
-              color: '#636366', padding: 0,
+              color: 'rgba(255,255,255,0.55)', padding: 0,
               WebkitTapHighlightColor: 'transparent',
             }}
           >
-            <svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M7 1L1 7L7 13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            <span style={{ fontSize: 15, fontWeight: 500 }}>Назад</span>
+            <ChevronLeft size={17} />
+            <span style={{ fontSize: 17, fontWeight: 500 }}>Орбиты</span>
           </button>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <span style={{ color: strongAura ? '#BF5AF2' : '#636366', fontSize: 13, fontWeight: 500 }}>Сильная аура</span>

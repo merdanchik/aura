@@ -350,10 +350,13 @@ function footprintR(node: InterestNode, placed: PlacedNode): number {
   const ew = placed.effectiveWeight;
 
   if (node.type === 'text') {
-    // CapsuleNodeEl: fontSize = round(13 + ew*8). Bloom extends 22 px each side.
+    // CapsuleNodeEl: fontSize = round(13 + ew*8).
+    // Bloom is a visual effect — two overlapping blooms look fine.
+    // Footprint covers only the text characters themselves + a small gap.
+    // Char ratio 0.55 matches proportional sans-serif (SF Pro / system-ui).
     const fs        = Math.round(13 + ew * 8);
-    const halfTextW = (node.label.length * fs * 0.6) / 2;
-    return halfTextW + 22 + 6;      // bloom(22) + gap buffer(6)
+    const halfTextW = (node.label.length * fs * 0.55) / 2;
+    return halfTextW + 8;
   }
 
   if (node.type === 'symbol') {

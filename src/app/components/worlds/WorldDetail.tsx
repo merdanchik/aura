@@ -14,7 +14,6 @@ const Block: React.FC<{ title: string; children: React.ReactNode }> = ({ title, 
     borderRadius: R.sourceCard,
     background: C.surface,
     padding: '16px',
-    border: `1px solid ${C.border}`,
   }}>
     <p style={{ color: C.textTertiary, fontSize: 11, fontWeight: 600, letterSpacing: 0.7, marginBottom: 10, textTransform: 'uppercase' }}>
       {title}

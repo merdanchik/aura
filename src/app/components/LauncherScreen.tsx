@@ -813,48 +813,75 @@ const OrbNodeEl: React.FC<{
         pointerEvents: 'none',
       }} />
 
-      {/* Labels — 3-line stack anchored below orb */}
-      <div style={{
-        position: 'absolute',
-        top: sz + 9,
-        left: '50%', transform: 'translateX(-50%)',
-        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2,
-        pointerEvents: 'none',
-      }}>
-        <span style={{
-          fontSize: labelFs,
-          fontWeight: 400,
-          color: `${node.color}B8`,
-          letterSpacing: 0.3,
-          whiteSpace: 'nowrap',
-          userSelect: 'none',
-          textShadow: '0 1px 5px rgba(0,0,0,0.75)',
-        }}>
-          {node.label}
-        </span>
-        {NODE_META[node.id]?.sub && (
-          <span style={{
-            fontSize: Math.max(8, labelFs - 2),
-            color: 'rgba(255,255,255,0.32)',
-            whiteSpace: 'nowrap',
-            userSelect: 'none',
-            textShadow: '0 1px 4px rgba(0,0,0,0.6)',
+      {/* Labels — tiered by effectiveWeight, max width keeps text within orb footprint */}
+      {(() => {
+        const ew   = placed.effectiveWeight;
+        // primary ≥ 0.72: label + sub + freshness
+        // secondary ≥ 0.48: label + sub
+        // tertiary  < 0.48: label only
+        const tier = ew >= 0.72 ? 'primary' : ew >= 0.48 ? 'secondary' : 'tertiary';
+        const meta = NODE_META[node.id];
+        // max container width: grows with orb but capped so text can't drift into neighbors
+        const maxW = Math.max(sz + 20, 76);
+        const subFs  = Math.max(8, labelFs - 1);
+        const frshFs = Math.max(8, labelFs - 2);
+        return (
+          <div style={{
+            position: 'absolute',
+            top: sz + 9,
+            left: '50%', transform: 'translateX(-50%)',
+            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2,
+            pointerEvents: 'none',
+            maxWidth: maxW,
           }}>
-            {NODE_META[node.id]!.sub}
-          </span>
-        )}
-        {NODE_META[node.id]?.freshness && (
-          <span style={{
-            fontSize: Math.max(7, labelFs - 3),
-            color: 'rgba(255,255,255,0.20)',
-            whiteSpace: 'nowrap',
-            userSelect: 'none',
-            fontStyle: 'italic',
-          }}>
-            {NODE_META[node.id]!.freshness}
-          </span>
-        )}
-      </div>
+            {/* Label — always shown, slightly bolder for prominence */}
+            <span style={{
+              fontSize: labelFs,
+              fontWeight: 500,
+              color: `${node.color}CC`,
+              letterSpacing: 0.25,
+              whiteSpace: 'nowrap',
+              overflow: 'hidden', textOverflow: 'ellipsis',
+              maxWidth: maxW,
+              userSelect: 'none',
+              textShadow: '0 1px 6px rgba(0,0,0,0.85)',
+            }}>
+              {node.label}
+            </span>
+
+            {/* Sub (service) — secondary and primary only */}
+            {(tier === 'primary' || tier === 'secondary') && meta?.sub && (
+              <span style={{
+                fontSize: subFs,
+                fontWeight: 400,
+                color: 'rgba(255,255,255,0.42)',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden', textOverflow: 'ellipsis',
+                maxWidth: maxW,
+                userSelect: 'none',
+                textShadow: '0 1px 4px rgba(0,0,0,0.7)',
+              }}>
+                {meta.sub}
+              </span>
+            )}
+
+            {/* Freshness — primary only, no italic */}
+            {tier === 'primary' && meta?.freshness && (
+              <span style={{
+                fontSize: frshFs,
+                fontWeight: 400,
+                color: 'rgba(255,255,255,0.26)',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden', textOverflow: 'ellipsis',
+                maxWidth: maxW,
+                userSelect: 'none',
+              }}>
+                {meta.freshness}
+              </span>
+            )}
+          </div>
+        );
+      })()}
     </motion.div>
   );
 };

@@ -23,6 +23,12 @@ import imgNilsFrahm  from '../../assets/node-nils-frahm.jpg';
 import imgAusOpen    from '../../assets/node-aus-open.jpg';
 import imgVerstappen from '../../assets/node-verstappen.jpg';
 
+// Yandex service icons (used as orb images for service-linked text nodes)
+import svcMusic     from '../../assets/badge-music.svg';
+import svcKino      from '../../assets/badge-kinopoisk.svg';
+import svcBooks     from '../../assets/badge-books.svg';
+import svcAfisha    from '../../assets/afisha.png';
+
 
 // ═══════════════════════════════════════════════════════════════════════════
 // TYPES — data model
@@ -84,7 +90,7 @@ const NODES: InterestNode[] = [
   // ── Text nodes ──────────────────────────────────────────────────────────
   {
     // Album discovered gradually → now obsession
-    id: 'jazz', label: 'Kind of Blue', type: 'text', weight: 0.85, color: '#BF5AF2',
+    id: 'jazz', label: 'Kind of Blue', type: 'symbol', weight: 0.85, color: '#BF5AF2', image: svcMusic,
     periods: ['*'],
     periodWeight: { '2024-07': 0.32, '2024-08': 0.4, '2024-09': 0.58, '2024-10': 0.78, '2024-11': 0.85, '2024-12': 0.88, '2025-01': 0.88, '2025-02': 0.85, '2025-03': 0.9, '2025-04': 0.95 },
   },
@@ -96,7 +102,7 @@ const NODES: InterestNode[] = [
   },
   {
     // Marcus Aurelius Meditations — new year reading
-    id: 'stoicism', label: 'Медитации', type: 'text', weight: 0.6, color: '#5E5CE6',
+    id: 'stoicism', label: 'Медитации', type: 'symbol', weight: 0.6, color: '#5E5CE6', image: svcBooks,
     periods: ['2025-01', '2025-02', '2025-03', '2025-04'],
     periodWeight: { '2025-01': 0.3, '2025-02': 0.46, '2025-03': 0.56, '2025-04': 0.6 },
   },
@@ -114,7 +120,7 @@ const NODES: InterestNode[] = [
   },
   {
     // Tarkovsky's Mirror — specific film
-    id: 'cinema', label: 'Зеркало', type: 'text', weight: 0.65, color: '#FF9F0A',
+    id: 'cinema', label: 'Зеркало', type: 'symbol', weight: 0.65, color: '#FF9F0A', image: svcKino,
     periods: ['*'],
     periodWeight: { '2024-07': 0.65, '2024-08': 0.58, '2024-09': 0.6, '2024-10': 0.55, '2025-03': 0.5, '2025-04': 0.5 },
   },
@@ -190,7 +196,7 @@ const NODES: InterestNode[] = [
   },
   {
     // Air — Moon Safari, the summer album
-    id: 'moon-safari', label: 'Moon Safari', type: 'text', weight: 0.7, color: '#FF9F0A',
+    id: 'moon-safari', label: 'Moon Safari', type: 'symbol', weight: 0.7, color: '#FF9F0A', image: svcMusic,
     periods: ['2024-07', '2024-08', '2024-09'],
     periodWeight: { '2024-07': 0.75, '2024-08': 0.65, '2024-09': 0.42 },
   },
@@ -201,7 +207,7 @@ const NODES: InterestNode[] = [
   },
   {
     // Specific vinyl record found at a bar
-    id: 'vinyl', label: 'Blue Note 1568', type: 'text', weight: 0.5, color: '#BF5AF2',
+    id: 'vinyl', label: 'Blue Note 1568', type: 'symbol', weight: 0.5, color: '#BF5AF2', image: svcMusic,
     periods: ['2024-08', '2024-09'],
     periodWeight: { '2024-08': 0.5, '2024-09': 0.38 },
   },
@@ -219,7 +225,7 @@ const NODES: InterestNode[] = [
   },
   {
     // Joseph Brodsky — late autumn poetry phase
-    id: 'brodsky', label: 'Бродский', type: 'text', weight: 0.55, color: '#5E5CE6',
+    id: 'brodsky', label: 'Бродский', type: 'symbol', weight: 0.55, color: '#5E5CE6', image: svcBooks,
     periods: ['2024-12', '2025-01', '2025-02'],
     periodWeight: { '2024-12': 0.44, '2025-01': 0.58, '2025-02': 0.48 },
   },
@@ -231,7 +237,7 @@ const NODES: InterestNode[] = [
   },
   {
     // Garage Museum of Contemporary Art, Moscow
-    id: 'garage', label: 'Гараж', type: 'text', weight: 0.52, color: '#FF9F0A',
+    id: 'garage', label: 'Гараж', type: 'symbol', weight: 0.52, color: '#FF9F0A', image: svcAfisha,
     periods: ['2025-03', '2025-04'],
     periodWeight: { '2025-03': 0.45, '2025-04': 0.55 },
   },
@@ -245,7 +251,7 @@ const NODES: InterestNode[] = [
   },
   {
     // Nabokov — The Gift, autumn reading
-    id: 'nabokov', label: 'Дар', type: 'text', weight: 0.56, color: '#5E5CE6',
+    id: 'nabokov', label: 'Дар', type: 'symbol', weight: 0.56, color: '#5E5CE6', image: svcBooks,
     periods: ['2024-10', '2024-11'],
     periodWeight: { '2024-10': 0.44, '2024-11': 0.58 },
   },
@@ -257,7 +263,7 @@ const NODES: InterestNode[] = [
   },
   {
     // Bach Goldberg Variations — winter listening ritual
-    id: 'bach-goldberg', label: 'Гольдберг', type: 'text', weight: 0.58, color: '#BF5AF2',
+    id: 'bach-goldberg', label: 'Гольдберг', type: 'symbol', weight: 0.58, color: '#BF5AF2', image: svcMusic,
     periods: ['2024-12', '2025-01'],
     periodWeight: { '2024-12': 0.62, '2025-01': 0.52 },
   },
@@ -281,7 +287,7 @@ const NODES: InterestNode[] = [
   },
   {
     // Severance S2 — winter watch
-    id: 'severance', label: 'Severance', type: 'text', weight: 0.62, color: '#0A84FF',
+    id: 'severance', label: 'Severance', type: 'symbol', weight: 0.62, color: '#0A84FF', image: svcKino,
     periods: ['2025-01', '2025-02'],
     periodWeight: { '2025-01': 0.65, '2025-02': 0.55 },
   },
@@ -299,7 +305,7 @@ const NODES: InterestNode[] = [
   },
   {
     // Kandinsky — Tretyakov spring exhibition
-    id: 'kandinsky', label: 'Кандинский', type: 'text', weight: 0.54, color: '#FF9F0A',
+    id: 'kandinsky', label: 'Кандинский', type: 'symbol', weight: 0.54, color: '#FF9F0A', image: svcAfisha,
     periods: ['2025-03', '2025-04'],
     periodWeight: { '2025-03': 0.48, '2025-04': 0.58 },
   },

@@ -21,6 +21,7 @@ interface WorldWidget {
   freshness: Freshness;
   insight:   string;
   chips:     string[];
+  services:  string[];
 }
 
 const WORLDS: WorldWidget[] = [
@@ -29,30 +30,35 @@ const WORLDS: WorldWidget[] = [
     freshness: 'active',
     insight: 'Доминируют музыка и кино, книги в фоне',
     chips: ['127 прослушиваний', '3 досмотра', '14 лайков'],
+    services: ['Яндекс Музыка', 'Кинопоиск', 'Яндекс Книги'],
   },
   {
     id: 'music', label: 'Музыка', sub: 'Слушает · Открывает · Собирает',
     freshness: 'active',
     insight: 'Не просто слушает — уходит в длинные сессии',
     chips: ['3 возврата к альбому', 'сессии 50+ мин', '7 лайков'],
+    services: ['Яндекс Музыка', 'Spotify', 'Яндекс Афиша'],
   },
   {
     id: 'cinema', label: 'Кино', sub: 'Фильмы · Сериалы · Список',
     freshness: 'cooling',
     insight: 'Список растёт быстрее, чем успевает смотреть',
     chips: ['3 досмотра до конца', '2 брошено', '10 дней пауза'],
+    services: ['Кинопоиск', 'ivi', 'KION'],
   },
   {
     id: 'shopping', label: 'Шопинг', sub: 'Поиск · Сравнение · Решение',
     freshness: 'cooling',
     insight: 'Решение почти созрело, но ещё сравнивает',
     chips: ['8 возвратов к товару', '3 в корзине', '12 сравнений'],
+    services: ['Яндекс Маркет', 'Wildberries', 'Ozon'],
   },
   {
     id: 'travel', label: 'Путешествия', sub: 'Маршруты · Места · Логистика',
     freshness: 'active',
     insight: 'План уже движется к конкретной поездке',
     chips: ['3 отеля в избранном', '4 проверки билетов', '7 мест'],
+    services: ['Яндекс Путешествия', 'Яндекс Карты', 'Яндекс Погода'],
   },
 ];
 
@@ -206,6 +212,41 @@ export const WorldWidgets: React.FC<Props> = ({ onClose }) => {
                       {chip}
                     </span>
                   ))}
+                </div>
+
+                {/* Row 5: connected services */}
+                <div style={{
+                  marginTop: 18, paddingTop: 16,
+                  borderTop: '1px solid rgba(255,255,255,0.06)',
+                  display: 'flex', alignItems: 'center', gap: 6,
+                }}>
+                  <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 0, flexWrap: 'nowrap', overflow: 'hidden' }}>
+                    {w.services.map((svc, i) => (
+                      <React.Fragment key={svc}>
+                        <span style={{
+                          color: 'rgba(255,255,255,0.62)',
+                          fontSize: 13, fontWeight: 400,
+                          whiteSpace: 'nowrap',
+                        }}>{svc}</span>
+                        {i < w.services.length - 1 && (
+                          <span style={{ color: 'rgba(255,255,255,0.22)', fontSize: 13, margin: '0 5px' }}>·</span>
+                        )}
+                      </React.Fragment>
+                    ))}
+                  </div>
+                  <button
+                    onClick={e => e.stopPropagation()}
+                    style={{
+                      height: 28, borderRadius: 999,
+                      padding: '0 10px',
+                      background: 'rgba(255,255,255,0.05)',
+                      border: '1px solid rgba(255,255,255,0.08)',
+                      color: 'rgba(255,255,255,0.55)',
+                      fontSize: 13, fontWeight: 400,
+                      cursor: 'pointer', flexShrink: 0,
+                      WebkitTapHighlightColor: 'transparent',
+                    }}
+                  >+</button>
                 </div>
               </div>
             );

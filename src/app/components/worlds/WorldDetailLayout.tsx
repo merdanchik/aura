@@ -48,7 +48,7 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
           }}
         >
           <ChevronLeft size={17} />
-          <span style={{ fontSize: 17, fontWeight: 500 }}>Жизненные миры</span>
+          <span style={{ fontSize: 17, fontWeight: 500 }}>Аура</span>
         </button>
       </div>
 

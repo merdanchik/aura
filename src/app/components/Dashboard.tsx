@@ -582,7 +582,7 @@ export const Dashboard = () => {
             }}
           >
             <ChevronLeft size={17} />
-            <span style={{ fontSize: 17, fontWeight: 500 }}>Орбиты</span>
+            <span style={{ fontSize: 17, fontWeight: 500 }}>На главную</span>
           </button>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>

@@ -570,7 +570,7 @@ export const Dashboard = () => {
       fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
     }}><div>
       {/* ── Header: back + avatar + strong aura toggle ── */}
-      <div style={{ padding: '52px 16px 12px' }}>
+      <div style={{ padding: 'calc(env(safe-area-inset-top) + 8px) 16px 12px' }}>
         <div style={{ marginBottom: 14 }}>
           <button
             onClick={() => navigate(-1 as any)}

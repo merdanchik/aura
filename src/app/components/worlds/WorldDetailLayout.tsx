@@ -37,7 +37,7 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
     }}>
 
       {/* Back button */}
-      <div style={{ padding: '52px 16px 8px', flexShrink: 0 }}>
+      <div style={{ padding: 'calc(env(safe-area-inset-top) + 8px) 16px 8px', flexShrink: 0 }}>
         <button
           onClick={() => navigate(-1 as any)}
           style={{

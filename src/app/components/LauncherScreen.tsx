@@ -826,13 +826,13 @@ const OrbNodeEl: React.FC<{
             position: 'absolute',
             top: sz + 8,
             left: '50%', transform: 'translateX(-50%)',
-            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1,
+            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0,
             pointerEvents: 'none',
             maxWidth: maxW,
           }}>
             <span style={{
               fontSize: lFs,
-              fontWeight: 500,
+              fontWeight: 700,
               color: `${node.color}CC`,
               letterSpacing: 0.25,
               whiteSpace: 'nowrap',
@@ -846,9 +846,11 @@ const OrbNodeEl: React.FC<{
 
             {showSub && meta?.sub && (
               <span style={{
-                fontSize: sFs,
-                fontWeight: 400,
+                fontSize: 10,
+                fontWeight: 500,
                 color: C.textSecondary,
+                textTransform: 'uppercase',
+                letterSpacing: 1.3,
                 whiteSpace: 'nowrap',
                 overflow: 'hidden', textOverflow: 'ellipsis',
                 maxWidth: maxW,

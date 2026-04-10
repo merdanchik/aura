@@ -9,14 +9,17 @@ import svcMarket from '../../../assets/873668dc7d9e7bd9c16444667bc68a762e2b3499.
 import svcAfisha from '../../../assets/afisha.png';
 import svcTravel from '../../../assets/travel.png';
 
+import { C, S, R } from '../../styles/auraTokens';
+import { worldCard, chipStyle } from '../../styles/auraPrimitives';
+
 // ── Freshness ─────────────────────────────────────────────────────────────────
 
 type Freshness = 'active' | 'cooling' | 'quiet';
 
 const FRESHNESS: Record<Freshness, { color: string; label: string }> = {
-  active:  { color: '#63D46B',                label: 'активно'  },
-  cooling: { color: '#E7A93B',                label: 'остывает' },
-  quiet:   { color: 'rgba(255,255,255,0.38)', label: 'тихо'     },
+  active:  { color: C.active,  label: 'активно'  },
+  cooling: { color: C.cooling, label: 'остывает' },
+  quiet:   { color: C.quiet,   label: 'тихо'     },
 };
 
 // ── Service definitions ───────────────────────────────────────────────────────
@@ -34,38 +37,33 @@ const SERVICES: Record<string, ServiceDef> = {
   'Яндекс Маркет':      { icon: svcMarket,  initials: 'МК', color: '#FF6633' },
   'Яндекс Афиша':       { icon: svcAfisha,  initials: 'АФ', color: '#FF9F0A' },
   'Яндекс Путешествия': { icon: svcTravel,  initials: 'ПТ', color: '#00C7BE' },
-  'Spotify':    { initials: 'Sp', color: '#1DB954' },
-  'ivi':        { initials: 'iv', color: '#E8273E' },
-  'KION':       { initials: 'Ki', color: '#7B61FF' },
-  'Wildberries':{ initials: 'WB', color: '#CB11AB' },
-  'Ozon':       { initials: 'Oz', color: '#005BFF' },
-  'Яндекс Карты':  { initials: 'КА', color: '#FF6633' },
-  'Яндекс Погода': { initials: 'ПГ', color: '#5AC8F5' },
+  'Spotify':     { initials: 'Sp', color: '#1DB954' },
+  'ivi':         { initials: 'iv', color: '#E8273E' },
+  'KION':        { initials: 'Ki', color: '#7B61FF' },
+  'Wildberries': { initials: 'WB', color: '#CB11AB' },
+  'Ozon':        { initials: 'Oz', color: '#005BFF' },
+  'Яндекс Карты':   { initials: 'КА', color: '#FF6633' },
+  'Яндекс Погода':  { initials: 'ПГ', color: '#5AC8F5' },
 };
 
 const ServiceBadge: React.FC<{ name: string }> = ({ name }) => {
-  const def = SERVICES[name] ?? { initials: name.slice(0, 2), color: 'rgba(255,255,255,0.28)' };
+  const def = SERVICES[name] ?? { initials: name.slice(0, 2), color: C.textQuiet };
   if (def.icon) {
     return (
       <img
-        src={def.icon}
-        alt={name}
-        title={name}
-        style={{ width: 28, height: 28, borderRadius: 8, objectFit: 'cover', flexShrink: 0 }}
+        src={def.icon} alt={name} title={name}
+        style={{ width: S.serviceIconSize, height: S.serviceIconSize, borderRadius: R.iconSm, objectFit: 'cover', flexShrink: 0 }}
       />
     );
   }
   return (
-    <div
-      title={name}
-      style={{
-        width: 28, height: 28, borderRadius: 8,
-        background: `${def.color}20`,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontSize: 10, fontWeight: 700, color: def.color,
-        flexShrink: 0, letterSpacing: -0.3,
-      }}
-    >
+    <div title={name} style={{
+      width: S.serviceIconSize, height: S.serviceIconSize, borderRadius: R.iconSm,
+      background: `${def.color}20`,
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      fontSize: 10, fontWeight: 700, color: def.color,
+      flexShrink: 0, letterSpacing: -0.3,
+    }}>
       {def.initials}
     </div>
   );
@@ -144,7 +142,7 @@ export const WorldWidgets: React.FC<Props> = ({ onClose }) => {
         onClick={onClose}
         style={{
           position: 'absolute', inset: 0,
-          background: 'rgba(0,0,0,0.72)',
+          background: C.backdropBg,
           WebkitBackdropFilter: 'blur(14px)',
           backdropFilter: 'blur(14px)',
         }}
@@ -158,8 +156,8 @@ export const WorldWidgets: React.FC<Props> = ({ onClose }) => {
         transition={{ type: 'spring', damping: 36, stiffness: 420 }}
         style={{
           position: 'absolute', bottom: 0, left: 0, right: 0,
-          background: '#0D0E11',
-          borderRadius: '26px 26px 0 0',
+          background: C.appBg,
+          borderRadius: `${R.sheet}px ${R.sheet}px 0 0`,
           maxHeight: '91vh',
           display: 'flex', flexDirection: 'column',
           boxShadow: '0 -2px 32px rgba(0,0,0,0.6)',
@@ -167,7 +165,7 @@ export const WorldWidgets: React.FC<Props> = ({ onClose }) => {
       >
         {/* Drag handle */}
         <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 10 }}>
-          <div style={{ width: 30, height: 3, borderRadius: 2, background: 'rgba(255,255,255,0.10)' }} />
+          <div style={{ width: 30, height: 3, borderRadius: 2, background: C.handleBar }} />
         </div>
 
         {/* Header */}
@@ -175,7 +173,7 @@ export const WorldWidgets: React.FC<Props> = ({ onClose }) => {
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '14px 20px 18px',
         }}>
-          <p style={{ color: '#fff', fontSize: 28, fontWeight: 700, lineHeight: 1.05 }}>
+          <p style={{ color: C.textPrimary, fontSize: 28, fontWeight: 700, lineHeight: 1.05 }}>
             Жизненные миры
           </p>
           <button
@@ -206,14 +204,7 @@ export const WorldWidgets: React.FC<Props> = ({ onClose }) => {
                   onClose();
                   navigate(`/scenarios/${w.id}`, { state: { fromWorlds: true } });
                 }}
-                style={{
-                  borderRadius: 26,
-                  marginBottom: 14,
-                  background: '#14161B',
-                  padding: '22px',
-                  cursor: 'pointer',
-                  WebkitTapHighlightColor: 'transparent',
-                }}
+                style={worldCard}
               >
                 {/* Row 1: title + status */}
                 <div style={{
@@ -221,7 +212,7 @@ export const WorldWidgets: React.FC<Props> = ({ onClose }) => {
                   justifyContent: 'space-between',
                   marginBottom: 4,
                 }}>
-                  <span style={{ color: '#fff', fontSize: 26, fontWeight: 700, lineHeight: 1.0 }}>
+                  <span style={{ color: C.textPrimary, fontSize: 26, fontWeight: 700, lineHeight: 1.0 }}>
                     {w.label}
                   </span>
                   <div style={{
@@ -237,7 +228,7 @@ export const WorldWidgets: React.FC<Props> = ({ onClose }) => {
 
                 {/* Row 2: subtitle */}
                 <p style={{
-                  color: 'rgba(255,255,255,0.38)', fontSize: 14, fontWeight: 400,
+                  color: C.textQuiet, fontSize: 14,
                   lineHeight: 1.3, marginBottom: 14,
                 }}>
                   {w.sub}
@@ -245,7 +236,7 @@ export const WorldWidgets: React.FC<Props> = ({ onClose }) => {
 
                 {/* Row 3: insight */}
                 <p style={{
-                  color: 'rgba(255,255,255,0.90)', fontSize: 17, fontWeight: 400,
+                  color: 'rgba(255,255,255,0.90)', fontSize: 17,
                   lineHeight: 1.3, marginBottom: 18,
                 }}>
                   {w.insight}
@@ -254,18 +245,7 @@ export const WorldWidgets: React.FC<Props> = ({ onClose }) => {
                 {/* Row 4: chips */}
                 <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 18 }}>
                   {w.chips.map((chip, i) => (
-                    <span key={i} style={{
-                      display: 'inline-flex', alignItems: 'center',
-                      height: 28,
-                      borderRadius: 999,
-                      padding: '0 11px',
-                      background: 'rgba(255,255,255,0.07)',
-                      color: 'rgba(255,255,255,0.60)',
-                      fontSize: 13, fontWeight: 400,
-                      whiteSpace: 'nowrap',
-                    }}>
-                      {chip}
-                    </span>
+                    <span key={i} style={chipStyle}>{chip}</span>
                   ))}
                 </div>
 
@@ -275,7 +255,7 @@ export const WorldWidgets: React.FC<Props> = ({ onClose }) => {
                   <button
                     onClick={e => e.stopPropagation()}
                     style={{
-                      width: 28, height: 28, borderRadius: 999,
+                      width: S.serviceIconSize, height: S.serviceIconSize, borderRadius: R.pill,
                       background: 'rgba(255,255,255,0.07)',
                       color: 'rgba(255,255,255,0.50)',
                       fontSize: 16, lineHeight: 1,

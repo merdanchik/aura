@@ -377,6 +377,7 @@ function computeLayout(
   config: LayoutConfig,
   cW: number,
   cH: number,
+  _maxNodes?: number,   // internal — density fallback passes a lower cap here
 ): PlacedNode[] {
   const rng = seededRng(config.seed);
 
@@ -386,7 +387,8 @@ function computeLayout(
     .map(n => ({ node: n, ew: n.periodWeight?.[period] ?? n.weight }))
     .sort((a, b) => b.ew - a.ew);
 
-  const count = Math.max(8, Math.round(active.length * config.density));
+  const rawCount = Math.max(8, Math.round(active.length * config.density));
+  const count    = _maxNodes !== undefined ? Math.min(_maxNodes, rawCount) : rawCount;
   const visible = active.slice(0, count);
 
   const maxR = cW * 0.5;
@@ -498,6 +500,21 @@ function computeLayout(
     }
 
     if (!violated) break;  // all constraints satisfied — converged
+  }
+
+  // ── Density fallback ─────────────────────────────────────────────────────
+  // If violations remain after MAX_ITER, the current node count doesn't fit
+  // the available space. Drop the lowest-priority node and retry — up to 3
+  // times, never below 8 nodes. This guarantees layout finishes overlap-free
+  // rather than silently accepting the broken state.
+  if (count > 8) {
+    const hasResidual = placed.some((p, i) => {
+      if (Math.hypot(p.x, p.y) < AVATAR_FP + fp[i] - 2) return true;
+      return placed.some((q, j) =>
+        j > i && Math.hypot(q.x - p.x, q.y - p.y) < fp[i] + fp[j] + MIN_GAP - 2,
+      );
+    });
+    if (hasResidual) return computeLayout(nodes, period, config, cW, cH, count - 1);
   }
 
   return placed;

@@ -1386,29 +1386,29 @@ export const LauncherScreen = () => {
                   borderRadius: 16,
                   backgroundColor: mem.bg,
                   boxShadow: mem.shadow,
-                  position: 'relative',
+                  display: 'flex', flexDirection: 'column',
                   cursor: 'pointer',
                 }}
               >
-                {/* Month — fixed at top */}
-                <p style={{
-                  position: 'absolute', top: 15, left: 0, right: 0,
-                  fontSize: 8, fontWeight: 600, letterSpacing: '0.08em',
-                  textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)',
-                  lineHeight: 1, textAlign: 'center',
-                }}>
-                  {mem.month}
-                </p>
-                {/* Title — centered both axes */}
-                <p style={{
-                  position: 'absolute', top: '50%', left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  width: 'calc(100% - 24px)',
-                  fontSize: 13, fontWeight: 700, color: '#FFFFFF',
-                  lineHeight: 1.25, textAlign: 'center',
-                }}>
-                  {mem.title}
-                </p>
+                {/* Month — fixed-height header, always same position */}
+                <div style={{ height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <p style={{
+                    fontSize: 8, fontWeight: 600, letterSpacing: '0.08em',
+                    textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)',
+                    lineHeight: 1,
+                  }}>
+                    {mem.month}
+                  </p>
+                </div>
+                {/* Title — centered in remaining space */}
+                <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 12px 8px' }}>
+                  <p style={{
+                    fontSize: 13, fontWeight: 700, color: '#FFFFFF',
+                    lineHeight: 1.25, textAlign: 'center',
+                  }}>
+                    {mem.title}
+                  </p>
+                </div>
               </div>
             ))}
           </div>

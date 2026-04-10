@@ -115,6 +115,7 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
             {data.insights.map((ins, i) => (
               <div
                 key={i}
+                onClick={() => navigate(`/chat/${ins.contextId}`)}
                 style={{
                   flexShrink: 0, width: 160,
                   backgroundColor: '#1C1C1E',

@@ -5,6 +5,8 @@ import { Dashboard } from './components/Dashboard';
 import { ServiceDetail } from './components/ServiceDetail';
 import { ChatScreen } from './components/ChatScreen';
 import { LauncherScreen } from './components/LauncherScreen';
+import { OverviewCanvas } from './components/scenarios/OverviewCanvas';
+import { ScenarioDetail } from './components/scenarios/ScenarioDetail';
 import { ChevronLeft } from 'lucide-react';
 import { useAura, ServiceId } from './context/AuraContext';
 import { motion, AnimatePresence } from 'motion/react';
@@ -121,6 +123,8 @@ const ShellInner = () => {
 
 const router = createBrowserRouter([
   { index: true, Component: LauncherScreen },
+  { path: "scenarios",        Component: OverviewCanvas },
+  { path: "scenarios/:id",    Component: ScenarioDetail },
   {
     path: "app",
     Component: Shell,

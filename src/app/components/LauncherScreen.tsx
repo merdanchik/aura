@@ -255,8 +255,8 @@ const NODES: InterestNode[] = [
     periodWeight: { '2024-08': 0.68, '2024-09': 0.78 },
   },
   {
-    // Nabokov — The Gift, autumn reading
-    id: 'nabokov', label: 'Дар', type: 'symbol', weight: 0.56, color: '#5E5CE6', image: svcWildberries,
+    // Home office setup — autumn purchase research
+    id: 'home-office', label: 'Домашний офис', type: 'symbol', weight: 0.56, color: '#5E5CE6', image: svcWildberries,
     periods: ['2024-10', '2024-11'],
     periodWeight: { '2024-10': 0.44, '2024-11': 0.58 },
   },
@@ -345,7 +345,7 @@ const NODE_META: Record<string, { sub?: string; freshness?: string }> = {
   'sunrise-run':  { sub: 'Яндекс Спорт',        freshness: 'бегает по утрам'            },
   'garage':       { sub: 'Яндекс Афиша',        freshness: 'был на открытии'            },
   'istanbul':     { sub: 'Яндекс Путешествия',  freshness: 'лето 2024 — не возвращался' },
-  'nabokov':      { sub: 'Wildberries',            freshness: 'прочитал осенью'            },
+  'home-office':  { sub: 'Wildberries',            freshness: 'искал осенью'               },
   'nick-cave':    { sub: 'Яндекс Афиша',        freshness: 'концерт прошлой осенью'     },
   'bach-goldberg':{ sub: 'Яндекс Музыка',       freshness: 'зимний ритуал'              },
   'rome':         { sub: 'Яндекс Путешествия',  freshness: 'поездка прошлой зимой'      },

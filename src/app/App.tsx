@@ -1,5 +1,5 @@
 import React from 'react';
-import { RouterProvider, createBrowserRouter, Outlet, useNavigate, useLocation } from 'react-router';
+import { RouterProvider, createBrowserRouter, Navigate, Outlet, useNavigate, useLocation } from 'react-router';
 import { AuraProvider } from './context/AuraContext';
 import { Dashboard } from './components/Dashboard';
 import { ServiceDetail } from './components/ServiceDetail';
@@ -122,7 +122,8 @@ const ShellInner = () => {
 };
 
 const router = createBrowserRouter([
-  { index: true, Component: LauncherScreen },
+  { index: true, element: <Navigate to="/scenarios" replace /> },
+  { path: "legacy",           Component: LauncherScreen },
   { path: "scenarios",        Component: OverviewCanvas },
   { path: "scenarios/:id",    Component: ScenarioDetail },
   {

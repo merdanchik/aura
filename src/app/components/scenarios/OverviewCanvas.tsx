@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, Link } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import { SCENARIOS, FAR_SCENARIOS } from './types';
 import avatarImg from '../../../assets/avatar.jpg';
@@ -86,11 +86,38 @@ export const OverviewCanvas: React.FC = () => {
         overflow: 'hidden',
       }}
     >
-      {/* Title */}
-      <div style={{ position: 'absolute', top: 64, left: 0, right: 0, textAlign: 'center', pointerEvents: 'none' }}>
-        <p style={{ color: 'rgba(255,255,255,0.18)', fontSize: 11, letterSpacing: 1.0, fontWeight: 600 }}>
-          СЦЕНАРИИ
+      {/* Title + orientation */}
+      <div style={{ position: 'absolute', top: 56, left: 0, right: 0, textAlign: 'center', pointerEvents: 'none' }}>
+        <p style={{ color: 'rgba(255,255,255,0.20)', fontSize: 11, letterSpacing: 1.2, fontWeight: 700 }}>
+          AURA · СЦЕНАРИИ
         </p>
+        <p style={{ color: 'rgba(255,255,255,0.12)', fontSize: 11, marginTop: 4, letterSpacing: 0.2 }}>
+          твои жизненные миры
+        </p>
+      </div>
+
+      {/* Bottom hint */}
+      <motion.div
+        animate={{ opacity: [0.0, 0.55, 0.0] }}
+        transition={{ duration: 3.5, delay: 1.2, repeat: 2, ease: 'easeInOut' }}
+        style={{
+          position: 'absolute', bottom: 44, left: 0, right: 0,
+          textAlign: 'center', pointerEvents: 'none',
+        }}
+      >
+        <p style={{ color: 'rgba(255,255,255,0.38)', fontSize: 12, letterSpacing: 0.3 }}>
+          нажми на мир чтобы войти
+        </p>
+      </motion.div>
+
+      {/* v1 link */}
+      <div style={{ position: 'absolute', bottom: 20, right: 20 }}>
+        <Link
+          to="/legacy"
+          style={{ color: 'rgba(255,255,255,0.12)', fontSize: 10, letterSpacing: 0.5, textDecoration: 'none' }}
+        >
+          v1
+        </Link>
       </div>
 
       {/* Full-screen backdrop — dismisses preview on tap outside */}

@@ -129,7 +129,7 @@ const router = createBrowserRouter([
     path: "app",
     Component: Shell,
     children: [
-      { index: true, Component: Dashboard },
+      { index: true, element: <Navigate to="/scenarios" replace /> },
       { path: "service/:id", Component: ServiceDetail },
       { path: "service/:id/chat/:actionId", Component: ChatScreen },
       { path: "chat/:contextId", Component: ChatScreen },

@@ -850,11 +850,11 @@ const OrbNodeEl: React.FC<{
 
             {showSub && meta?.sub && (
               <span style={{
-                fontSize: 9,
-                fontWeight: 400,
-                color: C.textSecondary,
+                fontSize: 8,
+                fontWeight: 600,
+                color: 'rgba(255,255,255,0.28)',
                 textTransform: 'uppercase',
-                letterSpacing: 1.3,
+                letterSpacing: '0.08em',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden', textOverflow: 'ellipsis',
                 maxWidth: maxW,

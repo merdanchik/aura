@@ -581,7 +581,7 @@ export const Dashboard = () => {
               WebkitTapHighlightColor: 'transparent',
             }}
           >
-            <ChevronLeft size={20} />
+            <ChevronLeft size={24} />
             <span style={{ fontSize: 17, fontWeight: 500 }}>На главную</span>
           </button>
         </div>

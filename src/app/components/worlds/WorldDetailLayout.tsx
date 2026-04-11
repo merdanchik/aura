@@ -39,7 +39,7 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
       {/* Hero — full bleed */}
       <div style={{
         padding: 'calc(env(safe-area-inset-top) + 12px) 20px 28px',
-        background: `linear-gradient(160deg, ${data.color}30 0%, transparent 80%)`,
+        background: 'none',
         marginBottom: 16,
       }}>
         {/* Back + status */}

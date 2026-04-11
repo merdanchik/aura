@@ -717,7 +717,7 @@ export const Dashboard = () => {
               <div style={{ width: 10, height: 10, borderRadius: '50%', backgroundColor: w.color, flexShrink: 0 }} />
               <div className={`flex-1 min-w-0 flex items-center gap-2 ${idx < WORLDS_DATA.length - 1 ? 'border-b border-white/[0.08] pb-3.5 -mb-3.5' : ''}`}>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[17px] text-white truncate" style={{ fontWeight: 500 }}>{w.label}</p>
+                  <p className="text-[17px] truncate" style={{ fontWeight: 500, color: w.color }}>{w.label}</p>
                   <p className="text-[13px] mt-0.5 truncate" style={{ color: '#636366' }}>{w.sub}</p>
                 </div>
                 <span style={{ fontSize: 13, fontWeight: 500, color: w.freshnessColor, flexShrink: 0 }}>{w.freshnessLabel}</span>

@@ -59,11 +59,11 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
           <StatusBadge color={data.color} text={data.statusText} />
         </div>
         {/* Title */}
-        <p style={{ fontSize: 40, fontWeight: 700, color: '#FFFFFF', lineHeight: 1.0, marginBottom: 8 }}>
+        <p style={{ fontSize: 40, fontWeight: 700, color: '#FFFFFF', lineHeight: 1.0, marginBottom: 8, textAlign: 'center' }}>
           {data.title}
         </p>
         {/* Subtitle */}
-        <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.04em' }}>
+        <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.04em', textAlign: 'center' }}>
           {data.subtitle}
         </p>
       </div>

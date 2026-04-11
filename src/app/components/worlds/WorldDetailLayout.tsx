@@ -108,7 +108,7 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
                   cursor: 'pointer',
                 }}
               >
-                <div style={{ lineHeight: 1, textAlign: 'center' }}>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
                   <InsIcon size={24} color={ins.accent} strokeWidth={1.5} />
                 </div>
                 <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.07em', color: ins.accent, textTransform: 'uppercase', lineHeight: 1.3, textAlign: 'center' }}>

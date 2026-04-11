@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
-import { ChevronLeft, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { AuraRingsMini } from '../AuraRings';
 import { StatusBadge } from './WorldDetailShared';
 import type { WorldDetailData } from './worldsData';
@@ -36,68 +36,50 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
       fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
     }}>
 
-      {/* Back button */}
-      <div style={{ padding: 'calc(env(safe-area-inset-top) + 8px) 16px 8px' }}>
-        <button
-          onClick={() => navigate(-1 as any)}
-          style={{
-            display: 'flex', alignItems: 'center', gap: 4,
-            background: 'none', border: 'none', cursor: 'pointer',
-            color: data.color, padding: 0,
-            WebkitTapHighlightColor: 'transparent',
-          }}
-        >
-          <ChevronLeft size={17} />
-          <span style={{ fontSize: 17, fontWeight: 500 }}>Аура</span>
-        </button>
+      {/* Hero — full bleed */}
+      <div style={{
+        padding: 'calc(env(safe-area-inset-top) + 12px) 20px 28px',
+        background: `linear-gradient(160deg, ${data.color}30 0%, transparent 80%)`,
+        marginBottom: 16,
+      }}>
+        {/* Status + close */}
+        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 10, marginBottom: 20 }}>
+          <StatusBadge color={data.color} text={data.statusText} />
+          <button
+            onClick={() => navigate(-1 as any)}
+            style={{
+              width: 28, height: 28, borderRadius: '50%',
+              backgroundColor: 'rgba(255,255,255,0.12)',
+              border: 'none', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              color: '#FFFFFF', fontSize: 14,
+              WebkitTapHighlightColor: 'transparent',
+            }}
+          >✕</button>
+        </div>
+        {/* Title */}
+        <p style={{ fontSize: 40, fontWeight: 700, color: '#FFFFFF', lineHeight: 1.0, marginBottom: 8 }}>
+          {data.title}
+        </p>
+        {/* Subtitle */}
+        <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.04em' }}>
+          {data.subtitle}
+        </p>
       </div>
 
-      <div style={{ padding: '4px 16px 60px' }}>
+      <div style={{ padding: '0 16px 60px' }}>
 
-          {/* Hero card */}
-          <div style={{
-            borderRadius: 20,
-            overflow: 'hidden',
-            marginBottom: 28,
-            background: `linear-gradient(140deg, ${data.color}18 0%, #1C1C1E 60%)`,
-            boxShadow: `0 0 40px ${data.color}12, 0 4px 20px rgba(0,0,0,0.5)`,
-          }}>
-            {/* Status */}
-            <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 18, paddingBottom: 4 }}>
-              <StatusBadge color={data.color} text={data.statusText} />
-            </div>
-            {/* Title */}
-            <p style={{
-              fontSize: 26, fontWeight: 700, lineHeight: 1.1,
-              color: data.color,
-              textAlign: 'center',
-              padding: '6px 24px 4px',
-            }}>
-              {data.title}
+          {/* Insight card */}
+          <div style={{ backgroundColor: '#1C1C1E', borderRadius: 16, padding: '16px 20px 20px', marginBottom: 28 }}>
+            <p style={{ fontSize: 17, fontWeight: 600, color: '#FFFFFF', lineHeight: 1.25, marginBottom: 8 }}>
+              {data.heroTitle}
             </p>
-            {/* Subtitle */}
-            <p style={{
-              fontSize: 13, color: '#636366',
-              textAlign: 'center',
-              padding: '0 24px 16px',
-            }}>
-              {data.subtitle}
+            <p style={{ fontSize: 15, color: '#98989D', lineHeight: 1.55, marginBottom: 12 }}>
+              {data.heroBody}
             </p>
-
-            <div style={{ height: '0.5px', backgroundColor: 'rgba(255,255,255,0.08)' }} />
-
-            {/* Insight */}
-            <div style={{ padding: '16px 20px 20px' }}>
-              <p style={{ fontSize: 17, fontWeight: 600, color: '#FFFFFF', lineHeight: 1.25, marginBottom: 8 }}>
-                {data.heroTitle}
-              </p>
-              <p style={{ fontSize: 15, color: '#98989D', lineHeight: 1.55, marginBottom: 12 }}>
-                {data.heroBody}
-              </p>
-              <p style={{ fontSize: 12, color: '#48484A' }}>
-                {data.heroTemporal}
-              </p>
-            </div>
+            <p style={{ fontSize: 12, color: '#48484A' }}>
+              {data.heroTemporal}
+            </p>
           </div>
 
           {/* Инсайты */}

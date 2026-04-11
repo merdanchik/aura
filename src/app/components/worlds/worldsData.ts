@@ -120,6 +120,7 @@ export const WORLD_DATA: Record<string, WorldDetailData> = {
       { iconSrc: svcKino,    name: 'Кинопоиск', facts: '27 фильмов в вишлисте, 3 досмотра до конца, 2 брошено', meaning: 'Интерес копится, но конверсия рваная', accent: '#FF9F0A' },
       { iconSrc: svcNetflix, name: 'Netflix',    facts: '2 сериала начато, 1 досмотрен до конца',                meaning: 'Дублирует просмотр на другой платформе', accent: '#E50914' },
       { iconSrc: svcImdb,    name: 'IMDb',       facts: '34 фильма проверено, 8 рецензий прочитано',             meaning: 'Research перед просмотром обязателен',   accent: '#F5C518' },
+      { iconSrc: svcAfisha,  name: 'Яндекс Афиша', facts: '1 поход в кинотеатр в месяц, билеты через Афишу', meaning: 'Живой просмотр — отдельный ритуал', accent: '#5AC8F5' },
     ],
     insights: [
       { icon: '🎬', category: 'ОТКРЫТИЕ · КИНОПОИСК', text: 'Аниме расширило профиль знания',               accent: '#FF6600', contextId: 'ins-kinopoisk'  },

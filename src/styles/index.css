@@ -3,7 +3,7 @@
 @import './theme.css';
 
 html, body {
-  background-color: #0D0E11;
+  background-color: #000000;
 }
 
 button, a, [role="button"], [tabindex]:not([tabindex="-1"]) {

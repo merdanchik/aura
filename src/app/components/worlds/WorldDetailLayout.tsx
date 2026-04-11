@@ -31,7 +31,7 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
   return (
     <div style={{
       position: 'fixed', inset: 0,
-      background: '#111114',
+      background: '#000000',
       overflowY: 'auto', WebkitOverflowScrolling: 'touch' as any,
       fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
     }}>

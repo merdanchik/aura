@@ -107,7 +107,7 @@ const HeartAura: React.FC = () => {
 export const HeartPage: React.FC = () => (
   <div style={{
     position: 'fixed', inset: 0,
-    backgroundColor: '#0D0E11',
+    backgroundColor: '#000000',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
     fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
   }}>

@@ -4,7 +4,7 @@
 
 /** Colors */
 export const C = {
-  appBg:           '#111114',
+  appBg:           '#000000',
   surface:         '#1C1C1E',
   surfaceSecondary:'#2C2C2E',
   chipBg:          '#2C2C2E',

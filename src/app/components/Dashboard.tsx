@@ -563,7 +563,7 @@ export const Dashboard = () => {
   return (
     <div style={{
       position: 'fixed', inset: 0,
-      backgroundColor: '#111114',
+      backgroundColor: '#000000',
       overflowY: 'auto',
       overflowX: 'hidden',
       WebkitOverflowScrolling: 'touch' as any,

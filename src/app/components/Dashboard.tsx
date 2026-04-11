@@ -322,14 +322,14 @@ const PartnersTab = () => {
                   <button
                     onClick={() => setMvideoState('granted')}
                     className="flex-1 py-2.5 rounded-xl text-[15px] text-white active:opacity-70 transition-opacity"
-                    style={{ backgroundColor: '#2C2C2E', fontWeight: 500 }}
+                    style={{ backgroundColor: 'rgba(255,255,255,0.14)', fontWeight: 600 }}
                   >
                     Дать
                   </button>
                   <button
                     onClick={() => setMvideoState('denied')}
                     className="flex-1 py-2.5 rounded-xl text-[15px] active:opacity-70 transition-opacity"
-                    style={{ backgroundColor: '#2C2C2E', color: '#FF3B30', fontWeight: 500 }}
+                    style={{ backgroundColor: 'transparent', color: '#FF3B30', fontWeight: 400, border: '1px solid rgba(255,59,48,0.28)' }}
                   >
                     Нет
                   </button>

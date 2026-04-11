@@ -45,11 +45,11 @@ const serviceIconMap: Record<string, string> = {
 };
 
 const WORLDS_DATA = [
-  { id: 'content',  label: 'Спорт',         sub: 'Гонки · Баскетбол · Матчи',       color: '#5AC8F5', freshnessColor: '#30D158', freshnessLabel: 'активно'  },
-  { id: 'music',    label: 'Музыка',        sub: 'Слушает · Открывает · Собирает',  color: '#BF5AF2', freshnessColor: '#30D158', freshnessLabel: 'активно'  },
-  { id: 'cinema',   label: 'Кино',          sub: 'Фильмы · Сериалы · Список',       color: '#FF9F0A', freshnessColor: '#E7A93B', freshnessLabel: 'остывает' },
-  { id: 'shopping', label: 'Шопинг',        sub: 'Поиск · Сравнение · Решение',     color: '#FF6633', freshnessColor: '#E7A93B', freshnessLabel: 'остывает' },
-  { id: 'travel',   label: 'Путешествия',   sub: 'Маршруты · Места · Логистика',    color: '#00C7BE', freshnessColor: '#30D158', freshnessLabel: 'активно'  },
+  { id: 'content',  label: 'Спорт',         sub: 'Гонки · Баскетбол · Матчи',       color: '#5AC8F5', freshnessColor: '#30D158', freshnessLabel: 'в сезоне'   },
+  { id: 'music',    label: 'Музыка',        sub: 'Слушает · Открывает · Собирает',  color: '#BF5AF2', freshnessColor: '#30D158', freshnessLabel: 'в потоке'   },
+  { id: 'cinema',   label: 'Кино',          sub: 'Фильмы · Сериалы · Список',       color: '#FF9F0A', freshnessColor: '#E7A93B', freshnessLabel: 'накапливает'},
+  { id: 'shopping', label: 'Шопинг',        sub: 'Поиск · Сравнение · Решение',     color: '#FF6633', freshnessColor: '#E7A93B', freshnessLabel: 'наблюдает' },
+  { id: 'travel',   label: 'Путешествия',   sub: 'Маршруты · Места · Логистика',    color: '#00C7BE', freshnessColor: '#30D158', freshnessLabel: 'планирует' },
 ];
 
 // ─── Heart Aura ──────────────────────────────────────────────────────────────

@@ -55,7 +55,7 @@ export const WORLD_DATA: Record<string, WorldDetailData> = {
     subtitle:     'Гонки · Баскетбол · Матчи',
     statusText:   'в сезоне',
     heroTitle:    'Формула 1 и NBA в центре',
-    heroBody:     'Сезон F1 открылся активно — Мельбурн просмотрен полностью, следующий этап уже в трекере. Баскетбол идёт параллельным потоком с акцентом на плей-офф.',
+    heroBody:     'Сезон F1 открылся активно — Мельбурн просмотрен полностью, следующий этап уже в календаре. Баскетбол идёт параллельным потоком с акцентом на плей-офф.',
     heroTemporal: 'Основано на активности за последние 3 недели',
     values: [
       'Позволяет ассистенту предлагать гонки и матчи в нужное время без лишних вопросов',
@@ -65,7 +65,7 @@ export const WORLD_DATA: Record<string, WorldDetailData> = {
     sources: [
       { iconSrc: svcKino,      name: 'Кинопоиск',      facts: '8 спортивных событий за месяц, 3 напоминания', meaning: 'Активное отслеживание расписания', accent: '#FF9F0A' },
       { iconSrc: imgF1App,     name: 'Formula 1',      facts: '6 гонок просмотрено полностью, 2 в записи',    meaning: 'Глубокий интерес к сезону',       accent: '#FF3B30' },
-      { iconSrc: imgNbaApp,   name: 'NBA',             facts: '12 матчей, фокус на плей-офф',                 meaning: 'Устойчивый интерес', accent: '#FF9F0A' },
+      { iconSrc: imgNbaApp,   name: 'NBA',             facts: '12 матчей, акцент на плей-офф',                 meaning: 'Устойчивый интерес', accent: '#FF9F0A' },
     ],
     insights: [
       { icon: '🏎️', category: 'ПАТТЕРН · F1',      text: 'Смотрит гонки в прямом эфире — без записи',    accent: '#FF3B30', contextId: 'ins-sports-f1'    },
@@ -92,7 +92,7 @@ export const WORLD_DATA: Record<string, WorldDetailData> = {
     sources: [
       { iconSrc: svcMusic,   name: 'Яндекс Музыка', facts: '3 возврата к альбому, сессии 50+ минут, 7 лайков', meaning: 'Высокая вовлечённость и осознанный выбор', accent: '#BF5AF2' },
       { iconSrc: svcSpotify, name: 'Spotify',        facts: '22 прослушивания, 4 новых артиста',                 meaning: 'Расширение горизонта через другой алгоритм', accent: '#1DB954' },
-      { iconSrc: svcLastfm,  name: 'Last.fm',        facts: '180 scrobbles за месяц, топ: электроника',          meaning: 'Точный след вкуса за последний год',         accent: '#D51007' },
+      { iconSrc: svcLastfm,  name: 'Last.fm',        facts: '180 прослушиваний за месяц, топ: электроника',          meaning: 'Точный след вкуса за последний год',         accent: '#D51007' },
     ],
     insights: [
       { icon: '🎵', category: 'ВКУС · МУЗЫКА',      text: 'Электроника в 2× чаще по пятницам после 22:00', accent: '#E03366', contextId: 'ins-music'     },
@@ -113,13 +113,13 @@ export const WORLD_DATA: Record<string, WorldDetailData> = {
     heroTemporal: 'Основано на активности за последний месяц',
     values: [
       'Помогает предлагать короткие форматы или фильмы на один вечер вместо тяжелых сериалов',
-      'Улучшает тайминг пушей и напоминаний о недосмотренном',
+      'Улучшает время уведомлений о недосмотренном',
       'Снижает когнитивную нагрузку при выборе контента на главной странице',
     ],
     sources: [
       { iconSrc: svcKino,    name: 'Кинопоиск', facts: '27 фильмов в вишлисте, 3 досмотра до конца, 2 брошено', meaning: 'Интерес копится, но конверсия рваная', accent: '#FF9F0A' },
       { iconSrc: svcNetflix, name: 'Netflix',    facts: '2 сериала начато, 1 досмотрен до конца',                meaning: 'Дублирует просмотр на другой платформе', accent: '#E50914' },
-      { iconSrc: svcImdb,    name: 'IMDb',       facts: '34 фильма проверено, 8 рецензий прочитано',             meaning: 'Research перед просмотром обязателен',   accent: '#F5C518' },
+      { iconSrc: svcImdb,    name: 'IMDb',       facts: '34 фильма проверено, 8 рецензий прочитано',             meaning: 'Изучает рецензии перед просмотром',   accent: '#F5C518' },
       { iconSrc: svcAfisha,  name: 'Яндекс Афиша', facts: '1 поход в кинотеатр в месяц, билеты через Афишу', meaning: 'Живой просмотр — отдельный ритуал', accent: '#5AC8F5' },
     ],
     insights: [
@@ -140,12 +140,12 @@ export const WORLD_DATA: Record<string, WorldDetailData> = {
     heroBody:     'Пользователь перешёл от случайного поиска к активному выбору. Решение о покупке почти сформировано, но ещё требует сравнения альтернатив.',
     heroTemporal: 'Основано на активности за последние 10 дней',
     values: [
-      'Открывает более агрессивный и точный checkout flow без лишних шагов',
+      'Открывает более точный процесс покупки без лишних шагов',
       'Позволяет предлагать универсальный Сплит в нужный момент принятия решения',
       'Фокусирует рекомендации на добивке конкретного намерения, а не на холодном поиске',
     ],
     sources: [
-      { iconSrc: svcMarket,      name: 'Яндекс Маркет', facts: '8 возвратов к товару, 12 сравнений, 3 в корзине', meaning: 'Глубокий research перед транзакцией', accent: '#FF6633'  },
+      { iconSrc: svcMarket,      name: 'Яндекс Маркет', facts: '8 возвратов к товару, 12 сравнений, 3 в корзине', meaning: 'Детальное изучение перед покупкой', accent: '#FF6633'  },
       { iconSrc: svcWildberries, name: 'Wildberries',    facts: '5 заказов за месяц, средний чек 2 800 ₽',         meaning: 'Параллельная площадка для сравнения',  accent: '#CB11AB'  },
       { iconSrc: svcOzon,        name: 'Ozon',           facts: '3 заказа, 2 возврата — ищет лучшее качество',     meaning: 'Высокие требования к товару',          accent: '#005BFF'  },
     ],
@@ -153,7 +153,7 @@ export const WORLD_DATA: Record<string, WorldDetailData> = {
       { icon: '🛍️', category: 'ПРИВЫЧКА · МАРКЕТ',   text: 'Чаще покупает по воскресеньям',                 accent: '#FFCC00', contextId: 'ins-market'    },
       { icon: '💳', category: 'ПАТТЕРН · СПЛИТ',     text: 'Платит вовремя — доверие растёт',               accent: '#30D158', contextId: 'ins-split'     },
       { icon: '🔄', category: 'ПОВЕДЕНИЕ · ВОЗВРАТ', text: 'Возвращается к одному товару в среднем 8 раз',  accent: '#FF6633', contextId: 'ins-shopping-3' },
-      { icon: '🎯', category: 'ПАТТЕРН · INTENT',    text: 'От первого поиска до покупки — 4 дня',          accent: '#5AC8F5', contextId: 'ins-shopping-4' },
+      { icon: '🎯', category: 'ПАТТЕРН · НАМЕРЕНИЕ',  text: 'От первого поиска до покупки — 4 дня',          accent: '#5AC8F5', contextId: 'ins-shopping-4' },
       { icon: '📦', category: 'ПРИВЫЧКА · ДОСТАВКА', text: 'Выбирает доставку на следующий день в 90%',     accent: '#FF9F0A', contextId: 'ins-shopping-5' },
     ],
   },
@@ -176,7 +176,7 @@ export const WORLD_DATA: Record<string, WorldDetailData> = {
       { iconSrc: svcYMaps,     name: 'Яндекс Карты',       facts: '7 сохранённых мест в новом городе',       meaning: 'Проработка деталей на месте',         accent: '#FF9F0A' },
       { iconSrc: svcAviasales, name: 'Авиасейлс',           facts: '6 поисков маршрута, 2 сохранённых рейса', meaning: 'Активный поиск лучшей цены на билеты', accent: '#00C7BE' },
       { iconSrc: svcBooking,   name: 'Booking',             facts: '5 отелей в избранном, 1 забронирован',    meaning: 'Подбор жилья в финальной стадии',     accent: '#003580' },
-      { iconSrc: svcAirbnb,    name: 'Airbnb',              facts: '3 варианта сохранено, фокус на апартаменты', meaning: 'Альтернатива отелю для длинных поездок', accent: '#FF5A5F' },
+      { iconSrc: svcAirbnb,    name: 'Airbnb',              facts: '3 варианта сохранено, акцент на апартаменты', meaning: 'Альтернатива отелю для длинных поездок', accent: '#FF5A5F' },
     ],
     insights: [
       { icon: '✈️', category: 'ПАТТЕРН · ПУТЕШЕСТВИЯ', text: 'Проверяет билеты поздно вечером',          accent: '#00C7BE', contextId: 'ins-travel'   },

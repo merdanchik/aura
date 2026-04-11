@@ -1373,7 +1373,7 @@ export const LauncherScreen = () => {
           }}>
             {[
               { month: 'АВГУСТ',   service: 'КИНОПОИСК',    title: 'Неделя, когда ты не спал',  bg: '#07101A', shadow: 'inset 0 2px 17px 11px rgba(5,25,60,0.98), inset 0 0 13px 7px rgba(10,55,130,0.82)',  contextId: 'mem-kinopoisk'  },
-              { month: 'СЕНТЯБРЬ', service: 'МУЗЫКА',        title: 'Один трек на repeat',        bg: '#0A0320', shadow: 'inset 0 2px 17px 11px rgba(38,8,98,0.98), inset 0 0 13px 7px rgba(98,28,218,0.82)', contextId: 'mem-music'       },
+              { month: 'СЕНТЯБРЬ', service: 'МУЗЫКА',        title: 'Один трек по кругу',        bg: '#0A0320', shadow: 'inset 0 2px 17px 11px rgba(38,8,98,0.98), inset 0 0 13px 7px rgba(98,28,218,0.82)', contextId: 'mem-music'       },
               { month: 'НОЯБРЬ',   service: 'ЯНДЕКС ЕДА',   title: 'Дождливые пятницы',         bg: '#120800', shadow: 'inset 0 2px 17px 11px rgba(80,35,0,0.98), inset 0 0 13px 7px rgba(160,75,0,0.82)',   contextId: 'mem-food'        },
               { month: 'ЯНВАРЬ',   service: 'ТЕННИС',        title: '+40 на корте',               bg: '#001408', shadow: 'inset 0 2px 17px 11px rgba(0,55,20,0.98), inset 0 0 13px 7px rgba(0,120,45,0.82)',   contextId: 'aus-open'        },
               { month: 'МАРТ',     service: 'ФОРМУЛА 1',     title: 'Сзади никого',               bg: '#00081A', shadow: 'inset 0 2px 17px 11px rgba(0,20,80,0.98), inset 0 0 13px 7px rgba(15,55,175,0.82)',  contextId: 'f1-2025'         },

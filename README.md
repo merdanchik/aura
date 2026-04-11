@@ -1,9 +1,26 @@
+# Aura
 
-  # Prompt file creation
+## ЕДИНСТВЕННАЯ АКТИВНАЯ ВЕТКА — `main`
 
-  ## Running the code
+**Всегда работай в `main`. Никогда не создавай новые ветки. Никогда не переключайся на другие ветки.**
 
-  Run `npm i` to install the dependencies.
+Все остальные ветки (`archive/*`) — только история. Не коммитить, не мёрджить.
 
-  Run `npm run dev` to start the development server.
-  
+```bash
+git checkout main && git pull origin main
+# работай здесь
+git push origin main
+```
+
+---
+
+## Запуск
+
+```bash
+npm i
+npm run dev
+```
+
+## Деплой
+
+Пуш в `main` → GitHub Actions деплоит автоматически на GitHub Pages.

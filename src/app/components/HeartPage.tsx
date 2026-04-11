@@ -3,7 +3,6 @@ import { motion, useMotionValue, useTransform, animate as motionAnimate } from '
 import { useNavigate } from 'react-router';
 import { ChevronLeft } from 'lucide-react';
 import { useAura } from '../context/AuraContext';
-import { Switch } from './ui/switch';
 
 import heartSvg    from '../../assets/heart.svg';
 import heartLayer0 from '../../assets/heart-layer-0.svg';
@@ -107,8 +106,9 @@ const HeartAura: React.FC<{ overallScore: number; globalTrustScore: number; size
 };
 
 export const HeartPage: React.FC = () => {
-  const { overallScore, globalTrustScore, strongAura, toggleStrongAura } = useAura();
+  const { overallScore, globalTrustScore } = useAura();
   const navigate = useNavigate();
+  const [score, setScore] = React.useState(() => Math.round(overallScore));
 
   return (
     <div style={{
@@ -131,19 +131,36 @@ export const HeartPage: React.FC = () => {
           <ChevronLeft size={24} style={{ transform: 'translateY(-1.5px)' }} />
           <span style={{ fontSize: 17, fontWeight: 500 }}>Назад</span>
         </button>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span style={{ color: strongAura ? '#BF5AF2' : '#636366', fontSize: 13, fontWeight: 500 }}>Сильная аура</span>
-          <Switch
-            checked={strongAura}
-            onCheckedChange={toggleStrongAura}
-            className="h-[31px] w-[51px] data-[state=checked]:bg-[#BF5AF2] data-[state=unchecked]:bg-[#3A3A3C] border-0 [&>[data-slot=switch-thumb]]:size-[27px] [&>[data-slot=switch-thumb]]:data-[state=checked]:translate-x-[22px] [&>[data-slot=switch-thumb]]:shadow-[0_2px_6px_rgba(0,0,0,0.4)]"
-          />
+
+        {/* Score stepper */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <button
+            onClick={() => setScore(s => Math.max(0, s - 5))}
+            style={{
+              width: 36, height: 36, borderRadius: '50%',
+              backgroundColor: 'rgba(255,255,255,0.08)',
+              border: 'none', cursor: 'pointer', color: 'white',
+              fontSize: 22, lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
+              WebkitTapHighlightColor: 'transparent',
+            }}
+          >−</button>
+          <span style={{ fontSize: 17, fontWeight: 600, color: 'white', minWidth: 32, textAlign: 'center' }}>{score}</span>
+          <button
+            onClick={() => setScore(s => Math.min(100, s + 5))}
+            style={{
+              width: 36, height: 36, borderRadius: '50%',
+              backgroundColor: 'rgba(255,255,255,0.08)',
+              border: 'none', cursor: 'pointer', color: 'white',
+              fontSize: 22, lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
+              WebkitTapHighlightColor: 'transparent',
+            }}
+          >+</button>
         </div>
       </div>
 
       {/* Heart — centred in remaining space */}
       <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <HeartAura overallScore={overallScore} globalTrustScore={globalTrustScore} size={330} />
+        <HeartAura overallScore={score} globalTrustScore={globalTrustScore} size={330} />
       </div>
     </div>
   );

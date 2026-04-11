@@ -53,7 +53,7 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
               WebkitTapHighlightColor: 'transparent',
             }}
           >
-            <ChevronLeft size={24} />
+            <ChevronLeft size={24} style={{ transform: 'translateY(-1.5px)' }} />
             <span style={{ fontSize: 17, fontWeight: 500 }}>Аура</span>
           </button>
           <StatusBadge color={data.color} text={data.statusText} />

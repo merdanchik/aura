@@ -573,7 +573,7 @@ export const Dashboard = () => {
       <div style={{ padding: 'calc(env(safe-area-inset-top) + 8px) 16px 12px' }}>
         <div style={{ marginBottom: 14 }}>
           <button
-            onClick={() => navigate(-1 as any)}
+            onClick={() => navigate('/')}
             style={{
               display: 'flex', alignItems: 'center', gap: 4,
               background: 'none', border: 'none', cursor: 'pointer',

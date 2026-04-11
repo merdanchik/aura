@@ -772,7 +772,14 @@ export const Dashboard = () => {
       </motion.div>
 
       {/* Footer heart — link to /heart */}
-      <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 13, paddingBottom: 16 }}>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingTop: 16,
+        paddingBottom: 'calc(env(safe-area-inset-bottom) + 16px)',
+        minHeight: 'calc(env(safe-area-inset-bottom) + 72px)',
+      }}>
         <button
           onClick={() => navigate('/heart')}
           style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 8, WebkitTapHighlightColor: 'transparent' }}

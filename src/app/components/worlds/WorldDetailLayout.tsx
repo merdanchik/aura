@@ -93,7 +93,9 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
             paddingBottom: 4,
             marginBottom: 28,
           }}>
-            {data.insights.map((ins, i) => (
+            {data.insights.map((ins, i) => {
+              const InsIcon = ins.icon;
+              return (
               <div
                 key={i}
                 onClick={() => navigate(`/chat/${ins.contextId}`)}
@@ -106,7 +108,9 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
                   cursor: 'pointer',
                 }}
               >
-                <div style={{ fontSize: 24, lineHeight: 1, textAlign: 'center' }}>{ins.icon}</div>
+                <div style={{ lineHeight: 1, textAlign: 'center' }}>
+                  <InsIcon size={24} color={ins.accent} strokeWidth={1.5} />
+                </div>
                 <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.07em', color: ins.accent, textTransform: 'uppercase', lineHeight: 1.3, textAlign: 'center' }}>
                   {ins.category}
                 </p>
@@ -114,7 +118,8 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
                   {ins.text}
                 </p>
               </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Источники */}

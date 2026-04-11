@@ -1,3 +1,11 @@
+import type { LucideIcon } from 'lucide-react';
+import {
+  Gauge, Trophy, BarChart2, Clock, Activity,
+  Music2, Repeat, Moon, Guitar, Radio,
+  Film, ListPlus, Tv2, Pause,
+  ShoppingBag, CreditCard, RefreshCw, Target, Package,
+  Plane, Map, Building, Globe, Backpack,
+} from 'lucide-react';
 import svcMusic      from '../../../assets/yandex-music.png';
 import svcKino       from '../../../assets/kinopoisk.png';
 import svcBooks      from '../../../assets/yandex-books.png';
@@ -27,7 +35,7 @@ export interface SourceDef {
 }
 
 export interface InsightDef {
-  icon:      string;
+  icon:      LucideIcon;
   category:  string;
   text:      string;
   accent:    string;
@@ -68,11 +76,11 @@ export const WORLD_DATA: Record<string, WorldDetailData> = {
       { iconSrc: imgNbaApp,   name: 'NBA',             facts: '12 матчей, акцент на плей-офф',                 meaning: 'Устойчивый интерес', accent: '#FF9F0A' },
     ],
     insights: [
-      { icon: '🏎️', category: 'ПАТТЕРН · F1',      text: 'Смотрит гонки в прямом эфире — без записи',    accent: '#FF3B30', contextId: 'ins-sports-f1'    },
-      { icon: '🏀', category: 'ОТКРЫТИЕ · NBA',     text: 'Плей-офф привлекает в 3× больше обычного',     accent: '#FF9F0A', contextId: 'ins-sports-nba'   },
-      { icon: '📊', category: 'ПАТТЕРН · СПОРТ',    text: 'Читает аналитику после каждой гонки',           accent: '#5AC8F5', contextId: 'ins-sports-stats' },
-      { icon: '🕙', category: 'ПРИВЫЧКА · СПОРТ',   text: 'Смотрит спорт после 22:00 в будни',             accent: '#BF5AF2', contextId: 'ins-sports-time'  },
-      { icon: '🎽', category: 'ИНТЕРЕС · СПОРТ',    text: 'Теннис в топ-5 по просмотрам этого сезона',     accent: '#30D158', contextId: 'ins-sports-tennis'},
+      { icon: Gauge,    category: 'ПАТТЕРН · F1',      text: 'Смотрит гонки в прямом эфире — без записи',    accent: '#FF3B30', contextId: 'ins-sports-f1'    },
+      { icon: Trophy,   category: 'ОТКРЫТИЕ · NBA',     text: 'Плей-офф привлекает в 3× больше обычного',     accent: '#FF9F0A', contextId: 'ins-sports-nba'   },
+      { icon: BarChart2,category: 'ПАТТЕРН · СПОРТ',    text: 'Читает аналитику после каждой гонки',           accent: '#5AC8F5', contextId: 'ins-sports-stats' },
+      { icon: Clock,    category: 'ПРИВЫЧКА · СПОРТ',   text: 'Смотрит спорт после 22:00 в будни',             accent: '#BF5AF2', contextId: 'ins-sports-time'  },
+      { icon: Activity, category: 'ИНТЕРЕС · СПОРТ',    text: 'Теннис в топ-5 по просмотрам этого сезона',     accent: '#30D158', contextId: 'ins-sports-tennis'},
     ],
   },
 
@@ -95,11 +103,11 @@ export const WORLD_DATA: Record<string, WorldDetailData> = {
       { iconSrc: svcLastfm,  name: 'Last.fm',        facts: '180 прослушиваний за месяц, топ: электроника',          meaning: 'Точный след вкуса за последний год',         accent: '#D51007' },
     ],
     insights: [
-      { icon: '🎵', category: 'ВКУС · МУЗЫКА',      text: 'Электроника в 2× чаще по пятницам после 22:00', accent: '#E03366', contextId: 'ins-music'     },
-      { icon: '🔁', category: 'ПРИВЫЧКА · МУЗЫКА',  text: 'Возвращается к одному альбому 3+ раз подряд',   accent: '#BF5AF2', contextId: 'ins-music-2'   },
-      { icon: '🌙', category: 'ПАТТЕРН · ВРЕМЯ',    text: 'Пик прослушивания — с 23:00 до 01:00',          accent: '#5E5CE6', contextId: 'ins-music-3'   },
-      { icon: '🎸', category: 'ОТКРЫТИЕ · ЖАНР',   text: 'Пост-рок вырос на 40% за последний месяц',      accent: '#FF9F0A', contextId: 'ins-music-4'   },
-      { icon: '📻', category: 'ПАТТЕРН · ФОРМАТ',  text: 'Предпочитает альбомы целиком, не плейлисты',    accent: '#30D158', contextId: 'ins-music-5'   },
+      { icon: Music2,   category: 'ВКУС · МУЗЫКА',      text: 'Электроника в 2× чаще по пятницам после 22:00', accent: '#E03366', contextId: 'ins-music'     },
+      { icon: Repeat,   category: 'ПРИВЫЧКА · МУЗЫКА',  text: 'Возвращается к одному альбому 3+ раз подряд',   accent: '#BF5AF2', contextId: 'ins-music-2'   },
+      { icon: Moon,     category: 'ПАТТЕРН · ВРЕМЯ',    text: 'Пик прослушивания — с 23:00 до 01:00',          accent: '#5E5CE6', contextId: 'ins-music-3'   },
+      { icon: Guitar,   category: 'ОТКРЫТИЕ · ЖАНР',   text: 'Пост-рок вырос на 40% за последний месяц',      accent: '#FF9F0A', contextId: 'ins-music-4'   },
+      { icon: Radio,    category: 'ПАТТЕРН · ФОРМАТ',  text: 'Предпочитает альбомы целиком, не плейлисты',    accent: '#30D158', contextId: 'ins-music-5'   },
     ],
   },
 
@@ -123,11 +131,11 @@ export const WORLD_DATA: Record<string, WorldDetailData> = {
       { iconSrc: svcAfisha,  name: 'Яндекс Афиша', facts: '1 поход в кинотеатр в месяц, билеты через Афишу', meaning: 'Живой просмотр — отдельный ритуал', accent: '#5AC8F5' },
     ],
     insights: [
-      { icon: '🎬', category: 'ОТКРЫТИЕ · КИНОПОИСК', text: 'Аниме расширило профиль знания',               accent: '#FF6600', contextId: 'ins-kinopoisk'  },
-      { icon: '📋', category: 'ПАТТЕРН · СПИСОК',     text: 'Добавляет в вишлист в 4× больше, чем смотрит', accent: '#FF9F0A', contextId: 'ins-cinema-2'   },
-      { icon: '🕐', category: 'ПРИВЫЧКА · ВРЕМЯ',     text: 'Смотрит кино после 22:00 в выходные',           accent: '#BF5AF2', contextId: 'ins-cinema-3'   },
-      { icon: '🎭', category: 'ВКУС · ЖАНР',          text: 'Исторические драмы — 72% всего просмотра',      accent: '#FF3B30', contextId: 'ins-cinema-4'   },
-      { icon: '⏸️', category: 'ПАТТЕРН · ПОВЕДЕНИЕ', text: 'Бросает сериалы после 2-го эпизода',            accent: '#636366', contextId: 'ins-cinema-5'   },
+      { icon: Film,     category: 'ОТКРЫТИЕ · КИНОПОИСК', text: 'Аниме расширило профиль знания',               accent: '#FF6600', contextId: 'ins-kinopoisk'  },
+      { icon: ListPlus, category: 'ПАТТЕРН · СПИСОК',     text: 'Добавляет в вишлист в 4× больше, чем смотрит', accent: '#FF9F0A', contextId: 'ins-cinema-2'   },
+      { icon: Clock,    category: 'ПРИВЫЧКА · ВРЕМЯ',     text: 'Смотрит кино после 22:00 в выходные',           accent: '#BF5AF2', contextId: 'ins-cinema-3'   },
+      { icon: Tv2,      category: 'ВКУС · ЖАНР',          text: 'Исторические драмы — 72% всего просмотра',      accent: '#FF3B30', contextId: 'ins-cinema-4'   },
+      { icon: Pause,    category: 'ПАТТЕРН · ПОВЕДЕНИЕ',  text: 'Бросает сериалы после 2-го эпизода',            accent: '#636366', contextId: 'ins-cinema-5'   },
     ],
   },
 
@@ -150,11 +158,11 @@ export const WORLD_DATA: Record<string, WorldDetailData> = {
       { iconSrc: svcOzon,        name: 'Ozon',           facts: '3 заказа, 2 возврата — ищет лучшее качество',     meaning: 'Высокие требования к товару',          accent: '#005BFF'  },
     ],
     insights: [
-      { icon: '🛍️', category: 'ПРИВЫЧКА · МАРКЕТ',   text: 'Чаще покупает по воскресеньям',                 accent: '#FFCC00', contextId: 'ins-market'    },
-      { icon: '💳', category: 'ПАТТЕРН · СПЛИТ',     text: 'Платит вовремя — доверие растёт',               accent: '#30D158', contextId: 'ins-split'     },
-      { icon: '🔄', category: 'ПОВЕДЕНИЕ · ВОЗВРАТ', text: 'Возвращается к одному товару в среднем 8 раз',  accent: '#FF6633', contextId: 'ins-shopping-3' },
-      { icon: '🎯', category: 'ПАТТЕРН · НАМЕРЕНИЕ',  text: 'От первого поиска до покупки — 4 дня',          accent: '#5AC8F5', contextId: 'ins-shopping-4' },
-      { icon: '📦', category: 'ПРИВЫЧКА · ДОСТАВКА', text: 'Выбирает доставку на следующий день в 90%',     accent: '#FF9F0A', contextId: 'ins-shopping-5' },
+      { icon: ShoppingBag, category: 'ПРИВЫЧКА · МАРКЕТ',   text: 'Чаще покупает по воскресеньям',                 accent: '#FFCC00', contextId: 'ins-market'    },
+      { icon: CreditCard,  category: 'ПАТТЕРН · СПЛИТ',     text: 'Платит вовремя — доверие растёт',               accent: '#30D158', contextId: 'ins-split'     },
+      { icon: RefreshCw,   category: 'ПОВЕДЕНИЕ · ВОЗВРАТ', text: 'Возвращается к одному товару в среднем 8 раз',  accent: '#FF6633', contextId: 'ins-shopping-3' },
+      { icon: Target,      category: 'ПАТТЕРН · НАМЕРЕНИЕ',  text: 'От первого поиска до покупки — 4 дня',          accent: '#5AC8F5', contextId: 'ins-shopping-4' },
+      { icon: Package,     category: 'ПРИВЫЧКА · ДОСТАВКА', text: 'Выбирает доставку на следующий день в 90%',     accent: '#FF9F0A', contextId: 'ins-shopping-5' },
     ],
   },
 
@@ -179,11 +187,11 @@ export const WORLD_DATA: Record<string, WorldDetailData> = {
       { iconSrc: svcAirbnb,    name: 'Airbnb',              facts: '3 варианта сохранено, акцент на апартаменты', meaning: 'Альтернатива отелю для длинных поездок', accent: '#FF5A5F' },
     ],
     insights: [
-      { icon: '✈️', category: 'ПАТТЕРН · ПУТЕШЕСТВИЯ', text: 'Проверяет билеты поздно вечером',          accent: '#00C7BE', contextId: 'ins-travel'   },
-      { icon: '🗺️', category: 'ОТКРЫТИЕ · КАРТЫ',      text: 'Сохраняет места до поездки в 3× активнее', accent: '#FF9F0A', contextId: 'ins-travel-2' },
-      { icon: '🏨', category: 'ПРИВЫЧКА · БРОНЬ',       text: 'Бронирует отели за 2–3 недели до вылета',  accent: '#003580', contextId: 'ins-travel-3' },
-      { icon: '🌍', category: 'ПАТТЕРН · НАПРАВЛЕНИЕ',  text: 'Европа занимает 80% всех поисков',         accent: '#5E5CE6', contextId: 'ins-travel-4' },
-      { icon: '🎒', category: 'ПОВЕДЕНИЕ · СТИЛЬ',      text: 'Предпочитает апартаменты длинным поездкам', accent: '#FF5A5F', contextId: 'ins-travel-5' },
+      { icon: Plane,    category: 'ПАТТЕРН · ПУТЕШЕСТВИЯ', text: 'Проверяет билеты поздно вечером',          accent: '#00C7BE', contextId: 'ins-travel'   },
+      { icon: Map,      category: 'ОТКРЫТИЕ · КАРТЫ',      text: 'Сохраняет места до поездки в 3× активнее', accent: '#FF9F0A', contextId: 'ins-travel-2' },
+      { icon: Building, category: 'ПРИВЫЧКА · БРОНЬ',       text: 'Бронирует отели за 2–3 недели до вылета',  accent: '#003580', contextId: 'ins-travel-3' },
+      { icon: Globe,    category: 'ПАТТЕРН · НАПРАВЛЕНИЕ',  text: 'Европа занимает 80% всех поисков',         accent: '#5E5CE6', contextId: 'ins-travel-4' },
+      { icon: Backpack, category: 'ПОВЕДЕНИЕ · СТИЛЬ',      text: 'Предпочитает апартаменты длинным поездкам', accent: '#FF5A5F', contextId: 'ins-travel-5' },
     ],
   },
 

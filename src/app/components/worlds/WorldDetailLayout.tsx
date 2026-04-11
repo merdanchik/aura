@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router';
-import { Plus } from 'lucide-react';
+import { ChevronLeft, Plus } from 'lucide-react';
 import { AuraRingsMini } from '../AuraRings';
 import { StatusBadge } from './WorldDetailShared';
 import type { WorldDetailData } from './worldsData';
@@ -42,20 +42,21 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
         background: `linear-gradient(160deg, ${data.color}30 0%, transparent 80%)`,
         marginBottom: 16,
       }}>
-        {/* Status + close */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 10, marginBottom: 20 }}>
-          <StatusBadge color={data.color} text={data.statusText} />
+        {/* Back + status */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
           <button
             onClick={() => navigate('/worlds')}
             style={{
-              width: 28, height: 28, borderRadius: '50%',
-              backgroundColor: 'rgba(255,255,255,0.12)',
-              border: 'none', cursor: 'pointer',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              color: '#FFFFFF', fontSize: 14,
+              display: 'flex', alignItems: 'center', gap: 4,
+              background: 'none', border: 'none', cursor: 'pointer',
+              color: data.color, padding: 0,
               WebkitTapHighlightColor: 'transparent',
             }}
-          >✕</button>
+          >
+            <ChevronLeft size={24} />
+            <span style={{ fontSize: 17, fontWeight: 500 }}>Аура</span>
+          </button>
+          <StatusBadge color={data.color} text={data.statusText} />
         </div>
         {/* Title */}
         <p style={{ fontSize: 40, fontWeight: 700, color: '#FFFFFF', lineHeight: 1.0, marginBottom: 8 }}>

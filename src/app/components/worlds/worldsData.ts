@@ -65,7 +65,7 @@ export const WORLD_DATA: Record<string, WorldDetailData> = {
     sources: [
       { iconSrc: svcKino,      name: 'Кинопоиск',      facts: '8 спортивных событий за месяц, 3 напоминания', meaning: 'Активное отслеживание расписания', accent: '#FF9F0A' },
       { iconSrc: imgF1App,     name: 'Formula 1',      facts: '6 гонок просмотрено полностью, 2 в записи',    meaning: 'Глубокий интерес к сезону',       accent: '#FF3B30' },
-      { iconSrc: imgNbaApp,   name: 'NBA',             facts: '12 матчей, фокус на плей-офф',                 meaning: 'Устойчивый интерес к командному спорту', accent: '#FF9F0A' },
+      { iconSrc: imgNbaApp,   name: 'NBA',             facts: '12 матчей, фокус на плей-офф',                 meaning: 'Устойчивый интерес', accent: '#FF9F0A' },
     ],
     insights: [
       { icon: '🏎️', category: 'ПАТТЕРН · F1',      text: 'Смотрит гонки в прямом эфире — без записи',    accent: '#FF3B30', contextId: 'ins-sports-f1'    },

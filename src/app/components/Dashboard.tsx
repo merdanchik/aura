@@ -772,13 +772,13 @@ export const Dashboard = () => {
       </motion.div>
 
       {/* Footer heart — link to /heart */}
-      <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 32, paddingBottom: 40 }}>
+      <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 13, paddingBottom: 16 }}>
         <button
           onClick={() => navigate('/heart')}
           style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 8, WebkitTapHighlightColor: 'transparent' }}
           aria-label="Аура сердца"
         >
-          <svg width="28" height="26" viewBox="0 0 28 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="22" height="21" viewBox="0 0 28 26" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M14 24.5C14 24.5 2 16.5 2 8.5C2 5.46243 4.46243 3 7.5 3C9.84752 3 11.8765 4.43901 12.8042 6.5C13.0999 7.15385 13.5 8 14 8C14.5 8 14.9001 7.15385 15.1958 6.5C16.1235 4.43901 18.1525 3 20.5 3C23.5376 3 26 5.46243 26 8.5C26 16.5 14 24.5 14 24.5Z" stroke="rgba(255,255,255,0.25)" strokeWidth="1.5" strokeLinejoin="round"/>
           </svg>
         </button>

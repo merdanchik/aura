@@ -1372,13 +1372,13 @@ export const LauncherScreen = () => {
             WebkitOverflowScrolling: 'touch' as any,
           }}>
             {[
-              { month: 'АВГУСТ',   title: 'Неделя, когда ты не спал',  bg: '#07101A', shadow: 'inset 0 2px 17px 11px rgba(5,25,60,0.98), inset 0 0 13px 7px rgba(10,55,130,0.82)',  contextId: 'mem-kinopoisk'  },
-              { month: 'СЕНТЯБРЬ', title: 'Один трек на repeat',        bg: '#0A0320', shadow: 'inset 0 2px 17px 11px rgba(38,8,98,0.98), inset 0 0 13px 7px rgba(98,28,218,0.82)', contextId: 'mem-music'       },
-              { month: 'НОЯБРЬ',   title: 'Дождливые пятницы',         bg: '#120800', shadow: 'inset 0 2px 17px 11px rgba(80,35,0,0.98), inset 0 0 13px 7px rgba(160,75,0,0.82)',   contextId: 'mem-food'        },
-              { month: 'ЯНВАРЬ',   title: '+40 на корте',               bg: '#001408', shadow: 'inset 0 2px 17px 11px rgba(0,55,20,0.98), inset 0 0 13px 7px rgba(0,120,45,0.82)',   contextId: 'aus-open'        },
-              { month: 'МАРТ',     title: 'Сзади никого',               bg: '#00081A', shadow: 'inset 0 2px 17px 11px rgba(0,20,80,0.98), inset 0 0 13px 7px rgba(15,55,175,0.82)',  contextId: 'f1-2025'         },
-              { month: 'НОЯБРЬ',   title: 'Трастевере без туристов',    bg: '#110800', shadow: 'inset 0 2px 17px 11px rgba(80,38,0,0.98), inset 0 0 13px 7px rgba(155,75,0,0.82)',   contextId: 'rome'            },
-              { month: 'ДЕКАБРЬ',  title: 'Гульд мурлыкал под запись', bg: '#0D0218', shadow: 'inset 0 2px 17px 11px rgba(48,5,90,0.98), inset 0 0 13px 7px rgba(110,20,190,0.82)', contextId: 'bach-goldberg'   },
+              { month: 'АВГУСТ',   service: 'КИНОПОИСК',    title: 'Неделя, когда ты не спал',  bg: '#07101A', shadow: 'inset 0 2px 17px 11px rgba(5,25,60,0.98), inset 0 0 13px 7px rgba(10,55,130,0.82)',  contextId: 'mem-kinopoisk'  },
+              { month: 'СЕНТЯБРЬ', service: 'МУЗЫКА',        title: 'Один трек на repeat',        bg: '#0A0320', shadow: 'inset 0 2px 17px 11px rgba(38,8,98,0.98), inset 0 0 13px 7px rgba(98,28,218,0.82)', contextId: 'mem-music'       },
+              { month: 'НОЯБРЬ',   service: 'ЯНДЕКС ЕДА',   title: 'Дождливые пятницы',         bg: '#120800', shadow: 'inset 0 2px 17px 11px rgba(80,35,0,0.98), inset 0 0 13px 7px rgba(160,75,0,0.82)',   contextId: 'mem-food'        },
+              { month: 'ЯНВАРЬ',   service: 'ТЕННИС',        title: '+40 на корте',               bg: '#001408', shadow: 'inset 0 2px 17px 11px rgba(0,55,20,0.98), inset 0 0 13px 7px rgba(0,120,45,0.82)',   contextId: 'aus-open'        },
+              { month: 'МАРТ',     service: 'ФОРМУЛА 1',     title: 'Сзади никого',               bg: '#00081A', shadow: 'inset 0 2px 17px 11px rgba(0,20,80,0.98), inset 0 0 13px 7px rgba(15,55,175,0.82)',  contextId: 'f1-2025'         },
+              { month: 'НОЯБРЬ',   service: 'АВИАСЕЙЛС',    title: 'Трастевере без туристов',    bg: '#110800', shadow: 'inset 0 2px 17px 11px rgba(80,38,0,0.98), inset 0 0 13px 7px rgba(155,75,0,0.82)',   contextId: 'rome'            },
+              { month: 'ДЕКАБРЬ',  service: 'МУЗЫКА',        title: 'Гульд мурлыкал под запись', bg: '#0D0218', shadow: 'inset 0 2px 17px 11px rgba(48,5,90,0.98), inset 0 0 13px 7px rgba(110,20,190,0.82)', contextId: 'bach-goldberg'   },
             ].map((mem, i) => (
               <div
                 key={i}
@@ -1392,14 +1392,21 @@ export const LauncherScreen = () => {
                   cursor: 'pointer',
                 }}
               >
-                {/* Month — fixed-height header, always same position */}
-                <div style={{ height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                {/* Month + Service — fixed-height header */}
+                <div style={{ height: 36, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 3, flexShrink: 0 }}>
                   <p style={{
                     fontSize: 8, fontWeight: 600, letterSpacing: '0.08em',
                     textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)',
                     lineHeight: 1,
                   }}>
                     {mem.month}
+                  </p>
+                  <p style={{
+                    fontSize: 8, fontWeight: 600, letterSpacing: '0.08em',
+                    textTransform: 'uppercase', color: 'rgba(255,255,255,0.28)',
+                    lineHeight: 1,
+                  }}>
+                    {mem.service}
                   </p>
                 </div>
                 {/* Title — centered H+V in remaining space */}

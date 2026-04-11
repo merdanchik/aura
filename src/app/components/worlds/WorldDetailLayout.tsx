@@ -124,7 +124,7 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
               <div
                 key={src.name}
                 style={{
-                  display: 'flex', alignItems: 'center', gap: 12,
+                  display: 'flex', alignItems: 'flex-start', gap: 12,
                   padding: '14px 16px',
                   ...(i < data.sources.length - 1 ? ROW_DIVIDER : {}),
                 }}

@@ -46,7 +46,7 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
         <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 10, marginBottom: 20 }}>
           <StatusBadge color={data.color} text={data.statusText} />
           <button
-            onClick={() => navigate(-1 as any)}
+            onClick={() => navigate('/worlds')}
             style={{
               width: 28, height: 28, borderRadius: '50%',
               backgroundColor: 'rgba(255,255,255,0.12)',

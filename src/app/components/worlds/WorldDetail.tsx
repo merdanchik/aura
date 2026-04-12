@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import { useParams } from 'react-router';
+import { useIosNavigate } from '../../hooks/useIosNavigate';
 import { motion } from 'motion/react';
 import { ChevronLeft } from 'lucide-react';
 import { C, R } from '../../styles/auraTokens';
@@ -33,7 +34,7 @@ const SkeletonCircle: React.FC<{ size?: number }> = ({ size = 36 }) => (
 // ── Main component ───────────────────────────────────────────────────────────
 export const WorldDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
+  const { back, replace } = useIosNavigate();
 
   // Known world → render shared layout with data
   const data = id ? WORLD_DATA[id] : null;
@@ -58,7 +59,7 @@ export const WorldDetail: React.FC = () => {
       const nextIndex = dx < 0
         ? (currentIndex + 1) % WORLDS.length
         : (currentIndex - 1 + WORLDS.length) % WORLDS.length;
-      navigate(`/${WORLDS[nextIndex].id}`, { replace: true });
+      replace(`/${WORLDS[nextIndex].id}`);
     }
   };
 
@@ -80,7 +81,7 @@ export const WorldDetail: React.FC = () => {
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', padding: '52px 12px 12px', gap: 8, flexShrink: 0 }}>
         <button
-          onClick={() => navigate('/')}
+          onClick={() => back('/')}
           style={{
             width: 32, height: 32, borderRadius: '50%',
             background: C.borderLight, border: 'none',
@@ -104,7 +105,7 @@ export const WorldDetail: React.FC = () => {
         {WORLDS.map((w, i) => (
           <div
             key={w.id}
-            onClick={() => navigate(`/${w.id}`, { replace: true })}
+            onClick={() => replace(`/${w.id}`)}
             style={{
               width: i === currentIndex ? 18 : 6,
               height: 6, borderRadius: 3,

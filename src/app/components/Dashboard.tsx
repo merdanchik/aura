@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAura } from '../context/AuraContext';
 import { AuraRings, AuraRingsMini } from './AuraRings';
-import { useNavigate } from 'react-router';
+import { useIosNavigate } from '../hooks/useIosNavigate';
 import { ChevronLeft, ChevronRight, ChevronDown, Shield, CheckCircle, MapPin } from 'lucide-react';
 import { motion, AnimatePresence, useMotionValue, useTransform, animate as motionAnimate } from 'motion/react';
 import { Switch } from './ui/switch';
@@ -538,7 +538,7 @@ type TabType = typeof TABS[number];
 
 export const Dashboard = () => {
   const { globalTrustScore, globalKnowledgeScore, overallScore, strongAura, toggleStrongAura } = useAura();
-  const navigate = useNavigate();
+  const { go, back } = useIosNavigate();
   const [activeTab, setActiveTab] = useState<TabType>('Мой профиль');
 
   React.useEffect(() => {
@@ -551,7 +551,7 @@ export const Dashboard = () => {
 
   const navigateToChat = (path: string) => {
     sessionStorage.setItem('dashboardScroll', String(window.scrollY));
-    navigate(path);
+    go(path);
   };
 
   const trustDotGradient = globalTrustScore < 40
@@ -573,7 +573,7 @@ export const Dashboard = () => {
       <div style={{ padding: 'calc(env(safe-area-inset-top) + 8px) 16px 12px' }}>
         <div style={{ marginBottom: 14 }}>
           <button
-            onClick={() => navigate('/')}
+            onClick={() => back('/')}
             style={{
               display: 'flex', alignItems: 'center', gap: 4,
               background: 'none', border: 'none', cursor: 'pointer',
@@ -711,7 +711,7 @@ export const Dashboard = () => {
           {WORLDS_DATA.map((w, idx) => (
             <button
               key={w.id}
-              onClick={() => navigate(`/${w.id}`)}
+              onClick={() => go(`/${w.id}`)}
               className="w-full flex items-center gap-3 px-4 py-3.5 active:bg-white/[0.05] transition-colors text-left"
             >
               <div style={{ width: 10, height: 10, borderRadius: '50%', backgroundColor: w.color, flexShrink: 0 }} />
@@ -781,7 +781,7 @@ export const Dashboard = () => {
         minHeight: 'calc(env(safe-area-inset-bottom) + 72px)',
       }}>
         <button
-          onClick={() => navigate('/heart')}
+          onClick={() => go('/heart')}
           style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 8, WebkitTapHighlightColor: 'transparent' }}
           aria-label="Аура сердца"
         >

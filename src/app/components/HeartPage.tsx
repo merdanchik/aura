@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, useMotionValue, useTransform, animate as motionAnimate } from 'motion/react';
-import { useNavigate } from 'react-router';
+import { useIosNavigate } from '../hooks/useIosNavigate';
 import { ChevronLeft } from 'lucide-react';
 import { useAura } from '../context/AuraContext';
 
@@ -107,7 +107,7 @@ const HeartAura: React.FC<{ overallScore: number; globalTrustScore: number; size
 
 export const HeartPage: React.FC = () => {
   const { overallScore, globalTrustScore } = useAura();
-  const navigate = useNavigate();
+  const { back } = useIosNavigate();
   const [score, setScore] = React.useState(() => Math.round(overallScore));
 
   return (
@@ -120,7 +120,7 @@ export const HeartPage: React.FC = () => {
       {/* Header */}
       <div style={{ padding: 'calc(env(safe-area-inset-top) + 8px) 16px 12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <button
-          onClick={() => navigate(-1)}
+          onClick={() => back()}
           style={{
             display: 'flex', alignItems: 'center', gap: 4,
             background: 'none', border: 'none', cursor: 'pointer',

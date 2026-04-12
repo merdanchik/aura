@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router';
+import { useIosNavigate } from '../../hooks/useIosNavigate';
 import { ChevronLeft, Plus } from 'lucide-react';
 import { AuraRingsMini } from '../AuraRings';
 import { StatusBadge } from './WorldDetailShared';
@@ -26,7 +26,7 @@ interface Props {
 }
 
 export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
-  const navigate = useNavigate();
+  const { go, back } = useIosNavigate();
 
   return (
     <div style={{
@@ -45,7 +45,7 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
         {/* Back + status */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
           <button
-            onClick={() => navigate('/worlds')}
+            onClick={() => back('/worlds')}
             style={{
               display: 'flex', alignItems: 'center', gap: 4,
               background: 'none', border: 'none', cursor: 'pointer',
@@ -98,7 +98,7 @@ export const WorldDetailLayout: React.FC<Props> = ({ data }) => {
               return (
               <div
                 key={i}
-                onClick={() => navigate(`/chat/${ins.contextId}`)}
+                onClick={() => go(`/chat/${ins.contextId}`)}
                 style={{
                   flexShrink: 0, width: 160,
                   backgroundColor: '#1C1C1E',

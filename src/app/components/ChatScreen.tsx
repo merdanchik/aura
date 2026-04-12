@@ -1,5 +1,6 @@
 import React from 'react';
-import { useParams, useNavigate } from 'react-router';
+import { useParams } from 'react-router';
+import { useIosNavigate } from '../hooks/useIosNavigate';
 import { motion } from 'motion/react';
 import wolfImg from '../../assets/wolf.png';
 
@@ -148,7 +149,7 @@ const FakeKeyboard: React.FC<{ onAnyTap: () => void }> = ({ onAnyTap }) => (
 
 export const ChatScreen: React.FC = () => {
   const { contextId } = useParams<{ contextId: string }>();
-  const navigate = useNavigate();
+  const { back } = useIosNavigate();
 
   const ctx = contextId ? CONTEXT_CHATS[contextId] : null;
   const messageText = ctx?.message ?? 'привет, саша!';
@@ -170,7 +171,7 @@ export const ChatScreen: React.FC = () => {
     >
       <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '16px 16px 8px' }}>
         <button
-          onClick={() => navigate(-1)}
+          onClick={() => back()}
           style={{
             width: 32, height: 32, borderRadius: '50%',
             backgroundColor: '#2C2C2E', border: 'none',
@@ -206,7 +207,7 @@ export const ChatScreen: React.FC = () => {
         </div>
       </div>
 
-      <FakeKeyboard onAnyTap={() => navigate(-1)} />
+      <FakeKeyboard onAnyTap={() => back()} />
     </motion.div>
   );
 };

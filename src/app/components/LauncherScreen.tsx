@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router';
+import { useIosNavigate } from '../hooks/useIosNavigate';
 import { motion, AnimatePresence } from 'motion/react';
 import avatarImg from '../../assets/avatar.jpg';
 import { C } from '../styles/auraTokens';
@@ -1051,7 +1051,7 @@ const TimelineSlider: React.FC<TimelineSliderProps> = ({ periods, selectedIndex,
 // ═══════════════════════════════════════════════════════════════════════════
 
 export const LauncherScreen = () => {
-  const navigate = useNavigate();
+  const { go } = useIosNavigate();
 
   // State
   const [periodIndex, setPeriodIndex] = useState(() =>
@@ -1252,7 +1252,7 @@ export const LauncherScreen = () => {
                     opacity: { duration: 0.55 },
                     scale:   { type: 'spring', stiffness: 130, damping: 22 },
                   }}
-                  onClick={() => navigate('/chat/' + node.id)}
+                  onClick={() => go('/chat/' + node.id)}
                   style={{
                     position: 'absolute',
                     left: cx - placed.size,
@@ -1327,7 +1327,7 @@ export const LauncherScreen = () => {
 
             {/* ── Layer 4: PHOTO — color-neutral, outside hue-rotate wrapper ── */}
             <div
-              onClick={() => navigate('/worlds')}
+              onClick={() => go('/worlds')}
               style={{
                 position: 'relative',
                 width: 110, height: 110, borderRadius: '50%',
@@ -1382,7 +1382,7 @@ export const LauncherScreen = () => {
             ].map((mem, i) => (
               <div
                 key={i}
-                onClick={() => navigate(`/chat/${mem.contextId}`)}
+                onClick={() => go(`/chat/${mem.contextId}`)}
                 style={{
                   flexShrink: 0, width: 130, height: 96,
                   borderRadius: 16,

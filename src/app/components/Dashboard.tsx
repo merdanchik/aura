@@ -85,8 +85,9 @@ const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScor
   const isStrong = overallScore >= 60;
 
   const hue      = useMotionValue(0);
-  const clipRV   = useMotionValue(0);
   const beatGlow = useMotionValue(0);
+  // CSS @property fill: set once per score change, browser interpolates each frame — no JS per frame
+  const maskLayerRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     if (!isStrong) { const a = motionAnimate(hue, 0, { duration: 1 }); return () => a.stop(); }
@@ -95,8 +96,11 @@ const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScor
   }, [isStrong, s]);
 
   React.useEffect(() => {
-    const a = motionAnimate(clipRV, overallScore * 0.82, { duration: 1.2, ease: [0.22, 1, 0.36, 1] });
-    return () => a.stop();
+    if (!maskLayerRef.current) return;
+    const outer = (overallScore * 0.82).toFixed(1);
+    const inner = Math.max(0, overallScore * 0.82 - 28).toFixed(1);
+    maskLayerRef.current.style.setProperty('--mask-outer', `${outer}%`);
+    maskLayerRef.current.style.setProperty('--mask-inner', `${inner}%`);
   }, [overallScore]);
 
   React.useEffect(() => {
@@ -119,12 +123,6 @@ const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScor
   const glow2Bg = useTransform(hue, h =>
     `radial-gradient(ellipse at 40% 42%, hsla(${(h + 150) % 360}, 70%, 50%, ${(glowAlpha * 0.6).toFixed(3)}) 0%, transparent 52%)`
   );
-
-  const maskStyle = useTransform(clipRV, v => {
-    const outer = v.toFixed(1);
-    const inner = Math.max(0, v - 28).toFixed(1);
-    return `radial-gradient(circle at 50% 48%, black 0%, black ${inner}%, transparent ${outer}%)`;
-  });
 
   return (
     <motion.div
@@ -149,20 +147,28 @@ const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScor
         />
       </motion.div>
 
-      {/* Colored layers — scale wraps mask: GPU handles transform, static content inside mask reduces rasterization cost */}
+      {/* Colored layers — scale wraps mask, CSS @property fill (no per-frame JS, browser interpolates) */}
       <motion.div
         animate={{ scale: BEAT_SCALE_BAKED }}
         transition={{ duration: TOTAL_CYCLE, repeat: Infinity, times: BEAT_TIMES_BAKED }}
         style={{ position: 'absolute', left: '50%', top: '50%', x: '-50%' as any, y: '-50%' as any,
                  width: size, height: size, filter: colorFilter as any, willChange: 'transform, filter', zIndex: 10 }}
       >
-        <motion.div style={{ position: 'absolute', inset: 0, maskImage: maskStyle as any, WebkitMaskImage: maskStyle as any }}>
+        <div
+          ref={maskLayerRef}
+          style={{
+            position: 'absolute', inset: 0,
+            WebkitMaskImage: 'radial-gradient(circle at 50% 48%, black 0%, black var(--mask-inner), transparent var(--mask-outer))',
+            maskImage: 'radial-gradient(circle at 50% 48%, black 0%, black var(--mask-inner), transparent var(--mask-outer))',
+            transition: '--mask-outer 1.2s cubic-bezier(0.22, 1, 0.36, 1), --mask-inner 1.2s cubic-bezier(0.22, 1, 0.36, 1)',
+          }}
+        >
           {HEART_LAYERS.map((src, i) => (
             <img key={i} src={src} aria-hidden={i > 0} alt={i === 0 ? 'Аура' : undefined}
               style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'contain', zIndex: i + 1 }}
             />
           ))}
-        </motion.div>
+        </div>
       </motion.div>
     </motion.div>
   );

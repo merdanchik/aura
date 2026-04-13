@@ -6,6 +6,18 @@ html, body {
   background-color: #000000;
 }
 
+/* Heart fill animation: registered as <percentage> so CSS transitions can interpolate them */
+@property --mask-outer {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 0%;
+}
+@property --mask-inner {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 0%;
+}
+
 /* ─── iOS-like screen transitions (View Transitions API) ─── */
 @keyframes vt-slide-out-left  { to   { transform: translateX(-25%); } }
 @keyframes vt-slide-in-right  { from { transform: translateX(100%); } }

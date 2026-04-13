@@ -1,4 +1,4 @@
-import React, { useState, useTransition } from 'react';
+import React, { useState } from 'react';
 import { useAura } from '../context/AuraContext';
 import { AuraRings, AuraRingsMini } from './AuraRings';
 import { useIosNavigate } from '../hooks/useIosNavigate';
@@ -149,14 +149,14 @@ const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScor
         />
       </motion.div>
 
-      {/* Colored layers — masked, single beat + filter wrapper (was 6 elements) */}
-      <motion.div style={{ position: 'absolute', inset: 0, maskImage: maskStyle as any, WebkitMaskImage: maskStyle as any, zIndex: 10 }}>
-        <motion.div
-          animate={{ scale: BEAT_SCALE_BAKED }}
-          transition={{ duration: TOTAL_CYCLE, repeat: Infinity, times: BEAT_TIMES_BAKED }}
-          style={{ position: 'absolute', left: '50%', top: '50%', x: '-50%' as any, y: '-50%' as any,
-                   width: size, height: size, filter: colorFilter as any, willChange: 'transform, filter' }}
-        >
+      {/* Colored layers — scale wraps mask: GPU handles transform, static content inside mask reduces rasterization cost */}
+      <motion.div
+        animate={{ scale: BEAT_SCALE_BAKED }}
+        transition={{ duration: TOTAL_CYCLE, repeat: Infinity, times: BEAT_TIMES_BAKED }}
+        style={{ position: 'absolute', left: '50%', top: '50%', x: '-50%' as any, y: '-50%' as any,
+                 width: size, height: size, filter: colorFilter as any, willChange: 'transform, filter', zIndex: 10 }}
+      >
+        <motion.div style={{ position: 'absolute', inset: 0, maskImage: maskStyle as any, WebkitMaskImage: maskStyle as any }}>
           {HEART_LAYERS.map((src, i) => (
             <img key={i} src={src} aria-hidden={i > 0} alt={i === 0 ? 'Аура' : undefined}
               style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'contain', zIndex: i + 1 }}
@@ -515,7 +515,7 @@ const SwipeCard = ({
   );
 };
 
-const SwipeCardStack = () => {
+const SwipeCardStack = React.memo(() => {
   const [order, setOrder] = useState(() => KNOW_CARDS.map((_, i) => i));
   const containerH = CARD_H + 2 * PEEK + 8;
 
@@ -537,7 +537,7 @@ const SwipeCardStack = () => {
       })}
     </div>
   );
-};
+});
 
 // ─── Tab Bar ──────────────────────────────────────────────────────────────────
 
@@ -547,7 +547,6 @@ type TabType = typeof TABS[number];
 export const Dashboard = () => {
   const { globalTrustScore, globalKnowledgeScore, overallScore, strongAura, toggleStrongAura } = useAura();
   const { go, back } = useIosNavigate();
-  const [, startTransition] = useTransition();
   const [activeTab, setActiveTab] = useState<TabType>('Мой профиль');
 
   React.useEffect(() => {
@@ -604,7 +603,7 @@ export const Dashboard = () => {
             <span style={{ color: strongAura ? '#BF5AF2' : '#636366', fontSize: 13, fontWeight: 500 }}>Сильная аура</span>
             <Switch
               checked={strongAura}
-              onCheckedChange={() => startTransition(toggleStrongAura)}
+              onCheckedChange={toggleStrongAura}
               className="h-[31px] w-[51px] data-[state=checked]:bg-[#BF5AF2] data-[state=unchecked]:bg-[#3A3A3C] border-0 [&>[data-slot=switch-thumb]]:size-[27px] [&>[data-slot=switch-thumb]]:data-[state=checked]:translate-x-[22px] [&>[data-slot=switch-thumb]]:shadow-[0_2px_6px_rgba(0,0,0,0.4)]"
             />
           </div>

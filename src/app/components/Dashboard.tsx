@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useTransition } from 'react';
 import { useAura } from '../context/AuraContext';
 import { AuraRings, AuraRingsMini } from './AuraRings';
 import { useIosNavigate } from '../hooks/useIosNavigate';
@@ -539,6 +539,7 @@ type TabType = typeof TABS[number];
 export const Dashboard = () => {
   const { globalTrustScore, globalKnowledgeScore, overallScore, strongAura, toggleStrongAura } = useAura();
   const { go, back } = useIosNavigate();
+  const [, startTransition] = useTransition();
   const [activeTab, setActiveTab] = useState<TabType>('Мой профиль');
 
   React.useEffect(() => {
@@ -595,7 +596,7 @@ export const Dashboard = () => {
             <span style={{ color: strongAura ? '#BF5AF2' : '#636366', fontSize: 13, fontWeight: 500 }}>Сильная аура</span>
             <Switch
               checked={strongAura}
-              onCheckedChange={toggleStrongAura}
+              onCheckedChange={() => startTransition(toggleStrongAura)}
               className="h-[31px] w-[51px] data-[state=checked]:bg-[#BF5AF2] data-[state=unchecked]:bg-[#3A3A3C] border-0 [&>[data-slot=switch-thumb]]:size-[27px] [&>[data-slot=switch-thumb]]:data-[state=checked]:translate-x-[22px] [&>[data-slot=switch-thumb]]:shadow-[0_2px_6px_rgba(0,0,0,0.4)]"
             />
           </div>

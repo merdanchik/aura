@@ -73,6 +73,13 @@ const BEAT_DUR    = 0.87;
 const BEAT_REST   = 0.45;
 const BEAT_SCALE_GRAY = BEAT_SCALE.map(v => 1 + (v - 1) * 0.45);
 
+// Baked constants — repeatDelay removed so Motion can use WAAPI (compositor-threaded)
+// Total cycle = BEAT_DUR + BEAT_REST = 1.32s; rest is silence at scale(1) at the end
+const TOTAL_CYCLE       = BEAT_DUR + BEAT_REST;
+const BEAT_TIMES_BAKED  = [...BEAT_TIMES.map(t => +(t * BEAT_DUR / TOTAL_CYCLE).toFixed(3)), 1.0];
+const BEAT_SCALE_BAKED      = [...BEAT_SCALE,      1.0];
+const BEAT_SCALE_GRAY_BAKED = [...BEAT_SCALE_GRAY, 1.0];
+
 const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScore: number; globalTrustScore: number; size?: number }) => {
   const s = overallScore / 100;
   const isStrong = overallScore >= 60;
@@ -94,8 +101,9 @@ const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScor
 
   React.useEffect(() => {
     const peak = 0.10 + s * 0.16;
-    const a = motionAnimate(beatGlow, [0, peak, peak * 0.35, peak * 0.80, 0],
-      { duration: BEAT_DUR, repeat: Infinity, repeatDelay: BEAT_REST });
+    const a = motionAnimate(beatGlow, [0, peak, peak * 0.35, peak * 0.80, 0, 0],
+      { duration: TOTAL_CYCLE, repeat: Infinity,
+        offset: [0, 0.165, 0.330, 0.494, 0.659, 1.0] });
     return () => a.stop();
   }, [s]);
 
@@ -131,8 +139,8 @@ const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScor
 
       {/* Grayscale base — 1 element (was 6), single beat wrapper */}
       <motion.div
-        animate={{ scale: BEAT_SCALE_GRAY }}
-        transition={{ duration: BEAT_DUR, repeat: Infinity, repeatDelay: BEAT_REST, times: BEAT_TIMES }}
+        animate={{ scale: BEAT_SCALE_GRAY_BAKED }}
+        transition={{ duration: TOTAL_CYCLE, repeat: Infinity, times: BEAT_TIMES_BAKED }}
         style={{ position: 'absolute', left: '50%', top: '50%', x: '-50%' as any, y: '-50%' as any,
                  width: size, height: size, willChange: 'transform', zIndex: 1 }}
       >
@@ -144,8 +152,8 @@ const HeartAura = ({ overallScore, globalTrustScore, size = 330 }: { overallScor
       {/* Colored layers — masked, single beat + filter wrapper (was 6 elements) */}
       <motion.div style={{ position: 'absolute', inset: 0, maskImage: maskStyle as any, WebkitMaskImage: maskStyle as any, zIndex: 10 }}>
         <motion.div
-          animate={{ scale: BEAT_SCALE }}
-          transition={{ duration: BEAT_DUR, repeat: Infinity, repeatDelay: BEAT_REST, times: BEAT_TIMES }}
+          animate={{ scale: BEAT_SCALE_BAKED }}
+          transition={{ duration: TOTAL_CYCLE, repeat: Infinity, times: BEAT_TIMES_BAKED }}
           style={{ position: 'absolute', left: '50%', top: '50%', x: '-50%' as any, y: '-50%' as any,
                    width: size, height: size, filter: colorFilter as any, willChange: 'transform, filter' }}
         >
